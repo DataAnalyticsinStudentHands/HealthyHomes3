@@ -1,0 +1,249 @@
+/* app css stylesheet */
+
+
+body{
+    margin: 0px; 
+    background-color:rgb(105,249,190); 
+    color: rgb(51,51,51);; 
+    overflow: hidden;
+}
+
+.container-fluid {
+    position:absolute;
+    top:250px;
+    left:525px;
+
+    
+}
+
+/* corbin css
+*********************************************************************************************/
+
+#wrapper {width: 1280px;
+    height:800px;
+	margin-left:auto;
+	margin-right:auto;
+	min-width: 1280px;
+    min-height: 800px;
+    background-color: Rgb(210,221,224);
+}
+
+    
+    
+.bg{position: absolute;
+    top: 0px;
+    left:0px;
+}
+    
+    
+#logo {position: absolute;
+    top:1000px;
+    left:100px;
+    z-index: 10;
+    }
+    
+#menu_bg{background-color: Rgb(22,167,112);
+    width: 225px;
+    height: 800px;
+}
+    
+
+
+#login{position: absolute;
+    top:170px;
+    left:px;
+}
+
+
+#submit{position: absolute;
+    top:120px;
+    left:0px;
+}
+
+
+#preview{position: absolute;
+    top:300px;
+    left:0px;
+}
+
+
+/* beatles page
+*********************************************************************************************/
+
+
+#menu_bg{background-color: Rgb(22,167,112);
+    width: 225px;
+    height: 800px;
+    position: relative;
+    top: 0px;
+    left: 0px;
+}
+    
+ #menu_green{background-color:none;
+     color: rgb(105,249,190);
+     border: solid 3px;
+    width: 78px;
+    height: 444px;
+     position: relative;
+    top:-670px;
+    left:115px;
+}
+
+#menu_black{background-color:none;
+     color: rgb(51,51,51);
+     border: solid 3px;
+    width: 65px;
+    height: 200px;
+     position: relative;
+    top:-1115px;
+    left:28px;
+}
+
+#menu_yellow{background-color:none;
+     color: rgb(255,255,13);
+     border: solid 3px;
+    width: 65px;
+    height: 200px;
+     position: relative;
+    top:-1072px;
+    left:28px;
+}
+
+/* drag and drop icons
+*********************************************************************************************/
+
+.sink{position: relative;
+    top:-1500px;
+    left:130px;
+}
+
+.window{position: relative;
+    top:-1440px;
+    left:74px;
+}
+
+.stairs{position: relative;
+    top:-1380px;
+    left:18px;
+}
+
+.fire{position: relative;
+    top:-1320px;
+    left:-38px;
+}
+
+.toilet{position: relative;
+    top:-1260px;
+    left:-93px;
+}
+
+.tub{position: relative;
+    top:-1200px;
+    left:-149px;
+}
+
+.door{position: relative;
+    top:-1140px;
+    left:-205px;
+}
+
+
+/* drawing icons
+*********************************************************************************************/
+
+.pencil{position: relative;
+    top:-1260px;
+    left:-358px;
+}
+
+.ruler{position: relative;
+    top:-1200px;
+    left:-414px;
+}
+
+.eraser{position: relative;
+    top:-1140px;
+    left:-470px;
+}
+
+/* flag icons
+*********************************************************************************************/
+
+.greenflag{position: relative;
+    top:-1500px;
+    left:-525px;
+}
+
+.yellowflag{position: relative;
+    top:-1440px;
+    left:-581px;
+}
+
+.redflag{position: relative;
+    top:-1380px;
+    left:-638px;
+}
+
+/* roomlabel
+*********************************************************************************************/
+
+.addfloor{position: relative;
+    top:-1050px;
+    left:-695px;
+}
+
+.roomlabel{position: relative;
+    top:-1000px;
+    left:-830px;
+}
+
+
+.calander{position: relative;
+    top:-1600px;
+    left:-960px;
+}
+
+
+/* side tabs
+*********************************************************************************************/
+
+.sidetab1{position: absolute;
+    top:190px;
+    left:1238px;
+    z-index: 2;
+}
+
+.sidetab2{position: absolute;
+    top:290px;
+    left:1238px;
+    z-index: 2;
+}
+
+.sidetab3{position: absolute;
+    top:390px;
+    left:1238px;
+    z-index: 2;
+}
+
+.sidetab4{position: absolute;
+    top:490px;
+    left:1238px;
+    z-index: 2;
+}
+
+/* grid background
+*********************************************************************************************/
+
+#grid_bg{position: absolute;
+    top:0px;
+    left:223px;
+    z-index:1;
+}
+
+
+
+
+
+
+
+    
