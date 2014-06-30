@@ -1,8 +1,6 @@
 #top level
 hooks/
 merges/
-platforms/
-plugins/
 node_modules/
 
 #bower stuff in www
