@@ -1,12 +1,7 @@
 /* app css stylesheet */
 
 
-body{
-    margin: 0px; 
-    background-color:rgb(105,249,190); 
-    color: rgb(51,51,51);; 
-    overflow: hidden;
-}
+
 
 .container-fluid {
     position:absolute;
@@ -19,12 +14,43 @@ body{
 /* corbin css
 *********************************************************************************************/
 
+#main_menu{
+    width: 225px;
+    height:800px;
+   z-index: 3;
+   }
+
+.bgg{position: absolute;
+    top: 0px;
+    left:0px;
+    z-index:-333;
+}
+    
+    
+.logo {position:absolute;
+    top:250px;
+    left:490px;
+    z-index: 10;
+    }
+    
+
+/* logo page
+*********************************************************************************************/
+body{
+    width: 1280px;
+    height:800px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    
+}
+
+
 #wrapper {width: 1280px;
     height:800px;
-	margin-left:auto;
-	margin-right:auto;
 	min-width: 1280px;
     min-height: 800px;
+    max-width: 1280px;
+    max-height: 800px;
     background-color: Rgb(210,221,224);
 }
 
@@ -42,7 +68,7 @@ body{
     z-index: 10;
     }
     
-#menu_bg{background-color: Rgb(22,167,112);
+#menu_{background-color: Rgb(22,167,112);
     width: 225px;
     height: 800px;
 }
@@ -77,159 +103,199 @@ body{
     position: relative;
     top: 0px;
     left: 0px;
-}
-    
- #menu_green{background-color:none;
-     color: rgb(105,249,190);
-     border: solid 3px;
-    width: 78px;
-    height: 444px;
-     position: relative;
-    top:-670px;
-    left:115px;
+    z-index:1;
 }
 
-#menu_black{background-color:none;
-     color: rgb(51,51,51);
+
+#menubg{ 
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index:2;
+}
+
+   /* green menu
+*********************************************************************************************/
+
+ 
+ #menu_green {background-color:none;
+     color: rgb(105,249,190);
      border: solid 3px;
-    width: 65px;
-    height: 200px;
+     width: 78px;
      position: relative;
+    top:-670px;
+    left:120px;
+     padding: 10px 10px 10px 10px;
+     z-index:3;
+     border-radius: 10px;
+}
+
+.menu_green{
+    padding: 5px 0px 5px 0px;
+    margin: 0px 0px 0px 0px;
+    display: inline-block;
+}
+
+
+
+/* black menu
+*********************************************************************************************/
+
+#menu_black{background-color:none;
+    color: rgb(51,51,51);
+    border: solid 3px;
+    width: 78px;
+    position: relative;
     top:-1115px;
     left:28px;
+    z-index:3;
+    padding: 10px 10px 10px 10px;
+    border-radius: 10px;
 }
+
+.menu_black{
+    padding: 5px 0px 5px 0px;
+    margin: 0px 0px 0px 0px;
+    display: inline-block;
+}
+
+/* yellow menu
+*********************************************************************************************/
+
 
 #menu_yellow{background-color:none;
      color: rgb(255,255,13);
      border: solid 3px;
-    width: 65px;
-    height: 200px;
+    width: 78px;
      position: relative;
-    top:-1072px;
+    top:-1082px;
     left:28px;
+    z-index:3;
+     padding: 10px 10px 10px 10px;
+    border-radius: 10px;
 }
 
-/* drag and drop icons
-*********************************************************************************************/
-
-.sink{position: relative;
-    top:-1500px;
-    left:130px;
-}
-
-.window{position: relative;
-    top:-1440px;
-    left:74px;
-}
-
-.stairs{position: relative;
-    top:-1380px;
-    left:18px;
-}
-
-.fire{position: relative;
-    top:-1320px;
-    left:-38px;
-}
-
-.toilet{position: relative;
-    top:-1260px;
-    left:-93px;
-}
-
-.tub{position: relative;
-    top:-1200px;
-    left:-149px;
-}
-
-.door{position: relative;
-    top:-1140px;
-    left:-205px;
+.menu_yellow{
+    padding: 5px 0px 5px 0px;
+    margin: 0px 0px 0px 0px;
+    display: inline-block;
 }
 
 
-/* drawing icons
-*********************************************************************************************/
-
-.pencil{position: relative;
-    top:-1260px;
-    left:-358px;
-}
-
-.ruler{position: relative;
-    top:-1200px;
-    left:-414px;
-}
-
-.eraser{position: relative;
-    top:-1140px;
-    left:-470px;
-}
-
-/* flag icons
-*********************************************************************************************/
-
-.greenflag{position: relative;
-    top:-1500px;
-    left:-525px;
-}
-
-.yellowflag{position: relative;
-    top:-1440px;
-    left:-581px;
-}
-
-.redflag{position: relative;
-    top:-1380px;
-    left:-638px;
-}
 
 /* roomlabel
 *********************************************************************************************/
 
-.addfloor{position: relative;
-    top:-1050px;
-    left:-695px;
+#calander{background-color:none;
+    color: none;
+    width: 78px;
+    position: absolute;
+    top:40px;
+    left:32px;
+    z-index:3;
+    padding: 10px 10px 10px 10px;
+    
 }
 
-.roomlabel{position: relative;
+.calander{
+    padding: 5px 0px 5px 0px;
+    margin: 0px 0px 0px 0px;
+    display: inline-block;
+            
+}
+
+
+#roomlabel{background-color:none;
+     width: 200px;
+     position: absolute;
+    top:600px;
+    left:35px;
+    z-index:3;
+     padding: 10px 10px 10px 10px;
+}
+
+.roomlabel{padding: 5px 0px 5px 0px;
+    margin: 0px 0px 0px 0px;
+    display: inline-block;
+}
+
+
+#top_label{background-color:none;
+     color: rgb(255,255,13);
+    width: 500px;
+     position: absolute;
+    top:5px;
+    left:500px;
+    z-index:3;
+     padding: 10px 10px 10px 10px;
+}
+
+
+.top_label{
+    padding: 5px 100px 5px 0px;
+    margin: 0px 0px 0px 0px;
+    display: inline-block;
+}
+
+
+
+
+/* grid sizes
+*********************************************************************************************/
+
+#grid_sizes{background-color:none;
+    color: rgb(255,255,13);
+    border: none;
+    width: 225px;
+    position: relative;
     top:-1000px;
-    left:-830px;
+    left:0px;
+    z-index:3;
+    padding: 10px 10px 10px 20px;
 }
 
-
-.calander{position: relative;
-    top:-1600px;
-    left:-960px;
+.grid_sizes{
+    padding: 5px 5px 5px 5px;
+    margin: 0px 0px 0px 0px;
+    display: inline-block;
 }
 
 
 /* side tabs
 *********************************************************************************************/
 
-.sidetab1{position: absolute;
-    top:190px;
+#side_tab_summary{
+    background-color:none;
+    color: rgb(255,255,13);
+    border: none;
+    width: 45px;
+    position: absolute;
+    top:650px;
     left:1238px;
-    z-index: 2;
+    z-index:3;
+    padding: 0px 0px 0px 0px;
+    box-shadow: 0px 1px 10px 1px #888888;
 }
 
-.sidetab2{position: absolute;
-    top:290px;
+#side_tabs{background-color:none;
+    color: rgb(255,255,13);
+    border: none;
+    width: 45px;
+    position: absolute;
+    top:185px;
     left:1238px;
-    z-index: 2;
+    z-index:3;
+    padding: 0px 0px 0px 0px;
 }
 
-.sidetab3{position: absolute;
-    top:390px;
-    left:1238px;
-    z-index: 2;
+.side_tabs{
+    padding: 0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
+    display: inline-block;
+    box-shadow: 0px 1px 10px 1px #888888;
 }
 
-.sidetab4{position: absolute;
-    top:490px;
-    left:1238px;
-    z-index: 2;
-}
+
 
 /* grid background
 *********************************************************************************************/
