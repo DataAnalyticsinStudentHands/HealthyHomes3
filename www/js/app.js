@@ -24,7 +24,7 @@ HHApp.config(
       state('layout', {
           url: "/login/layout",
           views: {
-            "app": {templateUrl: "partials/layoutPage.html"} 
+            "app": {templateUrl: "partials/layoutPage.html"}
           }
       }).
       state('questions', {

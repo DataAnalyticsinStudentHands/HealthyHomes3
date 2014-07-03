@@ -8,38 +8,34 @@
     
   
     
-    <div id="menu_green">
-        
-     <span class="menu_green"><img src="img/sink.png"></span>
-    <span class="menu_green"><img src="img/window.png"></span>
-    <span class="menu_green"><img src="img/stairs.png"></span>
-    <span class="menu_green"><img src="img/fire.png"></span>
-    <span class="menu_green"><img src="img/toilet.png"></span>
-    <span class="menu_green"><img src="img/tub.png"></span>
-    <span class="menu_green"><img src="img/door.png"></span>
-        
+    <div id="menu_green" ng-controller="myCtrl3">
+        <ul>
+            <li ng-repeat="icon in icons">
+                 <span class="menu_green"><img ng-src="{{icon.src}}"></span>
+            </li> 
+        </ul>    
     </div>
     
     
     
     
-    <div id="menu_black">
-        
-    <span class="menu_black"><img src="img/pencil.png"></span>
-    <span class="menu_black"><img src="img/ruler.png"></span>
-    <span class="menu_black"><img src="img/eraser.png"></span>
-        
+    <div id="menu_black" ng-controller="myCtrl2">
+    	<ul>
+            <li ng-repeat="icon in icons">
+                <span class="menu_black"><img ng-src="{{icon.src}}"></span>
+            </li> 
+        </ul>        
     </div>
     
     
     
     
-    <div id="menu_yellow">
-        
-    <span class="menu_yellow"><img src="img/greenflag.png"></span>
-    <span class="menu_yellow"><img src="img/yellowflag.png"></span>
-    <span class="menu_yellow"><img src="img/redflag.png"></span>
-        
+    <div id="menu_yellow" ng-controller="myCtrl">
+         <ul>
+            <li ng-repeat="icon in icons">
+                <span class="menu_yellow"><img ng-src="{{icon.src}}"></span>
+            </li> 
+        </ul>     
     </div>
     
     
