@@ -1,4 +1,32 @@
-<body>this is the questions page</body><br>
+<style type="text/css">
+	.bgimg {
+		background-color: green;
+		position:absolute;
+		left:22px;
+		top:22pk;
+/*		background-image: url(partials/img/lightgreen.PNG);*/
+	}
+</style>
 
-<a ui-sref="camera">go to camera page</a>
+
+
+<div class="bgimg" style="height:500px;width:500px;">
+	close button
+		
+		<div>
+			<a href ng-click="goCats = !goCats">show/hide</a>
+		</div>
+
+
+
+		<div>
+			<img ng-src="http://i.imgur.com/vkW3Lhe.jpg" 
+				 ng-show="goCats">
+		</div>
+
+</div>
+
+
+
+
 
