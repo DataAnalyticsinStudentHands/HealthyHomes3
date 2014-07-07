@@ -1,12 +1,27 @@
 <style type="text/css">
 	.bgimg {
-		background-image: url(partials/img/lightgreen3.PNG);
+		background-color: green;
+		position:absolute;
+		left:220px;
+		top:22pk;
+		height:200px;
+		width:200px;
 	}
 </style>
 
 
 
-<div class="bgimg" style="height:500px;width:500px;">
-	close button
-</div>
+<div class="bgimg">	closebuttonasdfghjklsdfyguimksdknvirnvsewrhjkldsdkjhflasbglsdblgkjasbdfjasdhfkjsadhflkjashdflajsdhfkjashdfljkahfdlashdfkjhadsfjhasdkjfhasldkjfhsdkjfhsakjdfhsdjfhasldfhlasjdfhlsjkdf
+		
+		<div>
+			<a href ng-click="goCats = !goCats">show/hide</a>
+		</div>
 
+
+
+		<div>
+			<img ng-src="http://i.imgur.com/vkW3Lhe.jpg" 
+				 ng-show="goCats">
+		</div>
+
+</div>
