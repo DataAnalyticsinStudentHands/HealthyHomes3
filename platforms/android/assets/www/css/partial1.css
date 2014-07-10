@@ -1,0 +1,155 @@
+body{
+    margin: 0px; 
+    background-color:rgb(210,221,224); 
+    color: #79aeff; 
+    overflow: hidden;
+}
+
+#wrapper {width: 1280px;
+    height:800px;
+	margin-left:auto;
+	margin-right:auto;
+	min-width: 1280px;
+    min-height: 800px;
+}
+
+    
+
+#menu_bg{background-color: Rgb(22,167,112);
+    width: 225px;
+    height: 800px;
+    position: relative;
+    top: 0px;
+    left: 0px;
+}
+    
+ #menu_green{background-color:none;
+     color: rgb(105,249,190);
+     border: solid 3px;
+    width: 78px;
+    height: 444px;
+     position: relative;
+    top:-660px;
+    left:115px;
+}
+
+#menu_black{background-color:none;
+     color: rgb(51,51,51);
+     border: solid 3px;
+    width: 65px;
+    height: 200px;
+     position: relative;
+    top:-1110px;
+    left:25px;
+}
+
+#menu_yellow{background-color:none;
+     color: rgb(255,255,13);
+     border: solid 3px;
+    width: 65px;
+    height: 200px;
+     position: relative;
+    top:-1072px;
+    left:25px;
+}
+
+/* drag and drop icons
+*********************************************************************************************/
+
+.sink{position: relative;
+    top:-1500px;
+    left:130px;
+}
+
+.window{position: relative;
+    top:-1440px;
+    left:74px;
+}
+
+.stairs{position: relative;
+    top:-1380px;
+    left:18px;
+}
+
+.fire{position: relative;
+    top:-1320px;
+    left:-38px;
+}
+
+.toilet{position: relative;
+    top:-1260px;
+    left:-93px;
+}
+
+.tub{position: relative;
+    top:-1200px;
+    left:-149px;
+}
+
+.door{position: relative;
+    top:-1140px;
+    left:-205px;
+}
+
+
+/* drawing icons
+*********************************************************************************************/
+
+.pencil{position: relative;
+    top:-1260px;
+    left:-358px;
+}
+
+.ruler{position: relative;
+    top:-1200px;
+    left:-414px;
+}
+
+.eraser{position: relative;
+    top:-1140px;
+    left:-470px;
+}
+
+/* flag icons
+*********************************************************************************************/
+
+.greenflag{position: relative;
+    top:-1500px;
+    left:-525px;
+}
+
+.yellowflag{position: relative;
+    top:-1440px;
+    left:-581px;
+}
+
+.redflag{position: relative;
+    top:-1380px;
+    left:-638px;
+}
+
+/* roomlabel
+*********************************************************************************************/
+
+.addfloor{position: relative;
+    top:-1050px;
+    left:-695px;
+}
+
+.roomlabel{position: relative;
+    top:-1000px;
+    left:-830px;
+}
+
+
+.calander{position: relative;
+    top:-1600px;
+    left:-960px;
+}
+
+
+.sidetab{position: absolute;
+    top:320px;
+    left:1240px;
+}
+
