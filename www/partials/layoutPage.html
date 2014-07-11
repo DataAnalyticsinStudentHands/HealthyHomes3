@@ -1,14 +1,15 @@
 <link rel="stylesheet" href="css/app.css">
 
 <div id="wrapper"> 
+    <div class="container">
 
-    <div id="menu_bg"></div>  
+    <div id="menubg">  
     
     <div id="menu_green" ng-controller="myCtrl3">
     	<span class="menu_green" ng-repeat="icon in icons"><img ng-src="{{icon.src}}"></span>
     </div>
     
-    <div id="menu_black" ng-controller="myCtrl2">
+    <div id="mmenu_black" ng-controller="myCtrl2">
      	<span class="menu_black" ng-repeat="icon in icons"><img ng-src="{{icon.src}}"></span>
     </div>
     
@@ -16,7 +17,7 @@
     	<span class="menu_yellow" ng-repeat="icon in icons"><img ng-src="{{icon.src}}"></span>
     </div>
     
-    <div id="menu_yellow_sq"></div>
+    <!--<div id="menu_yellow_sq"></div>-->
     
     <div id="grid_sizes">
 		<span class="grid_sizes"><img src="img/gridx1.png"></span>
@@ -31,31 +32,38 @@
     <div id="roomlabel">
     	<span class="roomlabel"><img src="img/roomlabel.png"></span>
     </div>
+        
+        
+        </div>
     
-    <div id="top_label">
+    <img id="menu_pattern" src="img/menu_bg.png">
+    
+    
+    
+<div id="top_label">
     	<img class="top_label" src="img/extview.png">
     	<img class="top_label" src="img/addfloor.png"><div ui-view="a"></div><div ui-view="b"></div><div ui-view="c"></div><div ui-view="d"></div><div ui-view="e"></div>
     </div>
 
 
-<div ng-controller="mainController">	
+
+    
+    <div ng-controller="mainController">	
 	
-    <div id="side_tabs">
+    
+        
+        <div id="side_tabs">
 		<a ui-sref= "layout.first"><span class="side_tabs"><img src="img/sidetab1.png"></span></a>
 		<a ui-sref= "layout.second"><span class="side_tabs"><img src="img/sidetab2.png"></span></a>
 		<a ui-sref= "layout.third"><span class="side_tabs"><img src="img/sidetab3.png"></span></a>
 		<a ui-sref= "layout.fourth"><span class="side_tabs"><img src="img/sidetab4.png"></span></a>
-    </div>
-    
-    <div id="side_tab_summary">
-        <a ui-sref= "layout.fifth"><img src="img/sidetab5.png"></a>
-    </div>
-	
+    <a ui-sref= "layout.fifth"><span class="side_tabs"><img src="img/sidetab5.png"></a>
+   </div>
 </div>
 	
 	<img id="grid_bg" src="img/gridbg.png">
-	<img id="menubg" src="img/menu_bg.png">
 	
+	</div>
 </div>
 
 
