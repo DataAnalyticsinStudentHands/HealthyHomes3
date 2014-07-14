@@ -11,19 +11,19 @@
 
 
 
-#wrapper {
+#wrapperOLD {
     width: 100%;
     
     
 }
 
 
-.container{
+.containerOLD{
     width: 100%;
 }
 
 
-.bgg{position: absolute;
+.bggOLD{position: absolute;
     top: 0px;
     left:0px;
     z-index:-333;
@@ -36,13 +36,16 @@
 /* logo page
 *********************************************************************************************/
 body{
+    overflow:hidden;
+}
+bodyOLD{
     width: 100%;
     overflow-y: hidden;
     overflow-x: hidden;
     
 }
 
-.bg{
+.bgOLD{
     position: absolute;
     top:0px;
     width: 100%;
@@ -52,7 +55,7 @@ body{
     
 .logo_main {position:absolute;
     width: 25%;
-   z-index: 10;
+    z-index: 10;
     top:27%;
     left:37%
     
@@ -66,7 +69,7 @@ body{
     left:px;
 }
 
-.container-fluid {
+.container-fluidOLD {
     width: 100%;
     position:absolute;
     margin: auto;
@@ -85,24 +88,14 @@ body{
     left:0px;
 }
 
-
-/* beatles page
-*********************************************************************************************/
-
-
-
-
-
 #menubg{ 
+    background-image: url('../img/menu_bg.png');
     position: absolute;
     width:17%;
     top: 0px;
     left: 0px;
     z-index: 4;
-    height:900px;
-   
-
-    
+    height:100%;
 }
 
    /* green menu
@@ -123,10 +116,9 @@ body{
      margin: 0% 0% 0% 0%;
 }
 
-.menu_green{
-   padding:10% 10% 10% 10%;
-   display: inline-block;
-
+.menu_icon{
+    padding:10% 10% 10% 10%;
+    display: block;
 }
 
 
@@ -134,23 +126,23 @@ body{
 /* black menu
 *********************************************************************************************/
 
-#mmenu_black{
+#menu_black{
     background-color:none;
     color: rgb(51,51,51);
     border: solid 3px;
     min-width: 70px;
-     width: 4%;
-     position:relative;
-     top: -36%;
-     left: -3%;
-     z-index:10;
-     border-radius: 10px;
-     margin: 0 30% 0 15%;
+    width: 4%;
+    position:relative;
+    top: -36%;
+    left: -3%;
+    z-index:10;
+    border-radius: 10px;
+    margin: 0 30% 0 15%;
     padding: 0 0 0 0;
     
 }
 
-.menu_black{
+.menu_blackOLD{
     padding:10% 10% 10% 10%;
    display: inline-block;
 }
@@ -162,7 +154,7 @@ body{
 #menu_yellow{background-color:none;
      color: rgb(255,255,13);
      border: solid 3px;
-    min-width: 70px;
+     min-width: 70px;
      width: 4%;
      position: relative;
      top: -29.7%;
@@ -170,14 +162,15 @@ body{
      z-index:10;
      border-radius: 10px;
      margin-left: 15%;
+    font-size: 0px;
 }
 
-.menu_yellow{
+.menu_yellowOLD{
     padding:10% 10% 10% 10%;
    display: inline-block;
 }
 
-#menu_pattern{
+#menu_patternOLD{
     position:absolute;
     top:0px;
     left:-1px;
@@ -191,7 +184,7 @@ body{
 /* roomlabel
 *********************************************************************************************/
 
-#calander{background-color:none;
+#calendar{background-color:none;
     color: none;
     width: 78px;
     position:absolute;
@@ -202,7 +195,7 @@ body{
     
 }
 
-.calander{
+.calendar{
    margin: 0px 0px 0px 0px;
     display: inline-block;
             
@@ -305,9 +298,16 @@ body{
 
 /* grid background
 *********************************************************************************************/
-
-#grid_bg{position: absolute;
-  width:100%;
+#grid_container{
+    position: absolute;
+    width:100%;
+    top:0%;
+    left:17%;
+    z-index:1;
+}
+#grid_bgOLD{
+    position: absolute;
+    width:100%;
     top:0%;
     left:17%;
     z-index:1;
@@ -327,11 +327,10 @@ body{
 .bgimg {
 		background-color: rgb(105,249,190);
 		position:relative;
-    width: 100%;
+        width: 100%;
 		left:-24%;
 		top:-10%;
 		height:100%;
-		
 	}
 
 

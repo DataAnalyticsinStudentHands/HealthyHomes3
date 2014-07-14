@@ -1,23 +1,25 @@
 <link rel="stylesheet" href="css/app.css">
 
 <div id="wrapper"> 
-    <div class="container">
+<!--    <div class="container">-->
 
     <div id="menubg">  
+   
+<!--        <img id="menu_pattern" src="img/menu_bg.png">-->
     
-    <div id="menu_green" ng-controller="myCtrl3">
-    	<span class="menu_green" ng-repeat="icon in icons"><img ng-src="{{icon.src}}"></span>
+    <div id="menu_green">
+    	<span class="menu_icon" ng-repeat="iconT in icons3"><img hm-drag="{{iconT.icontype}}" drag-save='dragStay'></span>
     </div>
     
-    <div id="mmenu_black" ng-controller="myCtrl2">
-     	<span class="menu_black" ng-repeat="icon in icons"><img ng-src="{{icon.src}}"></span>
+    <div id="menu_black">
+     	<span class="menu_icon" ng-repeat="icon2 in icons2"><img ng-src="{{icon2.src}}"></span>
     </div>
     
-    <div id="menu_yellow" ng-controller="myCtrl">
-    	<span class="menu_yellow" ng-repeat="icon in icons"><img ng-src="{{icon.src}}"></span>
+    <div id="menu_yellow" >
+    	<span class="menu_icon" ng-repeat="flag in flagicons" hm-drag="{{flag.icontype}}" drag-save></span>
     </div>
     
-    <!--<div id="menu_yellow_sq"></div>-->
+    <!--<div id="menu_yellow_sq" ="dragStay"></div>-->
     
     <div id="grid_sizes">
 		<span class="grid_sizes"><img src="img/gridx1.png"></span>
@@ -25,7 +27,7 @@
 		<span class="grid_sizes"><img src="img/gridx3.png"></span>
     </div>
     
-    <div id="calander">
+    <div id="calendar">
     	<a ui-sref="camera"><span class="calander"><img ng-src="img/calander.png"></span></a>
     </div>
     
@@ -35,8 +37,9 @@
         
         
         </div>
-    
-    <img id="menu_pattern" src="img/menu_bg.png">
+     <div id="grid_container"><img id="grid_bg" src="img/gridbg.png"><div>
+
+<!--    <img id="menu_pattern" src="img/menu_bg.png">-->
     
     
     
@@ -48,7 +51,7 @@
 
 
     
-    <div ng-controller="mainController">	
+    <div>	
 	
     
         
@@ -61,9 +64,9 @@
    </div>
 </div>
 	
-	<img id="grid_bg" src="img/gridbg.png">
 	
-	</div>
+	
+<!--	</div>-->
 </div>
 
 
