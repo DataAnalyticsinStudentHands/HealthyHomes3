@@ -6,26 +6,35 @@
     <div id="menubg">  
    
 <!--        <img id="menu_pattern" src="img/menu_bg.png">-->
+    <div id="wrap_menus">
+        <div id="menu_green">
+        	<span class="menu_icon" ng-repeat="iconT in icons3"><img hm-drag="{{iconT.icontype}}" drag-save></span>
+        </div>
     
-    <div id="menu_green">
-    	<span class="menu_icon" ng-repeat="iconT in icons3"><img hm-drag="{{iconT.icontype}}" drag-save></span>
-    </div>
-    
-    <div id="menu_black">
-     	<span class="menu_icon" ng-repeat="icon2 in icons2"><img ng-src="{{icon2.src}}"></span>
-    </div>
-    
-    <div id="menu_yellow" >
-    	<span class="menu_icon" ng-repeat="flag in flagicons" hm-drag="{{flag.icontype}}" drag-save></span>
-    </div>
+        <div id="menu_black">
+            <span id="svgSelector" class="menu_icon" ng-click="selectSVG = !selectSVG"><img ng-src='img/pencil.PNG'/></span>
+            <span class="menu_icon" ng-click="selectRule = !selectRule"><img ng-src='img/ruler.PNG'/></span>
+            <span class="menu_icon" ng-click="selectErase = !selectErase"><img ng-src='img/eraser.PNG'/></span>
+        </div>
+            <span ui-view="svg_select" ng-show="selectSVG">It's not filling from the view</span>
+        
+        <div id="menu_yellow" >
+        	<span class="menu_icon" ng-repeat="flag in flagicons" hm-drag="{{flag.icontype}}" drag-save></span>
+        </div>
+<!--
+        <div id="menu_green">
+    	   <span class="menu_icon" ng-repeat="iconT in icons3"><img hm-drag="{{iconT.icontype}}" drag-save></span>
+        </div>
+-->
     
     <!--<div id="menu_yellow_sq" ="dragStay"></div>-->
     
-    <div id="grid_sizes">
-		<span class="grid_sizes" ng-click="layoutObjectModel.localStorageGetAll()"><img src="img/gridx1.png"></span>
-		<span class="grid_sizes"><img src="img/gridx2.png"></span>
-		<span class="grid_sizes"><img src="img/gridx3.png"></span>
-    </div>
+        <div id="grid_sizes">
+            <span class="grid_sizes" ng-click="layoutObjectModel.localStorageGetAll()"><img src="img/gridx1.png"></span>
+            <span class="grid_sizes"><img src="img/gridx2.png"></span>
+            <span class="grid_sizes"><img src="img/gridx3.png"></span>
+        </div>
+        </div>
     
     <div id="calendar">
     	<a ui-sref="camera"><span class="calander"><img ng-src="img/calander.png"></span></a>

@@ -23,13 +23,13 @@ HHControllers.controller('mainController', function($scope) {
         icontype: 'redflag'
     }];
 
-    $scope.icons2=[{
-    src: 'img/pencil.PNG'
-  },{
-    src: 'img/ruler.PNG'
-  },{
-    src: 'img/eraser.PNG'
-  }];
+//    $scope.icons2=[{
+//    src: 'img/pencil.PNG'
+//  },{
+//    src: 'img/ruler.PNG'
+//  },{
+//    src: 'img/eraser.PNG'
+//  }];
 
     $scope.icons3=[{
     icontype:  'sink'
@@ -45,6 +45,14 @@ HHControllers.controller('mainController', function($scope) {
     icontype:  'tub'
   },{
     icontype:  'door'
+  }];
+    
+    $scope.iconSVGs=[{
+    icontype:  'svg_line'
+  },{
+    icontype:  'svg_rectangle'
+  },{
+    icontype:  'svg_circle'
   }];
 
 /* ------------------ camera --------------------- now in camera.js */

@@ -57,7 +57,12 @@ HHApp.config( //first login things are coming from DatabaseCommunication Module
           
           url: "/layout",
           views: {
-                "app": { templateUrl: 'partials/layoutPage.html', controller: 'mainController' }
+                "app": { templateUrl: 'partials/layoutPage.html', controller: 'mainController' },
+                //"menu_layout": { templateUrl: 'partials/menuLayout.html', controller: 'mainController' },
+                    //will want controller on app to be layoutCtrl
+                    //think through add on stuff
+                //"notes":  { templateUrl: 'partials/svgLayout.html', controller: 'mainController' },
+                "svg_select": { templateUrl: 'partials/svgLayout.html', controller: 'mainController' }
             }
       }).
 //	  state('layout.first', {

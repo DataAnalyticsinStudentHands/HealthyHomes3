@@ -1,7 +1,11 @@
 angular.module('HHControllers').directive('dragSave',['$compile', 'uuid', 'layoutObjectModel', function($compile, uuid, layoutObjectModel) {
     var getTemplate = function(templateType){
         if (templateType == 'note') //svg as third type? Lines?? Rooms??
-            {template = 'partials/'+templateType+'.html'}
+            {template = 'partials/'+templateType+'.html';
+            }
+        else if (templateType.split('_')[0] == 'svg')
+            {template = 'partials/'+templateType+'.html';
+            }
         else
             {template = 'partials/layoutIcons.html'
             //console.log(templateType)
