@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="css/app.css">
 
-<div id="wrapper"> 
+<div id="wrapper" ng-controller="layoutCtrl"> 
 <!--    <div class="container">-->
 
     <div id="menubg">  
@@ -22,7 +22,7 @@
     <!--<div id="menu_yellow_sq" ="dragStay"></div>-->
     
     <div id="grid_sizes">
-		<span class="grid_sizes"><img src="img/gridx1.png"></span>
+		<span class="grid_sizes" ng-click="layoutObjectModel.localStorageGetAll()"><img src="img/gridx1.png"></span>
 		<span class="grid_sizes"><img src="img/gridx2.png"></span>
 		<span class="grid_sizes"><img src="img/gridx3.png"></span>
     </div>
@@ -37,7 +37,12 @@
         
         
         </div>
-     <div id="grid_wrapper"><span id="grid_container"></span><img id="grid_bg" src="img/grid.png"><div>
+     <div id="grid_wrapper">
+         <span id="grid_container"></span> <!--the newly inserted layoutObjects go here-->
+            <span class="display_icon" ng-repeat="layoutObj in layoutObjectModel.localStorageGetAll()">
+            </span>
+         <img id="grid_bg" src="img/grid.png">
+     <div>
 
 <!--    <img id="menu_pattern" src="img/menu_bg.png">-->
     

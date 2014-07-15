@@ -1,4 +1,4 @@
-angular.module('HHControllers').directive('dragSave',['$compile', function($compile) {
+angular.module('HHControllers').directive('dragSave',['$compile', 'uuid', 'layoutObjectModel', function($compile, uuid, layoutObjectModel) {
     var getTemplate = function(templateType){
         if (templateType == 'note') //svg as third type? Lines?? Rooms??
             {template = 'partials/'+templateType+'.html'}
@@ -107,11 +107,14 @@ angular.module('HHControllers').directive('dragSave',['$compile', function($comp
                         tpospx = tpos + 'px';
                         lpospx = lpos + 'px';
                         gridContainer = document.getElementById('grid_container');
+                        
 //                        scope.$apply(function() {
-                        newObject = '<span id="secondtime" ng-click="test()" hm-drag="'+iconType+'" drag-save="dragStay" style="position:absolute;top:'+tpospx+';left:'+lpospx+';z-index=44;">Where Am I?</span>';
+                        layoutUuid = uuid.new();
+                        newObject = '<span id="'+layoutUuid+'" ng-click="test()" hm-drag="'+iconType+'" drag-save="dragStay" style="position:absolute;top:'+tpospx+';left:'+lpospx+';z-index=44;">Where Am I?</span>';
                         gridContainer.innerHTML += newObject;
-                        $compile(gridContainer)(scope);
-                        console.log(gridContainer);
+                        layoutObject = $compile(gridContainer)(scope);
+                        layoutObjectModel.localStorageSet(layoutObject);
+                        //console.log(gridContainer);
                     }; 
                 } else { //outside target
                     //elem.css({'top': tpospx, 'left': lpospx}); //for save
