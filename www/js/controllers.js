@@ -2,54 +2,59 @@
 
 /* Controllers */
 
-var HHControllers = angular.module('HHControllers', ['ui.router']);
+var HHControllers = angular.module('HHControllers', ['ui.router','layoutModuleController','layoutModuleServices', 'angular-gestures']);
+
 HHControllers
 
-/* ----------------- show & hide -------------------- */
+.controller('mainController', function($scope) {	
+    $scope.alert = function (text) {
+        alert(text);
+    };
+    $scope.test = function() {
+        alert('test in ctrl scope');
+    };
+	
+    $scope.flagicons=[{
+        icontype: 'greenflag'
+            },{
+        icontype: 'yellowflag'
+            },{
+        icontype: 'redflag'
+    }];
 
-.controller('mainController', function($scope) {		
-	$scope.goCats = false;
-})
-
-/*    --------------    ng-repeat     ------------      */
-
-.controller('myCtrl', function($scope) {
-    $scope.icons=[{
-    src: 'img/greenflag.PNG'
-  },{
-    src: 'img/yellowflag.PNG'
-  },{
-    src: 'img/redflag.PNG'
-  }]
-
-    $scope.icons2=[{
-    src: 'img/pencil.PNG'
-  },{
-    src: 'img/ruler.PNG'
-  },{
-    src: 'img/eraser.PNG'
-  }]
+//    $scope.icons2=[{
+//    src: 'img/pencil.PNG'
+//  },{
+//    src: 'img/ruler.PNG'
+//  },{
+//    src: 'img/eraser.PNG'
+//  }];
 
     $scope.icons3=[{
-    src: 'img/sink.PNG'
+    icontype:  'sink'
   },{
-    src: 'img/window.PNG'
+    icontype:  'window'
   },{
-    src: 'img/stairs.PNG'
+    icontype:  'stairs'
   },{
-    src: 'img/fire.PNG'
+    icontype:  'fire'
   },{
-    src: 'img/toilet.PNG'
+    icontype:  'toilet'
   },{
-    src: 'img/tub.PNG'
+    icontype:  'tub'
   },{
-    src: 'img/door.PNG'
+    icontype:  'door'
   }];
-})
+    
+    $scope.iconSVGs=[{
+    icontype:  'svg_line'
+  },{
+    icontype:  'svg_rectangle'
+  },{
+    icontype:  'svg_circle'
+  }];
 
-/*.controller('layoutController', function($scope) {		
-	.....content.....
-})*/
+})
 
 .controller('questionsController1', ['$scope', '$http',						
   function($scope, $http) {
@@ -81,51 +86,4 @@ HHControllers
       $scope.questions = data;
     });
     $scope.orderProp = 'ID';
-  }])
-
-/* ------------------- camera controller -------------------*/
-
-.controller('cameraController', function($scope) {		
-    var pictureSource;  
-    var destinationType;
-
-    document.addEventListener("deviceready",onDeviceReady,false);
-
-    function onDeviceReady() {
-        pictureSource=navigator.camera.PictureSourceType;
-        destinationType=navigator.camera.DestinationType;
-    }
-
-    function onPhotoDataSuccess(imageData) {
-      var smallImage = document.getElementById('smallImage');
-      smallImage.style.display = 'block';
-      smallImage.src = "data:image/jpeg;base64," + imageData;
-    }
-
-    function onPhotoURISuccess(imageURI) {
-      var largeImage = document.getElementById('largeImage');
-      largeImage.style.display = 'block';
-      largeImage.src = imageURI;
-    }
-
-    function capturePhoto() {
-      navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 50,
-        destinationType: destinationType.DATA_URL });
-    }
-
-    function capturePhotoEdit() {
-      navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20, allowEdit: true,
-        destinationType: destinationType.DATA_URL });
-    }
-
-    function getPhoto(source) {
-      navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
-        destinationType: destinationType.FILE_URI,
-        sourceType: source });
-    }
-
-    function onFail(message) {
-      alert('Failed because: ' + message);
-    }
-	
-});	// end of controllers
+  }]);	// end of controllers

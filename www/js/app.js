@@ -24,7 +24,14 @@ HHApp.config(
       state('layout', {											//same v
           url: "/login/layout",
           views: {
-                "app": { templateUrl: 'partials/layoutPage.html' }
+                "app": { 
+					templateUrl: 'partials/layoutPage.html',
+					controller: 'mainController' 					
+					},
+                "svg_select": { 
+					templateUrl: 'partials/svgLayout.html',
+					controller: 'mainController' 
+					}			  
             }
       }).
       state('questions', {										//same ^
