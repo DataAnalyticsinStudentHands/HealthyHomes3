@@ -5,13 +5,6 @@
 var HHControllers = angular.module('HHControllers', ['ui.router']);
 HHControllers
 
-.controller('PhoneListCtrl', ['$scope', '$http',
-  function($scope, $http) {
-    $http.get('phones/phones.json').success(function(data) {
-      $scope.phones = data;
-    });
-  }])
-
 /* ----------------- show & hide -------------------- */
 
 .controller('mainController', function($scope) {		
@@ -20,28 +13,24 @@ HHControllers
 
 /*    --------------    ng-repeat     ------------      */
 
-function myCtrl($scope){
+.controller('myCtrl', function($scope) {
     $scope.icons=[{
     src: 'img/greenflag.PNG'
   },{
     src: 'img/yellowflag.PNG'
   },{
     src: 'img/redflag.PNG'
-  }];
-}
+  }]
 
-function myCtrl2($scope){
-    $scope.icons=[{
+    $scope.icons2=[{
     src: 'img/pencil.PNG'
   },{
     src: 'img/ruler.PNG'
   },{
     src: 'img/eraser.PNG'
-  }];
-}
+  }]
 
-function myCtrl3($scope){
-    $scope.icons=[{
+    $scope.icons3=[{
     src: 'img/sink.PNG'
   },{
     src: 'img/window.PNG'
@@ -56,10 +45,47 @@ function myCtrl3($scope){
   },{
     src: 'img/door.PNG'
   }];
-}
+})
 
-/* ------------------ camera --------------------- */
+/*.controller('layoutController', function($scope) {		
+	.....content.....
+})*/
 
+.controller('questionsController1', ['$scope', '$http',						
+  function($scope, $http) {
+    $http.get('json/asthma.json').success(function(data) {
+      $scope.questions = data;
+    });
+    $scope.orderProp = 'ID';
+  }])
+
+.controller('questionsController2', ['$scope', '$http',						
+  function($scope, $http) {
+    $http.get('json/fall_prevention.json').success(function(data) {
+      $scope.questions = data;
+    });
+    $scope.orderProp = 'ID';
+  }])
+
+.controller('questionsController3', ['$scope', '$http',						
+  function($scope, $http) {
+    $http.get('json/lead.json').success(function(data) {
+      $scope.questions = data;
+    });
+    $scope.orderProp = 'ID';
+  }])
+
+.controller('questionsController4', ['$scope', '$http',						
+  function($scope, $http) {
+    $http.get('json/pesticide.json').success(function(data) {
+      $scope.questions = data;
+    });
+    $scope.orderProp = 'ID';
+  }])
+
+/* ------------------- camera controller -------------------*/
+
+.controller('cameraController', function($scope) {		
     var pictureSource;  
     var destinationType;
 
@@ -101,3 +127,5 @@ function myCtrl3($scope){
     function onFail(message) {
       alert('Failed because: ' + message);
     }
+	
+});	// end of controllers

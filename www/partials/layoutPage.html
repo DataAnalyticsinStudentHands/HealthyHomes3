@@ -4,12 +4,12 @@
 
     <div id="menu_bg"></div>  
     
-    <div id="menu_green" ng-controller="myCtrl3">
-    	<span class="menu_green" ng-repeat="icon in icons"><img ng-src="{{icon.src}}"></span>
+    <div id="menu_green" ng-controller="myCtrl">
+    	<span class="menu_green" ng-repeat="icon in icons3"><img ng-src="{{icon.src}}"></span>
     </div>
     
-    <div id="menu_black" ng-controller="myCtrl2">
-     	<span class="menu_black" ng-repeat="icon in icons"><img ng-src="{{icon.src}}"></span>
+    <div id="menu_black" ng-controller="myCtrl">
+     	<span class="menu_black" ng-repeat="icon in icons2"><img ng-src="{{icon.src}}"></span>
     </div>
     
     <div id="menu_yellow" ng-controller="myCtrl">
@@ -24,8 +24,8 @@
 		<span class="grid_sizes"><img src="img/gridx3.png"></span>
     </div>
     
-    <div id="calander">
-    	<a ui-sref="camera"><span class="calander"><img ng-src="img/calander.png"></span></a>
+    <div id="calendar">
+    	<a ui-sref="camera"><span class="calendar">camera</span></a>
     </div>
     
     <div id="roomlabel">
@@ -34,21 +34,21 @@
     
     <div id="top_label">
     	<img class="top_label" src="img/extview.png">
-    	<img class="top_label" src="img/addfloor.png"><div ui-view="a"></div><div ui-view="b"></div><div ui-view="c"></div><div ui-view="d"></div><div ui-view="e"></div>
+    	<img class="top_label" src="img/addfloor.png"><div ui-view="q"></div>
     </div>
 
 
 <div ng-controller="mainController">	
 	
     <div id="side_tabs">
-		<a ui-sref= "layout.first"><span class="side_tabs"><img src="img/sidetab1.png"></span></a>
-		<a ui-sref= "layout.second"><span class="side_tabs"><img src="img/sidetab2.png"></span></a>
-		<a ui-sref= "layout.third"><span class="side_tabs"><img src="img/sidetab3.png"></span></a>
-		<a ui-sref= "layout.fourth"><span class="side_tabs"><img src="img/sidetab4.png"></span></a>
+		<a ui-sref= "questions.first"><span class="side_tabs"><img src="img/sidetab1.png"></span></a>
+		<a ui-sref= "questions.second"><span class="side_tabs"><img src="img/sidetab2.png"></span></a>
+		<a ui-sref= "questions.third"><span class="side_tabs"><img src="img/sidetab3.png"></span></a>
+		<a ui-sref= "questions.fourth"><span class="side_tabs"><img src="img/sidetab4.png"></span></a>
     </div>
     
     <div id="side_tab_summary">
-        <a ui-sref= "layout.fifth"><img src="img/sidetab5.png"></a>
+        <a ui-sref= "questions.fifth"><img src="img/sidetab5.png"></a>
     </div>
 	
 </div>

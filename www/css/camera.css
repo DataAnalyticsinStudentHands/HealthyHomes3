@@ -264,7 +264,7 @@ body{
 }
 
 
-.calander{position: absolute;
+.calendar{position: absolute;
     top:45px;
     left: 35px;
     z-index:3;

@@ -306,6 +306,25 @@ body{
     z-index:1;
 }
 
+/* questions
+*********************************************************************************************/
+.main_questions{
+		position:absolute;
+		left:225px;
+		top:0px;
+		height:800px;
+		width:1055px;
+}
+
+.bgimg {
+		background-color: rgb(105,249,190);
+		position:absolute;
+		left:-275px;
+		top:-5px;
+		height:800px;
+		width:1055px;
+	}
+
 
 /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
   

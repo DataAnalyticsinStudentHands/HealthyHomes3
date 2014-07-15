@@ -7,7 +7,7 @@ var HHApp = angular.module('HHApp', [
 ]); //dependencies
 
 HHApp.config(
-  function($stateProvider, $urlRouterProvider) {
+  function($stateProvider) {
     $stateProvider.
       state('logo', {
           url: "",
@@ -21,41 +21,49 @@ HHApp.config(
             "app": {templateUrl: "partials/loginPage.html"} 
           }
       }).
-      state('layout', {
+      state('layout', {											//same v
           url: "/login/layout",
           views: {
                 "app": { templateUrl: 'partials/layoutPage.html' }
             }
       }).
-	  state('layout.first', {
-		  url: "/login/layout/questions",
-		  controller: 'mainController',
+      state('questions', {										//same ^
+		  abstract: true,
+          url: "/login/questions",
+          views: {
+                "app": { templateUrl: 'partials/layoutPage.html' }
+            }
+      }).
+	  state('questions.first', {
+		  url: "",
 		  views: {
-			"a": {templateUrl: "partials/questions.html"}
+			"q": {
+				templateUrl: "partials/questions.first.html"
+			}
 		  }
 	  }).
-	  state('layout.second', {
-		  url: "/login/layout/questions1",
+	  state('questions.second', {
+		  url: "",
 		  views: {
-			"b": {templateUrl: "partials/questions1.html"}
+			"q": {templateUrl: "partials/questions.second.html"}
 		  }
 	  }).
-	  state('layout.third', {
-		  url: "/login/layout/questions2",
+	  state('questions.third', {
+		  url: "",
 		  views: {
-			"c": {templateUrl: "partials/questions2.html"}
+			"q": {templateUrl: "partials/questions.third.html"}
 		  }
 	  }).
-	  state('layout.fourth', {
-		  url: "/login/layout/questions3",
+	  state('questions.fourth', {
+		  url: "",
 		  views: {
-			"d": {templateUrl: "partials/questions3.html"}
+			"q": {templateUrl: "partials/questions.fourth.html"}
 		  }
 	  }).
-	  state('layout.fifth', {
-		  url: "/login/layout/summary",
+	  state('questions.fifth', {
+		  url: "",
 		  views: {
-			"e": {templateUrl: "partials/summary.html"}
+			"q": {templateUrl: "partials/questions.summary.html"}
 		  }
 	  }).
       state('camera', {
