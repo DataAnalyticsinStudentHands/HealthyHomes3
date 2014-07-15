@@ -1,9 +1,10 @@
-angular.module('HHControllers').directive('dragSave',['$compile', function(compile) {
+angular.module('HHControllers').directive('dragSave',['$compile', function($compile) {
     var getTemplate = function(templateType){
         if (templateType == 'note') //svg as third type? Lines?? Rooms??
             {template = 'partials/'+templateType+'.html'}
         else
             {template = 'partials/layoutIcons.html'
+            //console.log(templateType)
             //iconType = templateType
             } 
         return template
@@ -42,7 +43,6 @@ angular.module('HHControllers').directive('dragSave',['$compile', function(compi
             };
             var tpospx = scope.tpospx = tpos+'px';
             var lpospx = scope.lpospx = lpos +'px';
-            console.log(elem);
             elem.bind('dragstart', function($event) {
                 elem.children().css({'z-index':'200'}); //have to make sure about stacking context
                 $event.cancelBubble = true; //cancelBubble for IE (need to check)
@@ -93,64 +93,25 @@ angular.module('HHControllers').directive('dragSave',['$compile', function(compi
                 //console.log(gesture.center.pageY)
 //                console.log(elem[0])
                 if (gesture.center.pageY > targetTop && gesture.center.pageX > targetLeft && gesture.center.pageY < targetBottom && gesture.center.pageX < targetRight){
-                    //alert('dropped')
-                //if (targetId == 'grid_bg') {   
                     if (attrs.dragSave == 'dragStay') {
-                        tpos += gesture.deltaY; //if don't do inside, it misses first drag obj
+                        tpos += gesture.deltaY; //if don't do here, it misses first drag obj
                         lpos += gesture.deltaX;
                         tpospx = tpos + 'px';
                         lpospx = lpos + 'px';
                         elem.css({'top': tpospx, 'left': lpospx}); 
-                    } else {
+                    } else {                        
                         elem.css({'top': '0px', 'left': '0px'}); 
-                        
-                        tpos += gesture.deltaY;  
-                        lpos += gesture.deltaX;
+                        xCorrect = document.getElementById('menubg');
+                        tpos = gesture.center.pageY;  
+                        lpos = gesture.center.pageX - xCorrect.offsetWidth; //http://stackoverflow.com/questions/21064101/understanding-offsetwidth-clientwidth-scrollwidth-and-height-respectively
                         tpospx = tpos + 'px';
                         lpospx = lpos + 'px';
                         gridContainer = document.getElementById('grid_container');
 //                        scope.$apply(function() {
-                        newObject = '<span ng-click="test()" hm-drag="'+iconType+'" drag-save="dragStay" style="position:absolute;top:400px;left:300px;z-index=44;">Where Am I?</span>';
-                        wrappedObj = angular.element(newObject)
-                        //gridContainer.innerHTML += newObject;
-//                        console.log($compile)
-                        compiled = compile( wrappedObj );
-//                        transclude(scope.$parent, function(newObject, scope) {
-//                            elem.append(newObject);
-//                        });
-//                        angular.element(gridContainer).append(newObject);
+                        newObject = '<span id="secondtime" ng-click="test()" hm-drag="'+iconType+'" drag-save="dragStay" style="position:absolute;top:'+tpospx+';left:'+lpospx+';z-index=44;">Where Am I?</span>';
                         gridContainer.innerHTML += newObject;
-                        cpiled = compiled(scope.$parent)
-                        scope.$apply(attrs);
-                        //scope.$apply(cpiled);
-//                        document.$apply;
-//                        console.log(compiled);
-//                        console.log(scope.$parent);
-                        transclude(scope.$parent, function(cpiled, gridContainer, $scope) {
-////                            //alert(newObject)
-////                            console.log('inside');
-////                            console.log(gridContainer);
-                            console.log('cpiled')
-                            console.log(cpiled);
-                            gridContainer.innerHTML += cpiled;
-                            cpiled.css({'top':'40px','left': '333px'});
-                            scope.$apply(cpiled);
-////                            cpiled.bind('click',function(){alert('click')});
-////                            console.log(cpiled);
-////                            console.log(gridContainer);
-                        });
-                        //$compile(newObject)(scope);
-                    //});
-                        
-                        //add to innerHTML of target, with positions set from this, but as percentage
-                        //create new;
-                    //place marker;
-                    //round to nearest foot as snap to grid replacement?
-//                scope.$apply(function() {
-//                    //elem.css({'top': tpospx, 'left': lpospx});
-//                });
-                //alert(gesture.deltaY)
-                //alert('top':tpos+gesture.deltaY+'px';'left':lpos+gesture.deltaX+'px');
+                        $compile(gridContainer)(scope);
+                        console.log(gridContainer);
                     }; 
                 } else { //outside target
                     //elem.css({'top': tpospx, 'left': lpospx}); //for save
