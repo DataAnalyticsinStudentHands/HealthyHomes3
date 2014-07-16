@@ -11,13 +11,12 @@ height:800px;
 
 <div class="bgimg">
 	
-	<div id="questions_sample"> <!--in line css-->
-		<ul ng-controller="questionsController4">
-			<li ng-repeat="question in questions | orderBy:orderProp">
-			  <p>{{question.questionText}}</p>
-			</li>
-		</ul>
-	</div>
+		<div id="questions_sample" ng-controller="questionsController4">
+			<!--<span ng-repeat="question in questions | orderBy:orderProp">
+			  {{question.questionText}} <br>
+			</span>-->
+			<p id="forloop"></p>
+		</div>
 		
 		<a ui-sref= "layout">close</a>
 
@@ -33,3 +32,5 @@ height:800px;
 		</div>
 
 </div>
+
+

@@ -22,11 +22,11 @@
 			<div id="menu_yellow" >
 				<span class="menu_icon" ng-repeat="flag in flagicons" hm-drag="{{flag.icontype}}" drag-save></span>
 			</div>
-		<!--
-			<div id="menu_green">
+		
+			<!--<div id="menu_green">
 			   <span class="menu_icon" ng-repeat="iconT in icons3"><img hm-drag="{{iconT.icontype}}" drag-save></span>
-			</div>
-		-->
+			</div>-->
+		
 
 		<!--<div id="menu_yellow_sq" ="dragStay"></div>-->
 
@@ -53,9 +53,7 @@
          <img id="grid_bg" src="img/grid.png">
      </div>
 
-<!--    <img id="menu_pattern" src="img/menu_bg.png">-->
-    
-    
+	<!--<img id="menu_pattern" src="img/menu_bg.png">-->
     
 	<div id="top_label">
     	<img class="top_label" src="img/extview.png">
@@ -63,17 +61,17 @@
     </div>
 		 
     
-    <div id="side_tabs">
+    <!--<div id="side_tabs">
 		<a ui-sref= "questions.first"><span class="side_tabs"><img src="img/sidetab1.png"></span></a>
 		<a ui-sref= "questions.second"><span class="side_tabs"><img src="img/sidetab2.png"></span></a>
 		<a ui-sref= "questions.third"><span class="side_tabs"><img src="img/sidetab3.png"></span></a>
 		<a ui-sref= "questions.fourth"><span class="side_tabs"><img src="img/sidetab4.png"></span></a>
     	<a ui-sref= "questions.fifth"><span class="side_tabs"><img src="img/sidetab5.png"></a>
+   	</div>--><!--in case i mess up-->
+	<div id="side_tabs">
+		<span class="side_tabs" ng-repeat="iconT in sideTabs"><img ng-src="{{iconT.icontype}}"></span> 
    	</div>
 	
 	
-	
-</div>
-
-
-
+</div>		
+			
