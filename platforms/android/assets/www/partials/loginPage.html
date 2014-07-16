@@ -1,25 +1,52 @@
 <link rel="stylesheet" href="css/app.css">
 
 
-<div id="wrapper"><img class="bg" src="img/bg.png">
-<div class="container-fluid">
-<div class="row">
-<div class="col-md-2">
+<div id="wrapper">
+    
+    <img class="bg" src="img/bg.png">
+
+<!--
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <div class="col-md-2">
+-->
+<!--
+For once Restful is working
+        <div>
+            <form ng-submit="submit()">
+                <input type="text" ng-model="userName" name="userName">
+                <br>
+                <input type="password" ng-model="passWord" name="passWord">
+                <br>
+                <input type="submit" value="Submit" id="submit">
+            </form>
+            <br>
+            <p>{{loginMsg}}</p>
+            <h3> Result to DB Login Query:</h3>
+            <hr>
+            <p>{{loginResult}}</p>
+        </div>
+-->
         
-        <form ng-submit="send()">        
-            <br><br>
-            InspectorID: <input ng-model="queryA">
-            <br><br>
-            Password: <input ng-model="query1">
-            <br><br>
-            
-            <div id="login">
-                <a ui-sref="layout"><img ng-src="partials/img/loginbutton.png"></a>
-            </div>
+        <form ng-submit="send()">   
+            <span id="login_stuff">
+                InspectorID: <input ng-model="queryA">
+                <br><br>
+                Password: <input ng-model="query1">
+                <br><br>
+                
+                <div id="login">
+                    <a ui-sref="layout"><img ng-src="img/loginbutton.png"></a>
+                </div>
+            </span>
         </form>        
         
+<!--
 </div>
 </div>
 </div>
+-->
 </div>
     

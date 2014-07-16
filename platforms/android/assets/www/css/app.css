@@ -3,83 +3,83 @@
 
 
 
-.container-fluid {
-    position:absolute;
-    top:250px;
-    left:525px;
 
-    
-}
 
 /* corbin css
 *********************************************************************************************/
 
-#main_menu{
-    width: 225px;
-    height:800px;
-   z-index: 3;
-   }
 
-.bgg{position: absolute;
+
+
+#wrapperOLD {
+    width: 100%;
+    
+    
+}
+
+
+.containerOLD{
+    width: 100%;
+}
+
+
+.bggOLD{position: absolute;
     top: 0px;
     left:0px;
     z-index:-333;
 }
     
     
-.logo {position:absolute;
-    top:250px;
-    left:490px;
-    z-index: 10;
-    }
+
     
 
 /* logo page
 *********************************************************************************************/
 body{
-    width: 1280px;
-    height:800px;
+    overflow:hidden;
+}
+bodyOLD{
+    width: 100%;
     overflow-y: hidden;
     overflow-x: hidden;
     
 }
 
-
-#wrapper {width: 1280px;
-    height:800px;
-	min-width: 1280px;
-    min-height: 800px;
-    max-width: 1280px;
-    max-height: 800px;
-    background-color: Rgb(210,221,224);
-}
-
+.bgOLD{
+    position: absolute;
+    top:0px;
+    width: 100%;
     
-    
-.bg{position: absolute;
-    top: 0px;
-    left:0px;
 }
     
     
-#logo {position: absolute;
-    top:1000px;
-    left:100px;
+.logo_main {position:absolute;
+    width: 25%;
     z-index: 10;
+    top:27%;
+    left:37%
+    
+}
+    
+    
+#login_stuff{
+    position:absolute;
+    top:27%;
+    left:37%;
+    text-align: right;
+}
+
+#login{
+    text-align: center;
+}
+
+.container-fluidOLD {
+    width: 100%;
+    position:absolute;
+    margin: auto;
+    padding:20% 42%;
+    
     }
-    
-#menu_{background-color: Rgb(22,167,112);
-    width: 225px;
-    height: 800px;
-}
-    
-
-
-#login{position: absolute;
-    top:170px;
-    left:px;
-}
-
 
 #submit{position: absolute;
     top:120px;
@@ -92,48 +92,44 @@ body{
     left:0px;
 }
 
-
-/* beatles page
-*********************************************************************************************/
-
-
-#menu_bg{background-color: Rgb(22,167,112);
-    width: 225px;
-    height: 800px;
-    position: relative;
-    top: 0px;
-    left: 0px;
-    z-index:1;
-}
-
-
 #menubg{ 
+    background-image: url('../img/menu_bg.png');
     position: absolute;
+    width:17%;
     top: 0px;
     left: 0px;
-    z-index:2;
+    z-index: 4;
+    height:100%;
 }
-
+#wrap_menus{
+    position:relative;
+    width:17%;
+    display:inline;
+}
    /* green menu
 *********************************************************************************************/
 
  
- #menu_green {background-color:none;
+ #menu_green {
+     background-color:none;
      color: rgb(105,249,190);
      border: solid 3px;
-     width: 78px;
+     min-width: 70px;
+     width: 4%;
      position: relative;
-    top:-670px;
-    left:120px;
-     padding: 10px 10px 10px 10px;
-     z-index:3;
+     float:right;
+/*
+     top:13%;
+     left: 56%;
+*/
+     z-index:10;
      border-radius: 10px;
+     margin: 0% 0% 0% 0%;
 }
 
-.menu_green{
-    padding: 5px 0px 5px 0px;
-    margin: 0px 0px 0px 0px;
-    display: inline-block;
+.menu_icon{
+    padding:10% 10% 10% 10%;
+    display: block;
 }
 
 
@@ -141,22 +137,31 @@ body{
 /* black menu
 *********************************************************************************************/
 
-#menu_black{background-color:none;
+#menu_black{
+    background-color:none;
     color: rgb(51,51,51);
     border: solid 3px;
-    width: 78px;
-    position: relative;
-    top:-1115px;
-    left:28px;
-    z-index:3;
-    padding: 10px 10px 10px 10px;
+    min-width: 70px;
+    width: 4%;
+    position:relative;
+    float:left;
+/*
+    top: -36%;
+    left: -3%;
+*/
+    z-index:10;
     border-radius: 10px;
+/*    margin: 0 30% 0 15%;*/
+    padding: 0 0 0 0;
+    
+}
+#svgSelector {
+    cursor:pointer;
 }
 
-.menu_black{
-    padding: 5px 0px 5px 0px;
-    margin: 0px 0px 0px 0px;
-    display: inline-block;
+.menu_blackOLD{
+    padding:10% 10% 10% 10%;
+   display: inline-block;
 }
 
 /* yellow menu
@@ -166,40 +171,54 @@ body{
 #menu_yellow{background-color:none;
      color: rgb(255,255,13);
      border: solid 3px;
-    width: 78px;
+     min-width: 70px;
+     width: 4%;
      position: relative;
-    top:-1082px;
-    left:28px;
-    z-index:3;
-     padding: 10px 10px 10px 10px;
-    border-radius: 10px;
+    float:left;
+/*
+     top: -29.7%;
+     left: -3%;
+*/
+     z-index:10;
+     border-radius: 10px;
+/*     margin-left: 15%;*/
+    font-size: 0px;
 }
 
-.menu_yellow{
-    padding: 5px 0px 5px 0px;
-    margin: 0px 0px 0px 0px;
-    display: inline-block;
+.menu_yellowOLD{
+    padding:10% 10% 10% 10%;
+   display: inline-block;
 }
 
+#menu_patternOLD{
+    position:absolute;
+    top:0px;
+    left:-1px;
+    box-shadow: 5px 0px 15px 1px #888888;
+    z-index: 3;
+    width: 17%
+    
+}
 
 
 /* roomlabel
 *********************************************************************************************/
 
-#calander{background-color:none;
+#calendar{background-color:none;
     color: none;
     width: 78px;
-    position: absolute;
-    top:40px;
-    left:32px;
+    position:relative;
+/*
+    top:4%;
+    left:14%;
+*/
     z-index:3;
     padding: 10px 10px 10px 10px;
     
 }
 
-.calander{
-    padding: 5px 0px 5px 0px;
-    margin: 0px 0px 0px 0px;
+.calendar{
+   margin: 0px 0px 0px 0px;
     display: inline-block;
             
 }
@@ -208,8 +227,8 @@ body{
 #roomlabel{background-color:none;
      width: 200px;
      position: absolute;
-    top:600px;
-    left:35px;
+    top:64%;
+    left:15%;
     z-index:3;
      padding: 10px 10px 10px 10px;
 }
@@ -222,10 +241,10 @@ body{
 
 #top_label{background-color:none;
      color: rgb(255,255,13);
-    width: 500px;
+    width: 100%;
      position: absolute;
-    top:5px;
-    left:500px;
+    top:0%;
+    left:42%;
     z-index:3;
      padding: 10px 10px 10px 10px;
 }
@@ -246,16 +265,19 @@ body{
 #grid_sizes{background-color:none;
     color: rgb(255,255,13);
     border: none;
-    width: 225px;
+    width: 100%;
     position: relative;
-    top:-1000px;
-    left:0px;
+/*
+    top:-19%;
+    left:10%;
+*/
     z-index:3;
-    padding: 10px 10px 10px 20px;
+    padding: 0 0 0 0;
+    margin:0 0 0 0;
 }
 
 .grid_sizes{
-    padding: 5px 5px 5px 5px;
+    padding: 4px 1px 4px 4px;
     margin: 0px 0px 0px 0px;
     display: inline-block;
 }
@@ -270,8 +292,8 @@ body{
     border: none;
     width: 45px;
     position: absolute;
-    top:650px;
-    left:1238px;
+    top:80%;
+    left:96.5%;
     z-index:3;
     padding: 0px 0px 0px 0px;
     box-shadow: 0px 1px 10px 1px #888888;
@@ -281,16 +303,17 @@ body{
     color: rgb(255,255,13);
     border: none;
     width: 45px;
+    height:525px;
     position: absolute;
-    top:185px;
-    left:1238px;
+    top:15%;
+    left:96.5%;
     z-index:3;
     padding: 0px 0px 0px 0px;
 }
 
 .side_tabs{
-    padding: 0px 0px 0px 0px;
-    margin: 0px 0px 0px 0px;
+    padding:;
+    margin: 10px 0px 0px 0px;
     display: inline-block;
     box-shadow: 0px 1px 10px 1px #888888;
 }
@@ -299,12 +322,40 @@ body{
 
 /* grid background
 *********************************************************************************************/
-
-#grid_bg{position: absolute;
-    top:0px;
-    left:223px;
+#grid_container{
+    position: absolute;
+    width:100%;
+    top:0%;
+    left:17%;
     z-index:1;
 }
+#grid_bgOLD{
+    position: absolute;
+    width:100%;
+    top:0%;
+    left:17%;
+    z-index:1;
+}
+
+
+
+/* questions
+*********************************************************************************************/
+.main_questions{
+		position:absolute;
+		left:225px;
+		top:0px;
+		
+}
+
+.bgimg {
+		background-color: rgb(105,249,190);
+		position:relative;
+        width: 100%;
+		left:-24%;
+		top:-10%;
+		height:100%;
+	}
 
 
 /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
@@ -324,3 +375,11 @@ body{
     opacity:0;
   }
     
+
+
+
+
+
+
+
+

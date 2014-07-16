@@ -29,18 +29,17 @@ For once Restful is working
             <p>{{loginResult}}</p>
         </div>
 -->
-        
+        <div id="login">
         <form ng-submit="send()">   
-            <span id="login_stuff">
+            
                 InspectorID: <input ng-model="queryA">
                 <br><br>
                 Password: <input ng-model="query1">
                 <br><br>
                 
-                <div id="login">
-                    <a ui-sref="layout"><img ng-src="img/loginbutton.png"></a>
+    <a ui-sref="layout"><img class="loginbtn" ng-src="img/loginbutton.png"></a>
                 </div>
-            </span>
+           
         </form>        
         
 <!--

@@ -2,59 +2,58 @@
 
 /* Controllers */
 
-var HHControllers = angular.module('HHControllers', ['ui.router']);
-HHControllers
+var HHControllers = angular.module('HHControllers', ['ui.router','layoutModuleController','layoutModuleServices', 'angular-gestures']);
 
-.controller('PhoneListCtrl', ['$scope', '$http',
-  function($scope, $http) {
-    $http.get('phones/phones.json').success(function(data) {
-      $scope.phones = data;
-    });
-  }])
-
-.controller('mainController', function($scope) {		//show & hide
-	$scope.goCats = false;
-});
+HHControllers.controller('mainController', function($scope) {	
+    $scope.alert = function (text) {
+        alert(text);
+    };
+    $scope.test = function() {
+        alert('test in ctrl scope');
+    };
+	
 
 /*    --------------    ng-repeat     ------------      */
 
-function myCtrl($scope){
-    $scope.icons=[{
-    src: 'img/greenflag.PNG'
+    $scope.flagicons=[{
+        icontype: 'greenflag'
+            },{
+        icontype: 'yellowflag'
+            },{
+        icontype: 'redflag'
+    }];
+
+//    $scope.icons2=[{
+//    src: 'img/pencil.PNG'
+//  },{
+//    src: 'img/ruler.PNG'
+//  },{
+//    src: 'img/eraser.PNG'
+//  }];
+
+    $scope.icons3=[{
+    icontype:  'sink'
   },{
-    src: 'img/yellowflag.PNG'
+    icontype:  'window'
   },{
-    src: 'img/redflag.PNG'
+    icontype:  'stairs'
+  },{
+    icontype:  'fire'
+  },{
+    icontype:  'toilet'
+  },{
+    icontype:  'tub'
+  },{
+    icontype:  'door'
   }];
-}
-
-function myCtrl2($scope){
-    $scope.icons=[{
-    src: 'img/pencil.PNG'
+    
+    $scope.iconSVGs=[{
+    icontype:  'svg_line'
   },{
-    src: 'img/ruler.PNG'
+    icontype:  'svg_rectangle'
   },{
-    src: 'img/eraser.PNG'
+    icontype:  'svg_circle'
   }];
-}
 
-function myCtrl3($scope){
-    $scope.icons=[{
-    src: 'img/sink.PNG'
-  },{
-    src: 'img/window.PNG'
-  },{
-    src: 'img/stairs.PNG'
-  },{
-    src: 'img/fire.PNG'
-  },{
-    src: 'img/toilet.PNG'
-  },{
-    src: 'img/tub.PNG'
-  },{
-    src: 'img/door.PNG'
-  }];
-}
-
-
-
+/* ------------------ camera --------------------- now in camera.js */
+});
