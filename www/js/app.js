@@ -3,7 +3,7 @@
 /* App Module */
 
 var HHApp = angular.module('HHApp', [
-  'HHControllers', 'ui.router'
+  'HHControllers', 'ui.router', 'ngCordova.plugins.camera'
 ]); //dependencies
 
 HHApp.config(
