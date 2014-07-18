@@ -1,0 +1,27 @@
+
+
+
+
+	
+	<div id="questions_first"> 
+		<ul ng-controller="questionsController1">
+			<li ng-repeat="question in questions | orderBy:orderProp">
+			  <p>{{question.questionText}}</p>
+			</li>
+		</ul>
+	
+	
+		<a ui-sref= "layout">close</a>
+
+		<div>
+			<a href ng-click="goCats = !goCats">show/hide</a>
+		</div>
+
+		<div>
+			<img ng-src="../img/tabs.png" 
+				 ng-show="goCats">
+		</div>
+
+</div>
+
+

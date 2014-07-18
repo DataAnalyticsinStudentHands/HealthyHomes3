@@ -80,12 +80,11 @@
     
 }
 
-#calendar{background-color:none;
-    color: none;
-    width: 78px;
-    position:relative;
+#calendar{
+   
+    position:absolute;
     top:60px;
-    z-index:3;
+    z-index:10;
     margin: 0 0 0 37px;
     
 }
@@ -127,7 +126,7 @@
      width: 75px;
      position: relative;
      float:left;
-    top: 148px;
+    top: 147px;
      z-index:10;
      border-radius: 10px;
      margin: 0 0 0 22px;
@@ -163,7 +162,7 @@
      position: relative;
     top:60px;
     left:33px;
-    z-index:3;
+    z-index:5;
      padding: 10px 10px 10px 10px;
 }
 
@@ -194,7 +193,22 @@
 
 
 
+/* questions layout
+*********************************************************************************************/
 
+
+
+#questions_first{
+    background-color: blue;
+    position: absolute;
+    top:5px;
+    right:43%;
+    text-decoration: none; 
+    width:80%;
+    height:763px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
 
 
 
