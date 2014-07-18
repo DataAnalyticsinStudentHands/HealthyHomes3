@@ -53,19 +53,28 @@ HHControllers
   },{
     icontype:  'svg_circle'
   }];
-	
-    $scope.sideTabs=[{ //how did you link the images without the .PNG extension?
-    icontype:  'sidetab1'/*, ui-sref: 'questions.first'*/
-  },{
-    icontype:  'sidetab2'/*, state: 'questions.second'*/
-  },{
-    icontype:  'sidetab3'/*, state: 'questions.third'*/
-  },{
-    icontype:  'sidetab4'/*, state: 'questions.fourth'*/
-  },{
-    icontype:  'sidetab5'/*, state: 'questions.fifth'*/
-  },];
 })
+
+/*.controller("tabCtrl", function($scope, $state) {		
+	$scope.go = function(route){
+		$state.go(route);
+	};
+	$scope.active = function(route){
+		return $state.is(route);
+	};
+	$scope.tabs = [
+		{ heading: "Tab 1", route:"questions.first", active:false },
+		{ heading: "Tab 2", route:"questions.second", active:false },
+		{ heading: "Tab 3", route:"questions.third", active:false },
+		{ heading: "Tab 4", route:"questions.fourth", active:false },
+		{ heading: "Tab 5", route:"questions.fifth", active:false }
+	];
+	$scope.$on("$stateChangeSuccess", function() {
+		$scope.tabs.forEach(function(tab) {
+			tab.active = $scope.active(tab.route);
+		});
+	});
+})*/
 
 .controller('questionsController1', ['$scope', '$http',						
   function($scope, $http) {
