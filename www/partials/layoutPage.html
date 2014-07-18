@@ -1,12 +1,13 @@
 <link rel="stylesheet" href="css/app.css">
 
 <div id="wrapper" ng-controller="layoutCtrl"> 
-<!--<div class="container">-->
-
     <div id="menubg">  
-   
-		<!--<img id="menu_pattern" src="img/menu_bg.png">-->
 		<div id="wrap_menus">
+
+			<div id="calendar">
+				<a ui-sref="camera"><img ng-src="img/calendar.png"></a>
+			</div>
+
 			<div id="menu_green">
 				<span class="menu_icon" ng-repeat="iconT in icons3"><img hm-drag="{{iconT.icontype}}" drag-save></span>
 			</div>
@@ -16,17 +17,17 @@
 				<span class="menu_icon" ng-click="selectRule = !selectRule"><img ng-src='img/ruler.PNG'/></span>
 				<span class="menu_icon" ng-click="selectErase = !selectErase"><img ng-src='img/eraser.PNG'/></span>
 			</div>
-			
+
 			<span ui-view="svg_select" ng-show="selectSVG">It's not filling from the view</span>
 
 			<div id="menu_yellow" >
 				<span class="menu_icon" ng-repeat="flag in flagicons" hm-drag="{{flag.icontype}}" drag-save></span>
 			</div>
-		
-			<!--<div id="menu_green">
+		<!--
+			<div id="menu_green">
 			   <span class="menu_icon" ng-repeat="iconT in icons3"><img hm-drag="{{iconT.icontype}}" drag-save></span>
-			</div>-->
-		
+			</div>
+		-->
 
 		<!--<div id="menu_yellow_sq" ="dragStay"></div>-->
 
@@ -35,41 +36,35 @@
 				<span class="grid_sizes"><img src="img/gridx2.png"></span>
 				<span class="grid_sizes"><img src="img/gridx3.png"></span>
 			</div>
-		</div>
 
-		<div id="calendar">
-			<a ui-sref="camera"><span class="calendar">go to camera</span></a>
-		</div>
 
-		<div id="roomlabel">
-			<span class="roomlabel"><img src="img/roomlabel.png"></span>
+			<div id="roomlabel">
+				<span class="roomlabel"><img src="img/roomlabel.png"></span>
+			</div>
+
 		</div>
-       
-	</div>
+    </div>
+	
 	
      <div id="grid_wrapper">
          <span id="grid_container"></span> <!--the newly inserted layoutObjects go here-->
          <span class="display_icon" ng-repeat="layoutObj in layoutObjectModel.localStorageGetAll()"></span>
-         <img id="grid_bg" src="img/grid.png">
+         <img id="grid" src="img/grid.png">
      </div>
 
-	<!--<img id="menu_pattern" src="img/menu_bg.png">-->
-    
+	
 	<div id="top_label">
     	<img class="top_label" src="img/extview.png">
     	<img class="top_label" src="img/addfloor.png"><div ui-view="q"></div>
     </div>
 		 
-    
-    <div id="side_tabs">
-		<a ui-sref= "questions.first"><span class="side_tabs"><img ng-src="img/sidetab1.png"></span></a>
-		<a ui-sref= "questions.second"><span class="side_tabs"><img ng-src="img/sidetab2.png"></span></a>
-		<a ui-sref= "questions.third"><span class="side_tabs"><img ng-src="img/sidetab3.png"></span></a>
-		<a ui-sref= "questions.fourth"><span class="side_tabs"><img ng-src="img/sidetab4.png"></span></a>
-    	<a ui-sref= "questions.fifth"><span class="side_tabs"><img ng-src="img/sidetab5.png"></a>
-   	</div>
 
+    <div id="side_tabs">
+		<a ui-sref= "questions.first"><span class="side_tabs"><img src="img/sidetab1.png"></span></a>
+		<a ui-sref= "questions.second"><span class="side_tabs"><img src="img/sidetab2.png"></span></a>
+		<a ui-sref= "questions.third"><span class="side_tabs"><img src="img/sidetab3.png"></span></a>
+		<a ui-sref= "questions.fourth"><span class="side_tabs"><img src="img/sidetab4.png"></span></a>
+    	<a ui-sref= "questions.fifth"><span class="side_tabs"><img src="img/sidetab5.png"></a>
+   	</div>
 	
-	
-</div>		
-			
+</div>
