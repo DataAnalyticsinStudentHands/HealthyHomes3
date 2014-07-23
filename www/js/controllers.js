@@ -69,4 +69,22 @@ HHControllers
 			$scope.questions[i]=$scope.tab[i];
 		}
     });	
-  }]);// end of controllers
+  }]);// end of HHControllers
+
+
+var listControllers = angular.module('listControllers', []);
+listControllers.controller('listController', ['$scope', 'databaseConnection',
+  function($scope, databaseConnection) {
+    $scope.list = [
+       {id: 1, name: 'perfect condition', checked: false},
+       {id: 12, name: 'good condition', checked: false},
+       {id: 35, name: 'needs work', checked: false},
+       {id: 47, name: 'very bad condition', checked: false}
+    ];
+    $scope.sync = function(){
+        databaseConnection.queryWebService($scope.list, function(value){
+            console.log(value);
+        });
+    };
+}]);
+

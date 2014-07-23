@@ -6,7 +6,10 @@ var HHApp = angular.module('HHApp', [
 	'HHControllers', 
 	'ui.router', 
 	'ngCordova.plugins.camera',  
-	'jsonServices'
+	'jsonServices',
+	'listControllers', 
+	'dbServicesModule', 
+	'checklist-model'
 ]); //dependencies
 
 HHApp.config(

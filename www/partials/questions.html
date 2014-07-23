@@ -12,9 +12,18 @@
 <div class="bgimg">
 	
 		<div id="questions_sample" ng-controller="questionsCtrl">			
-
-		      <div ng-repeat="question in questions">{{question.questionText}}</div> <br>
-
+		    <div ng-repeat="question in questions"> <!--where to put checklsit module-->
+				{{question.questionText}}
+				<div ng-controller="listController">
+					<label ng-repeat="li in list track by li.id">
+					  <input type="checkbox" checklist-model checklist-value="li" update="sync()"> {{li.name}}
+					</label>
+					<p> <h3>Local List</h3>{{list}} </p>
+					<p> <h3>Completed List</h3>{{listCompleted}} </p>
+					<p> <h3>Sync List for Server</h3>{{listSync}} </p>
+					<p> Reply from server not shown, but in console due to buggy nature of echoJSON php script. </p>
+				</div>
+			</div><br>
 		</div>
 		
 		<a ui-sref= "layout">close</a>
