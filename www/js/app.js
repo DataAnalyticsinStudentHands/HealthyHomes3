@@ -3,7 +3,10 @@
 /* App Module */
 
 var HHApp = angular.module('HHApp', [
-  'HHControllers', 'ui.router', 'ngCordova.plugins.camera'
+	'HHControllers', 
+	'ui.router', 
+	'ngCordova.plugins.camera',  
+	'jsonServices'
 ]); //dependencies
 
 HHApp.config(
@@ -35,42 +38,26 @@ HHApp.config(
             }
       }).
       state('questions', {										//same ^
-		  abstract: true,
+		  abstract: true,										//has to have children
           url: "/login/questions",
           views: {
-                "app": { templateUrl: 'partials/layoutPage.html' }
+			"app": { templateUrl: 'partials/layoutPage.html' }/*,
+			"svg_select": { 
+				templateUrl: 'partials/svgLayout.html',			//sidebars still dont show up
+				controller: 'mainController' 
+				}*/
             }
       }).
-	  state('questions.first', {
-		  url: "",
+	  state('questions.tabs', {
+		  url: "/login/questions/:tabId",
 		  views: {
 			"q": {
-				templateUrl: "partials/questions.first.html"
-			}
-		  }
-	  }).
-	  state('questions.second', {
-		  url: "",
-		  views: {
-			"q": {templateUrl: "partials/questions.second.html"}
-		  }
-	  }).
-	  state('questions.third', {
-		  url: "",
-		  views: {
-			"q": {templateUrl: "partials/questions.third.html"}
-		  }
-	  }).
-	  state('questions.fourth', {
-		  url: "",
-		  views: {
-			"q": {templateUrl: "partials/questions.fourth.html"}
-		  }
-	  }).
-	  state('questions.fifth', {
-		  url: "",
-		  views: {
-			"q": {templateUrl: "partials/questions.summary.html"}
+				templateUrl: "partials/questions.html"
+			}/*,
+           	"svg_select": { 					
+				templateUrl: 'partials/svgLayout.html',			//sidebars still dont show up
+				controller: 'mainController' 	
+			}*/
 		  }
 	  }).
       state('camera', {

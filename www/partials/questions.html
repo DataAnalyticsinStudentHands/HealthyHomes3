@@ -1,0 +1,31 @@
+<style>
+#questions_sample{
+	text-decoration: none; 
+	width:1000px;
+	height:800px;
+   	overflow-y: scroll;
+    overflow-x: hidden;
+}
+</style>
+
+
+<div class="bgimg">
+	
+		<div id="questions_sample" ng-controller="questionsCtrl">			
+
+		      <div ng-repeat="question in questions">{{question.questionText}}</div> <br>
+
+		</div>
+		
+		<a ui-sref= "layout">close</a>
+
+		<div><!--show/hide-->
+			<a href ng-click="goCats = !goCats"><img ng-src="img/tabs.png"></a>
+		</div>
+
+
+		<div> <!--what shows up-->
+			<p ng-show="goCats">hello blah blah blah</p>
+		</div>
+
+</div>
