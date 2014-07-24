@@ -69,7 +69,11 @@ HHControllers
 			$scope.questions[i]=$scope.tab[i];
 		}
     });	
-  }]);// end of HHControllers
+  }])
+
+ .controller('inputBoxCtrl', ['$scope', function($scope) {
+   $scope.names = ["type something"];
+ }]);// end of HHControllers
 
 
 var listControllers = angular.module('listControllers', []);
