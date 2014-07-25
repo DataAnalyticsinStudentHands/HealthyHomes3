@@ -1,23 +1,30 @@
 
 <div id="questions_first"> 
+    
+    <div id="questions">
 		<ul ng-controller="questionsController1">
 			<li ng-repeat="question in questions | orderBy:orderProp">
 			  <p>{{question.questionText}}</p>
 			</li>
 		</ul>
+	</div>
 	
-	
-		<a ui-sref= "layout">close</a>
+		<a ui-sref= "layout"><img class="close_button" ng-src="img/closebutton.png"></a>
 		
 	
 		<div><!--show / hide-->
-			<a href ng-click="goCats = !goCats"><img ng-src="img/tabs.png"></a>
+			<a href ng-click="goCats = !goCats"><img class="question_tabs" ng-src="img/tabs.png"></a>
+            <a href ng-click="goCats = !goCats"><img class="question_tabs_2" ng-src="img/tabs.png"></a>
+            <a href ng-click="goCats = !goCats"><img class="question_tabs_3" ng-src="img/tabs.png"></a>
+            <a href ng-click="goCats = !goCats"><img class="question_tabs_4" ng-src="img/tabs.png"></a>
+            <a href ng-click="goCats = !goCats"><img class="question_tabs_5" ng-src="img/tabs.png"></a>
 		</div>
 
-		<div><!--what shows up--> <!--you have to scroll below tab-->
+		<div id="tab_popup"><!--what shows up--> <!--you have to scroll below tab-->
 			<p ng-show="goCats"> hello blah blah blah</p>
-		</div>
+            
+            
 
 </div>
-
+</div>
 

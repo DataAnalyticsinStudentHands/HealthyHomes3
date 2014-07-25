@@ -27,6 +27,120 @@
    }
 
 
+/* logo animation
+*********************************************************************************************/
+
+.wrap {
+    position:absolute;
+    top:27%;
+  margin: 0 100px;
+	-webkit-perspective: 800px;
+	-webkit-perspective-origin: 50% 100px;
+  /*border: 1px solid red;*/
+  width: 100%;
+  height: 300px;
+  margin: 0;
+  margin-top: 50px;
+    z-index: 4;
+}
+
+.cube {
+	position: relative;
+  margin: 0 auto;
+	width: 250px;
+	-webkit-transform-style: preserve-3d;
+  -webkit-animation: spin 3s 1 linear;
+  /*border: 1px solid blue;*/
+}
+
+.cube div {
+	position: absolute;
+	width: 250px;
+	height: 250px;
+  
+  /*border: 1px solid green;*/
+  
+  text-align: center;
+  font-family: sans-serif;
+  line-height: 250px;
+  transition: background-color 1s ease;
+}
+
+.cube div:hover {
+  background-color: rgba(255,0,38,0.25);
+}
+
+.back {
+	-webkit-transform: translateZ(-150px) rotateY(180deg);
+}
+
+.right {
+	-webkit-transform: rotateY(-270deg) translateX(150px);
+	-webkit-transform-origin: top right;
+}
+
+.left {
+	-webkit-transform: rotateY(270deg) translateX(-150px);
+	-webkit-transform-origin: center left;
+}
+
+.top {
+	-webkit-transform: rotateX(-90deg) translateY(-150px);
+	-webkit-transform-origin: top center;
+}
+
+.bottom {
+	-webkit-transform: rotateX(90deg) translateY(150px);
+	-webkit-transform-origin: bottom center;
+}
+
+.front {
+
+	-webkit-transform: translateZ(100px);
+}
+
+@-webkit-keyframes spin {
+  from { -webkit-transform: rotateY(0) }
+  to { -webkit-transform: rotateY(360deg) }
+}
+
+
+
+
+/* image css
+*********************************************************************************************/
+
+.front_image{
+   
+    width: 250px;
+	height: 250px;
+}
+
+
+.back_image{
+    background-color: blue;
+    width: 250px;
+	height: 250px;
+}
+
+
+
+.right_image{
+     background-color: green;
+    width: 250px;
+	height: 250px;
+}
+
+
+
+.left_image{
+     background-color: red;
+    width: 250px;
+	height: 250px;
+}
+
+
+
 /* login page
 *********************************************************************************************/
 
@@ -49,9 +163,10 @@
 #grid_bg{
     position: absolute;
     width:100%;
-    top:0%;
-    left:15%;
+    top:0px;
+    left: 0px;
     z-index:-2;
+    opacity: .2;
 }
 
 #grid{
@@ -61,6 +176,7 @@
     left:9%;
     z-index:-2;
 }
+
 
 
 #menubg{ 
@@ -81,9 +197,8 @@
 }
 
 #calendar{
-   
-    position:absolute;
-    top:60px;
+   position:absolute;
+    top:40px;
     z-index:10;
     margin: 0 0 0 37px;
     
@@ -98,7 +213,7 @@
      width: 75px;
      position: relative;
      float:right;
-    top:90px;
+    top:110px;
      z-index:10;
      border-radius: 10px;
     margin: 0 22px 0 0;
@@ -113,20 +228,42 @@
     width: 75px;
     position:relative;
     float:left;
-    top:90px;
+    top:110px;
     z-index:10;
     border-radius: 10px;
     margin: 0 0 0 22px;
 }
 
+#pencil_popup{
+    border-color:rgb(255,255,13);
+    background-color: rgb(105,249,190);
+    border: solid 3px;
+    width: 150px;
+    height:100px;
+    position:absolute;
+    float:left;
+    top:170px;
+    z-index:10;
+    border-radius: 10px;
+    margin-left: 20px;
+    }
 
-#menu_yellow{background-color:none;
+.pencil_popup{
+    text-align: center;
+     padding:15px 10px 1px 7px;
+    display: block;
+    width:150px;
+}
+
+
+#menu_yellow{
+    background-color:none;
      color: rgb(255,255,13);
      border: solid 3px;
      width: 75px;
      position: relative;
      float:left;
-    top: 147px;
+    top: 167px;
      z-index:10;
      border-radius: 10px;
      margin: 0 0 0 22px;
@@ -143,7 +280,7 @@
 #grid_sizes{
     width: 210px;
     position: relative;
-    top:180px;
+    top:200px;
     left:20px;
     z-index:3;
     margin: 0 0 0 0;
@@ -160,7 +297,7 @@
     background-color:none;
      width: 200px;
      position: relative;
-    top:60px;
+    top:80px;
     left:33px;
     z-index:5;
      padding: 10px 10px 10px 10px;
@@ -199,23 +336,103 @@
 
 
 #questions_first{
-    background-color: blue;
+    text-decoration: none;
+    font-family: sans-serif;
+    
+    color:#000;
+    background-color:rgb(119,157,182);
     position: absolute;
     top:5px;
     right:43%;
     text-decoration: none; 
-    width:80%;
+    width:82%;
     height:763px;
-    overflow-y: scroll;
+    overflow-y: hidden;
     overflow-x: hidden;
+}
+
+
+#questions{
+    width: 95%;
+    height:720px;
+    padding: 25px;
+     overflow-y: scroll;
+}
+
+
+.main_questions{
+		position:absolute;
+		left:225px;
+		top:0px;
+		
+}
+
+.bgimg {
+		background-color: rgb(105,249,190);
+		position:relative;
+        width: 100%;
+		left:-24%;
+		top:-10%;
+		height:100%;
+	}
+
+
+
+.close_button{
+    position: absolute;
+    top:0px;
+    left:0px;
+    width:35px;
+}
+
+
+.question_tabs{
+    position: absolute;
+    top:727px;
+    left:0px;
+    z-index: 10;
+  
+}
+
+
+.question_tabs_2{
+    position: absolute;
+    top:727px;
+    left:120px;
+    z-index: 10;
+  
+}
+
+.question_tabs_3{
+    position: absolute;
+    top:727px;
+    left:240px;
+    z-index: 10;
+  
+}
+
+
+.question_tabs_4{
+    position: absolute;
+    top:727px;
+    left:360px;
+    z-index: 10;
+  
+}
+
+.question_tabs_5{
+    position: absolute;
+    top:727px;
+    left:480px;
+    z-index: 10;
+  
 }
 
 
 
 
 
-
-
+/* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
 
 #submit{position: absolute;
@@ -323,23 +540,7 @@ body{
 
 
 
-/* questions
-*********************************************************************************************/
-.main_questions{
-		position:absolute;
-		left:225px;
-		top:0px;
-		
-}
 
-.bgimg {
-		background-color: rgb(105,249,190);
-		position:relative;
-        width: 100%;
-		left:-24%;
-		top:-10%;
-		height:100%;
-	}
 
 
 /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */

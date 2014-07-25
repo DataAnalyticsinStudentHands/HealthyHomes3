@@ -17,6 +17,13 @@
 				<span class="menu_icon" ng-click="selectRule = !selectRule"><img ng-src='img/ruler.PNG'/></span>
 				<span class="menu_icon" ng-click="selectErase = !selectErase"><img ng-src='img/eraser.PNG'/></span>
 			</div>
+            
+            
+            <div id="pencil_popup">
+            	<span class= "pencil_popup"><img ng-src="img/solid_line.svg"></span>
+                <span class= "pencil_popup"><img ng-src="img/dotted_line.svg"></span>
+            
+            </div>
 
 			<span ui-view="svg_select" ng-show="selectSVG">It's not filling from the view</span>
 
@@ -44,7 +51,9 @@
 
 		</div>
     </div>
-	
+    
+	<img id="grid_bg" src="img/gridbg.png">
+       
 	
      <div id="grid_wrapper">
          <span id="grid_container"></span> <!--the newly inserted layoutObjects go here-->
