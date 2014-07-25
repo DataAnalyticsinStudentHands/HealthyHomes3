@@ -9,39 +9,36 @@
 #inputboxSample{
 	color: black; 
 }
-#alertSample{
-	color: rgb(0,255,255); 
-}
 </style>
 
 
 <div class="bgimg">
 	
-		<div id="questions_sample" ng-controller="questionsCtrl">			
-		    <div ng-repeat="question in questions"> <!--where to put checklsit module-->
+		<div id="questions_sample">			
+		    <div ng-repeat="question in questions"> <!--where to put checklist module-->
 				<h3>{{question.questionText}}</h3>
-				<div ng-controller="listController">
+				
+				<form name="chkbxForm" ng-controller="listController">
 					<label ng-repeat="li in list track by li.id">
 					 	<input type="checkbox" checklist-model checklist-value="li" update="sync()"> {{li.name}}
 					</label>
-					
 					<p> <h5><u>Local List</u></h5>{{list}} </p>
 					<p> <h5><u>Completed List</u></h5>{{listCompleted}} </p>
 					<p> <h5><u>Sync List for Server</u></h5>{{listSync}} </p>
 					<p> Reply from server not shown, but in console due to buggy nature of echoJSON php script. </p>					
-					
-					<form name="myForm" ng-controller="inputBoxCtrl">
-					   List: <input id="inputboxSample" name="namesInput" ng-model="names" ng-list required>
-					   <span id="alertSample" class="error" ng-show="myForm.namesInput.$error.required">Required!</span>
-					   <br>
-					   <tt>names = {{names}}</tt><br/>
-					   <tt>myForm.namesInput.$valid = {{myForm.namesInput.$valid}}</tt><br/>
-					   <tt>myForm.namesInput.$error = {{myForm.namesInput.$error}}</tt><br/>
-					   <tt>myForm.$valid = {{myForm.$valid}}</tt><br/>
-					   <tt>myForm.$error.required = {{!!myForm.$error.required}}</tt><br/>
-					</form>					
-					
+				</form>
+
+				<div ng-controller="inputBoxCtrl">
+					<form name="commentForm" ng-submit="sync()">
+						Optional Comment: <input type="text" id="inputboxSample" ng-model="list[0].stuff">
+						<input id="inputboxSample" type="submit" value="Save" id="sync">
+					</form>   
+						<p> <h5><u>Local List</u></h5>{{list}} </p>
+						<p> <h5><u>Completed List</u></h5>{{listCompleted}} </p>
+						<p> <h5><u>Sync List for Server</u></h5>{{listSync}} </p>
+						<p> Reply from server not shown, but in console due to buggy nature of echoJSON php script. </p>
 				</div>
+
 			</div><br>
 		</div>
 		

@@ -7,7 +7,6 @@ var HHApp = angular.module('HHApp', [
 	'ui.router', 
 	'ngCordova.plugins.camera',  
 	'jsonServices',
-	'listControllers', 
 	'dbServicesModule', 
 	'checklist-model'
 ]); //dependencies
@@ -55,7 +54,8 @@ HHApp.config(
 		  url: "/login/questions/:tabId",
 		  views: {
 			"q": {
-				templateUrl: "partials/questions.html"
+				templateUrl: "partials/questions.html",
+				controller: 'questionsCtrl'
 			}/*,
            	"svg_select": { 					
 				templateUrl: 'partials/svgLayout.html',			//sidebars still dont show up

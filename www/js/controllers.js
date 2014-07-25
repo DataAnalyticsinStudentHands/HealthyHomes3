@@ -71,13 +71,19 @@ HHControllers
     });	
   }])
 
- .controller('inputBoxCtrl', ['$scope', function($scope) {
-   $scope.names = ["type something"];
- }]);// end of HHControllers
+ .controller('inputBoxCtrl', ['$scope', 'databaseConnection',
+	function($scope, databaseConnection) {
+   		$scope.list = [{stuff: 'type something'}];
+		
+		$scope.sync = function(){
+        	databaseConnection.queryWebService($scope.list, function(value){
+            	console.log(value);
+				console.log("input box sync function");
+       		 });
+   		 };
+ }])
 
-
-var listControllers = angular.module('listControllers', []);
-listControllers.controller('listController', ['$scope', 'databaseConnection',
+.controller('listController', ['$scope', 'databaseConnection',
   function($scope, databaseConnection) {
     $scope.list = [
        {id: 1, name: 'perfect condition', checked: false},
@@ -88,6 +94,7 @@ listControllers.controller('listController', ['$scope', 'databaseConnection',
     $scope.sync = function(){
         databaseConnection.queryWebService($scope.list, function(value){
             console.log(value);
+			console.log("list sync function");
         });
     };
 }]);
