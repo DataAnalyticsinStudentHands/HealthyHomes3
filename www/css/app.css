@@ -357,6 +357,7 @@
     height:720px;
     padding: 25px;
      overflow-y: scroll;
+    
 }
 
 
@@ -428,7 +429,16 @@
   
 }
 
-
+#tabs_label{
+    position: absolute;
+    top:735px;
+    left:20px;
+    z-index: 30;
+    font-size: 12pt;
+    font-weight: 300;
+    text-decoration: none;
+    display: inline-block;
+    }
 
 
 

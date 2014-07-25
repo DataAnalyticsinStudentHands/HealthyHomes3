@@ -112,3 +112,41 @@ databaseServices.factory('Base64', function() {
         }
     };
 });
+
+/*-------------- dynamic json GET requests module --------------*/
+
+var jsonServices = angular.module('jsonServices', ['ngResource']);
+
+jsonServices.factory('Tab', ['$resource',
+  function($resource){
+    return $resource('json/:tabId.json', {}, {
+		query: {method:'GET', params:{tabId:'tabs'}, isArray:true},
+		query2: {method:'GET', params:{tabId:'tabs'}, isArray:true}
+    });
+  }]);
+
+
+/*----------------checklist module in questions----------------*/
+
+var databaseServices = angular.module('dbServicesModule', ['ngResource']);
+databaseServices.factory('databaseConnection', ['$resource', '$http',
+    function($resource, $http){
+        return $resource('http://housuggest.org/appLogin/echoJSON.php', {}, {
+            query: {method:'GET', params:{"query":"Hello to you too!"}},
+            hello: {method:'GET', params:{"commType":"Hello"}},
+            login: {method:'GET', params:{"requestType":"LOGIN"}},
+            queryWebService: {method:'GET'},
+	});
+}]);
+
+
+
+
+
+
+
+
+
+
+
+

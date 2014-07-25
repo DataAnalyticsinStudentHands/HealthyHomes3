@@ -1,0 +1,22 @@
+[
+    {
+        "id": "asthma", 
+        "imageUrl": "img/sidetab1.png" 
+    }, 
+    {
+        "id": "fall_prevention", 
+        "imageUrl": "img/sidetab2.png" 
+    }, 
+    {
+        "id": "lead", 
+        "imageUrl": "img/sidetab3.png" 
+    }, 
+    {
+        "id": "pesticide", 
+        "imageUrl": "img/sidetab4.png" 
+    }, 
+    {
+        "id": "summary", 
+        "imageUrl": "img/sidetab5.png" 
+    }
+]

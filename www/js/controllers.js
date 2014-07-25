@@ -55,90 +55,47 @@ HHControllers
   }];
 })
 
-/*.controller("tabCtrl", function($scope, $state) {		
-	$scope.go = function(route){
-		$state.go(route);
-	};
-	$scope.active = function(route){
-		return $state.is(route);
-	};
-	$scope.tabs = [
-		{ heading: "Tab 1", route:"questions.first", active:false },
-		{ heading: "Tab 2", route:"questions.second", active:false },
-		{ heading: "Tab 3", route:"questions.third", active:false },
-		{ heading: "Tab 4", route:"questions.fourth", active:false },
-		{ heading: "Tab 5", route:"questions.fifth", active:false }
-	];
-	$scope.$on("$stateChangeSuccess", function() {
-		$scope.tabs.forEach(function(tab) {
-			tab.active = $scope.active(tab.route);
-		});
-	});
-})*/
+.controller('tabCtrl', ['$scope', 'Tab',
+  function($scope, Tab) {
+    $scope.tabs = Tab.query();
+ }])
 
-.controller('questionsController1', ['$scope', '$http',						
-  function($scope, $http) {
-	  $scope.questions=[];
-    $http.get('json/asthma.json').success(function(data) {
-		$scope.questions = data;
-		/*$scope.orderProp = 'ID';*/
-		var text = "";
-
-		for (var i = 0; i < $scope.questions.length; i++) {
-			text += $scope.questions[i].questionText + "<br>";
+.controller('questionsCtrl', ['$scope', '$stateParams', 'Tab',
+  function($scope, $stateParams, Tab) {
+    $scope.tab = Tab.query2({tabId: $stateParams.tabId}, function(tab) {
+		$scope.questions=[]; 
+		
+		for (var i=0; i<$scope.tab.length; i++){
+			$scope.questions[i]=$scope.tab[i];
 		}
-		document.getElementById("forloop").innerHTML = text;
-		console.log("asthma array length is "+$scope.questions.length); //just to see
-	}); 
+    });	
   }])
 
-.controller('questionsController2', ['$scope', '$http',						
-  function($scope, $http) {
-	  $scope.questions=[];	  
-    $http.get('json/fall_prevention.json').success(function(data) {
-      $scope.questions = data;
-    
-    /*$scope.orderProp = 'ID';*/
-	var text = "";
+ .controller('inputBoxCtrl', ['$scope', 'databaseConnection',
+	function($scope, databaseConnection) {
+   		$scope.list = [{stuff: 'type something'}];
+		
+		$scope.sync = function(){
+        	databaseConnection.queryWebService($scope.list, function(value){
+            	console.log(value);
+				console.log("input box sync function");
+       		 });
+   		 };
+ }])
 
-	for (var i = 0; i < $scope.questions.length; i++) {
-		text += $scope.questions[i].questionText + "<br>";
-	}
-	document.getElementById("forloop").innerHTML = text;  
-	console.log("fall prevention array length is "+$scope.questions.length); //just to see		
-	});  
-  }])
+.controller('listController', ['$scope', 'databaseConnection',
+  function($scope, databaseConnection) {
+    $scope.list = [
+       {id: 1, name: 'perfect condition', checked: false},
+       {id: 12, name: 'good condition', checked: false},
+       {id: 35, name: 'needs work', checked: false},
+       {id: 47, name: 'very bad condition', checked: false}
+    ];
+    $scope.sync = function(){
+        databaseConnection.queryWebService($scope.list, function(value){
+            console.log(value);
+			console.log("list sync function");
+        });
+    };
+}]);
 
-.controller('questionsController3', ['$scope', '$http',						
-  function($scope, $http) {
-	  $scope.questions=[];	  
-    $http.get('json/lead.json').success(function(data) {
-      $scope.questions = data;
-    
-    /*$scope.orderProp = 'ID';*/
-	var text = "";
-
-	for (var i = 0; i < $scope.questions.length; i++) {
-		text += $scope.questions[i].questionText + "<br>";
-	}
-	document.getElementById("forloop").innerHTML = text;	
-	console.log("lead array length is "+$scope.questions.length); //just to see		
-	});  
-  }])
-
-.controller('questionsController4', ['$scope', '$http',						
-  function($scope, $http) {
-	  $scope.questions=[];	  
-    $http.get('json/pesticide.json').success(function(data) {
-      $scope.questions = data;
-    
-    /*$scope.orderProp = 'ID';*/
-	var text = "";
-
-	for (var i = 0; i < $scope.questions.length; i++) {
-		text += $scope.questions[i].questionText + "<br>";
-	}
-	document.getElementById("forloop").innerHTML = text;	
-	console.log("pesticide array length is "+$scope.questions.length); //just to see
-	});  
-  }]);	// end of controllers
