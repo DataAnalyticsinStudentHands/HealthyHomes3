@@ -4,7 +4,9 @@
 
 var HHControllers = angular.module('HHControllers', ['ui.router','layoutModuleController','layoutModuleServices', 'angular-gestures']);
 
-HHControllers.controller('mainController', function($scope) {	
+HHControllers
+
+.controller('sideMenuController', function($scope) {	
     $scope.alert = function (text) {
         alert(text);
     };
@@ -12,9 +14,6 @@ HHControllers.controller('mainController', function($scope) {
         alert('test in ctrl scope');
     };
 	
-
-/*    --------------    ng-repeat     ------------      */
-
     $scope.flagicons=[{
         icontype: 'greenflag'
             },{
@@ -54,6 +53,49 @@ HHControllers.controller('mainController', function($scope) {
   },{
     icontype:  'svg_circle'
   }];
+})
 
-/* ------------------ camera --------------------- now in camera.js */
-});
+.controller('tabCtrl', ['$scope', 'Tab',
+  function($scope, Tab) {
+    $scope.tabs = Tab.query();
+ }])
+
+.controller('questionsCtrl', ['$scope', '$stateParams', 'Tab',
+  function($scope, $stateParams, Tab) {
+    $scope.tab = Tab.query2({tabId: $stateParams.tabId}, function(tab) {
+		$scope.questions=[]; 
+		
+		for (var i=0; i<$scope.tab.length; i++){
+			$scope.questions[i]=$scope.tab[i];
+		}
+    });	
+  }])
+
+ .controller('inputBoxCtrl', ['$scope', 'databaseConnection',
+	function($scope, databaseConnection) {
+   		$scope.list = [{stuff: 'type something'}];
+		
+		$scope.sync = function(){
+        	databaseConnection.queryWebService($scope.list, function(value){
+            	console.log(value);
+				console.log("input box sync function");
+       		 });
+   		 };
+ }])
+
+.controller('listController', ['$scope', 'databaseConnection',
+  function($scope, databaseConnection) {
+    $scope.list = [
+       {id: 1, name: 'perfect condition', checked: false},
+       {id: 12, name: 'good condition', checked: false},
+       {id: 35, name: 'needs work', checked: false},
+       {id: 47, name: 'very bad condition', checked: false}
+    ];
+    $scope.sync = function(){
+        databaseConnection.queryWebService($scope.list, function(value){
+            console.log(value);
+			console.log("list sync function");
+        });
+    };
+}]);
+

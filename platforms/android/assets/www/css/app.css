@@ -5,81 +5,445 @@
 
 
 
-/* corbin css
-*********************************************************************************************/
-
-
-
-
-#wrapperOLD {
-    width: 100%;
-    
-    
-}
-
-
-.containerOLD{
-    width: 100%;
-}
-
-
-.bggOLD{position: absolute;
-    top: 0px;
-    left:0px;
-    z-index:-333;
-}
-    
-    
-
-    
-
 /* logo page
 *********************************************************************************************/
-body{
-    overflow:hidden;
-}
-bodyOLD{
+
+#wrapper {
     width: 100%;
-    overflow-y: hidden;
-    overflow-x: hidden;
     
 }
 
-.bgOLD{
-    position: absolute;
-    top:0px;
-    width: 100%;
-    
-}
-    
-    
 .logo_main {position:absolute;
     width: 25%;
     z-index: 10;
     top:27%;
     left:37%
-    
 }
-    
-    
-#login_stuff{
+
+.bg{
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+   }
+
+
+/* logo animation
+*********************************************************************************************/
+
+.wrap {
     position:absolute;
     top:27%;
-    left:37%;
+  margin: 0 100px;
+	-webkit-perspective: 800px;
+	-webkit-perspective-origin: 50% 100px;
+  /*border: 1px solid red;*/
+  width: 100%;
+  height: 300px;
+  margin: 0;
+  margin-top: 50px;
+    z-index: 4;
+}
+
+.cube {
+	position: relative;
+  margin: 0 auto;
+	width: 250px;
+	-webkit-transform-style: preserve-3d;
+  -webkit-animation: spin 3s 1 linear;
+  /*border: 1px solid blue;*/
+}
+
+.cube div {
+	position: absolute;
+	width: 250px;
+	height: 250px;
+  
+  /*border: 1px solid green;*/
+  
+  text-align: center;
+  font-family: sans-serif;
+  line-height: 250px;
+  transition: background-color 1s ease;
+}
+
+.cube div:hover {
+  background-color: rgba(255,0,38,0.25);
+}
+
+.back {
+	-webkit-transform: translateZ(-150px) rotateY(180deg);
+}
+
+.right {
+	-webkit-transform: rotateY(-270deg) translateX(150px);
+	-webkit-transform-origin: top right;
+}
+
+.left {
+	-webkit-transform: rotateY(270deg) translateX(-150px);
+	-webkit-transform-origin: center left;
+}
+
+.top {
+	-webkit-transform: rotateX(-90deg) translateY(-150px);
+	-webkit-transform-origin: top center;
+}
+
+.bottom {
+	-webkit-transform: rotateX(90deg) translateY(150px);
+	-webkit-transform-origin: bottom center;
+}
+
+.front {
+
+	-webkit-transform: translateZ(100px);
+}
+
+@-webkit-keyframes spin {
+  from { -webkit-transform: rotateY(0) }
+  to { -webkit-transform: rotateY(360deg) }
+}
+
+
+
+
+/* image css
+*********************************************************************************************/
+
+.front_image{
+   
+    width: 250px;
+	height: 250px;
+}
+
+
+.back_image{
+    background-color: blue;
+    width: 250px;
+	height: 250px;
+}
+
+
+
+.right_image{
+     background-color: green;
+    width: 250px;
+	height: 250px;
+}
+
+
+
+.left_image{
+     background-color: red;
+    width: 250px;
+	height: 250px;
+}
+
+
+
+/* login page
+*********************************************************************************************/
+
+#login{position: absolute;
+    top: 45%;
+    left:39%;
     text-align: right;
+    z-index: 2;
 }
 
-#login{
-    text-align: center;
+.loginbtn{
+    position: absolute;
+     left:39%;
+    z-index: 2;
 }
 
-.container-fluidOLD {
-    width: 100%;
-    position:absolute;
-    margin: auto;
-    padding:20% 42%;
+/* layout page
+*********************************************************************************************/
+
+#grid_bg{
+    position: absolute;
+    width:100%;
+    top:0px;
+    left: 0px;
+    z-index:-2;
+    opacity: .2;
+}
+
+#grid{
+    position: fixed;
+    height:1128px;
+    width:1468px;
+    top:1%;
+    left:9%;
+    z-index:-2;
+}
+
+#menubg{ 
+    background-image: url('../img/menu_bg.png');
+    position: fixed;
+    left:-1px;
+    width:210px;
+    height: 100%;
+    z-index: 3;
+    box-shadow: 0px 1px 10px 3px #888888;
+}
+
+#wrap_menus{
+    position:relative;
+    height:775px;
+    z-index: 4;
     
+}
+/*not sure what happened to calendar/camera - I thought this was supposed to be camera*/
+#camera{  
+   position:absolute;
+    top:40px;
+    z-index:10;
+    margin: 0 0 0 37px;
+    
+}
+
+#menu_green {
+     background-color:none;
+     color: rgb(105,249,190);
+     border: solid 3px;
+     width: 75px;
+     position: absolute;
+     right: 0px;
+     bottom:180px;
+     z-index:10;
+     border-radius: 10px;
+     margin: 0 22px 0 0;
+}
+
+
+#menu_black{
+    background-color:none;
+    color: rgb(51,51,51);
+    border: solid 3px;
+    min-width: 70px;
+    width: 75px;
+    position:absolute;
+    float:left;
+    top:142px;
+    z-index:10;
+    border-radius: 10px;
+    margin: 0 0 0 22px;
+}
+
+#pencil_popup{
+    border-color:rgb(255,255,13);
+    background-color: rgb(105,249,190);
+    border: solid 3px;
+    width: 150px;
+    height:100px;
+    position:absolute;
+    left:60px;
+    top:142px;
+    z-index:10;
+    border-radius: 10px;
+    margin-left: 20px;
     }
+
+.pencil_popup{
+    text-align: center;
+     padding:15px 10px 1px 7px;
+    display: block;
+    width:150px;
+}
+
+
+#menu_yellow{
+    background-color:none;
+     color: rgb(255,255,13);
+     border: solid 3px;
+     width: 75px;
+     position: absolute;
+     bottom:180px;
+     left: 0px;
+/*     float:left;
+    top: 167px;*/
+     z-index:10;
+     border-radius: 10px;
+     margin: 0 0 0 22px;
+}
+
+
+
+.menu_icon{
+    padding:10% 10% 10% 10%;
+    display: block;
+}
+
+
+#grid_sizes{
+    width: 210px;
+    position: absolute;
+/*    top:640px;*/
+    bottom:80px;
+    left:20px;
+    z-index:3;
+    margin: 0 0 0 0;
+     display: inline-block;
+}
+
+.grid_sizes{
+    padding: 0px 4px 0px 4px;
+   
+}
+
+
+#roomlabel{
+    background-color:none;
+     width: 200px;
+     position: absolute;
+    top:80px;
+    left:33px;
+    z-index:5;
+     padding: 10px 10px 10px 10px;
+}
+
+.roomlabel{
+    padding: 5px 0px 5px 0px;
+    margin: 0px 0px 0px 0px;
+    display: inline-block;
+}
+
+
+#side_tabs{background-color:none;
+    border: none;
+    width: 45px;
+    height:525px;
+    position: absolute;
+    top: 160px;
+    right:-3px;
+    z-index:3;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    
+}
+
+.side_tabs{
+    padding: 36px 0 38px 0;
+    box-shadow: 0px 1px 10px 1px #888888;
+}
+
+
+
+/* questions layout
+*********************************************************************************************/
+
+
+
+#questions_first{
+    text-decoration: none;
+    font-family: sans-serif;
+    
+    color:#000;
+    background-color:rgb(119,157,182);
+    position: absolute;
+    top:5px;
+    right:43%;
+    text-decoration: none; 
+    width:82%;
+    height:763px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+
+#questions{
+    width: 95%;
+    height:720px;
+    padding: 25px;
+     overflow-y: scroll;
+    
+}
+
+
+.main_questions{
+		position:absolute;
+		left:225px;
+		top:0px;
+		
+}
+
+.bgimg {
+		background-color: rgb(105,249,190);
+		position:relative;
+        width: 100%;
+		left:-24%;
+		top:-10%;
+		height:100%;
+	}
+
+
+
+.close_button{
+    position: absolute;
+    top:0px;
+    left:0px;
+    width:35px;
+}
+
+
+.question_tabs{
+    position: absolute;
+    top:727px;
+    left:0px;
+    z-index: 10;
+  
+}
+
+
+.question_tabs_2{
+    position: absolute;
+    top:727px;
+    left:120px;
+    z-index: 10;
+  
+}
+
+.question_tabs_3{
+    position: absolute;
+    top:727px;
+    left:240px;
+    z-index: 10;
+  
+}
+
+
+.question_tabs_4{
+    position: absolute;
+    top:727px;
+    left:360px;
+    z-index: 10;
+  
+}
+
+.question_tabs_5{
+    position: absolute;
+    top:727px;
+    left:480px;
+    z-index: 10;
+  
+}
+
+#tabs_label{
+    position: absolute;
+    top:735px;
+    left:20px;
+    z-index: 30;
+    font-size: 12pt;
+    font-weight: 300;
+    text-decoration: none;
+    display: inline-block;
+    }
+
+
+
+/* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
+
 
 #submit{position: absolute;
     top:120px;
@@ -92,102 +456,18 @@ bodyOLD{
     left:0px;
 }
 
-#menubg{ 
-    background-image: url('../img/menu_bg.png');
-    position: absolute;
-    width:17%;
-    top: 0px;
-    left: 0px;
-    z-index: 4;
-    height:100%;
-}
-#wrap_menus{
-    position:relative;
-    width:17%;
-    display:inline;
-}
-   /* green menu
-*********************************************************************************************/
 
- 
- #menu_green {
-     background-color:none;
-     color: rgb(105,249,190);
-     border: solid 3px;
-     min-width: 70px;
-     width: 4%;
-     position: relative;
-     float:right;
-/*
-     top:13%;
-     left: 56%;
-*/
-     z-index:10;
-     border-radius: 10px;
-     margin: 0% 0% 0% 0%;
-}
+   
 
-.menu_icon{
-    padding:10% 10% 10% 10%;
-    display: block;
-}
-
-
-
-/* black menu
-*********************************************************************************************/
-
-#menu_black{
-    background-color:none;
-    color: rgb(51,51,51);
-    border: solid 3px;
-    min-width: 70px;
-    width: 4%;
-    position:relative;
-    float:left;
-/*
-    top: -36%;
-    left: -3%;
-*/
-    z-index:10;
-    border-radius: 10px;
-/*    margin: 0 30% 0 15%;*/
-    padding: 0 0 0 0;
     
 }
 #svgSelector {
     cursor:pointer;
 }
 
-.menu_blackOLD{
-    padding:10% 10% 10% 10%;
-   display: inline-block;
-}
-
-/* yellow menu
-*********************************************************************************************/
 
 
-#menu_yellow{background-color:none;
-     color: rgb(255,255,13);
-     border: solid 3px;
-     min-width: 70px;
-     width: 4%;
-     position: relative;
-    float:left;
-/*
-     top: -29.7%;
-     left: -3%;
-*/
-     z-index:10;
-     border-radius: 10px;
-/*     margin-left: 15%;*/
-    font-size: 0px;
-}
 
-.menu_yellowOLD{
-    padding:10% 10% 10% 10%;
-   display: inline-block;
 }
 
 #menu_patternOLD{
@@ -200,43 +480,31 @@ bodyOLD{
     
 }
 
+.bggOLD{position: absolute;
+    top: 0px;
+    left:0px;
+    z-index:-333;
+}
+    
+    
+
+    
+
+
+body{
+    overflow:hidden;
+}
+
+
+
 
 /* roomlabel
 *********************************************************************************************/
 
-#calendar{background-color:none;
-    color: none;
-    width: 78px;
-    position:relative;
-/*
-    top:4%;
-    left:14%;
-*/
-    z-index:3;
-    padding: 10px 10px 10px 10px;
-    
-}
-
-.calendar{
-   margin: 0px 0px 0px 0px;
-    display: inline-block;
-            
-}
 
 
-#roomlabel{background-color:none;
-     width: 200px;
-     position: absolute;
-    top:64%;
-    left:15%;
-    z-index:3;
-     padding: 10px 10px 10px 10px;
-}
 
-.roomlabel{padding: 5px 0px 5px 0px;
-    margin: 0px 0px 0px 0px;
-    display: inline-block;
-}
+
 
 
 #top_label{background-color:none;
@@ -262,61 +530,10 @@ bodyOLD{
 /* grid sizes
 *********************************************************************************************/
 
-#grid_sizes{background-color:none;
-    color: rgb(255,255,13);
-    border: none;
-    width: 100%;
-    position: relative;
-/*
-    top:-19%;
-    left:10%;
-*/
-    z-index:3;
-    padding: 0 0 0 0;
-    margin:0 0 0 0;
-}
-
-.grid_sizes{
-    padding: 4px 1px 4px 4px;
-    margin: 0px 0px 0px 0px;
-    display: inline-block;
-}
 
 
 /* side tabs
 *********************************************************************************************/
-
-#side_tab_summary{
-    background-color:none;
-    color: rgb(255,255,13);
-    border: none;
-    width: 45px;
-    position: absolute;
-    top:80%;
-    left:96.5%;
-    z-index:3;
-    padding: 0px 0px 0px 0px;
-    box-shadow: 0px 1px 10px 1px #888888;
-}
-
-#side_tabs{background-color:none;
-    color: rgb(255,255,13);
-    border: none;
-    width: 45px;
-    height:525px;
-    position: absolute;
-    top:15%;
-    left:96.5%;
-    z-index:3;
-    padding: 0px 0px 0px 0px;
-}
-
-.side_tabs{
-    padding:;
-    margin: 10px 0px 0px 0px;
-    display: inline-block;
-    box-shadow: 0px 1px 10px 1px #888888;
-}
 
 
 
@@ -329,33 +546,11 @@ bodyOLD{
     left:17%;
     z-index:1;
 }
-#grid_bgOLD{
-    position: absolute;
-    width:100%;
-    top:0%;
-    left:17%;
-    z-index:1;
-}
 
 
 
-/* questions
-*********************************************************************************************/
-.main_questions{
-		position:absolute;
-		left:225px;
-		top:0px;
-		
-}
 
-.bgimg {
-		background-color: rgb(105,249,190);
-		position:relative;
-        width: 100%;
-		left:-24%;
-		top:-10%;
-		height:100%;
-	}
+
 
 
 /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */

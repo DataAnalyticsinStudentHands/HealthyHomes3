@@ -5,24 +5,28 @@ using factories, not services, but
 var layoutServices = angular.module('layoutModuleServices', []);
 layoutServices.service('layoutObjectModel', [function() {
     this.localStorageSet = function(layoutObject) { 
-        localStorage.setItem('layoutObject' + layoutObject.id, JSON.stringify(layoutObject));
+        console.log(gridContainer) //although should be whole floor
+        localStorage.setItem('grid', gridContainer);
+        return
         //return this.localStorageGetAll();
-    },
-    this.localStorageGet = function(index) {
-        return JSON.parse(localStorage.getItem('layoutObject' + index));
-    },
-    this.localStorageGetAll = function() {
-        console.log('in the service');
-        var layoutObjects = [];
-            for (var i = 0; i < localStorage.length; i++) {
-                if (localStorage.key(i).indexOf('layoutObject') !== -1) {
-                    var layoutObject = localStorage.getItem(localStorage.key(i));
-                    layoutObjects.push(JSON.parse(layoutObject));
-                }
-            }
-        console.log(layoutObjects);
-        return layoutObjects;
     };
+    this.localStorageGet = function(index) {
+        return localStorage.getItem('grid')
+//        return JSON.parse(localStorage.getItem('layoutObject' + index));
+    };
+    this.gridContainer = this.localStorageGet; // 
+//    this.localStorageGetAll = function() {
+//        //console.log('in the service');
+//        var layoutObjects = [];
+//            for (var i = 0; i < localStorage.length; i++) {
+//                if (localStorage.key(i).indexOf('layoutObject') !== -1) {
+//                    var layoutObject = localStorage.getItem(localStorage.key(i));
+//                    layoutObjects.push(JSON.parse(layoutObject));
+//                }
+//            }
+//        //console.log(layoutObjects);
+//        return layoutObjects;
+//    };
     
     this.put = function(note) {
         //alert('service');

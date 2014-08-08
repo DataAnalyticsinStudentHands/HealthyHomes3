@@ -18,7 +18,7 @@ module.exports = function (grunt) {
     // Define the configuration for all the tasks
     grunt.initConfig({
 
-        // Project settings
+        // Project settings //does this do anything???
         yeoman: {
             // configurable paths
             app: 'www/app'

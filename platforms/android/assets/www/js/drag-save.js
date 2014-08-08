@@ -28,7 +28,7 @@ angular.module('HHControllers').directive('dragSave',['$compile', 'uuid', 'layou
         },
         link: function(scope, elem, attrs, ctrl, transclude) {
             var iconType = scope.iconType = attrs.hmDrag;
-            var targetDrop = document.getElementById('grid_container');
+            var targetDrop = document.getElementById('grid_container'); //also from objectModel?
             //console.log(attrs);
             var targetHeight = parseInt(targetDrop.style.height) || 1128;
             var targetTop = targetDrop.offsetTop + targetDrop.offsetParent.offsetTop;
@@ -110,14 +110,14 @@ angular.module('HHControllers').directive('dragSave',['$compile', 'uuid', 'layou
                         lpos = gesture.center.pageX - xCorrect.offsetWidth; //http://stackoverflow.com/questions/21064101/understanding-offsetwidth-clientwidth-scrollwidth-and-height-respectively
                         tpospx = tpos + 'px';
                         lpospx = lpos + 'px';
-                        gridContainer = document.getElementById('grid_container');
+                        gridContainer = layoutObjectModel.gridContainer = document.getElementById('grid_container');
                         
 //                        scope.$apply(function() {
                         layoutUuid = uuid.new();
                         newObject = '<span id="'+layoutUuid+'" ng-click="test()" hm-drag="'+iconType+'" drag-save="dragStay" style="position:absolute;top:'+tpospx+';left:'+lpospx+';z-index=44;">Where Am I?</span>';
                         gridContainer.innerHTML += newObject;
                         layoutObject = $compile(gridContainer)(scope);
-                        layoutObjectModel.localStorageSet(layoutObject);
+                        layoutObjectModel.localStorageSet(gridContainer);
                         //console.log(gridContainer);
                     }; 
                 } else { //outside target

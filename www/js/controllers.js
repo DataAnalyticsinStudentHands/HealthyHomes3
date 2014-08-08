@@ -6,53 +6,48 @@ var HHControllers = angular.module('HHControllers', ['ui.router','layoutModuleCo
 
 HHControllers
 
-.controller('mainController', function($scope) {	
+.controller('sideMenuController', function($scope) {
+    $scope.newObj = function(obj){
+        alert(obj)
+        addObj.newObj($scope,objType);
+    };
     $scope.alert = function (text) {
-        alert(text);
+        alert(text+'in');
     };
     $scope.test = function() {
         alert('test in ctrl scope');
     };
 	
-    $scope.flagicons=[{
-        icontype: 'greenflag'
-            },{
-        icontype: 'yellowflag'
-            },{
-        icontype: 'redflag'
-    }];
-
-//    $scope.icons2=[{
-//    src: 'img/pencil.PNG'
+//    $scope.flagicons=[{
+//        icontype: 'greenflag'
+//            },{
+//        icontype: 'yellowflag'
+//            },{
+//        icontype: 'redflag'
+//    }];
+//    $scope.icons3=[{
+//    icontype:  'sink'
 //  },{
-//    src: 'img/ruler.PNG'
+//    icontype:  'window'
 //  },{
-//    src: 'img/eraser.PNG'
+//    icontype:  'stairs'
+//  },{
+//    icontype:  'fire'
+//  },{
+//    icontype:  'toilet'
+//  },{
+//    icontype:  'tub'
+//  },{
+//    icontype:  'door'
 //  }];
-
-    $scope.icons3=[{
-    icontype:  'sink'
-  },{
-    icontype:  'window'
-  },{
-    icontype:  'stairs'
-  },{
-    icontype:  'fire'
-  },{
-    icontype:  'toilet'
-  },{
-    icontype:  'tub'
-  },{
-    icontype:  'door'
-  }];
-    
-    $scope.iconSVGs=[{
-    icontype:  'svg_line'
-  },{
-    icontype:  'svg_rectangle'
-  },{
-    icontype:  'svg_circle'
-  }];
+//    
+//    $scope.iconSVGs=[{
+//    icontype:  'svg_line'
+//  },{
+//    icontype:  'svg_rectangle'
+//  },{
+//    icontype:  'svg_circle'
+//  }];
 })
 
 .controller('tabCtrl', ['$scope', 'Tab',
@@ -64,11 +59,14 @@ HHControllers
   function($scope, $stateParams, Tab) {
     $scope.tab = Tab.query2({tabId: $stateParams.tabId}, function(tab) {
 		$scope.questions=[]; 
-		
+
 		for (var i=0; i<$scope.tab.length; i++){
 			$scope.questions[i]=$scope.tab[i];
 		}
+
     });	
+
+	$scope.visibility = [{see: true}];
   }])
 
  .controller('inputBoxCtrl', ['$scope', 'databaseConnection',

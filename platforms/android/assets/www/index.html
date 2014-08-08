@@ -5,28 +5,36 @@
 	<meta charset="utf-8">
 	<title>Inspector Login Page</title>
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
-	<!--link rel="stylesheet" href="css/app.css"-->
+	<link rel="stylesheet" href="css/app.css">
 	<script src="bower_components/angular/angular.js"></script>
-<!--    <script src="bower_components/angular-cookies/angular-cookies.js"></script>-->
+<!--<script src="bower_components/angular-cookies/angular-cookies.js"></script>-->
 	<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-<!--
-    <script src="bower_components/lodash/dist/lodash.underscore.js"></script>
+	<script src="/bower_components/angular-resource/angular-resource.js"></script>	
+<!--  <script src="bower_components/checklist-model/checklist-model.js"></script>	-->
+<!--<script src="bower_components/lodash/dist/lodash.underscore.js"></script>
     <script src="bower_components/restangular/dist/restangular.js"></script>
 	<script src="bower_components/angular-touch/angular-touch.js"></script>-->
     <script src="bower_components/angular-gestures/gestures.min.js"></script>
 	<script src="js/app.js"></script> 
-<!--    <script src="js/dbcontroller.js"></script>-->
+<!--<script src="js/dbcontroller.js"></script>-->
   	<script src="js/controllers.js"></script>
   	<script src="js/layoutservices.js"></script>
     <script src="js/layout-controller.js"></script>
     <script src="js/drag-save.js"></script>
     <script src="js/camera.js"></script>
-<!--    <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha512.js"></script>-->
+	<script src="js/ng-cordova.js"></script>
+  	<script src="js/checklist-model.js"></script>	
+    <script src="js/services.js"></script>	
+<!--	<script src="cordova.js"></script>-->
+<!--<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha512.js"></script>-->
 </head> 
     
-<body>
-    <div ui-view="app"></div>
-<!--    <script type="text/javascript">
+<body> 
+    <div ui-view="app"></div> 
+    <div ui-view="sideMenu"></div>
+    <div ui-view="layout"></div>
+
+<script type="text/javascript">
 
     //Chrome passes the error object (5th param) which we must use since it now truncates the Msg (1st param).
     window.onerror = function (errorMsg, url, lineNumber, columnNumber, errorObject) {
@@ -41,7 +49,19 @@
         alert('Error: ' + errMsg);
         document.write(errMsg);
     }
-</script>-->
+
+    var throwError = function () {
+        throw new Error(
+        'Something went wrong. Something went wrong. Something went wrong. Something went wrong. ' +
+        'Something went wrong. Something went wrong. Something went wrong. Something went wrong. ' + 
+        'Something went wrong. Something went wrong. Something went wrong. Something went wrong. ' + 
+        'Text does not get truncated! :-)');
+    }
+
+    </script>
+
+    <div id="error"></div>
+
 </body>
     
 </html>

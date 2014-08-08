@@ -1,7 +1,7 @@
 angular.module('checklist-model', [])
 .directive('checklistModel', ['$parse', '$compile', '$timeout', function($parse, $compile, $timeout) {
     function contains(item) {
-        console.log('callContains');
+        //console.log('callContains');
         return item.checked;
     }
 

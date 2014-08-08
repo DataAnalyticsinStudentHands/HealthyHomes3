@@ -1,0 +1,90 @@
+<!--<span style="position:relative" hm-hold="svgEdit=!svgEdit" >Where are we?-->
+<!--
+what's going on with stacking contexts for z-index while dragging - should be on top!!
+    <span ng-repeat="layoutObj in LayoutObject">
+        {{layoutObj.name}}
+    </span> 
+giving viewbox a margin, but doing interior measures on 100%/
+
+<div id="futureSettingsDiv" style="position:absolute;left:100px;">
+    <input ng-model="gridSizeHt" size=8/><input ng-model="gridSizeWd" size=8/>
+    Snap?<input type="checkbox" ng-model="snapToGrid" name="Grid-Snap"/>
+    <p>height/width (percent of view is calculated</p>
+</div>
+-->
+
+        <svg id="floor-container" ng-attr-height="2000px" width="2000px" viewBox="0 0 2000 2000" >
+            <g ng-show="gridShow" stroke="#6bea3b" stroke-dasharray="5,5,5,5,5,5" fill="#fcfbfa" fill-opacity="0.2" stroke-width="1">
+                <line ng-repeat="gridpt in gridLineNumber(gridSizeHt,gridSizeWd)" ng-attr-x1="{{gridpt}}" y1="0" ng-attr-x2="{{gridpt}}" y2="2000" />
+                <line ng-repeat="gridpt in gridLineNumber(gridSizeHt,gridSizeWd)" x1="0" ng-attr-y1="{{gridpt}}" x2="2000" ng-attr-y2="{{gridpt}}" />
+<!-- Above should read from screen size, but right now is just set-->            
+            </g> <!--for gridlines-->     
+            <g class="floorLines" stroke="#bb3bea" fill="#fcfbfa" fill-opacity="0.2" stroke-width="3">
+<!--                <polygon points="10,10 150,10 150,150 10,150"/>-->
+                <polygon class="floorShowline" 
+                         hm-dragend="dragFloors($event)"
+                         ng-show="!svgEdit" 
+                         hm-hold="svgEdit=!svgEdit" 
+                         ng-attr-points="{{pointPath(floorPoints)}}"/>
+<!--                <polygon class="floorEditline" ng-show="svgEdit" ng-attr-points="{{pointPath(floorPoints)}}"/>
+                <line class="floorEditLine"
+                      ng-show="svgEdit" 
+                      ng-repeat="pointPairs in floorPoints"
+                      hm-dragend = "dragLines($event)"
+                      ng-attr-x1="{{floorPoints[$index][0]}}" ng-attr-y1="{{floorPoints[$index][1]}}" 
+                      ng-attr-x2="{{floorPoints[$index+1][0]}}" ng-attr-y2="{{floorPoints[$index+1][1]}}"
+                      />
+-->
+                <line class="floorEditLine"
+                      ng-show="svgEdit" 
+                      ng-repeat="pointPairs in floorPoints4Lines"
+                      hm-dragend = "dragLines($event)"
+                      ng-attr-x1="{{floorPoints4Lines[$index][0]}}" ng-attr-y1="{{floorPoints4Lines[$index][1]}}" 
+                      ng-attr-x2="{{floorPoints4Lines[$index][2]}}" ng-attr-y2="{{floorPoints4Lines[$index][3]}}"
+                      />
+            </g>
+            <g class="roomLines" stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2" ng-repeat="room in currentFloor">
+                <polygon dragcopy
+                         hm-drag = "draggingCopy($event,currentFloor[$index].roomPoints)"
+                         hm-dragend = "dragShapes($event)"
+                         hm-hold="roomLineEdit=!roomLineEdit"
+                         class="roomShowLine" 
+                         ng-show="!roomLineEdit" 
+                         ng-attr-points="{{pointPath(currentFloor[$index].roomPoints)}}" 
+                />
+                <polygon 
+                         hm-hold="roomLineEdit=!roomLineEdit"
+                         class="roomEditLine" 
+                         ng-show="roomLineEdit" 
+                         ng-attr-points="{{pointPath(currentFloor[$index].roomPoints)}}" 
+                />
+                <circle ng-repeat="(i, vals) in currentFloor[$index].roomPoints"
+                        hm-dragend="dragAloneRoom($event,i,vals)"
+                        ng-show="roomLineEdit"
+                        class="roomEditLine"
+                        ng-attr-cx="{{vals[0]}}"
+                        ng-attr-cy="{{vals[1]}}"
+                        r = 6
+                />
+                <!--For room in currentFloor, but needs to have gone through separate scope
+Instead of separate scope, can just keep them straight as they're added by points - then have functions that rearrange them in the controller
+hm-dragend = "dragShapes($event)"
+                         hm-drag = "dragShapes2($event)"
+hm-dragstart = "dragRecord($index)"
+-->
+<!--
+                <path ng-repeat="i in [0,1,2,3]" 
+                      ng-attr-d="{{'M'+currentFloor[$index].roomPoints[i][0]+20+' '+currentFloor[$index].roomPoints[i][1]+20+' '+
+                                 currentFloor[$index].roomPoints[3][0]+' '+currentFloor[$index].roomPoints[3][1]}}" />
+-->
+            </g>
+<!--        <svg ng-attr-height="{{floorHeight()}}" width="{{floorWidth()}}" viewBox="0 0 100 100" >-->
+            
+            
+            <g ng-show="svgEdit" ng-repeat="points in floorPoints" stroke="#BC9D73" stroke-dasharray="10,5,5,5,5,10" fill="#F5F0EA" fill-opacity="0.8" stroke-width="1">
+                <circle hm-dragend='dragAlone($event,$index)' ng-attr-cx={{points[0]}} ng-attr-cy={{points[1]}} r="6" />
+            </g>
+            
+            
+
+        </svg>
