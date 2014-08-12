@@ -2,8 +2,8 @@
 /* Controllers */
 var layoutController = angular.module('layoutModuleController', []);
 
-layoutController.controller('layoutCtrl', ['$scope', '$window','$state','$stateParams', 'layoutObjectModel','uuid','$compile','addObj','addSvgPoint',
-	function ($scope, $window, $state, $stateParams, layoutObjectModel, uuid, $compile, addObj, addSvgPoint) { 
+layoutController.controller('layoutCtrl', ['$scope', '$window','$state','$stateParams', 'layoutObjectModel','addObj','addSvgPoint',
+	function ($scope, $window, $state, $stateParams, layoutObjectModel, addObj, addSvgPoint) { 
 //        document.addEventListener("deviceready", onDeviceReady, false);
 //        function onDeviceReady() {
         $scope.flagicons=[{
@@ -69,20 +69,55 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state','$stateP
         document.addEventListener("touchcancel", touchHandler, true);  
     //}
         
-        var viewContainer = document.getElementById('grid-container');
+//        var viewContainer = document.getElementById('grid-container');
         
-        $scope.gridShow = true;
+        $scope.newFloorRoom = function(){
+            $scope.newFloorOrRoom = !$scope.newFloorOrRoom
+        };
+        $scope.gridShow1 = true; //in case we want to turn them off for some views
+        $scope.gridShow5 = true;
         $scope.gridSizeHt = 2000; //just ng-init these? or get from some settings?
         $scope.gridSizeWd = 2000;
         var windowHt = $window.outerHeight;
         var windowWd = $window.outerWidth;
+//        var gridElem = document.getElementById('floor-container');
+//        var gridWd = gridElem.width;
         $scope.gridLineNumber = function(gridSizeHt,gridSizeWd){
-            return _.range(0,2000,50) //everyfive feet
+            return _.range(0,2000,gridSizeWd) //everyfive feet
         }
         //console.log($scope.gridLineNumber(11,11))
         $scope.gridlinePts = function(gridSizeHt,gridSizeWd){
             return '5,5 2000,2000'
         }
+        var gridMag = 1;
+        $scope.magnifyGrid = function(num){
+            var gridElem = angular.element(document.getElementById('floor-container'));
+            var elemWidth = gridElem[0].offsetWidth;
+            console.log(elemWidth)
+            if (elemWidth == 2016){elemWidth = 2000}; //have to figure out where the margins are coming from
+            var newNum = num * (elemWidth); 
+            gridElem.css({'width':newNum+'px','height':newNum+'px'});
+            gridMag = 2000/newNum;
+        }
+        var dragtheGrid = $scope.dragtheGrid = false;
+        $scope.gridDrag = function(){
+            dragtheGrid =! dragtheGrid;
+            $scope.dragtheGrid = dragtheGrid;
+        };
+        $scope.dragGrid = function($event){
+            if (dragtheGrid){
+                $event.preventDefault();
+                var deltaX = $event.gesture.deltaX;
+                var deltaY = $event.gesture.deltaY;
+                var offTop = $event.target.offsetTop + deltaY;
+                var offLeft = $event.target.offsetLeft + deltaX;
+                if (offTop > 0) { offTop = 0}; //need to also keep it from going off to the right
+                if (offLeft > 0) { offLeft = 0};
+                angular.element($event.target).css({'top':offTop,'left':offLeft});
+            };
+        }
+//        $scope.gridMag = windowWd/gridWd;
+//        console.log('gridMag: '+$scope.gridMag);
         $scope.floorLists = ['neighborhood', 'exterior', 'first', 'second', 'third', 'basement', 'attic', 'garage', 'section'];
         $scope.roomLists = ['exterior','living room','bath','closet','kitchen','dining room'];
         var floors = []; 
@@ -121,7 +156,87 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state','$stateP
 //            console.log(rtnStr);
             return rtnStr;
         };
-        
+        //http://geomalgorithms.com/a03-_inclusion.html [0 is online;>0 is Left of line;<0 is Right of Line
+        var onLine = function(x1,y1,x2,y2,xTest,yTest){
+            return ( ((x2-x1)*(yTest-y1)) - ((xTest-x1)* (y2-y1)) )
+        }
+        var windingTest = function(xTest,yTest, arr){
+            var wn = 0;
+            arr.push([arr[0][0],arr[0][1]])
+            console.log(arr)
+            for (var i = 0; i < arr.length-1; i++) {
+                if (arr[i][1] <= yTest) {
+                    if (arr[i+1][1] > yTest){
+                        if (onLine(arr[i][0],arr[i][1],arr[i+1][0],arr[i+1][1],xTest,yTest) > 0) {
+                            wn += 1; }
+                    }
+                } else {
+                    if (arr[i+1][1] <= yTest){
+                        if (onLine(arr[i][0],arr[i][1],arr[i+1][0],arr[i+1][1],xTest,yTest) < 0){
+                            wn -= 1; }
+                    }
+                }
+            }
+            arr.pop();
+//            alert(wn)
+            return wn
+        }
+        $scope.testWn = function($event,arr){
+            console.log(arr)
+            $event.preventDefault();
+            var wn = windingTest($event.gesture.center.pageX,$event.gesture.center.pageY,arr)
+            return wn
+        }
+        $scope.addPoint = function($event,arr){
+            //find closest corners
+            var fingerX = $event.gesture.center.pageX;
+            var fingerY = $event.gesture.center.pageY;
+            var newDist = 0;
+            var pythagDist = Math.sqrt((fingerX-arr[0][0])*(fingerY-arr[0][1]));
+            var ind4new = 0;
+            var slope1 = 0;
+            var slope2 = 0;
+            arr.push([arr[0][0],arr[0][1]])
+            for (var i = 0;i<arr.length-1;i++){
+                if (arr[i+1][1]-arr[i][1]==0){ 
+                        //alert('think') 
+                        slope1 = 10000;
+                } else {
+                        slope1 = (arr[i+1][0]-arr[i][0])/(arr[i+1][1]-arr[i][1]);
+                };
+                alert(slope1 + ' i'+i)
+                newDist = Math.sqrt((fingerX-arr[i][0])*(fingerY-arr[i][1]))
+                if (newDist < pythagDist){
+                    newDist = 0;
+                    pythagDist = newDist;
+                    ind4new = i;
+ //how use slope and distance to calculate whether it's closest                   
+//                    var line = onLine(arr[i-1][0],arr[i-1][1],arr[i][0],arr[i][1],fingerX,fingerY);
+//                    alert(line)
+                };
+            }
+            arr.pop();
+            var testInd = currentRoom.roomPoints[ind4new]
+            console.log(ind4new)
+            console.log(currentRoom.roomPoints[ind4new])
+            console.log(currentRoom.roomPoints.indexOf(testInd))
+            var newX = fingerX*gridMag;
+            var newY = fingerY*gridMag;
+            if(ind4new+1>arr.length){
+                currentRoom.roomPoints.push([newX,newY]);
+            }else{
+                currentRoom.roomPoints.splice(ind4new,0,[newX,newY]);
+            }
+        }
+        $scope.pointPathDonut = function(arr){
+            firstStr = $scope.pointPath(arr);
+            insideDirection = arr.reverse();
+            //add points to see if inside, and give a distance based on size of polygon
+        }
+                
+                    
+            
+            
     
         
         $scope.newFloor = function(floor){
@@ -205,7 +320,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state','$stateP
                 $stateParams.roomName = room; //can that have an ng-show or ui-sref-active??? how is it inherited?
                 currentRoom = currentFloor[roomInd]; //make sure picks up original
                 if (!currentRoom.roomPoints){
-                    currentRoom.roomPoints = $scope.roomPoints = [[120,120],[220,120],[220,220],[120,220]]; //should be calculated from previous?
+                    currentRoom.roomPoints = $scope.roomPoints = [[220,220],[320,220],[320,320],[220,320]]; //should be calculated from previous?
                     
                 };
                 $scope.currentFloor = currentFloor;
@@ -221,57 +336,78 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state','$stateP
             console.log(currentRoom)
             };
         };
-        $scope.dragAlone = function($event,ind){
-            setTimeout(1000);
-            var deltaX = $event.gesture.deltaX;
-            var deltaY = $event.gesture.deltaY;
-            currentFloor.floorPoints[ind][0] += deltaX;
-            currentFloor.floorPoints[ind][1] += deltaY;
-        }
-        $scope.dragAloneRoom = function($event,ind,vals){
-            setTimeout(100);
-            var deltaX = $event.gesture.deltaX;
-            var deltaY = $event.gesture.deltaY;
-            currentRoom.roomPoints[ind][0] = vals[0]+deltaX;
-            currentRoom.roomPoints[ind][1] = vals[1]+deltaY;
-        }
-        $scope.dragShapes = function($event){ //need to work in zoom stuff
-            setTimeout(100);
+        $scope.pinchResize = function($event){
             $event.preventDefault();
-            var deltaX = $event.gesture.deltaX;
-            var deltaY = $event.gesture.deltaY;
-//            var newX = $event.gesture.center.pageX-
-            console.log($event)
-            for (var n = 0;n<currentRoom.roomPoints.length;n++){
-//                var tmpY = currentRoom.roomPoints[n][1]
-//                var newX = currentRoom.roomPoints[n][0] + ($event.gesture.center.pageX - currentRoom.roomPoints[n][0]) 
-//                currentRoom.roomPoints[n][0] = $event.gesture.center.pageX;
-//                currentRoom.roomPoints[n][0] = newX;
-                currentRoom.roomPoints[n][0] += deltaX;
-                currentRoom.roomPoints[n][1] += deltaY;
+            //not sure how to do this for debugging - my thought is we'd just resize whole distance on x and on y
+            console.log($event.gesture.deltaX)
+        }
+        $scope.roomLines = function(points4line){ // too much for Angular to digest
+            var lines = [];
+            var firstLine = [];
+            var line = [];
+            var line2 = [];
+            for(var i = 0;i<points4line.length;i++){
+                if (i%2 == 0){
+                    line.push(points4line[i]);
+                    if(line.length==2){
+                        lines.push(line);
+                    }else{
+                        firstLine.push(line)
+                    };
+                    line = [];
+                    line2.push(points4line[i]);
+                }else{
+                    line.push(points4line[i]);
+                    line2.push(points4line[i]);
+                    if (line2.length==2){
+                        lines.push(line2);
+                        line2 = [];
+                    };
+                };
+                firstLine.push(line2);
+                lines.push(firstLine);
             }
-        };
-        var copyPoints = [];
-        $scope.dragShapes2 = function($event,copyPoints){ //need to work in zoom stuff
+            console.log(lines)
+            return lines;
+        }
+        $scope.dragPoints = function($event,i){
             $event.preventDefault();
+            currentRoom.roomPoints[i][0] = 10*Math.round(($event.gesture.center.pageX*gridMag)/10);
+            currentRoom.roomPoints[i][1] = 10*Math.round(($event.gesture.center.pageY*gridMag)/10);
+        }
+
+//        $scope.dragAloneRoom = function($event,ind,vals){
+//            setTimeout(100);
 //            var deltaX = $event.gesture.deltaX;
 //            var deltaY = $event.gesture.deltaY;
-//            var newX = $event.gesture.center.pageX-
-//            console.log('dragShapes2')
-//            console.log($event)
-            for (var n = 0;n<copyPoints.length;n++){
-                
-                var deltaX = $event.gesture.deltaX;
-                var deltaY = $event.gesture.deltaY;
+//            currentRoom.roomPoints[ind][0] = vals[0]+deltaX;
+//            currentRoom.roomPoints[ind][1] = vals[1]+deltaY;
+//        }
+        $scope.dragShapes = function($event){ //need to work in zoom stuff - needs copy and drag from left top to smooth it out
+            var copyPoints = currentRoom.roomPoints
+            $event.preventDefault();
+            var xtraOffX = 0;
+            var xtraOffY = 0;
+            console.log(copyPoints.length)
+            if(copyPoints.length > 3){
+                xtraOffX = Math.abs(copyPoints[0][0]-copyPoints[1][0])/2;
+                xtraOffY = Math.abs(copyPoints[0][1]-copyPoints[2][1])/2; //works well for squares
+            }
+            var dragX = ($event.gesture.center.pageX*gridMag)-copyPoints[0][0]-xtraOffX;
+            var dragY = ($event.gesture.center.pageY*gridMag)-copyPoints[0][1]-xtraOffY;
+            for (var n = 0;n<currentRoom.roomPoints.length;n++){
+                currentRoom.roomPoints[n][0] = 10*Math.round((copyPoints[n][0] + dragX)/10);
+                currentRoom.roomPoints[n][1] = 10*Math.round((copyPoints[n][1] + dragY)/10);
+            }
+            
 //                var deltaY = $event.gesture.deltaY;
                 
 //                copyRoomPoints[n][0] = currentRoom.roomPoints[n][0]
 //                copyRoomPoints[n][1] = currentRoom.roomPoints[n][1]
-                var tmpX = copyPoints[n][0]
-                var tmpY = copyPoints[n][1]
+                
 //                var newY = deltaY+tmpY
-                var pageDistX = $event.gesture.center.pageX-tmpX
-                var pageDistY = $event.gesture.center.pageY-tmpY
+//                var pageDistX = $event.gesture.center.pageX-tmpX
+//                var pageDistY = $event.gesture.center.pageY-tmpY
 //                if($event){iEvent++
 //                    console.log(iEvent)
 ////                    console.log(iEvent%10)
@@ -283,13 +419,14 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state','$stateP
 //                currentRoom.roomPoints[n][0] += deltaX;
                 
 //                currentRoom.roomPoints[n][1] = 0;
-                copyPointsPoints[n][0] = $event.gesture.center.pageX+pageDistX;
-                copyPoints[n][1] = $event.gesture.center.pageY+pageDistY;
-                console.log(copyPoints)
+                
+                //setTimeout(10);
+                
+//                console.log(copyPoints)
 //                newY = 0;
 //                deltaY = 0;
                 
-            }
+//            }
         };
         $scope.cons = function(){
             console.log(currentInspection)

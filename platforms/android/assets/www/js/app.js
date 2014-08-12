@@ -7,23 +7,22 @@ http://angular-ui.github.io/ui-router/site/#/api/ui.router.util.$resolve?*/
 var HHApp = angular.module('HHApp', [
 	'HHControllers', 
 	'ui.router', 
+    'angular-gestures',
 	'ngCordova.plugins.camera',  
 	'jsonServices',
 	'dbServicesModule', 
+    'restangular',
 	'checklist-model'
 ]); //dependencies
 
-HHApp.config(
+HHApp.config(function(RestangularProvider) {
+                RestangularProvider.setBaseUrl('/json');
+            })
+.config(
   function($stateProvider) {
-    $stateProvider
-      .state('logo', {
-          url: "",
-          views: {
-            "app": { templateUrl: "partials/logoPage.html"}
-          }
-      })    
+    $stateProvider 
       .state('login', {
-          url: "/login",
+          url: "",
           views: {
             "app": {templateUrl: "partials/loginPage.html"} 
           }
@@ -49,23 +48,44 @@ HHApp.config(
 //          data: 
       })  
       .state('layout', {	
-//          abstract: true,
-          url: "/layout",
+          abstract: true,
+//          url: "/layout",
           views: {
                 "layout": { 
 					templateUrl: 'partials/layoutPage.html',
 					controller: 'layoutCtrl' 					
-					},
-                "sideMenu": { //will give us more control later
-                    templateUrl: 'partials/sideMenu.html',
-                    controller: 'sideMenuController'
-                    }	  
+					}//,
+//                "sideMenu": { //will give us more control later
+//                    templateUrl: 'partials/sideMenu.html',
+//                    controller: 'layoutCtrl'   
+//                    //controller: 'sideMenuController' //right now, it's just calling in json
+//                    }	  
             } //,
           //authenticate: true //add here once Carl's module included for authentication
       })
-      .state('layout.floor' {
-             data: {
-                floorData: 'ref to ID?'
+      .state('layout.floor', {
+          url: "/layout",
+          views: {
+                "floor": {
+                    templateUrl: 'partials/floor.html'
+                }
+            }//,
+//          data:{
+//             resolve: {
+//                floorData: function($stateParams, layoutObjectModel) {
+//                    var thisFloor = $stateParams.floorName;
+//                    var currentFloor = layoutObjectModel.inspection[thisFloor]; //need to rethink
+//                    return currentFloor;
+//                }
+//             }
+      })
+      .state('layout.floor.room', {
+             resolve: {
+                floorData: function($stateParams, layoutObjectModel) {
+                    var thisRoom = $stateParams.roomName;
+                    var corners = $stateParams.corners;
+                    return currentRoom;
+                }
              }
       })
       .state('questions', {										//same ^
@@ -78,20 +98,29 @@ HHApp.config(
 	  .state('questions.tabs', {
 		  url: "/login/questions/:tabId",
 		  views: {
-			"q": {
+			"questions": {
 				templateUrl: "partials/questions.html",
 				controller: 'questionsCtrl'
 			}
 		  }
 	  })
+      .state('topMenu', {
+          views: {
+              'topMenu': {
+                  templateUrl: 'partials/topMenu.html'
+              }
+          }
+      })         
+    // perhaps for note, too?
+//    http://stackoverflow.com/questions/23231608/angular-ui-router-modal-removes-parent-state
       .state('camera', { //I'm not sure how this has been envisioned
           url: "/login/camera",
           views: {
-            "app": {templateUrl: "partials/camera.html"} 
+            "camera": {templateUrl: "partials/camera.html"} 
           }
       });
   })
     .run(function($state){ //need to discuss how we will do login, etc.
-   $state.go('logo');
+   $state.go('login');
     });
   

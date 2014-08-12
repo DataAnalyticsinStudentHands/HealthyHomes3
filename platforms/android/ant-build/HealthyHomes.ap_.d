@@ -38,6 +38,7 @@
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/js \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/json \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/partials \
+/Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/phonegap.js \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/bower_components/angular \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/bower_components/angular-animate \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/bower_components/angular-bootstrap \
@@ -384,6 +385,7 @@
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/bower_components/restangular/test/restangularSpec.js \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/css/app.css \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/css/camera.css \
+/Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/add_button.png \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/addfloor.png \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/backbutton.png \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/bg.png \
@@ -407,8 +409,11 @@
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/loginbutton.png \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/logo_bg.png \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/logo_big.png \
+/Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/logo_big.svg \
+/Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/logo_big.svg.html \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/menu_bg.png \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/pencil.png \
+/Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/questions_bg.png \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/redflag.png \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/redsquare.png \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/roomlabel.png \
@@ -433,9 +438,12 @@
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/smallyellowflag.png \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/solid_line.svg \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/stairs.png \
+/Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/summerofappslogo.svg.html \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/tabs.png \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/toilet.png \
+/Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/trash.png \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/tub.png \
+/Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/uhlogo.svg \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/window.png \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/yellowflag.png \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/img/yellowsquare.png \
@@ -457,6 +465,7 @@
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/json/summary.json \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/json/tabs.json \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/partials/camera.html \
+/Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/partials/floor.html \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/partials/inspectionGeneral.html \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/partials/inspectionSchedule.html \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/partials/layoutIcons.html \
@@ -466,10 +475,10 @@
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/partials/overview.html \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/partials/questions.html \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/partials/secure.html \
-/Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/partials/sideMenu.html \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/partials/summary.html \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/partials/svg_circle.html \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/partials/svg_line.html \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/partials/svg_rectangle.html \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/partials/svgLayout.html \
+/Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/assets/www/partials/topMenu.html \
 /Users/danprice/Documents/Projects/HealthyHomes3/platforms/android/ant-build/AndroidManifest.xml \

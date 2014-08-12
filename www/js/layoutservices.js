@@ -5,7 +5,7 @@ Now moving to controllers with Restangular
 */
 var layoutServices = angular.module('layoutModuleServices', []);
 layoutServices.service('layoutObjectModel', ['Restangular','$state','$stateParams', 'uuid', function(Restangular,$state,$stateParams,uuid) {
-    console.log($state)
+    //console.log($state)
     var layoutObjectModel = Restangular.service('inspections');
     Restangular.extendModel('inspections',function(model) {
         model.getResult = function(){

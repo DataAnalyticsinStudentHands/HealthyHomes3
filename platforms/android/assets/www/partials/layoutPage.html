@@ -1,20 +1,72 @@
 <div id="wrapper"> 
 
-     <div id="grid_wrapper">
-         <span id="grid_container"></span> <!--the newly inserted layoutObjects go here 
-         <span class="display_icon" ng-repeat="layoutObj in layoutObjectModel.floor, etc."></span>-->
+    <div ng-include="'partials/topMenu.html'">
+    </div>
+    
+    <div id="floorSelect" ng-show="newFloorOrRoom">
+        <h3>Select or Add Floor</h3>
+        <h3 ng-repeat="room in rooms">room</h3>
+        <select ng-model="floor" 
+                required
+                ng-change="newFloor(floor)"
+                ng-options="floor for floor in floorLists">
+        </select>
+        <br>
+        <h3>Select or Add Room</h3>
+        <select ng-model="room" 
+                required
+                ng-change="newRoom(room)"
+                ng-options="room for room in roomLists"></select>
+        <br>
+        <p>Inspection items are added to rooms on a floor. You may draw the overall floor, then place rooms inside or have the floor drawn automatically from an outline of the rooms. A quick press or click on a line makes it editable. In edit mode, a long press will add a new endpoint within the polygons. It drags without edit mode.</p>
+        <input type="checkbox" id="drawFloorfromRooms" ng-model="drawFromRooms" select="true"/>Draw floor plan automatically from rooms
+        
+    </div>
+    
+    <div id="grid-container">
+        <div id="floor-wrap" ui-view="floor">
+        </div>
+    </div>
+    
+<!--
+replace include with a ui-view
+need: for floor in floors
+    percentage slider?
+    room/floor pull down
+    icons to click or drag/drop
+    editSvg as mode per object
+         <span id="grid_container"></span> the newly inserted layoutObjects go here 
+         <span class="display_icon" ng-repeat="layoutObj in layoutObjectModel.floor, etc."></span>
          <img id="grid" src="img/grid.png">
-     </div>
+-->
+     
 
-	
+    
+<!--
 	<div id="top_label">
     	<img class="top_label" src="img/extview.png">
     	<img class="top_label" src="img/addfloor.png"><div ui-view="q"></div>
     </div>
+-->
+
+    <div ui-view="questions"></div>
 		 
 
 	<div id="side_tabs" ng-controller="tabCtrl">
 		<span class="side_tabs" ng-repeat="tab in tabs"><a ui-sref="questions.tabs({tabId: tab.id})"><img ng-src="{{tab.imageUrl}}"></a></span>
 	</div>	
 	
+
+
+<div id="minilogo">
+  
+<div class="wrapanimate2">
+  <div class="cube2">
+    <div class="front2"><img class ="front_image2" src="img/logo_big.svg"></div>
+   
+  </div>
+
+</div>
+</div>
+    
 </div>

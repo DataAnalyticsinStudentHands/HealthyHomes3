@@ -13,15 +13,31 @@ giving viewbox a margin, but doing interior measures on 100%/
 </div>
 -->
 
-        <svg id="floor-container" ng-attr-height="2000px" width="2000px" viewBox="0 0 2000 2000" >
-            <g ng-show="gridShow" stroke="#6bea3b" stroke-dasharray="5,5,5,5,5,5" fill="#fcfbfa" fill-opacity="0.2" stroke-width="1">
-                <line ng-repeat="gridpt in gridLineNumber(gridSizeHt,gridSizeWd)" ng-attr-x1="{{gridpt}}" y1="0" ng-attr-x2="{{gridpt}}" y2="2000" />
-                <line ng-repeat="gridpt in gridLineNumber(gridSizeHt,gridSizeWd)" x1="0" ng-attr-y1="{{gridpt}}" x2="2000" ng-attr-y2="{{gridpt}}" />
-<!-- Above should read from screen size, but right now is just set-->            
-            </g> <!--for gridlines-->     
-            <g class="floorLines" stroke="#bb3bea" fill="#fcfbfa" fill-opacity="0.2" stroke-width="3">
+        <svg id="floor-container" 
+             ng-attr-height="2000px" 
+             ng-attr-width="2000px" 
+             viewBox="0 0 2000 2000" 
+             hm-dragend="dragGrid($event)">
+            <g ng-show="gridShow5" 
+               stroke="#6bea3b" 
+               stroke-dasharray="5,5,5,5,5,5" 
+               fill="#fcfbfa" 
+               fill-opacity="0.2" 
+               stroke-width="1">
+                <animate ng-if="dragtheGrid" attributeType="CSS" attributeName="stroke-dasharray" 
+         from="5,5,5,5,5,5" to="2,2,2,2,2,2" dur="16s" repeatCount="indefinite" />
+                <line ng-repeat="gridpt in gridLineNumber(gridSizeHt,50)" ng-attr-x1="{{gridpt}}" y1="0" ng-attr-x2="{{gridpt}}" y2="2000" />
+                <line ng-repeat="gridpt in gridLineNumber(gridSizeHt,50)" x1="0" ng-attr-y1="{{gridpt}}" x2="2000" ng-attr-y2="{{gridpt}}" />            
+            </g>     
+            <g 
+               ng-show="gridShow1" stroke="#6bea3b" stroke-dasharray="2,2,2,2,2,2" fill="#fcfbfa" fill-opacity="0.2" stroke-width=".2">
+                <line ng-repeat="gridpt in gridLineNumber(gridSizeHt,10)" ng-attr-x1="{{gridpt}}" y1="0" ng-attr-x2="{{gridpt}}" y2="2000" />
+                <line ng-repeat="gridpt in gridLineNumber(gridSizeHt,10)" x1="0" ng-attr-y1="{{gridpt}}" x2="2000" ng-attr-y2="{{gridpt}}" />            
+            </g>  
+            <g class="floorLines" stroke="#bb3bea" fill="none" fill-opacity="0.2" stroke-width="3">
 <!--                <polygon points="10,10 150,10 150,150 10,150"/>-->
                 <polygon class="floorShowline" 
+                         ng-click="alert('whole rect')"
                          hm-dragend="dragFloors($event)"
                          ng-show="!svgEdit" 
                          hm-hold="svgEdit=!svgEdit" 
@@ -35,41 +51,68 @@ giving viewbox a margin, but doing interior measures on 100%/
                       ng-attr-x2="{{floorPoints[$index+1][0]}}" ng-attr-y2="{{floorPoints[$index+1][1]}}"
                       />
 -->
+<!--
                 <line class="floorEditLine"
                       ng-show="svgEdit" 
+                      ng-click="alert('line')"
                       ng-repeat="pointPairs in floorPoints4Lines"
                       hm-dragend = "dragLines($event)"
                       ng-attr-x1="{{floorPoints4Lines[$index][0]}}" ng-attr-y1="{{floorPoints4Lines[$index][1]}}" 
                       ng-attr-x2="{{floorPoints4Lines[$index][2]}}" ng-attr-y2="{{floorPoints4Lines[$index][3]}}"
                       />
+-->
             </g>
-            <g class="roomLines" stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2" ng-repeat="room in currentFloor">
-                <polygon dragcopy
-                         hm-drag = "draggingCopy($event,currentFloor[$index].roomPoints)"
-                         hm-dragend = "dragShapes($event)"
+            <g class="roomLines" ng-repeat="room in currentFloor">
+                <polygon stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2" 
+                         hm-pinch = "pinchResize($event)"
                          hm-hold="roomLineEdit=!roomLineEdit"
                          class="roomShowLine" 
                          ng-show="!roomLineEdit" 
                          ng-attr-points="{{pointPath(currentFloor[$index].roomPoints)}}" 
                 />
-                <polygon 
+<!--
+We want a pointPathDonut to go both directions, and get the donut so that you can only drag by the edges. dragShapes should only be in edit mode
+Too many iterations for Angular: [$rootScope:infdig] 10 $digest() iterations reached. Aborting! 
+I think this is logically the right way to track points as lines, but it's too much to process.
+                <line stroke="#2050ba" stroke-width=".5" ng-repeat="line in roomLines(currentFloor[$index].roomPoints)"
+                      ng-show="roomLineEdit"
+                      hm-hold="addPoint($event)"
+                      ng-attr-x1="{{line[0][0]}}"
+                      ng-attr-y1="{{line[0][1]}}"
+                      ng-attr-x2="{{line[1][0]}}"
+                      ng-attr-y2="{{line[1][1]}}"
+                />
+-->
+                <polygon stroke="#ba4920" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2"
+                         stroke-dasharray="3,3,3,3,3,3"
+                         hm-drag = "dragShapes($event)"
+                         hm-double-tap = "addPoint($event,currentFloor[$index].roomPoints)"
                          hm-hold="roomLineEdit=!roomLineEdit"
                          class="roomEditLine" 
                          ng-show="roomLineEdit" 
                          ng-attr-points="{{pointPath(currentFloor[$index].roomPoints)}}" 
                 />
-                <circle ng-repeat="(i, vals) in currentFloor[$index].roomPoints"
-                        hm-dragend="dragAloneRoom($event,i,vals)"
+                <circle 
+                        ng-repeat="(i, vals) in currentFloor[$index].roomPoints"
+                        hm-drag = "dragPoints($event,i)"
                         ng-show="roomLineEdit"
                         class="roomEditLine"
                         ng-attr-cx="{{vals[0]}}"
                         ng-attr-cy="{{vals[1]}}"
                         r = 6
                 />
+                <text   
+                      ng-repeat="(i, vals) in currentFloor[$index].roomPoints"
+                      ng-attr-x="{{vals[0]}}"
+                      ng-attr-y="{{vals[1]}}"
+                      font-size="40"
+                      >{{i}}</text>
                 <!--For room in currentFloor, but needs to have gone through separate scope
 Instead of separate scope, can just keep them straight as they're added by points - then have functions that rearrange them in the controller
 hm-dragend = "dragShapes($event)"
                          hm-drag = "dragShapes2($event)"
+
+                        hm-dragend="dragAloneRoom($event,i,vals)"
 hm-dragstart = "dragRecord($index)"
 -->
 <!--

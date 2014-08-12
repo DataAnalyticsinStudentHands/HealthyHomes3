@@ -508,16 +508,14 @@
      border-radius: 10px;
     margin-left: 10px;
     margin-top: 20px;
-  float:left;
+  float:right;
     }
 
 
-#grid_sizesOLD{
-    position: fixed;
-    top:92%;
+#grid_sizes{
+    position: absolute;
     z-index:3;
-    margin-left: 15px;
-     display: inline-block;
+    display: inline-block;
 }
 
 
@@ -816,19 +814,26 @@ body{
     left:0px;
     z-index:1;
 }
-/*
 #floor-wrap{
     position:relative;
+    display:block;
+    height:0;
+/*    padding-bottom:100%;*/
     top:0px;
     left:0px;
 }
-*/
 #floor-container{
     position:absolute;
+/*
+    width:100%;
+    height:100%;
+*/
     width:2000px;
     height:2000px;
     top:0px;
     left:0px;
+    border-style:inset;
+    border-color:green;
     z-index:1;
     overflow:hidden;
 }
@@ -845,8 +850,6 @@ body{
     z-index:55;
     text-align:center;
 }
-
-
 
 
 /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */

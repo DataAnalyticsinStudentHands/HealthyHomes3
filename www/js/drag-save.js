@@ -7,9 +7,9 @@ angular.module('HHControllers').directive('dragSave',['addObj', 'layoutObjectMod
         else if (templateType.split('_')[0] == 'svg')
             {template = 'partials/'+templateType+'.html';
             }
-        else if (templateType.split('_')[1] == 'floor')
-            {template = 'partials/floor.html';
-            }
+//        else if (templateType.split('_')[1] == 'floor')
+//            {template = 'partials/floor.html';
+//            }
         else
             {template = 'partials/layoutIcons.html'
             //console.log(templateType)
@@ -32,14 +32,14 @@ angular.module('HHControllers').directive('dragSave',['addObj', 'layoutObjectMod
         },
         link: function(scope, elem, attrs, ctrl, transclude) { //might need it as distance from it's origin, if floor is moving underneath...
             var objType = scope.objType = attrs.hmDrag;
-            var floorPoints = scope.floorPoints = [[0,0],[100,0],[100,100],[0,100]]  //need to have them change by percentages!!
+//            var floorPoints = scope.floorPoints = [[0,0],[100,0],[100,100],[0,100]]  //need to have them change by percentages!!
             scope.testElem = function($event){
                 console.log($event)
                 newelem = angular.element($event.target)
                 newelem.css({'display':'none'});
             };
             
-            scope.arrayPoints = function(){
+/*            scope.arrayPoints = function(){
                 var arrPts = ''
                 for (var p=0;p < scope.floorPoints.length; p++) {
                     arrPts += floorPoints[p][0]+','+floorPoints[p][1]+' ';
@@ -61,9 +61,9 @@ angular.module('HHControllers').directive('dragSave',['addObj', 'layoutObjectMod
                     path.push(point[0]+','+point[1]);
                 }
                 return "M" + path.join(" L"); // + 'z'; //z added if you want to close figure automatically
-            }
+            }*/
             scope.alert = function(){alert('adsf')};
-            var targetDrop = document.getElementById('grid-container'); //also from objectModel?
+            var targetDrop = document.getElementById('floor-container'); //also from objectModel?
             //console.log(attrs);
             var targetHeight = parseInt(targetDrop.style.height) || 1128;
             var targetTop = targetDrop.offsetTop + targetDrop.offsetParent.offsetTop;
@@ -182,11 +182,10 @@ angular.module('HHControllers').directive('dragSave',['addObj', 'layoutObjectMod
     }
     return rtnObj;
 }])
-.directive('dragcopy',function(){
+.directive('dragCopyOLD',function(){ //maybe abandon
     return {
         restrict: 'AE',
         replace: false,
-        transclude: true,
         scope: {
             //layoutObject: '=layoutObject'
 //            offsetTop: "&tpospx",
@@ -196,21 +195,64 @@ angular.module('HHControllers').directive('dragSave',['addObj', 'layoutObjectMod
 //        templateUrl: function(tElement, tAttrs) {
 //            return getTemplate(tAttrs.hmDrag);
 //        },
+//    template: '<div ng-attr-left="{{newLeft}}" '+
+//        'ng-attr-top="{{newTop}}" ng-height="{{newHt}}" ng-attr-width="{{newWidth}}" '+
+//        'id="thisDrags">Dragging</div>',
     link: function(scope, elem, attrs) {
-        scope.draggingCopy = function($event,copyPoints){
+        console.log(attrs)
+        console.log(attrs.pointlist);
+        var copyPoints = attrs.pointlist;
+        scope.dragLeft = 0;
+        scope.dragTop = 0;
+        scope.dragWidth = 0;
+        scope.dragHt = 0;
+        for (var i=0;i<copyPoints.length;i++){
+            if ( copyPoints[i]%2 == 0 ) {
+                if(copyPoints[i] > scope.dragTop) {
+                    scope.dragTop = copyPoints[i]
+                }else{
+                    if((scope.dragTop - copyPoints[i])>scope.dragHt){
+                        scope.dragHt = scope.dragTop - copyPoints[i]
+                    };
+                };
+            }else{
+                if(copyPoints[i] > scope.dragLeft) {
+                    scope.dragLeft = copyPoints[i]
+                }else{
+                    if((scope.dragLeft - copyPoints[i])>scope.dragWidth){
+                        scope.dragWidth = scope.dragLeft - copyPoints[i]
+                    };
+                };
+             };
+        };
+        var thisDragging = false;
+        elem.bind('drag', function($event) {
+            thisDragging = true;
+            roomLineEdit = true;
             $event.preventDefault();
-            for (var n = 0;n<copyPoints.length;n++){
+            
+            
+//            for (var n = 0;n<copyPoints.length;n++){
                 var deltaX = $event.gesture.deltaX;
                 var deltaY = $event.gesture.deltaY;
-                var tmpX = copyPoints[n][0]
-                var tmpY = copyPoints[n][1]
-                var pageDistX = $event.gesture.center.pageX-tmpX
-                var pageDistY = $event.gesture.center.pageY-tmpY
-                copyPointsPoints[n][0] = $event.gesture.center.pageX+pageDistX;
-                copyPoints[n][1] = $event.gesture.center.pageY+pageDistY;
-                console.log(copyPoints)
-        }
-    }
+                var pageDistX = $event.gesture.center.pageX//-scope.dragLeft
+                var pageDistY = $event.gesture.center.pageY//-scope.dragTop
+                scope.dragLeft = pageDistX;
+                scope.dragTop = pageDistY;
+//                copyPoints[n][0] = $event.gesture.center.pageX+pageDistX;
+//                copyPoints[n][1] = $event.gesture.center.pageY+pageDistY;
+            
+//                console.log($event)
+            //scope.draggingCopy($event)
+                //perhaps needs to $compile with dragcopy in place??
+            thisDragging = false;
+        });
+        scope.draggingCopy = function($event){
+            console.log($event);
+        };
+            
+            
+    //}
     }
     }
 })
