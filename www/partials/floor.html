@@ -92,6 +92,9 @@ I think this is logically the right way to track points as lines, but it's too m
                          ng-show="roomLineEdit" 
                          ng-attr-points="{{pointPath(currentFloor[$index].roomPoints)}}" 
                 />
+                <path stroke="#ba4920" fill="none" stroke-width="2"
+                        ng-show="roomLineEdit"
+                        ng-attr-d="{{addMeasures(currentFloor[$index].roomPoints)}}" />
                 <circle 
                         ng-repeat="(i, vals) in currentFloor[$index].roomPoints"
                         hm-drag = "dragPoints($event,i)"
@@ -101,12 +104,14 @@ I think this is logically the right way to track points as lines, but it's too m
                         ng-attr-cy="{{vals[1]}}"
                         r = 6
                 />
+<!--
                 <text   
                       ng-repeat="(i, vals) in currentFloor[$index].roomPoints"
                       ng-attr-x="{{vals[0]}}"
                       ng-attr-y="{{vals[1]}}"
                       font-size="40"
                       >{{i}}</text>
+-->
                 <!--For room in currentFloor, but needs to have gone through separate scope
 Instead of separate scope, can just keep them straight as they're added by points - then have functions that rearrange them in the controller
 hm-dragend = "dragShapes($event)"

@@ -147,13 +147,10 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state','$stateP
         };
             
         $scope.pointPath = function(arr){
-//            console.log(arr)
             var rtnStr = '';
             for (var i = 0; i < arr.length; i++){
-                rtnStr+=(' ' + arr[i][0]+','+arr[i][1])
-//                console.log(rtnStr)
+                rtnStr+=(' ' + arr[i][0]+','+arr[i][1]);
             }
-//            console.log(rtnStr);
             return rtnStr;
         };
         //http://geomalgorithms.com/a03-_inclusion.html [0 is online;>0 is Left of line;<0 is Right of Line
@@ -163,7 +160,6 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state','$stateP
         var windingTest = function(xTest,yTest, arr){
             var wn = 0;
             arr.push([arr[0][0],arr[0][1]])
-            console.log(arr)
             for (var i = 0; i < arr.length-1; i++) {
                 if (arr[i][1] <= yTest) {
                     if (arr[i+1][1] > yTest){
@@ -178,7 +174,6 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state','$stateP
                 }
             }
             arr.pop();
-//            alert(wn)
             return wn
         }
         $scope.testWn = function($event,arr){
@@ -191,39 +186,30 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state','$stateP
             //find closest corners
             var fingerX = $event.gesture.center.pageX;
             var fingerY = $event.gesture.center.pageY;
-            var newDist = 0;
-            var pythagDist = Math.sqrt((fingerX-arr[0][0])*(fingerY-arr[0][1]));
+            //var pythagDist = Math.sqrt((fingerX-arr[0][0])*(fingerY-arr[0][1]));
+            var hypotRatio = 0;
+            var newRatio = 0;
             var ind4new = 0;
-            var slope1 = 0;
-            var slope2 = 0;
+//            var slope1 = 0;
+//            var slope2 = 0;
             arr.push([arr[0][0],arr[0][1]])
             for (var i = 0;i<arr.length-1;i++){
-                if (arr[i+1][1]-arr[i][1]==0){ 
-                        //alert('think') 
-                        slope1 = 10000;
-                } else {
-                        slope1 = (arr[i+1][0]-arr[i][0])/(arr[i+1][1]-arr[i][1]);
-                };
-                alert(slope1 + ' i'+i)
-                newDist = Math.sqrt((fingerX-arr[i][0])*(fingerY-arr[i][1]))
-                if (newDist < pythagDist){
-                    newDist = 0;
-                    pythagDist = newDist;
-                    ind4new = i;
+                //find sides from finger to endpoints of line and then look for closest to same length
+                newRatio = Math.sqrt(((arr[i+1][0]-arr[i][0])*(arr[i+1][0]-arr[i][0]))+((arr[i+1][1]-arr[i][1])*(arr[i+1][1]-arr[i][1])))/(Math.sqrt(((fingerX-arr[i][0])*(fingerX-arr[i][0]))*((fingerY-arr[i][1])*(fingerY-arr[i][1])))+Math.sqrt(((fingerX-arr[i+1][0])*(fingerX-arr[i+1][0]))+((fingerY-arr[i+1][1])*(fingerY-arr[i+1][1]))));
+                if (newRatio > hypotRatio){
+                    hypotRatio = newRatio;
+                    newRatio = 0;
+                    ind4new = i+1;
  //how use slope and distance to calculate whether it's closest                   
 //                    var line = onLine(arr[i-1][0],arr[i-1][1],arr[i][0],arr[i][1],fingerX,fingerY);
 //                    alert(line)
                 };
             }
             arr.pop();
-            var testInd = currentRoom.roomPoints[ind4new]
-            console.log(ind4new)
-            console.log(currentRoom.roomPoints[ind4new])
-            console.log(currentRoom.roomPoints.indexOf(testInd))
             var newX = fingerX*gridMag;
             var newY = fingerY*gridMag;
-            if(ind4new+1>arr.length){
-                currentRoom.roomPoints.push([newX,newY]);
+            if(ind4new+1>arr.length || ind4new ==0 ){
+                currentRoom.roomPoints.push([newX,newY]); //to end??
             }else{
                 currentRoom.roomPoints.splice(ind4new,0,[newX,newY]);
             }
@@ -234,7 +220,33 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state','$stateP
             //add points to see if inside, and give a distance based on size of polygon
         }
                 
-                    
+        $scope.addMeasures = function(arr){
+            var rtnStr = 'M'+arr[0][0]+','+arr[0][1]+' ';
+            //INSTEAD: Have it extend on the slope, and draw a line perpendicular to the ditance line
+//            arr.push([arr[0][0],arr[0][1]]) ---i equals different things depending on ng-whim
+            for (var i = 0; i < arr.length; i++){
+                //var i = 0;
+                //if (n == arr.length){ i=0 } else { i=n-1 };
+                var controlX = arr[i][0]*1.1;
+                console.log(arr[i][0] + 'i at x' +controlX)
+                var controlY = arr[i][1]*1.1;
+                var control2X = arr[i][0]*1.1;
+                var control2Y = arr[i][1]*1.1;
+                var insidePoly = windingTest(controlX,controlY,arr)
+                if (insidePoly != 0){
+                    controlX = arr[i][0]*.9;
+                    controlY = arr[i][1]*.9;
+                    control2X = arr[i][0]*.9;
+                    control2Y = arr[i][1]*.9;
+                };
+                rtnStr += 'C';
+                rtnStr += ' '+controlX +','+controlY; //first control
+                rtnStr += ' '+control2X +','+control2Y; //second control point
+                rtnStr += ' '+arr[i][0]+','+arr[i][1]; //actual points
+            }
+//            arr.pop();
+            return rtnStr;
+        }
             
             
     
