@@ -224,20 +224,23 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state','$stateP
             var rtnStr = 'M'+arr[0][0]+','+arr[0][1]+' ';
             //INSTEAD: Have it extend on the slope, and draw a line perpendicular to the ditance line
 //            arr.push([arr[0][0],arr[0][1]]) ---i equals different things depending on ng-whim
-            for (var i = 0; i < arr.length; i++){
+            
+            for (var n = 0; n < arr.length+1; n++){
+                var i = 0;
+                if (n != arr.length){ i = n};
                 //var i = 0;
                 //if (n == arr.length){ i=0 } else { i=n-1 };
                 var controlX = arr[i][0]*1.1;
-                console.log(arr[i][0] + 'i at x' +controlX)
                 var controlY = arr[i][1]*1.1;
                 var control2X = arr[i][0]*1.1;
                 var control2Y = arr[i][1]*1.1;
                 var insidePoly = windingTest(controlX,controlY,arr)
-                if (insidePoly != 0){
-                    controlX = arr[i][0]*.9;
-                    controlY = arr[i][1]*.9;
-                    control2X = arr[i][0]*.9;
-                    control2Y = arr[i][1]*.9;
+                if (insidePoly == 0){
+                    console.log('insidePoly'+i)
+                    controlX = arr[i][0]*1.9;
+                    controlY = arr[i][1]*1.9;
+                    control2X = arr[i][0]*1.9;
+                    control2Y = arr[i][1]*1.9;
                 };
                 rtnStr += 'C';
                 rtnStr += ' '+controlX +','+controlY; //first control
