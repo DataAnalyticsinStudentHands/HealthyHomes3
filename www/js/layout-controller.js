@@ -200,15 +200,12 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state','$stateP
                     hypotRatio = newRatio;
                     newRatio = 0;
                     ind4new = i+1;
- //how use slope and distance to calculate whether it's closest                   
-//                    var line = onLine(arr[i-1][0],arr[i-1][1],arr[i][0],arr[i][1],fingerX,fingerY);
-//                    alert(line)
                 };
             }
             arr.pop();
             var newX = fingerX*gridMag;
             var newY = fingerY*gridMag;
-            if(ind4new+1>arr.length || ind4new ==0 ){
+            if(ind4new+1>arr.length || ind4new == 0 ){
                 currentRoom.roomPoints.push([newX,newY]); //to end??
             }else{
                 currentRoom.roomPoints.splice(ind4new,0,[newX,newY]);
@@ -250,7 +247,11 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state','$stateP
 //            arr.pop();
             return rtnStr;
         }
-            
+        $scope.showMeasures = function(arr){
+            var dist = Math.sqrt(((arr[0][0]-arr[1][0])*(arr[0][0]-arr[1][0]))+((arr[i][1]-arr[1][1])*(arr[0][1]-arr[1][1])));
+            //pythag distances for between points
+            //make it like showing the other lines or circles?
+        }
             
     
         
@@ -413,7 +414,34 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state','$stateP
             for (var n = 0;n<currentRoom.roomPoints.length;n++){
                 currentRoom.roomPoints[n][0] = 10*Math.round((copyPoints[n][0] + dragX)/10);
                 currentRoom.roomPoints[n][1] = 10*Math.round((copyPoints[n][1] + dragY)/10);
+            };
+        };
+        $scope.dragLines = function($event){
+            var arr = currentRoom.roomPoints
+            var fingerX = $event.gesture.center.pageX;
+            var fingerY = $event.gesture.center.pageY;
+            var hypotRatio = 0;
+            var newRatio = 0;
+            var ind4new = 0;
+            arr.push([arr[0][0],arr[0][1]])
+            for (var i = 0;i<arr.length-1;i++){
+                newRatio = Math.sqrt(((arr[i+1][0]-arr[i][0])*(arr[i+1][0]-arr[i][0]))+((arr[i+1][1]-arr[i][1])*(arr[i+1][1]-arr[i][1])))/(Math.sqrt(((fingerX-arr[i][0])*(fingerX-arr[i][0]))*((fingerY-arr[i][1])*(fingerY-arr[i][1])))+Math.sqrt(((fingerX-arr[i+1][0])*(fingerX-arr[i+1][0]))+((fingerY-arr[i+1][1])*(fingerY-arr[i+1][1]))));
+                if (newRatio > hypotRatio){
+                    hypotRatio = newRatio;
+                    newRatio = 0;
+                    ind4new = i;
+                };
             }
+            arr.pop();
+            var xtraOffX = 0;
+            var xtraOffY = 0;
+            var dragX = ($event.gesture.center.pageX*gridMag)-arr[0][0]-xtraOffX;
+            var dragY = ($event.gesture.center.pageY*gridMag)-arr[0][1]-xtraOffY;
+            for (var n = ind4new;n<ind4new+2;n++){
+                currentRoom.roomPoints[n][0] = 10*Math.round((arr[n][0] + dragX)/10);
+                currentRoom.roomPoints[n][1] = 10*Math.round((arr[n][1] + dragY)/10);
+            };
+        };
             
 //                var deltaY = $event.gesture.deltaY;
                 
@@ -442,23 +470,23 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state','$stateP
 //                deltaY = 0;
                 
 //            }
-        };
+        
         $scope.cons = function(){
             console.log(currentInspection)
         }
-        $scope.dragLines = function($event){
-            setTimeout(100);
-            var deltaX = $event.gesture.deltaX;
-            var deltaY = $event.gesture.deltaY;
-            console.log($event)
-            console.log($event.target.attributes[4])
-            for (var n = 0;n<$scope.floorPoints4Lines.length;n++){
-                $scope.floorPoints4Lines[n][0] += deltaX;
-                $scope.floorPoints4Lines[n][1] += deltaY;
-                $scope.floorPoints4Lines[n][2] += deltaX;
-                $scope.floorPoints4Lines[n][3] += deltaY;
-            }
-        };
+//        $scope.dragLines = function($event){
+//            setTimeout(100);
+//            var deltaX = $event.gesture.deltaX;
+//            var deltaY = $event.gesture.deltaY;
+//            console.log($event)
+//            console.log($event.target.attributes[4])
+//            for (var n = 0;n<$scope.floorPoints4Lines.length;n++){
+//                $scope.floorPoints4Lines[n][0] += deltaX;
+//                $scope.floorPoints4Lines[n][1] += deltaY;
+//                $scope.floorPoints4Lines[n][2] += deltaX;
+//                $scope.floorPoints4Lines[n][3] += deltaY;
+//            }
+//        };
         var layoutObjs = [];
         var layoutObjInd = 0; //layoutObjs.indexOf(layoutObj);
         $scope.newObj = function(obj){

@@ -66,6 +66,7 @@ giving viewbox a margin, but doing interior measures on 100%/
                 <polygon stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2" 
                          hm-pinch = "pinchResize($event)"
                          hm-hold="roomLineEdit=!roomLineEdit"
+                         hm-drag = "dragShapes($event)"
                          class="roomShowLine" 
                          ng-show="!roomLineEdit" 
                          ng-attr-points="{{pointPath(currentFloor[$index].roomPoints)}}" 
@@ -85,16 +86,18 @@ I think this is logically the right way to track points as lines, but it's too m
 -->
                 <polygon stroke="#ba4920" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2"
                          stroke-dasharray="3,3,3,3,3,3"
-                         hm-drag = "dragShapes($event)"
+                         hm-drag = "dragLines($event)"
                          hm-double-tap = "addPoint($event,currentFloor[$index].roomPoints)"
                          hm-hold="roomLineEdit=!roomLineEdit"
                          class="roomEditLine" 
                          ng-show="roomLineEdit" 
                          ng-attr-points="{{pointPath(currentFloor[$index].roomPoints)}}" 
                 />
+<!--
                 <path stroke="#ba4920" fill="none" stroke-width="2"
                         ng-show="roomLineEdit"
                         ng-attr-d="{{addMeasures(currentFloor[$index].roomPoints)}}" />
+-->
                 <circle 
                         ng-repeat="(i, vals) in currentFloor[$index].roomPoints"
                         hm-drag = "dragPoints($event,i)"
