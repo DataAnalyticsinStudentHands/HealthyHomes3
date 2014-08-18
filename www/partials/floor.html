@@ -17,6 +17,7 @@ giving viewbox a margin, but doing interior measures on 100%/
              ng-attr-height="2000px" 
              ng-attr-width="2000px" 
              viewBox="0 0 2000 2000" 
+             hm-hold="gridDrag()"
              hm-dragend="dragGrid($event)">
             <g ng-show="gridShow5" 
                stroke="#6bea3b" 
@@ -66,6 +67,7 @@ giving viewbox a margin, but doing interior measures on 100%/
                 <polygon stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2" 
                          hm-pinch = "pinchResize($event)"
                          hm-hold="roomLineEdit=!roomLineEdit"
+                         hm-dragstart = "copyArr(currentFloor[$index].roomPoints)"
                          hm-drag = "dragShapes($event)"
                          class="roomShowLine" 
                          ng-show="!roomLineEdit" 
@@ -86,6 +88,7 @@ I think this is logically the right way to track points as lines, but it's too m
 -->
                 <polygon stroke="#ba4920" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2"
                          stroke-dasharray="3,3,3,3,3,3"
+                         hm-dragstart = "copyArr(currentFloor[$index].roomPoints)"
                          hm-drag = "dragLines($event)"
                          hm-double-tap = "addPoint($event,currentFloor[$index].roomPoints)"
                          hm-hold="roomLineEdit=!roomLineEdit"

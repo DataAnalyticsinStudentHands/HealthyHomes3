@@ -2,8 +2,8 @@
 /* Controllers */
 var layoutController = angular.module('layoutModuleController', []);
 
-layoutController.controller('layoutCtrl', ['$scope', '$window','$state','$stateParams', 'layoutObjectModel','addObj','addSvgPoint',
-	function ($scope, $window, $state, $stateParams, layoutObjectModel, addObj, addSvgPoint) { 
+layoutController.controller('layoutCtrl', ['$scope', '$window','$state','$stateParams', 'layoutObjectModel','addObj','addSvgPoint','findGeom',
+	function ($scope, $window, $state, $stateParams, layoutObjectModel, addObj, addSvgPoint, findGeom) { 
 //        document.addEventListener("deviceready", onDeviceReady, false);
 //        function onDeviceReady() {
         $scope.flagicons=[{
@@ -39,7 +39,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state','$stateP
         $scope.alert = function (text) {
             alert(text);
         };
-        
+        //findClosestLine.testFunc();
 //        document.addEventListener("deviceready", onDeviceReady, false);
     
         function touchHandler(event)
@@ -70,7 +70,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state','$stateP
     //}
         
 //        var viewContainer = document.getElementById('grid-container');
-        
+//        layoutObjectModel.testFunc()
         $scope.newFloorRoom = function(){
             $scope.newFloorOrRoom = !$scope.newFloorOrRoom
         };
@@ -129,8 +129,11 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state','$stateP
         var room = $scope.room;
         var roomPoints = $scope.roomPoints = [[10,10],[150,100],[150,150],[100,150]]; //[]; //have to decide which one is active on first load; how do we get from $scope?
         $scope.layoutObjectModel = layoutObjectModel; 
+        console.log('fdas')
+        console.log(layoutObjectModel);
         var inspectInd = 0; //will get from service or $stateParam
         var currentInspection = layoutObjectModel.inspections[inspectInd];
+//        var currentInspection = layoutObjectModel.currentInspection();
         currentInspection.floors = floors;
 
         //console.log(layoutObjectModel)

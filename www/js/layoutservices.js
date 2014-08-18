@@ -4,7 +4,8 @@ using factories, not services,
 Now moving to controllers with Restangular
 */
 var layoutServices = angular.module('layoutModuleServices', []);
-layoutServices.service('layoutObjectModel', ['Restangular','$state','$stateParams', 'uuid', function(Restangular,$state,$stateParams,uuid) {
+//layoutServices.service('layoutObjectModel', ['Restangular','$state','$stateParams', 'uuid', function(Restangular,$state,$stateParams,uuid) {
+layoutServices.service('layoutObjectModel', ['Restangular', 'uuid', function(Restangular,uuid) {
     //console.log($state)
     var layoutObjectModel = Restangular.service('inspections');
     Restangular.extendModel('inspections',function(model) {
@@ -20,24 +21,33 @@ layoutServices.service('layoutObjectModel', ['Restangular','$state','$stateParam
       return model;
     });
     //for now, to make 24 a defined fail
-    layoutObjectModel['inspections'] = [[uuid.new()]];
+    if (layoutObjectModel['inspections'] == null) {
+        layoutObjectModel['inspections'] = [[uuid.new()]];
+    }
+    this.inspectionId = layoutObjectModel.inspections[0][0];
+//    var inspectInd = 0; //will get from service or $stateParam
+//    this.currentInspection = layoutObjectModel.inspections[inspectInd];
+    
     //need logic for current inspection; just have it fed in as index
-    layoutObjectModel['inspections'].push([uuid.new()]); //clean up later
+//    layoutObjectModel['inspections'].push([uuid.new()]); //clean up later
     //layoutObjectModel.inspections[0]['trying'] = [['adsf','adsffds']]
     //layoutObjectModel.inspections[1]['trying2'] = [['adsf','adsffds']]
     //layoutObjectModel.inspections[0].push(['result of push'])
     
-    var inspectionId = $stateParams.inspectionId || layoutObjectModel.inspections[0][0] //to get as string;
-    
+//    var inspectionId = $stateParams.inspectionId || layoutObjectModel.inspections[0][0] //to get as string;
+    //var inspectionId = layoutObjectModel.inspections[0][0];
     //alert(_.indexOf([layoutObjectModel.inspections],layoutObjectModel.inspections[0]))
 //    if (layoutObjectModel.inspections.floors){
 //        return
 //    }else{
 //        layoutObjectModel.inspections['floors'] = []
 //    };
-    this.testFunc = function(){alert('in service')};
+    
     return layoutObjectModel;
   }])
+.service('findGeom', function() {
+    this.testFunc = function(){alert('in service')};
+})
 .factory('addObj',['$compile',function($compile) {
     var rtnObj = {
         newObj: function(scope,objType,objIndex){
