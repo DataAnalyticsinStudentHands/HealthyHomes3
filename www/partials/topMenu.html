@@ -1,35 +1,69 @@
     <div id="menubg">  
 		<div id="wrap_menus">
-    
+    <div id="minilogo">
+  
+<div class="wrapanimate2">
+  <div class="cube2">
+    <div class="front2"><img class ="front_image2" src="img/logo_big.svg"></div>
+   
+  </div>
+
+</div>
+</div>
 <!--
 			<div id="camera">
 				<a ui-sref="camera"><img ng-src="img/camera.png"></a>
 			</div>
 -->
-
 			<div id="menu_green">
-				<span class="menu_icon" ng-repeat="iType in icons3"> <!--keeping draggable for now-->
+                <span class="menu_icon" 
+                      drop-svg
+                      ng-repeat="iType in icons"
+                      hm-drag="{{iType.icontype}}" 
+                      ng-include="'img/'+iType.icontype+'.svg'"
+                      >
+                </span>
+            </div>
+<!--
+            <div id="menu_yellow">
+                <span class="menu_icon" 
+                      ng-include="'img/flag.svg'"
+                      >
+                </span>
+            </div>
+-->
+                    
+<!--
+			<div id="menu_green">
+				<span class="menu_icon" ng-repeat="iType in icons3"> keeping draggable for now
                     <img hm-tap="newObj(iType.icontype)" hm-drag="{{iType.icontype}}" drag-save></span>
 			</div>
+-->
 
+<!--
 			<div id="menu_black">
-				<span id="svgSelector" class="menu_icon" ng-click="selectSVG = !selectSVG"><img ng-src='img/pencil.PNG'/></span>
+				<span id="svgSelector" class="menu_icon"><img ng-src='img/pencil.PNG'/></span>
 				<span class="menu_icon" ng-click="selectRule = !selectRule"><img ng-src='img/ruler.PNG'/></span>
 				<span class="menu_icon" ng-click="selectErase = !selectErase"><img ng-src='img/eraser.PNG'/></span>
 			</div>
+-->
             
             
+<!--
             <div id="pencil_popup" ng-show="selectSVG">
             	<span class= "pencil_popup"><img ng-src="img/solid_line.svg"></span>
                 <span class= "pencil_popup"><img ng-src="img/dotted_line.svg"></span>
             
             </div>
+-->
 
 <!--			<span ui-view="svg_select" ng-show="selectSVG">It's not filling from the view</span>-->
 
+<!--
 			<div id="menu_yellow" >
 				<span class="menu_icon" ng-repeat="flag in flagicons" hm-drag="{{flag.icontype}}" drag-save></span>
 			</div>
+-->
 <!--
             <div id="floorChoice">
                 <select ng-model="floor" 
@@ -51,7 +85,10 @@
         </div>
 
         <div id="menu_trash">
-        <span class="menu_icon"><img src="img/trash.svg"></span>
+        <span class="menu_icon">
+            <span ng-include="'img/trash.svg'"></span>
+<!--            <img src="img/trash.svg">-->
+            </span>
         </div>
 
 			<div id="grid_sizes">

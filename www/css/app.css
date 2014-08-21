@@ -438,6 +438,7 @@
 
 #menubg{ 
    background-color:rgb(22,167,112);
+/*    display:none;*/
     background-image: url("/img/menu_bg.png");
     position: fixed;
 /*    width:2000px;*/
@@ -817,19 +818,20 @@ body{
 #floor-wrap{
     position:relative;
     display:block;
-    height:0;
+    width:2000px;
+    height:2000px;
 /*    padding-bottom:100%;*/
     top:0px;
     left:0px;
 }
 #floor-container{
     position:absolute;
-/*
     width:100%;
     height:100%;
-*/
+/*
     width:2000px;
     height:2000px;
+*/
     top:0px;
     left:0px;
     border-style:inset;
@@ -839,8 +841,8 @@ body{
 }
 #floorSelect{
     position:absolute;
-    left:35%;
-    top:5%;
+    left:2%;
+    bottom:5px;
     width: 300px;
     height: 400px;
     border-style: solid;

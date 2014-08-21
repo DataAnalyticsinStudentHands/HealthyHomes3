@@ -24,7 +24,13 @@ layoutServices.service('layoutObjectModel', ['Restangular', 'uuid', function(Res
     if (layoutObjectModel['inspections'] == null) {
         layoutObjectModel['inspections'] = [[uuid.new()]];
     }
-    this.inspectionId = layoutObjectModel.inspections[0][0];
+//    var inspectionId = layoutObjectModel.inspections[0][0];
+//    var inspections = layoutObjectModel.inspections;
+//    console.log('insp')
+//    console.log(inspections)
+//    this.inspectionInd = inspections[0].indexOf(inspectionId);
+//    console.log(this.inspectionInd)
+//    console.log(inspections[this.inspectionInd])
 //    var inspectInd = 0; //will get from service or $stateParam
 //    this.currentInspection = layoutObjectModel.inspections[inspectInd];
     
@@ -47,6 +53,55 @@ layoutServices.service('layoutObjectModel', ['Restangular', 'uuid', function(Res
   }])
 .service('findGeom', function() {
     this.testFunc = function(){alert('in service')};
+    this.closestLine = function(arrIn,fingerX,fingerY){
+        var arr = _.clone(arrIn);
+        var ind4new = 0;
+        var newRatio = 0;
+        var hypotRatio = 0;
+        var touchLegOne = 0;
+        var touchLegTwo = 0;
+        var lineLength = 0;
+        arr.push([arr[0][0],arr[0][1]])
+        for (var i = 0;i<arr.length-1;i++){
+                    //find sides from finger to endpoints of line and then look for closest to same length
+            touchLegOne = pythagDist(fingerX,arr[i][0],fingerY,arr[i][1]);
+            touchLegTwo = pythagDist(fingerX,arr[i+1][0],fingerY,arr[i+1][1]);
+            lineLength = pythagDist(arr[i][0],arr[i+1][0],arr[i][1],arr[i+1][1]);
+            newRatio = lineLength/(touchLegOne + touchLegTwo)
+//            console.log(i + 'i and new' + newRatio)
+            if (newRatio > hypotRatio){
+                hypotRatio = newRatio;
+                newRatio = 0;
+                ind4new = i+1;
+            };
+        };
+//        arr.pop();
+        return ind4new;
+    }
+    var pythagDist = this.pythagDist = function(x1,x2,y1,y2){
+        return Math.sqrt(((x1-x2)*(x1-x2))+((y1-y2)*(y1-y2)))
+    }
+    this.showMeasures = function(arrIn){
+        var arrOut = [];
+        if (arrIn == undefined) {
+            arr = [];
+        }else{
+            var arr = _.clone(arrIn);
+            var centX = 0;
+            var centY = 0;
+            var dist = 0;
+            var XYDist = [];
+            arr.push([arr[0][0],arr[0][1]])
+            for (var i = 0; i < arr.length-1; i++){
+                centX = Math.round((arr[i][0]+arr[i+1][0])/2);  //all should be positive
+                centY = Math.round((arr[i][1]+arr[i+1][1])/2);  //all should be positive
+                dist = Math.round(pythagDist(arr[i][0],arr[i+1][0],arr[i][1],arr[i+1][1]));
+                XYDist = [centX, centY, dist];
+                arrOut.push(XYDist);
+            }
+        };
+        return arrOut;
+    }
 })
 .factory('addObj',['$compile',function($compile) {
     var rtnObj = {

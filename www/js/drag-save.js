@@ -137,7 +137,7 @@ angular.module('HHControllers').directive('dragSave',['addObj', 'layoutObjectMod
                         lpos = gesture.center.pageX - xCorrect.offsetWidth; //http://stackoverflow.com/questions/21064101/understanding-offsetwidth-clientwidth-scrollwidth-and-height-respectively
                         scope.tpospx = tpos + 'px';
                         scope.lpospx = lpos + 'px';
-                        scope.container = 'grid_container'; //need to figure out nearest room?
+                        scope.container = 'floor_container'; //need to figure out nearest room?
                         addObj.newObj(scope,objType); 
 //                        gridContainer = document.getElementById('grid_container');
 //                        newObject = '<span ng-click="test()" hm-drag="'+iconType+'" drag-save="dragStay" style="position:absolute;top:'+tpospx+';left:'+lpospx+';z-index=44;">Where Am I?</span>';
@@ -166,6 +166,63 @@ angular.module('HHControllers').directive('dragSave',['addObj', 'layoutObjectMod
         }  
     }
     
+}])
+.directive('dropSvg',['layoutObjectModel','$state',function(layoutObjectModel,$state){
+    return {
+        restrict: 'AE',
+        replace: false,
+        scope: {
+        },
+        link: function(scope, elem, attrs) {
+            var iconType = attrs.hmDrag;
+            var inspectionInd = $state.params.inspectInd;
+            var floorInd = $state.params.floorInd;
+            var roomInd = $state.params.roomInd;
+            elem.bind('tap', function($event){
+                alert('afg')
+            });
+            elem.bind('dragstart', function($event) {
+                console.log($state.current)
+            });
+            elem.bind('drag', function($event) {
+                console.log($state.params)
+            });
+            elem.bind('dragend', function($event) {
+                console.log($state.params)
+            });
+            var newObj = function(){
+                if ($state.current != 'layout.floor.room'){
+                    alert('Must add room to place objects inside'); 
+                    return
+                }else{
+                    //follow add for layoutObjs, below
+                    //need it to have a separate scope for adding color and positions and size?
+                    //will it attach within the room if we have the <svg inside the larger svg????
+                    var currentRoom = layoutObjectModel.inspections[inspectionInd].floors[floorInd].rooms[roomInd]
+                };
+            };
+//            $scope.newObj = function(obj){
+//            if (!currentRoom) { //have to rethink
+//                alert('Must add room to place objects inside'); 
+//                return
+//                //or have it just use room as container?? have it go to a modal container
+//            } else {
+//                if (currentRoom.layoutObjs){
+//                    layoutObjs = currentRoom.layoutObjs;};
+////                    $scope.tpospx = '200px'; //need to figure out better process for placement
+////                    $scope.lpospx = '200px';
+////                    $scope.container = 'grid-container'; //make it room?
+//                XYObj = [layoutObjs.length*100,200,obj];
+//                $scope.iconWidth = 45;
+//                $scope.iconHeight = 45;
+//                layoutObjs.push(XYObj);
+//                layoutObjInd = layoutObjs.indexOf(XYObj);
+//                currentRoom.layoutObjs = $scope.layoutObjs = layoutObjs;
+//                //addObj.newObj($scope,obj,layoutObjInd);
+//            };
+//        };
+        }
+    }
 }])
 .directive('addSvg',['$compile',function($compile) {
     var rtnObj = {
@@ -270,17 +327,19 @@ angular.module('HHControllers').directive('dragSave',['addObj', 'layoutObjectMod
 //        templateUrl: function(tElement, tAttrs) {
 //            return getTemplate(tAttrs.hmDrag);
 //        },
-    link: function(scope, elem, attrs, ctrl, transclude) {
+    link: function(scope, elem, attrs) {
         var tpos = 100;
         var lpos = 100;
+        console.log('inside testDrag')
         console.log(elem)
-            elem.bind('dragend', function($event) {
-                $event.cancelBubble = true;
-                $event.stopPropagation();
-                $event.preventDefault();
-                var gesture = scope.gesture = $event.gesture;
-                console.log($event)
-                alert($event.gesture.deltaX)
+//            elem.bind('dragend', function($event) {
+//                $event.cancelBubble = true;
+//                $event.stopPropagation();
+//                $event.preventDefault();
+//                console.log('afdsadfsdgfasdfsdfsa')
+//                var gesture = scope.gesture = $event.gesture;
+//                console.log($event)
+//                alert($event.gesture.deltaX)
                 //looks like it makes the whole svg into the target, and not the line, althought the line is the elem, so can be repositioned...
 //                if (lpos<10) {
 //                    lpos = 0;
@@ -293,7 +352,7 @@ angular.module('HHControllers').directive('dragSave',['addObj', 'layoutObjectMod
 //                }else{
 //                    console.log($event)
 //                };
-            });
+//            });
     }
     }
 })

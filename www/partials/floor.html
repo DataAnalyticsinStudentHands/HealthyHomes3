@@ -11,14 +11,19 @@ giving viewbox a margin, but doing interior measures on 100%/
     Snap?<input type="checkbox" ng-model="snapToGrid" name="Grid-Snap"/>
     <p>height/width (percent of view is calculated</p>
 </div>
+
+             
 -->
 
         <svg id="floor-container" 
              ng-attr-height="2000px" 
              ng-attr-width="2000px" 
              viewBox="0 0 2000 2000" 
-             hm-hold="gridDrag()"
              hm-dragend="dragGrid($event)">
+<!--
+            <svg x="444" y="444">
+                <g ng-include="'img/window.svg'"></g></svg>
+-->
             <g ng-show="gridShow5" 
                stroke="#6bea3b" 
                stroke-dasharray="5,5,5,5,5,5" 
@@ -62,17 +67,18 @@ giving viewbox a margin, but doing interior measures on 100%/
                       ng-attr-x2="{{floorPoints4Lines[$index][2]}}" ng-attr-y2="{{floorPoints4Lines[$index][3]}}"
                       />
 -->
+
             </g>
-            <g class="roomLines" ng-repeat="room in currentFloor">
+            <g class="roomLines" ng-repeat="room in currentFloor track by room">
                 <polygon stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2" 
                          hm-pinch = "pinchResize($event)"
                          hm-hold="roomLineEdit=!roomLineEdit"
-                         hm-dragstart = "copyArr(currentFloor[$index].roomPoints)"
                          hm-drag = "dragShapes($event)"
                          class="roomShowLine" 
                          ng-show="!roomLineEdit" 
                          ng-attr-points="{{pointPath(currentFloor[$index].roomPoints)}}" 
                 />
+                
 <!--
 We want a pointPathDonut to go both directions, and get the donut so that you can only drag by the edges. dragShapes should only be in edit mode
 Too many iterations for Angular: [$rootScope:infdig] 10 $digest() iterations reached. Aborting! 
@@ -88,7 +94,7 @@ I think this is logically the right way to track points as lines, but it's too m
 -->
                 <polygon stroke="#ba4920" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2"
                          stroke-dasharray="3,3,3,3,3,3"
-                         hm-dragstart = "copyArr(currentFloor[$index].roomPoints)"
+                         hm-dragstart = "dragLineStart($event)"
                          hm-drag = "dragLines($event)"
                          hm-double-tap = "addPoint($event,currentFloor[$index].roomPoints)"
                          hm-hold="roomLineEdit=!roomLineEdit"
@@ -101,8 +107,7 @@ I think this is logically the right way to track points as lines, but it's too m
                         ng-show="roomLineEdit"
                         ng-attr-d="{{addMeasures(currentFloor[$index].roomPoints)}}" />
 -->
-                <circle 
-                        ng-repeat="(i, vals) in currentFloor[$index].roomPoints"
+                <circle ng-repeat="(i, vals) in currentFloor[$index].roomPoints"
                         hm-drag = "dragPoints($event,i)"
                         ng-show="roomLineEdit"
                         class="roomEditLine"
@@ -110,13 +115,31 @@ I think this is logically the right way to track points as lines, but it's too m
                         ng-attr-cy="{{vals[1]}}"
                         r = 6
                 />
-                <text   
+                
+                <text ng-repeat="(ind,vals) in currentFloor[$index].measurePoints track by ind"
+                      ng-show="roomLineEdit"
+                      ng-attr-x="{{vals[0]}}"
+                      ng-attr-y="{{vals[1]}}"
+                      font-size="16"
+                        >{{vals[2]+' ft'}}</text>
+                
+                <svg ng-repeat="(i,vals) in layoutObjs"
+                       ng-attr-x="{{vals[0]}}"
+                       ng-attr-y="{{vals[1]}}"
+                       ng-include="'img/'+vals[2]+'.svg'"
+                       ></svg>
+                
+<!--                <text   
                       ng-repeat="(i, vals) in currentFloor[$index].roomPoints"
                       ng-attr-x="{{vals[0]}}"
                       ng-attr-y="{{vals[1]}}"
                       font-size="40"
                       >{{i}}</text>
-                <!--For room in currentFloor, but needs to have gone through separate scope
+-->
+                <!--
+<g ng-include="'img/trash.svg'"></g>
+
+For room in currentFloor, but needs to have gone through separate scope
 Instead of separate scope, can just keep them straight as they're added by points - then have functions that rearrange them in the controller
 hm-dragend = "dragShapes($event)"
                          hm-drag = "dragShapes2($event)"
@@ -133,9 +156,11 @@ hm-dragstart = "dragRecord($index)"
 <!--        <svg ng-attr-height="{{floorHeight()}}" width="{{floorWidth()}}" viewBox="0 0 100 100" >-->
             
             
+<!--
             <g ng-show="svgEdit" ng-repeat="points in floorPoints" stroke="#BC9D73" stroke-dasharray="10,5,5,5,5,10" fill="#F5F0EA" fill-opacity="0.8" stroke-width="1">
                 <circle hm-dragend='dragAlone($event,$index)' ng-attr-cx={{points[0]}} ng-attr-cy={{points[1]}} r="6" />
             </g>
+-->
             
             
 

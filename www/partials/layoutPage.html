@@ -19,15 +19,30 @@
                 ng-options="room for room in roomLists"></select>
         <br>
         <p>Inspection items are added to rooms on a floor. A quick press or click on a line makes it editable. In edit mode, a long press will add a new endpoint within the polygons. </p>
-        <input type="checkbox" id="drawFloorfromRooms" ng-model="drawFromRooms" select="true"/>Draw floor plan automatically from rooms
-        
+<!--        <div id="smallWrap" style="position:relative;width:280px;height:130px;overflow:hidden;">
+        <div id="floor-wrap-small" style="position:absolute;width:280px;height:280px;" ui-view="floor"></div>
+        </div>-->
     </div>
     
     <div id="grid-container">
         <div id="floor-wrap" ui-view="floor">
         </div>
     </div>
-    
+<!--
+    <br><br><br><br><br><br><br><br>{{showMeasurePoints}}
+
+    <div ng-repeat="(key, value) in gesture">
+        
+        <b>Key:</b> {{key}} : {{value}}
+</div>
+
+    <div ng-repeat="(key, value) in touches">
+       <b>Key:</b> {{key}} : {{value}}
+</div>
+    <div ng-repeat="(key, value) in touches1">
+       <b>Key:</b> {{key}} : {{value}}
+</div>
+    -->
 <!--
 replace include with a ui-view
 need: for floor in floors
@@ -56,17 +71,5 @@ need: for floor in floors
 		<span class="side_tabs" ng-repeat="tab in tabs"><a ui-sref="questions.tabs({tabId: tab.id})"><img ng-src="{{tab.imageUrl}}"></a></span>
 	</div>	
 	
-
-
-<div id="minilogo">
-  
-<div class="wrapanimate2">
-  <div class="cube2">
-    <div class="front2"><img class ="front_image2" src="img/logo_big.svg"></div>
-   
-  </div>
-
-</div>
-</div>
     
 </div>

@@ -2,9 +2,9 @@
 <!-- Generator: Adobe Illustrator 16.0.4, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="45.051px" height="45.037px" viewBox="0 0 45.051 45.037" enable-background="new 0 0 45.051 45.037" xml:space="preserve">
+	 ng-attr-width="{{iconWidth}}px" ng-attr-height="{{iconHeight}}px" viewBox="0 0 45.051 45.037" enable-background="new 0 0 45.051 45.037" xml:space="preserve">
 <g>
-	<path fill="#16A770" stroke="#16A770" stroke-linecap="round" stroke-miterlimit="10" d="M44.5,39.384
+	<path fill="#16A770" ng-attr-stroke="{{iconFill}}" stroke-width=3 stroke-linecap="round" stroke-miterlimit="10" d="M44.5,39.384
 		c0,2.826-2.141,5.116-4.783,5.116H5.283c-2.642,0-4.783-2.291-4.783-5.116V5.616C0.5,2.791,2.641,0.5,5.283,0.5h34.435
 		c2.642,0,4.783,2.291,4.783,5.116V39.384z"/>
 	<g>
