@@ -16,17 +16,20 @@
 			</div>
 -->
 			<div id="menu_green">
-                <span class="menu_icon" 
-                      drop-svg
+                <img class="menu_icon" 
+                      
                       ng-repeat="iType in icons"
                       hm-drag="{{iType.icontype}}" 
-                      ng-include="'img/'+iType.icontype+'.svg'"
-                      >
-                </span>
+                      hm-tap="newObj(iType.icontype)"
+                      ng-src="{{'img/'+iType.icontype+'.png'}}"
+                      />
+                
+<!--                <svg ng-include="'img/door.svg'"></svg>-->
             </div>
 <!--
             <div id="menu_yellow">
                 <span class="menu_icon" 
+drop-svg
                       ng-include="'img/flag.svg'"
                       >
                 </span>
@@ -91,11 +94,13 @@
             </span>
         </div>
 
+<!--
 			<div id="grid_sizes">
 				<span class="grid_sizes"><img hm-tap="magnifyGrid(2)" src="img/gridx1.png"></span>
 				<span class="grid_sizes"><img hm-tap="magnifyGrid(.5)" src="img/gridx2.png"></span>
 				<span class="grid_sizes"><img hm-tap="gridDrag()" src="img/gridx3.png"></span>
 			</div>
+-->
 
 
 <!--

@@ -167,19 +167,32 @@ angular.module('HHControllers').directive('dragSave',['addObj', 'layoutObjectMod
     }
     
 }])
-.directive('dropSvg',['layoutObjectModel','$state',function(layoutObjectModel,$state){
+.directive('dropSvg',['layoutObjectModel','$state','$compile',function(layoutObjectModel,$state,$compile){
     return {
         restrict: 'AE',
         replace: false,
-        scope: {
-        },
-        link: function(scope, elem, attrs) {
+//        scope: {
+//            layoutObjs: '=layoutObjs'
+//            //need to have this call &on layoutObjs so it will write to the $scope
+//        },
+        link: function($scope, elem, attrs) {
             var iconType = attrs.hmDrag;
             var inspectionInd = $state.params.inspectInd;
             var floorInd = $state.params.floorInd;
             var roomInd = $state.params.roomInd;
+            var layoutObjs = [];
+            if ( roomInd.length > 0 ) {
+                var currentRoom = layoutObjectModel.inspections[inspectionInd].floors[floorInd].rooms[roomInd] 
+                if ( currentRoom.layoutObjs != null){
+                    layoutObjs = currentRoom.layoutObjs
+                };
+            } else {
+                var currentRoom = []; 
+                currentRoom.layoutObjs = layoutObjs;
+            }
+            
             elem.bind('tap', function($event){
-                alert('afg')
+                newObj(); //what if newObj was in service???
             });
             elem.bind('dragstart', function($event) {
                 console.log($state.current)
@@ -190,38 +203,33 @@ angular.module('HHControllers').directive('dragSave',['addObj', 'layoutObjectMod
             elem.bind('dragend', function($event) {
                 console.log($state.params)
             });
-            var newObj = function(){
-                if ($state.current != 'layout.floor.room'){
+            var newObjDir = function(){
+//                console.log(scope)
+                if ($state.current.name != 'layout.floor.room'){
                     alert('Must add room to place objects inside'); 
                     return
                 }else{
+                    if (currentRoom.layoutObjs.length>0){
+                        console.log('already have objs')
+                        console.log(currentRoom.layoutObjs)
+                        layoutObjs = currentRoom.layoutObjs;
+                    };
+                    XYObj = [300,300,iconType];
+                    $scope.iconWidth = 45;
+                    $scope.iconHeight = 45;
+                    layoutObjs.push(XYObj);
+                    layoutObjInd = layoutObjs.indexOf(XYObj);
+                    currentRoom.layoutObjs = $scope.layoutObjs = layoutObjs;
+                    console.log(layoutObjs)
+                    var objContainer = document.getElementById('grid-container');
+                    $compile(objContainer)($scope);
                     //follow add for layoutObjs, below
                     //need it to have a separate scope for adding color and positions and size?
                     //will it attach within the room if we have the <svg inside the larger svg????
-                    var currentRoom = layoutObjectModel.inspections[inspectionInd].floors[floorInd].rooms[roomInd]
                 };
             };
-//            $scope.newObj = function(obj){
-//            if (!currentRoom) { //have to rethink
-//                alert('Must add room to place objects inside'); 
-//                return
-//                //or have it just use room as container?? have it go to a modal container
-//            } else {
-//                if (currentRoom.layoutObjs){
-//                    layoutObjs = currentRoom.layoutObjs;};
-////                    $scope.tpospx = '200px'; //need to figure out better process for placement
-////                    $scope.lpospx = '200px';
-////                    $scope.container = 'grid-container'; //make it room?
-//                XYObj = [layoutObjs.length*100,200,obj];
-//                $scope.iconWidth = 45;
-//                $scope.iconHeight = 45;
-//                layoutObjs.push(XYObj);
-//                layoutObjInd = layoutObjs.indexOf(XYObj);
-//                currentRoom.layoutObjs = $scope.layoutObjs = layoutObjs;
-//                //addObj.newObj($scope,obj,layoutObjInd);
-//            };
-//        };
         }
+        
     }
 }])
 .directive('addSvg',['$compile',function($compile) {

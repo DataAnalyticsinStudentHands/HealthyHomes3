@@ -29,7 +29,11 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
             },{
               icontype:  'door'
             },{
-              icontype: 'flag'
+              icontype: 'greenflag'
+            },{
+              icontype: 'yellowflag'
+            },{
+              icontype: 'redflag'
         }];
 //        $scope.iconSVGs=[{
 //              icontype:  'svg_line'
@@ -83,6 +87,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
         $scope.gridSizeWd = 2000;
         var windowHt = $window.outerHeight;
         var windowWd = $window.outerWidth;
+        console.log(windowWd + ' windowWd')
 //        var gridElem = document.getElementById('floor-container');
 //        var gridWd = gridElem.width;
         $scope.gridLineNumber = function(gridSizeHt,gridSizeWd){
@@ -132,9 +137,10 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
         var roomPoints = $scope.roomPoints = [[10,10],[150,100],[150,150],[100,150]]; //[]; //have to decide which one is active on first load; how do we get from $scope?
         $scope.layoutObjectModel = layoutObjectModel; 
         console.log('fdas')
-        console.log(layoutObjectModel);
+        console.log(layoutObjectModel.inspections);
         var inspectInd = 0; //will get from service or $state.params
         var currentInspection = layoutObjectModel.inspections[inspectInd];
+        console.log(currentInspection)
 //        $state.param.inspectInd = 0;
 //        var currentInspection = layoutObjectModel.currentInspection();
         currentInspection.floors = floors;
@@ -268,11 +274,15 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
                 floorInd = $state.params.floorInd = floors.indexOf(floor); //because indexOf doesn't update in order
                 //will I need to redo all the sub indices, or will the .state do it??
             };
+            console.log(floorInd + 'floorInd')
+            floorInd = 0;
             $state.go('layout.floor');
             $state.params.inspectInd = 0; //will need to do this differently
             $state.params.floorName = floor; //can that have an ng-show or ui-sref-active???
             currentFloor = currentInspection.floors[floorInd]; //make sure picks up original
-            console.log(currentInspection)
+            console.log(currentInspection.floors);
+            console.log('was currentInspect');
+            console.log(currentFloor);
             
             //floorPoints
             
@@ -357,6 +367,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
             currentRoom.roomPoints[i][1] = 10*Math.round(($event.gesture.center.pageY*gridMag)/10);
             currentRoom.measurePoints = $scope.measurePoints = findGeom.showMeasures(currentRoom.roomPoints);
         };
+        
         $scope.dragShapes = function($event){ //need to work in zoom stuff - needs copy and drag from left top to smooth it 
             var copyPoints = _.clone(currentRoom.roomPoints)
             $event.preventDefault();
@@ -437,31 +448,37 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
 //                $scope.floorPoints4Lines[n][3] += deltaY;
 //            }
 //        };
-        $scope.iconWidth = 145;
-        $scope.iconHeight = 145;
+        $scope.iconWidth = 45;
+        $scope.iconHeight = 45;
         $scope.iconFill = '#60FF00'; //green - red= #FF0000; yellow=#FFFF0D;
         var layoutObjs = [];
         var layoutObjInd = 0; //layoutObjs.indexOf(layoutObj);
         var XYObj = [];
         $scope.newObj = function(obj){
-            if (!currentRoom) { //have to rethink
+            if (currentRoom.length==0) { //have to rethink
                 alert('Must add room to place objects inside'); 
                 return
                 //or have it just use room as container?? have it go to a modal container
             } else {
-                if (currentRoom.layoutObjs){
+                if (currentRoom.layoutObjs != null) { // && currentRoom.layoutObjs.length>0){
                     layoutObjs = currentRoom.layoutObjs;};
 //                    $scope.tpospx = '200px'; //need to figure out better process for placement
 //                    $scope.lpospx = '200px';
 //                    $scope.container = 'grid-container'; //make it room?
-                XYObj = [layoutObjs.length*100,200,obj];
+                XYObj = [layoutObjs.length*50,300,obj];
                 $scope.iconWidth = 45;
                 $scope.iconHeight = 45;
                 layoutObjs.push(XYObj);
                 layoutObjInd = layoutObjs.indexOf(XYObj);
                 currentRoom.layoutObjs = $scope.layoutObjs = layoutObjs;
+                console.log(layoutObjs);
                 //addObj.newObj($scope,obj,layoutObjInd);
             };
+        };
+        $scope.dragLayoutObjs = function($event,i){
+            $event.preventDefault();
+            currentRoom.layoutObjs[i][0] = 10*Math.round(($event.gesture.center.pageX*gridMag)/10);
+            currentRoom.layoutObjs[i][1] = 10*Math.round(($event.gesture.center.pageY*gridMag)/10);
         };
         $scope.testFunction = function () {
             alert('from controller')

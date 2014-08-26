@@ -37,8 +37,11 @@ giving viewbox a margin, but doing interior measures on 100%/
             </g>     
             <g 
                ng-show="gridShow1" stroke="#6bea3b" stroke-dasharray="2,2,2,2,2,2" fill="#fcfbfa" fill-opacity="0.2" stroke-width=".2">
+<!--
                 <line ng-repeat="gridpt in gridLineNumber(gridSizeHt,10)" ng-attr-x1="{{gridpt}}" y1="0" ng-attr-x2="{{gridpt}}" y2="2000" />
                 <line ng-repeat="gridpt in gridLineNumber(gridSizeHt,10)" x1="0" ng-attr-y1="{{gridpt}}" x2="2000" ng-attr-y2="{{gridpt}}" />            
+-->
+                
             </g>  
             <g class="floorLines" stroke="#bb3bea" fill="none" fill-opacity="0.2" stroke-width="3">
 <!--                <polygon points="10,10 150,10 150,150 10,150"/>-->
@@ -121,15 +124,32 @@ I think this is logically the right way to track points as lines, but it's too m
                       ng-attr-x="{{vals[0]}}"
                       ng-attr-y="{{vals[1]}}"
                       font-size="16"
-                        >{{vals[2]+' ft'}}</text>
+                        >{{vals[2]/10+' ft'}}</text>
                 
-                <svg ng-repeat="(i,vals) in layoutObjs"
-                       ng-attr-x="{{vals[0]}}"
-                       ng-attr-y="{{vals[1]}}"
-                       ng-include="'img/'+vals[2]+'.svg'"
-                       ></svg>
+                <g ng-repeat="(indic,values) in layoutObjs track by indic"
+                       >
+                    <image ng-attr-x="{{values[0]}}" 
+                           ng-attr-y="{{values[1]}}" 
+                           ng-attr-width="{{iconWidth}}" 
+                           ng-attr-height="{{iconHeight}}"
+                           hm-drag = "dragLayoutObjs($event,indic)"
+                           xlink:href="{{'img/'+values[2]+'.png'}}"></image>
+<!--
+                <text     ng-attr-x="{{values[0]}}"
+                      ng-attr-y="{{values[1]}}"
+                      font-size="16"
+                        >{{values[2]+' ft'+indic}}</text>
+-->
+
+<!--
+                    <g 
+                        ng-include="'{{img/'+values[2]+'.svg}}'"></g>
+-->
+                </g>
                 
-<!--                <text   
+<!--                
+
+                <text   
                       ng-repeat="(i, vals) in currentFloor[$index].roomPoints"
                       ng-attr-x="{{vals[0]}}"
                       ng-attr-y="{{vals[1]}}"
