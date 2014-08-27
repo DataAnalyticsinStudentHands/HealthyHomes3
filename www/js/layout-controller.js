@@ -85,9 +85,11 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
         $scope.gridShow5 = true;
         $scope.gridSizeHt = 2000; //just ng-init these? or get from some settings?
         $scope.gridSizeWd = 2000;
-        var windowHt = $window.outerHeight;
-        var windowWd = $window.outerWidth;
-        console.log(windowWd + ' windowWd')
+        //have this in an if that has to do with the state for the smaller ui-view
+        var windowHt = $scope.windowHt = 4000;// $window.outerHeight;
+        var windowWd = $scope.windowWd = 4000;// $window.outerWidth;
+//        console.log(windowWd + ' windowWd')
+        //use to only draw grid lines that are needed - combination of this and magnify - and such that it picks up on smaller version???
 //        var gridElem = document.getElementById('floor-container');
 //        var gridWd = gridElem.width;
         $scope.gridLineNumber = function(gridSizeHt,gridSizeWd){
@@ -98,13 +100,17 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
             return '5,5 2000,2000'
         }
         var gridMag = 1;
+        var gridElem = angular.element(document.getElementById('floor-container'));
         $scope.magnifyGrid = function(num){
-            var gridElem = angular.element(document.getElementById('floor-container'));
+            gridElem = angular.element(document.getElementById('floor-container'));
             var elemWidth = gridElem[0].offsetWidth;
             if (elemWidth == 2016){elemWidth = 2000}; //have to figure out where the margins are coming from
             var newNum = num * (elemWidth); 
             gridElem.css({'width':newNum+'px','height':newNum+'px'});
             gridMag = 2000/newNum;
+            findGridOffsets();
+//            windowHt = $scope.windowHt = $window.outerHeight*gridMag;
+//            windowWd = $scope.windowWd = $window.outerWidth*gridMag;
         }
         var dragtheGrid = $scope.dragtheGrid = false;
         $scope.gridDrag = function(){
@@ -120,7 +126,11 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
                 var offLeft = $event.target.offsetLeft + deltaX;
                 if (offTop > 0) { offTop = 0}; //need to also keep it from going off to the right
                 if (offLeft > 0) { offLeft = 0};
-                angular.element($event.target).css({'top':offTop,'left':offLeft});
+//                windowHt = $scope.windowHt = $window.outerHeight*gridMag+offTop;
+//                windowWd = $scope.windowWd = $window.outerWidth*gridMag+offLeft;
+                var gridElem = angular.element(document.getElementById('floor-container'));
+                gridElem.css({'top':offTop,'left':offLeft});
+                findGridOffsets();
             };
         }
 //        $scope.gridMag = windowWd/gridWd;
@@ -244,13 +254,10 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
 //            arr.pop();
             return rtnStr;
         }
-        
-            
-    
-        
         $scope.newFloor = function(floor){
+            $scope.layoutObjs = [];
+            $scope.rooms = [];
             if (floors.indexOf(floor)==-1){
-                console.log('add')
                 room = '';
                 rooms = [];
 //                $scope.tpospx = '250px';
@@ -259,7 +266,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
                 floors.push(floor);
                 floorInd = $state.params.floorInd = floors.indexOf(floor);
 //                if (!$scope.drawFromRooms){
-                floorPoints = $scope.floorPoints = [[100,100],[300,100],[300,300],[100,300]]; //add this way and can bezier later
+//                floorPoints = $scope.floorPoints = [[100,100],[300,100],[300,300],[100,300]]; //add this way and can bezier later
                     //console.log('still need to think through')
                     //create a floorPoint list with four corners
                     //addObj.newObj($scope,floor+"_floor",floorInd)
@@ -267,15 +274,19 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
                 //    floorPoints = $scope.floorPoints = [];
                // };
                 currentInspection.floors[floorInd] = [floor];
+                currentInspection.floors[floorInd].rooms = [];
                 currentInspection.floors[floorInd].floorPoints = $scope.floorPoints = floorPoints; 
-                
+                rooms = $scope.rooms = [];
                 //need floorPoints to be added here!!!!
             }else{
                 floorInd = $state.params.floorInd = floors.indexOf(floor); //because indexOf doesn't update in order
+                rooms = $scope.rooms = currentInspection.floors[floorInd].rooms;
+                console.log(rooms)
+                console.log('that was rooms, but as object or list?')
                 //will I need to redo all the sub indices, or will the .state do it??
             };
             console.log(floorInd + 'floorInd')
-            floorInd = 0;
+//            floorInd = 0;
             $state.go('layout.floor');
             $state.params.inspectInd = 0; //will need to do this differently
             $state.params.floorName = floor; //can that have an ng-show or ui-sref-active???
@@ -289,7 +300,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
             //
             //all the state management things
         };
-        $scope.floorPoints4Lines = [[100,100,300,100],[300,100,300,300],[300,300,100,300],[100,300,100,100]]
+//        $scope.floorPoints4Lines = [[100,100,300,100],[300,100,300,300],[300,300,100,300],[100,300,100,100]]
         
 //        var floorInd = $stateParams.floorInd = floors.indexOf(floor);
         $scope.floorPointPath = function(){
@@ -301,29 +312,26 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
         var currentRoom = [];
         //var currentRoom = currentFloor[roomInd] || false;
         $scope.newRoom = function(room){
-            console.log(currentFloor.length+' currentfloot')
+//            console.log(currentFloor.length+' currentfloot')
             if (currentFloor.length > 0) {
                 if (rooms.indexOf(room)==-1){
                     //have room list add possibility of room2 as well as existing 
                     //http://www.bennadel.com/blog/2452-mixing-static-and-dynamic-data-in-an-angularjs-select-menu.htm
-//                    $scope.tpospx = '360px';
-//                    $scope.lpospx = '260px';
-//                    $scope.container = 'grid-container';
                     rooms.push(room);
                     $scope.rooms = rooms;
                     roomInd = $state.params.roomInd = rooms.indexOf(room);
                     //addSvgPoint.newSvg($scope,'line',3);
                     //addObj.newObj($scope,room+"_room",roomInd);
-                    currentFloor[roomInd] = [room];
-                    console.log('wet');
-                    console.log(currentFloor);
+                    currentFloor.rooms[roomInd] = [room];
                 } else {
                     roomInd = $state.params.roomInd = rooms.indexOf(room);
                 };
                 $state.go('layout.floor.room');
                 newFloorOrRoom = $scope.newFloorOrRoom = false;
                 $state.params.roomName = room; //can that have an ng-show or ui-sref-active??? how is it inherited?
-                currentRoom = currentFloor[roomInd]; //make sure picks up original
+                currentRoom = currentFloor.rooms[roomInd]; //make sure picks up original
+                console.log(currentRoom)
+                console.log(roomInd + ' roomInd')
                 if (!currentRoom.roomPoints){
                     currentRoom.roomPoints = $scope.roomPoints = [[220,220],[320,220],[320,320],[220,320]]; //should be calculated from previous?
                     
@@ -352,6 +360,13 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
             console.log(currentRoom)
             };
         };
+        $scope.makeActive = function(){
+            currentRoom = currentFloor.rooms[this.$index];
+        }
+        $scope.centerView = function($event){
+            console.log(offLeft)
+        }
+        
         $scope.pinchResize = function($event){
             
             $event.preventDefault();
@@ -363,8 +378,8 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
         };
         $scope.dragPoints = function($event,i){
             $event.preventDefault();
-            currentRoom.roomPoints[i][0] = 10*Math.round(($event.gesture.center.pageX*gridMag)/10);
-            currentRoom.roomPoints[i][1] = 10*Math.round(($event.gesture.center.pageY*gridMag)/10);
+            currentRoom.roomPoints[i][0] = 10*Math.round((($event.gesture.center.pageX-offLeft)*gridMag)/10);
+            currentRoom.roomPoints[i][1] = 10*Math.round((($event.gesture.center.pageY-offTop)*gridMag)/10);
             currentRoom.measurePoints = $scope.measurePoints = findGeom.showMeasures(currentRoom.roomPoints);
         };
         
@@ -373,13 +388,12 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
             $event.preventDefault();
             var xtraOffX = 0;
             var xtraOffY = 0;
-            console.log(copyPoints.length)
             if(copyPoints.length > 3){
                 xtraOffX = Math.abs(copyPoints[0][0]-copyPoints[1][0])/2;
                 xtraOffY = Math.abs(copyPoints[0][1]-copyPoints[2][1])/2; //works well for squares
             }
-            var dragX = ($event.gesture.center.pageX*gridMag)-copyPoints[0][0]-xtraOffX;
-            var dragY = ($event.gesture.center.pageY*gridMag)-copyPoints[0][1]-xtraOffY;
+            var dragX = (($event.gesture.center.pageX-offLeft)*gridMag)-copyPoints[0][0]-xtraOffX;
+            var dragY = (($event.gesture.center.pageY-offTop)*gridMag)-copyPoints[0][1]-xtraOffY;
             for (var n = 0;n<currentRoom.roomPoints.length;n++){
                 currentRoom.roomPoints[n][0] = 10*Math.round((copyPoints[n][0] + dragX)/10);
                 currentRoom.roomPoints[n][1] = 10*Math.round((copyPoints[n][1] + dragY)/10);
@@ -391,8 +405,8 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
             $event.preventDefault();
 //            $scope.gesture = $event.gesture;
             var arr = _.clone(currentRoom.roomPoints);
-            var fingerX = $event.gesture.center.pageX*gridMag;
-            var fingerY = $event.gesture.center.pageY*gridMag;
+            var fingerX = ($event.gesture.center.pageX-offLeft)*gridMag;
+            var fingerY = ($event.gesture.center.pageY-offTop)*gridMag;
 //            var hypotRatio = 0;
 //            var newRatio = 0;
             var ind4new = 0;
@@ -410,10 +424,10 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
             var xtraOffY1 = $scope.xtraOffY1;
             var xtraOffX2 = $scope.xtraOffX2;
             var xtraOffY2 = $scope.xtraOffY2;
-            var dragX1 = ($event.gesture.center.pageX*gridMag)-xtraOffX1;
-            var dragY1 = ($event.gesture.center.pageY*gridMag)-xtraOffY1;
-            var dragX2 = ($event.gesture.center.pageX*gridMag)-xtraOffX2;
-            var dragY2 = ($event.gesture.center.pageY*gridMag)-xtraOffY2;
+            var dragX1 = (($event.gesture.center.pageX-offLeft)*gridMag)-xtraOffX1;
+            var dragY1 = (($event.gesture.center.pageY-offTop)*gridMag)-xtraOffY1;
+            var dragX2 = (($event.gesture.center.pageX-offLeft)*gridMag)-xtraOffX2;
+            var dragY2 = (($event.gesture.center.pageY-offTop)*gridMag)-xtraOffY2;
             
 //            var dragX = ($event.gesture.center.pageX*gridMag)-arr[0][0]-xtraOffX;
 //            var dragY = ($event.gesture.center.pageY*gridMag)-arr[0][1]-xtraOffY;
@@ -454,7 +468,17 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
         var layoutObjs = [];
         var layoutObjInd = 0; //layoutObjs.indexOf(layoutObj);
         var XYObj = [];
-        $scope.newObj = function(obj){
+        var gridElem = {};
+        var offLeft = 0;
+        var offTop = 0;
+        
+        var findGridOffsets = function(){
+            gridElem = angular.element(document.getElementById('floor-container'));
+            offLeft = gridElem[0].offsetLeft || 0;
+            offTop = gridElem[0].offsetTop || 0;
+        }
+        $scope.newObj = function(obj,$event){
+            findGridOffsets();
             if (currentRoom.length==0) { //have to rethink
                 alert('Must add room to place objects inside'); 
                 return
@@ -462,12 +486,20 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
             } else {
                 if (currentRoom.layoutObjs != null) { // && currentRoom.layoutObjs.length>0){
                     layoutObjs = currentRoom.layoutObjs;};
+                if ($event.type == 'tap'){
+                    currentRoom.measurePoints = $scope.measurePoints = findGeom.showMeasures(currentRoom.roomPoints);
+                    var iconX = currentRoom.measurePoints[0][0];
+                    var iconY = currentRoom.measurePoints[0][0];
+                }else{
+                    var iconX = 10*Math.round((($event.gesture.center.pageX-offLeft)*gridMag)/10);
+                    var iconY = 10*Math.round((($event.gesture.center.pageY-offTop)*gridMag)/10);    
+                };
 //                    $scope.tpospx = '200px'; //need to figure out better process for placement
 //                    $scope.lpospx = '200px';
 //                    $scope.container = 'grid-container'; //make it room?
-                XYObj = [layoutObjs.length*50,300,obj];
-                $scope.iconWidth = 45;
-                $scope.iconHeight = 45;
+                XYObj = [iconX,iconY,obj];
+                $scope.iconWidth = 15;
+                $scope.iconHeight = 15;
                 layoutObjs.push(XYObj);
                 layoutObjInd = layoutObjs.indexOf(XYObj);
                 currentRoom.layoutObjs = $scope.layoutObjs = layoutObjs;
@@ -476,10 +508,24 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
             };
         };
         $scope.dragLayoutObjs = function($event,i){
+            //findGridOffsets(); 
             $event.preventDefault();
-            currentRoom.layoutObjs[i][0] = 10*Math.round(($event.gesture.center.pageX*gridMag)/10);
-            currentRoom.layoutObjs[i][1] = 10*Math.round(($event.gesture.center.pageY*gridMag)/10);
+            currentRoom.layoutObjs[i][0] = 10*Math.round((($event.gesture.center.pageX-offLeft)*gridMag)/10);
+            currentRoom.layoutObjs[i][1] = 10*Math.round((($event.gesture.center.pageY-offTop)*gridMag)/10);
         };
+        var notes = [];
+        var note = $scope.note = '';
+        $scope.showNote = false;
+        $scope.openNote = function(){
+            $scope.showNote != $scope.showNote;
+            if (currentRoom.layoutObjs[this.indic].notes){
+                notes = currentRoom.layoutObjs[this.indic].notes; //notes should have in it the text and the photos
+            }else{
+                note = $scope.note = ''; //do you have to explicitly clear? 
+                notes = [];
+                currentRoom.layoutObjs[this.indic].notes = notes;
+            }
+        }
         $scope.testFunction = function () {
             alert('from controller')
         };

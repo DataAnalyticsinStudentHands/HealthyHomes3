@@ -1,6 +1,6 @@
     <div id="menubg">  
 		<div id="wrap_menus">
-    <div id="minilogo">
+    <div id="minilogo" hm-tap="cons()">
   
 <div class="wrapanimate2">
   <div class="cube2">
@@ -19,8 +19,8 @@
                 <img class="menu_icon" 
                       
                       ng-repeat="iType in icons"
-                      hm-drag="{{iType.icontype}}" 
-                      hm-tap="newObj(iType.icontype)"
+                      hm-dragend="newObj(iType.icontype,$event)" 
+                      hm-tap="newObj(iType.icontype,$event)"
                       ng-src="{{'img/'+iType.icontype+'.png'}}"
                       />
                 
@@ -83,14 +83,16 @@ drop-svg
 		-->
 
 		<!--<div id="menu_yellow_sq" ="dragStay"></div>-->
+<!--
                 <div id="add_button">
         <span class="menu_icon"><img hm-tap="newFloorRoom()" src="img/addbutton.svg"></span>
         </div>
+-->
 
         <div id="menu_trash">
         <span class="menu_icon">
-            <span ng-include="'img/trash.svg'"></span>
-<!--            <img src="img/trash.svg">-->
+<!--            <span ng-include="'img/trash.svg'"></span>-->
+            <img ng-src="img/trash.png">
             </span>
         </div>
 
