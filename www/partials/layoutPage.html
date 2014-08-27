@@ -2,48 +2,28 @@
 
     <div ng-include="'partials/topMenu.html'">
     </div>
-    <div id="floorName">{{floor}}</div>
-    <div id="floorSelect" >
-        <div id="floor-controls" ng-click="hideFloor = !hideFloor">
-            <img id="magnifyLarger" 
-                 style="width:50px"
-                 hm-tap="magnifyGrid(2)"
-                 ng-src="img/magnify.png" />
-            <img id="magnifySmaller" 
-                 style="width:20px"
-                 hm-tap="magnifyGrid(.5)"
-                 ng-src="img/magnify.png" />
-            <img hm-tap="gridDrag()" 
-                 ng-src="img/gridDrag.png" />
-        </div>
+        
+<!--    <div id="floorName">{{floor}}</div>-->
+<!--    <div id="floorSelect" >-->
+        
 <!--        <h3>{{floor}}</h3>
         <h3 ng-repeat="room in rooms">{{room}}</h3>-->
-        <select ng-model="floor" 
-                required
-                ng-change="newFloor(floor)"
-                ng-options="floor for floor in floorLists">
-            <option value="">-- choose floor --</option>
-        </select>
-        <select ng-model="room" 
-                required
-                ng-change="newRoom(room)"
-                ng-if="(floor)"
-                ng-options="room for room in roomLists">
-            <option value="">-- choose room --</option>
-        </select>
+        
         
 
-        <div id="smallWrap" style="position:relative;width:280px;height:130px;overflow:hidden;">
+        <div id="smallWrap" 
+             ng-if="hideFloor"
+             style="position:absolute;width:280px;height:130px;overflow:hidden;">
             <div id="floor-wrap-small" 
                  style="position:absolute;width:280px;height:280px;" 
-                 ng-if="hideFloor"
+                 
                  ui-view="floor">
             </div>
         </div>
  
         
         
-    </div>
+<!--    </div>-->
     
     <div id="grid-container">
         <div id="floor-wrap" ui-view="floor">
@@ -52,15 +32,62 @@
     <div id="noteBox" ng-show="showNote">
         <div id="noteTopBar">
             <img ng-src="{{noteIcon}}" /> 
+            <img href=""
+                 style="display:none;position:absolute;width:60px;height:60px;float:right;" 
+                 id="smallImage" 
+                 src="" />
             <img id="cameraIcon" 
+                 hm-tap="takePicture()"
                 ng-src="img/camera.png"/>
+            <span id="noteClose"
+                  hm-tap="showNote = !showNote">X</span>
                  
         </div>
         <textarea id="noteText"
                   ng-model="note">
+            <img style="display:none;" id="largeImage" src="" />
         </textarea>
     </div>
     
+    <div id="floor-controls" >
+        
+        <div id="mag-controls">
+        <img hm-tap="hideFloor = !hideFloor"
+             hm-double-tap="gridDrag()" 
+                style="width:20px"
+                 ng-src="img/gridDrag.png" />
+        <img id="magnifySmaller" 
+                 hm-tap="magnifyGrid(.5)"
+                 ng-src="img/magnify.png" />
+        
+        <img id="magnifyLarger" 
+                 hm-tap="magnifyGrid(2)"
+                 ng-src="img/magnify.png" />
+        </div> 
+            <select ng-model="floor" 
+                required
+                style="float:right"
+                ng-change="newFloor(floor)"
+                ng-options="floor for floor in floorLists">
+            <option value="">-- choose floor --</option>
+        </select>
+        <br>
+        <select ng-model="room" 
+                style="float:right"
+                required
+                ng-change="newRoom(room)"
+                ng-if="(floor)"
+                ng-options="room for room in roomLists">
+            <option value="">-- choose room --</option>
+        </select>
+         
+            
+            
+<!--
+            <img hm-tap="gridDrag()" 
+                 ng-src="img/gridDrag.png" />
+-->
+        </div>
 <!--
     <br><br><br><br><br><br><br><br>{{showMeasurePoints}}
 

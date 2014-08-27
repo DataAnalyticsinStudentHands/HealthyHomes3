@@ -15,7 +15,8 @@
     "angular-ui-router": "~0.2.10",
     "angular-gestures": "~0.2.3",
     "lodash": "latest",
-    "restangular": "latest"
+    "restangular": "latest",
+    "phonegap": "latest"
   },
   "devDependencies": {
     "angular-mocks": "1.2.18",

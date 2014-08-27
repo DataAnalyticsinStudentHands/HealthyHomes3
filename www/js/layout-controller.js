@@ -3,7 +3,7 @@
 var layoutController = angular.module('layoutModuleController', []);
 
 layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layoutObjectModel','addObj','addSvgPoint','findGeom',
-	function ($scope, $window, $state, layoutObjectModel, addObj, addSvgPoint, findGeom) { 
+	function ($scope, $window, $state, layoutObjectModel, addObj, addSvgPoint, findGeom, $cordovaCamera) { 
 //        document.addEventListener("deviceready", onDeviceReady, false);
 //        function onDeviceReady() {
         //https://github.com/hammerjs/hammer.js/wiki/Event-delegation-and-how-to-stopPropagation---preventDefaults
@@ -517,7 +517,8 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
         var note = $scope.note = '';
         $scope.showNote = false;
         $scope.openNote = function(){
-            $scope.showNote != $scope.showNote;
+            console.log('openNote')
+            $scope.showNote = !$scope.showNote;
             if (currentRoom.layoutObjs[this.indic].notes){
                 notes = currentRoom.layoutObjs[this.indic].notes; //notes should have in it the text and the photos
             }else{
@@ -526,6 +527,46 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
                 currentRoom.layoutObjs[this.indic].notes = notes;
             }
         }
+        //http://docs.phonegap.com/en/1.2.0/phonegap_camera_camera.md.html
+        var pictureSource;   // picture source
+        var destinationType; // sets the format of returned value 
+        function onDeviceReady() {
+            pictureSource=navigator.camera.PictureSourceType;
+            destinationType=navigator.camera.DestinationType;
+        }
+        function onPhotoDataSuccess(imageData) {
+            var smallImage = document.getElementById('smallImage');
+            smallImage.style.display = 'block';
+            smallImage.src = imageData;
+//            smallImage.src = "data:image/jpeg;base64," + imageData;
+//            alert(imageData)
+//            console.log(smallImage)
+        }
+        function onPhotoURISuccess(imageURI) {
+            var largeImage = document.getElementById('largeImage');
+            largeImage.style.display = 'block';
+            largeImage.src = imageURI;
+        }
+        $scope.takePicture = function() {
+	       navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20 });
+	  
+        }
+        function capturePhotoEdit() {
+            //allowEdit not on Android?
+            navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20, allowEdit: true }); 
+        };
+        function getPhoto(source) {
+      // Retrieve image file location from specified source
+          navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 20, 
+            destinationType: destinationType.FILE_URI,
+            sourceType: source });
+        }
+
+    // Called if something bad happens.
+    // 
+    function onFail(message) {
+      alert('Failed because: ' + message);
+    };
         $scope.testFunction = function () {
             alert('from controller')
         };
