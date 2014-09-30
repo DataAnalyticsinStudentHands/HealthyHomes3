@@ -8,7 +8,7 @@ var HHApp = angular.module('HHApp', [
 	'HHControllers', 
 	'ui.router', 
     'angular-gestures',
-	'ngCordova.plugins.camera',  
+	'ngCordova',  
 	'jsonServices',
 	'dbServicesModule', 
     'restangular',

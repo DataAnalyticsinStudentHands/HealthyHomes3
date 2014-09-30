@@ -41,11 +41,12 @@
                 ng-src="img/camera.png"/>
             <span id="noteClose"
                   hm-tap="showNote = !showNote">X</span>
-                 
+                <!--            <img style="display:none;" id="largeImage" src="" />--> 
         </div>
         <textarea id="noteText"
+                  hm-tap="focus()"
                   ng-model="note">
-            <img style="display:none;" id="largeImage" src="" />
+
         </textarea>
     </div>
     

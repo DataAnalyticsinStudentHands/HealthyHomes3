@@ -81,10 +81,9 @@ HHApp.config(function(RestangularProvider) {
       })
       .state('layout.floor.room', {
              resolve: {
-                floorData: function($stateParams, layoutObjectModel) {
-                    var thisRoom = $stateParams.roomName;
-                    var corners = $stateParams.corners;
-                    return currentRoom;
+                floorData: function(layoutObjectModel) {
+                    console.log('in app.js')
+                    return layoutObjectModel;
                 }
              }
       })

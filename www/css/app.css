@@ -823,6 +823,7 @@ body{
 /*    padding-bottom:100%;*/
     top:0px; /*make it 80 px; but have the drag account for different points*/
     left:0px;
+    vertical-align: middle;
 }
 #floor-container{
     position:absolute;
@@ -870,7 +871,7 @@ body{
 #floor-controls{
     position:absolute;
     bottom:5px;
-    width:200px;
+    width:220px;
     border-style: solid;
     border-color: #16A770;
     border-width: 3px;
@@ -884,12 +885,12 @@ body{
     border-style:hidden;
 }
 #magnifyLarger{
-    width:50px;
+    width:60px;
     float:left;
 }
 #magnifySmaller{
     display:block;
-    width:20px;
+    width:30px;
     float:right;
 }
 #smallWrap{
@@ -946,6 +947,7 @@ body{
 #noteText{
     width:100%;
     height:80%;
+    z-index:22;
 }
 /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
   

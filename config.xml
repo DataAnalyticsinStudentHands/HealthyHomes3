@@ -7,6 +7,7 @@
     <author email="dprice2@uh.edu" href="http://housuggest.org">
         Data Analytics in Student Hands Team, Summer of Apps 2014
     </author>
+<!--    <preference name="orientation" value="landscape" />-->
     <content src="index.html" />
     <access origin="*" />
 </widget>

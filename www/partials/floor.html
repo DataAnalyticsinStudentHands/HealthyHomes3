@@ -35,6 +35,7 @@ giving viewbox a margin, but doing interior measures on 100%/
                 <line ng-repeat="gridpt in gridLineNumber(windowHt,50)" ng-attr-x1="{{gridpt}}" y1="0" ng-attr-x2="{{gridpt}}" ng-attr-y2="{{windowHt}}" />
                 <line ng-repeat="gridpt in gridLineNumber(windowWd,50)" x1="0" ng-attr-y1="{{gridpt}}" ng-attr-x2="{{windowWd}}" ng-attr-y2="{{gridpt}}" />            
             </g>     
+            <image x="-555" y="-155" width="1300px" height="1300px" xlink:href="{{'img/Galvestonmap.svg'}}"></image>
             <g 
                ng-show="gridShow1" stroke="#6bea3b" stroke-dasharray="2,2,2,2,2,2" fill="#fcfbfa" fill-opacity="0.2" stroke-width=".2">
                 <line ng-repeat="gridpt in gridLineNumber(windowHt,10)" ng-attr-x1="{{gridpt}}" y1="0" ng-attr-x2="{{gridpt}}" ng-attr-y2="{{windowHt}}" />

@@ -255,6 +255,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
             return rtnStr;
         }
         $scope.newFloor = function(floor){
+            //$scope.magnifyGrid(3);
             $scope.layoutObjs = [];
             $scope.rooms = [];
             if (floors.indexOf(floor)==-1){
@@ -333,7 +334,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
                 console.log(currentRoom)
                 console.log(roomInd + ' roomInd')
                 if (!currentRoom.roomPoints){
-                    currentRoom.roomPoints = $scope.roomPoints = [[220,220],[320,220],[320,320],[220,320]]; //should be calculated from previous?
+                    currentRoom.roomPoints = $scope.roomPoints = [[120,120],[220,120],[220,220],[120,220]]; //should be calculated from previous?
                     
                 };
                 if (!currentRoom.measurePoints){
@@ -528,7 +529,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
             }
         }
         //http://docs.phonegap.com/en/1.2.0/phonegap_camera_camera.md.html
-        var pictureSource;   // picture source
+/*        var pictureSource;   // picture source
         var destinationType; // sets the format of returned value 
         function onDeviceReady() {
             pictureSource=navigator.camera.PictureSourceType;
@@ -562,11 +563,12 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
             sourceType: source });
         }
 
-    // Called if something bad happens.
-    // 
-    function onFail(message) {
-      alert('Failed because: ' + message);
-    };
+        // Called if something bad happens.
+        // 
+        function onFail(message) {
+          alert('Failed because: ' + message);
+        };
+        */
         $scope.testFunction = function () {
             alert('from controller')
         };
