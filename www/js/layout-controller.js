@@ -83,8 +83,8 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
         };
         $scope.gridShow1 = true; //in case we want to turn them off for some views
         $scope.gridShow5 = true;
-        $scope.gridSizeHt = 2000; //just ng-init these? or get from some settings?
-        $scope.gridSizeWd = 2000;
+        //$scope.gridSizeHt = 2000; //just ng-init these? or get from some settings?
+        //var gridSizeWd = $window.outerWidth; //2000;
         //have this in an if that has to do with the state for the smaller ui-view
         var windowHt = $scope.windowHt = 4000;// $window.outerHeight;
         var windowWd = $scope.windowWd = 4000;// $window.outerWidth;
@@ -93,11 +93,11 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
 //        var gridElem = document.getElementById('floor-container');
 //        var gridWd = gridElem.width;
         $scope.gridLineNumber = function(gridSizeHt,gridSizeWd){
-            return _.range(0,2000,gridSizeWd) //everyfive feet
+            return _.range(0,gridSizeHt,gridSizeWd) //everyfive feet
         }
         //console.log($scope.gridLineNumber(11,11))
         $scope.gridlinePts = function(gridSizeHt,gridSizeWd){
-            return '5,5 2000,2000'
+            return '5,5 ' + gridSizeWd,gridSizeWd // 2000,2000'
         }
         var gridMag = 1;
         var gridElem = angular.element(document.getElementById('floor-container'));
@@ -490,7 +490,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
                 if ($event.type == 'tap'){
                     currentRoom.measurePoints = $scope.measurePoints = findGeom.showMeasures(currentRoom.roomPoints);
                     var iconX = currentRoom.measurePoints[0][0];
-                    var iconY = currentRoom.measurePoints[0][0];
+                    var iconY = currentRoom.measurePoints[0][1];
                 }else{
                     var iconX = 10*Math.round((($event.gesture.center.pageX-offLeft)*gridMag)/10);
                     var iconY = 10*Math.round((($event.gesture.center.pageY-offTop)*gridMag)/10);    
@@ -518,7 +518,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
         var note = $scope.note = '';
         $scope.showNote = false;
         $scope.openNote = function(){
-            console.log('openNote')
+            //console.log('openNote')
             $scope.showNote = !$scope.showNote;
             if (currentRoom.layoutObjs[this.indic].notes){
                 notes = currentRoom.layoutObjs[this.indic].notes; //notes should have in it the text and the photos
