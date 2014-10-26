@@ -6,8 +6,6 @@ platforms/
 
 #bower stuff in www
 www/bower_components/
-www/jquery/
-www/bootstrap/
 
 #and no logs
 *.log

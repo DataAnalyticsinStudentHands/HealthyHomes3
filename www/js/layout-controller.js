@@ -14,6 +14,9 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
 //            },{
 //                icontype: 'redflag'
 //        }];
+//        $scope.toggleSideMenu = function() {
+//            $ionicSideMenuDelegate.toggleLeft();
+//    };
         $scope.icons=[{
               icontype:  'sink'
             },{
@@ -44,7 +47,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
 //        }];
         //console.log(_.range(0,2000,50))
         $scope.alert = function (text) {
-            alert(text);
+            alert(text+'inside layoutCtrl');
         };
         //findClosestLine.testFunc();
 //        document.addEventListener("deviceready", onDeviceReady, false);
@@ -93,6 +96,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
 //        var gridElem = document.getElementById('floor-container');
 //        var gridWd = gridElem.width;
         $scope.gridLineNumber = function(gridSizeHt,gridSizeWd){
+            console.log(gridSizeHt);
             return _.range(0,gridSizeHt,gridSizeWd) //everyfive feet
         }
         //console.log($scope.gridLineNumber(11,11))
@@ -146,11 +150,10 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
         var room = $scope.room;
         var roomPoints = $scope.roomPoints = [[10,10],[150,100],[150,150],[100,150]]; //[]; //have to decide which one is active on first load; how do we get from $scope?
         $scope.layoutObjectModel = layoutObjectModel; 
-        console.log('fdas')
-        console.log(layoutObjectModel.inspections);
+        //console.log(layoutObjectModel.inspections);
         var inspectInd = 0; //will get from service or $state.params
         var currentInspection = layoutObjectModel.inspections[inspectInd];
-        console.log(currentInspection)
+        //console.log(currentInspection)
 //        $state.param.inspectInd = 0;
 //        var currentInspection = layoutObjectModel.currentInspection();
         currentInspection.floors = floors;

@@ -1,30 +1,33 @@
-'use strict';
+var databaseServices = angular.module('databaseServicesModule', []);
 
-
-
-var databaseServices = angular.module('databaseServicesModule', ['ngResource', 'ngCookies']);
-
-databaseServices.factory('Auth', ['Base64', '$http', '$cookieStore', function (Base64, $http, $cookieStore) {
-    // initialize to whatever is in the cookie, if anything
-    $http.defaults.headers.common['Authorization'] = 'Basic ' + $cookieStore.get('authdata');
+databaseServices.factory('Auth', ['Base64', '$http', function (Base64, $http) {
+    // initialize to whatever is in the local storage, if anything
+    $http.defaults.headers.common['Authorization'] = 'Basic ' + localStorage.getItem('authdata');
     console.log($http.defaults.headers.common.Authorization);
- 
     return {
         setCredentials: function (username, password) {
             var encoded = Base64.encode(username + ':' + password);
             $http.defaults.headers.common.Authorization = 'Basic ' + encoded;
-            $cookieStore.put('authdata', encoded);
+            localStorage.setItem('authdata', encoded);
+            localStorage.setItem("authdata-conf", false);
         },
         clearCredentials: function () {
             document.execCommand("ClearAuthenticationCache");
-            $cookieStore.remove('authdata');
+            localStorage.removeItem('authdata');
             $http.defaults.headers.common.Authorization = 'Basic ';
+            localStorage.setItem("authdata-conf", false);
         },
         hasCredentials: function() {
-            var cookie = null;
-            var cookie = $cookieStore.get('authdata');
-            if(cookie) return true; else return false;
+            var ls = null;
+            ls = localStorage.getItem('authdata');
+            lsc = eval(localStorage.getItem('authdata-conf'));
+            //LITTLE HACKY TRYING TO NOT LOG THEM IN AS VISITOR
+            return (ls && lsc && ls != "VmlzaXRvcjp0ZXN0");
         },
+        confirmCredentials: function() {
+            console.log("confirming");
+            localStorage.setItem("authdata-conf", true);
+        }
     };
 }]);
 
@@ -68,7 +71,6 @@ databaseServices.factory('Base64', function() {
  
             return output;
         },
- 
         decode: function (input) {
             var output = "";
             var chr1, chr2, chr3 = "";
@@ -112,41 +114,3 @@ databaseServices.factory('Base64', function() {
         }
     };
 });
-
-/*-------------- dynamic json GET requests module --------------*/
-
-var jsonServices = angular.module('jsonServices', ['ngResource']);
-
-jsonServices.factory('Tab', ['$resource',
-  function($resource){
-    return $resource('json/:tabId.json', {}, { //why are there two query methods?
-		query: {method:'GET', params:{tabId:'tabs'}, isArray:true},
-		query2: {method:'GET', params:{tabId:'tabs'}, isArray:true}
-    });
-  }]);
-
-
-/*----------------checklist module in questions----------------*/
-
-var databaseServices = angular.module('dbServicesModule', ['ngResource']);
-databaseServices.factory('databaseConnection', ['$resource', '$http',
-    function($resource, $http){
-        return $resource('http://housuggest.org/appLogin/echoJSON.php', {}, {
-            query: {method:'GET', params:{"query":"Hello to you too!"}},
-            hello: {method:'GET', params:{"commType":"Hello"}},
-            login: {method:'GET', params:{"requestType":"LOGIN"}},
-            queryWebService: {method:'GET'},
-	});
-}]);
-
-
-
-
-
-
-
-
-
-
-
-

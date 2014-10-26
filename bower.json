@@ -1,28 +1,16 @@
 {
   "name": "healthy-homes-app",
   "appPath": "www",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "dependencies": {
-    "bootstrap": "",
-    "angular": "latest",
-    "angular-resource": "latest",
-    "angular-mocks": "latest",
-    "angular-cookies": "latest",
-    "angular-sanitize": "latest",
-    "angular-bootstrap": "latest",
-    "angular-ui-utils": "latest",
-    "angular-ui-router": "latest",
-    "angular-gestures": "latest",
+    "ionic": "driftyco/ionic-bower#1.0.0-beta.13",
     "lodash": "latest",
-    "restangular": "latest",
-    "phonegap": "latest",
-    "ngCordova": "latest"
+    "restangular": "latest"
   },
-  "devDependencies": {
-    "angular-mocks": "1.2.18",
-    "angular-scenario": "1.2.18"
+    "devDependencies": {
+      "bower": "latest",
+      "shelljs": "^0.3.0"
   },
-  "resolutions": {
-    "angular": "1.2.23"
-  }
+    "ignore": [],
+    "main": []
 }

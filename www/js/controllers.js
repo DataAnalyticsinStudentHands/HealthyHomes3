@@ -1,22 +1,22 @@
 'use strict';
 
-/* Controllers */
+/* Controllers PROBABLY DELETE ALL */
 
-var HHControllers = angular.module('HHControllers', ['ui.router','layoutModuleController','layoutModuleServices', 'angular-gestures']);
+var HHControllers = angular.module('HHControllers', ['layoutModuleController','layoutModuleServices']);
 
 HHControllers
 
-.controller('sideMenuController', function($scope) {
-    $scope.newObj = function(obj){
-        alert(obj)
-        addObj.newObj($scope,objType);
-    };
+.controller('mainController', function($scope, $state) {
     $scope.alert = function (text) {
         alert(text+'in');
     };
     $scope.test = function() {
         alert('test in ctrl scope');
     };
+    $scope.goLayout = function() {
+        $state.go('layout.floor');
+    };
+    
 	
 //    $scope.flagicons=[{
 //        icontype: 'greenflag'

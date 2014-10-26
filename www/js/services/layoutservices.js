@@ -63,7 +63,7 @@ layoutServices.service('layoutObjectModel', ['Restangular', 'uuid', function(Res
         var lineLength = 0;
         arr.push([arr[0][0],arr[0][1]])
         for (var i = 0;i<arr.length-1;i++){
-                    //find sides from finger to endpoints of line and then look for closest to same length
+//find sides from finger to endpoints of line and then look for closest to same length
             touchLegOne = pythagDist(fingerX,arr[i][0],fingerY,arr[i][1]);
             touchLegTwo = pythagDist(fingerX,arr[i+1][0],fingerY,arr[i+1][1]);
             lineLength = pythagDist(arr[i][0],arr[i+1][0],arr[i][1],arr[i+1][1]);

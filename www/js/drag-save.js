@@ -1,4 +1,4 @@
-angular.module('HHControllers').directive('dragSave',['addObj', 'layoutObjectModel', function(addObj, layoutObjectModel) {
+angular.module('HHControllers').directive('dragSaveOLD',['addObj', 'layoutObjectModel', function(addObj, layoutObjectModel) {
 //angular.module('HHControllers').directive('dragSave',['layoutObjectModel', function(layoutObjectModel) {
     var getTemplate = function(templateType){
         if (templateType == 'note') //svg as third type? Lines?? Rooms??

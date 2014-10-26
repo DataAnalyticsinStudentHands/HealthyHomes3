@@ -5,63 +5,71 @@
 http://angular-ui.github.io/ui-router/site/#/api/ui.router.util.$resolve?*/
 
 var HHApp = angular.module('HHApp', [
+    'ionic',
 	'HHControllers', 
-	'ui.router', 
-    'angular-gestures',
-	'ngCordova',  
+    //'ngNotify',
+	//'ui.router', 
+    //'angular-gestures',
+	//'ngCordova',  
 	'jsonServices',
-	'dbServicesModule', 
+    //'userServiceModule',
+    'layoutModuleServices',
+	'databaseServicesModule', 
     'restangular',
-	'checklist-model'
+	//'checklist-model'
 ]); //dependencies
 
 HHApp.config(function(RestangularProvider) {
                 RestangularProvider.setBaseUrl('/json');
             })
 .config(
-  function($stateProvider) {
+  function($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.when("","/inspection");
+    $urlRouterProvider.when("/","/inspection");
+    $urlRouterProvider.otherwise("/inspection");
     $stateProvider 
-      .state('login', {
-          url: "",
-          views: {
-            "app": {templateUrl: "partials/loginPage.html"} 
-          }
-      })
-      .state('inspection',{
+      .state('inspection',{ //should all come from login?
           url: "/inspection",
+          //abstract: true,
+          templateUrl: 'partials/loginPage.html',
+          controller: 'mainController',
+          onEnter: function(){
+            console.log("enter inspection");
+          }
+  		
+      })
+      .state('login', {
+          url: "/login",
           views: {
-              "schedule": { templateUrl: "partials/inspectionSchedule.html",
+            //"signin": {templateUrl: "partials/loginPage.html"},
+            "schedule": { templateUrl: "partials/inspectionSchedule.html",
                           controller: "scheduleController"
                          },
-              "general": { templateUrl: "partials/inspectionGeneral.html",
-                          controller: "inspectionController"
-                         },
-              "summary": { templateUrl: "partials/summary.html",
-                          controller: "summaryController"
-                         },
-              "overview": { templateUrl: "partials/overview.html",
+            "general": { templateUrl: "partials/inspectionGeneral.html",
+                        controller: "inspectionController"
+                       },
+            "summary": { templateUrl: "partials/summary.html",
+                        controller: "summaryController"
+                       },
+            "overview": { templateUrl: "partials/overview.html",
                            controller: "overviewController"
                           }
+//            "layout": { 
+//					templateUrl: 'partials/layoutPage.html',
+//					controller: 'layoutCtrl' 				
+//					}
           }
-          //, is inspectionId being set with each inspection?
-//          resolve:
-//          data: 
-      })  
+      })
       .state('layout', {	
           abstract: true,
-//          url: "/layout",
-          views: {
-                "layout": { 
-					templateUrl: 'partials/layoutPage.html',
-					controller: 'layoutCtrl' 					
-					}//,
-//                "sideMenu": { //will give us more control later
-//                    templateUrl: 'partials/sideMenu.html',
-//                    controller: 'layoutCtrl'   
-//                    //controller: 'sideMenuController' //right now, it's just calling in json
-//                    }	  
-            } //,
-          //authenticate: true //add here once Carl's module included for authentication
+          templateUrl: 'partials/layoutPage.html',
+          controller: 'layoutCtrl'
+//          views: {
+//                "pagelayout": { 
+//					templateUrl: 'partials/layoutPage.html',
+//					controller: 'layoutCtrl' 				
+//					}
+//            } 
       })
       .state('layout.floor', {
           url: "/layout",
@@ -103,23 +111,24 @@ HHApp.config(function(RestangularProvider) {
 			}
 		  }
 	  })
-      .state('topMenu', {
-          views: {
-              'topMenu': {
-                  templateUrl: 'partials/topMenu.html'
-              }
-          }
-      })         
+    });
+//      .state('topMenu', {
+//          views: {
+//              'topMenu': {
+//                  templateUrl: 'partials/topMenu.html'
+//              }
+//          }
+//      })         
     // perhaps for note, too?
 //    http://stackoverflow.com/questions/23231608/angular-ui-router-modal-removes-parent-state
-      .state('camera', { //I'm not sure how this has been envisioned
-          url: "/login/camera",
-          views: {
-            "camera": {templateUrl: "partials/camera.html"} 
-          }
-      });
-  })
-    .run(function($state){ //need to discuss how we will do login, etc.
-   $state.go('login');
-    });
+//      .state('camera', { //I'm not sure how this has been envisioned
+//          url: "/login/camera",
+//          views: {
+//            "camera": {templateUrl: "partials/camera.html"} 
+//          }
+//      });
+      //$urlRouterProvider.when('', '/login');
+  
+    //.run(function ($ionicPlatform, Restangular, $rootScope, Auth, $q, $state, UserService, ngNotify) {
+    
   
