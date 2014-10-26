@@ -84,61 +84,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
         $scope.newFloorRoom = function(){
             $scope.newFloorOrRoom = !$scope.newFloorOrRoom
         };
-        $scope.gridShow1 = true; //in case we want to turn them off for some views
-        $scope.gridShow5 = true;
-        //$scope.gridSizeHt = 2000; //just ng-init these? or get from some settings?
-        //var gridSizeWd = $window.outerWidth; //2000;
-        //have this in an if that has to do with the state for the smaller ui-view
-        var windowHt = $scope.windowHt = 4000;// $window.outerHeight;
-        var windowWd = $scope.windowWd = 4000;// $window.outerWidth;
-//        console.log(windowWd + ' windowWd')
-        //use to only draw grid lines that are needed - combination of this and magnify - and such that it picks up on smaller version???
-//        var gridElem = document.getElementById('floor-container');
-//        var gridWd = gridElem.width;
-        $scope.gridLineNumber = function(gridSizeHt,gridSizeWd){
-            console.log(gridSizeHt);
-            return _.range(0,gridSizeHt,gridSizeWd) //everyfive feet
-        }
-        //console.log($scope.gridLineNumber(11,11))
-        $scope.gridlinePts = function(gridSizeHt,gridSizeWd){
-            return '5,5 ' + gridSizeWd,gridSizeWd // 2000,2000'
-        }
-        var gridMag = 1;
-        var gridElem = angular.element(document.getElementById('floor-container'));
-        $scope.magnifyGrid = function(num){
-            gridElem = angular.element(document.getElementById('floor-container'));
-            var elemWidth = gridElem[0].offsetWidth;
-            if (elemWidth == 2016){elemWidth = 2000}; //have to figure out where the margins are coming from
-            var newNum = num * (elemWidth); 
-            gridElem.css({'width':newNum+'px','height':newNum+'px'});
-            gridMag = 2000/newNum;
-            findGridOffsets();
-//            windowHt = $scope.windowHt = $window.outerHeight*gridMag;
-//            windowWd = $scope.windowWd = $window.outerWidth*gridMag;
-        }
-        var dragtheGrid = $scope.dragtheGrid = false;
-        $scope.gridDrag = function(){
-            dragtheGrid =! dragtheGrid;
-            $scope.dragtheGrid = dragtheGrid;
-        };
-        $scope.dragGrid = function($event){
-            if (dragtheGrid){
-                $event.preventDefault();
-                var deltaX = $event.gesture.deltaX;
-                var deltaY = $event.gesture.deltaY;
-                var offTop = $event.target.offsetTop + deltaY;
-                var offLeft = $event.target.offsetLeft + deltaX;
-                if (offTop > 0) { offTop = 0}; //need to also keep it from going off to the right
-                if (offLeft > 0) { offLeft = 0};
-//                windowHt = $scope.windowHt = $window.outerHeight*gridMag+offTop;
-//                windowWd = $scope.windowWd = $window.outerWidth*gridMag+offLeft;
-                var gridElem = angular.element(document.getElementById('floor-container'));
-                gridElem.css({'top':offTop,'left':offLeft});
-                findGridOffsets();
-            };
-        }
-//        $scope.gridMag = windowWd/gridWd;
-//        console.log('gridMag: '+$scope.gridMag);
+
         $scope.floorLists = ['neighborhood', 'exterior', 'first', 'second', 'third', 'basement', 'attic', 'garage', 'section'];
         $scope.roomLists = ['exterior','living room','bath','closet','kitchen','dining room'];
         var floors = []; 
@@ -472,15 +418,6 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
         var layoutObjs = [];
         var layoutObjInd = 0; //layoutObjs.indexOf(layoutObj);
         var XYObj = [];
-        var gridElem = {};
-        var offLeft = 0;
-        var offTop = 0;
-        
-        var findGridOffsets = function(){
-            gridElem = angular.element(document.getElementById('floor-container'));
-            offLeft = gridElem[0].offsetLeft || 0;
-            offTop = gridElem[0].offsetTop || 0;
-        }
         $scope.newObj = function(obj,$event){
             findGridOffsets();
             if (currentRoom.length==0) { //have to rethink

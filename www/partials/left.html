@@ -1,0 +1,17 @@
+<div col>	IS there anything??		
+<div id="menu_green">
+                <img class="menu_icon col"   
+                      ng-repeat="iType in icons"
+                      hm-dragend="newObj(iType.icontype,$event)" 
+                      ng-click="newObj(iType.icontype,$event)"
+                      ng-src="{{'img/'+iType.icontype+'.png'}}"
+                      />
+            </div>
+
+
+        <div id="menu_trash" ng-click="alert('trash')">
+        <span class="menu_icon">
+            <img ng-src="img/trash.png">
+            </span>
+        </div>
+    </div>

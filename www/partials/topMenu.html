@@ -1,31 +1,18 @@
-    <div id="menubg">  
-		<div id="wrap_menus">
-    <div id="minilogo" hm-tap="cons()">
-  
-<div class="wrapanimate2">
-  <div class="cube2">
-    <div class="front2"><img class ="front_image2" src="img/logo_big.svg"></div>
-   
-  </div>
-
-</div>
-</div>
+    
 <!--
 			<div id="camera">
 				<a ui-sref="camera"><img ng-src="img/camera.png"></a>
 			</div>
 -->
 			<div id="menu_green">
-                <img class="menu_icon" 
-                      
+                <img class="menu_icon col"   
                       ng-repeat="iType in icons"
                       hm-dragend="newObj(iType.icontype,$event)" 
-                      hm-tap="newObj(iType.icontype,$event)"
+                      ng-click="newObj(iType.icontype,$event)"
                       ng-src="{{'img/'+iType.icontype+'.png'}}"
                       />
-                
-<!--                <svg ng-include="'img/door.svg'"></svg>-->
             </div>
+<!--                <svg ng-include="'img/door.svg'"></svg>-->
 <!--
             <div id="menu_yellow">
                 <span class="menu_icon" 

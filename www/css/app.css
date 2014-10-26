@@ -460,11 +460,14 @@
      text-align: center;
      margin-left: 105px;
      margin-top: 5px;
-
+/*
+     height:70px;
+     overflow-y:scroll;
+*/
 }
 
 
-#menu_yellow{
+#menu_yellowOLD{
      background-color:none;
      color: rgb(255,255,13);
      border: solid 3px;
@@ -475,7 +478,7 @@
      margin-left: 20px;
      margin-top: 5px;
 }
-#menu_black{
+#menu_blackOLD{
     background-color:none;
     display: inline-block;
     color: rgb(51,51,51);
@@ -491,6 +494,7 @@
 .menu_icon{
     padding:5px;
     display: inline-block;
+    width:55px;
 }
 
 #menu_trash{

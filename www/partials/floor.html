@@ -17,11 +17,9 @@ http://render.openstreetmap.org/cgi-bin/export?bbox=-95.400000,29.727000,-95.390
 -->
         <svg id="floor-container" style='stroke-width: 0px; '
              viewBox="0 0 2000 2000" 
+             grid-manip
+             ng-click="alert('grid'+windowHt)"
              hm-dragend="dragGrid($event)">
-<!--
-            <svg x="444" y="444">
-                <g ng-include="'img/window.svg'"></g></svg>
--->
             <g ng-show="gridShow5" 
                stroke="#6bea3b" 
                stroke-dasharray="5,5,5,5,5,5" 
@@ -31,15 +29,19 @@ http://render.openstreetmap.org/cgi-bin/export?bbox=-95.400000,29.727000,-95.390
                 <animate ng-if="dragtheGrid" attributeType="CSS" attributeName="stroke-dasharray" 
          from="5,5,5,5,5,5" to="2,2,2,2,2,2" dur="16s" repeatCount="indefinite" />
                 <line ng-repeat="gridpt in gridLineNumber(windowHt,50)" ng-attr-x1="{{gridpt}}" y1="0" ng-attr-x2="{{gridpt}}" ng-attr-y2="{{windowHt}}" />
-                <line ng-repeat="gridpt in gridLineNumber(windowWd,50)" x1="0" ng-attr-y1="{{gridpt}}" ng-attr-x2="{{windowWd}}" ng-attr-y2="{{gridpt}}" />            
-            </g>     
-<!--            <image x="-555" y="-155" width="1300px" height="1300px" xlink:href="{{'img/Galvestonmap.svg'}}"></image>-->
+                <line ng-repeat="gridpt in gridLineNumber(windowWd,50)" x1="0" ng-attr-y1="{{gridpt}}" ng-attr-x2="{{windowWd}}" ng-attr-y2="{{gridpt}}" />  
+    
+            </g>    
+<!--<image x="-555" y="-155" width="1300px" height="1300px" xlink:href="{{'img/Galvestonmap.svg'}}"></image>-->
+
             <g 
                ng-show="gridShow1" stroke="#6bea3b" stroke-dasharray="2,2,2,2,2,2" fill="#fcfbfa" fill-opacity="0.2" stroke-width=".2">
                 <line ng-repeat="gridpt in gridLineNumber(windowHt,10)" ng-attr-x1="{{gridpt}}" y1="0" ng-attr-x2="{{gridpt}}" ng-attr-y2="{{windowHt}}" />
                 <line ng-repeat="gridpt in gridLineNumber(windowWd,10)" x1="0" ng-attr-y1="{{gridpt}}" ng-attr-x2="{{windowWd}}" ng-attr-y2="{{gridpt}}" />            
                 
-            </g>  
+            </g> 
+            
+<!--            <room-manip></room-manip> -->
             <g class="floorLines" stroke="#bb3bea" fill="none" fill-opacity="0.2" stroke-width="3">
 <!--                <polygon points="10,10 150,10 150,150 10,150"/>-->
                 <polygon class="floorShowline" 

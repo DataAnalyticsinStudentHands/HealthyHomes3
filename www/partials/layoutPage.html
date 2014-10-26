@@ -1,21 +1,22 @@
 <div id="wrapper"> 
 
+<!--
     <div ng-include="'partials/topMenu.html'">
     </div>
+-->
         
         <div id="smallWrap" 
              ng-if="hideFloor"
              style="position:absolute;width:280px;height:130px;overflow:hidden;">
             <ion-nav-view id="floor-wrap-small" 
                  style="position:absolute;width:280px;height:280px;" 
-                 
                  name="floor">
             </ion-nav-view>
         </div>
 
     
     <div id="grid-container">
-        <ion-nav-view name="floor"></ion-nav-view>
+        <ion-nav-view id="floor-wrap" name="floor"></ion-nav-view>
 <!--        <div ng-include="'partials/floor.html'"></div>-->
 <!--
         <div id="floor-wrap" ui-view="floor">
@@ -44,7 +45,7 @@
     
     <div id="floor-controls" >
         
-        <div id="mag-controls">
+        <div id="mag-controls" grid-manip>
         <img ng-click="hideFloor = !hideFloor"
              ng-dblclick="gridDrag()" 
                 style="width:20px"

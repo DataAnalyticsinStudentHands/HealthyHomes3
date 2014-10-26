@@ -76,6 +76,9 @@ HHApp.config(function(RestangularProvider) {
           views: {
                 "floor": {
                     templateUrl: 'partials/floor.html'
+                },
+                "sideLeft": {
+                    templateUrl: 'partials/left.html'
                 }
             }//,
 //          data:{
