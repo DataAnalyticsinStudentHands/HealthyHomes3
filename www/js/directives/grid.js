@@ -17,7 +17,7 @@ HHApp.directive('gridManip',function(layoutObjectModel,$window){
 //        var gridElem = document.getElementById('floor-container');
 //        var gridWd = gridElem.width;
             scope.gridLineNumber = function(gridSize,gridInterval){
-                console.log(gridSize);
+                //console.log(gridSize);
                 return _.range(0,gridSize,gridInterval) //everyfive feet
             }
         //console.log($scope.gridLineNumber(11,11))

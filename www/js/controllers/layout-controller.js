@@ -3,7 +3,7 @@
 var layoutController = angular.module('layoutModuleController', []);
 
 layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layoutObjectModel','addObj','addSvgPoint','findGeom',
-	function ($scope, $window, $state, layoutObjectModel, addObj, addSvgPoint, findGeom, $cordovaCamera) { 
+	function ($scope, $window, $state, layoutObjectModel, addObj, addSvgPoint, findGeom, $cordovaCamera, Gesture) { 
 //        document.addEventListener("deviceready", onDeviceReady, false);
 //        function onDeviceReady() {
         //https://github.com/hammerjs/hammer.js/wiki/Event-delegation-and-how-to-stopPropagation---preventDefaults
@@ -419,7 +419,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
         var layoutObjInd = 0; //layoutObjs.indexOf(layoutObj);
         var XYObj = [];
         $scope.newObj = function(obj,$event){
-            findGridOffsets();
+            //findGridOffsets();
             if (currentRoom.length==0) { //have to rethink
                 alert('Must add room to place objects inside'); 
                 return
@@ -427,7 +427,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
             } else {
                 if (currentRoom.layoutObjs != null) { // && currentRoom.layoutObjs.length>0){
                     layoutObjs = currentRoom.layoutObjs;};
-                if ($event.type == 'tap'){
+                if ($event.type == 'click'){
                     currentRoom.measurePoints = $scope.measurePoints = findGeom.showMeasures(currentRoom.roomPoints);
                     var iconX = currentRoom.measurePoints[0][0];
                     var iconY = currentRoom.measurePoints[0][1];
