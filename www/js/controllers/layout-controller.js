@@ -338,7 +338,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
             $event.preventDefault();
             var xtraOffX = 0;
             var xtraOffY = 0;
-            if(copyPoints.length > 3){
+            if(copyPoints.length > 3){ //change to center of polygon
                 xtraOffX = Math.abs(copyPoints[0][0]-copyPoints[1][0])/2;
                 xtraOffY = Math.abs(copyPoints[0][1]-copyPoints[2][1])/2; //works well for squares
             }
