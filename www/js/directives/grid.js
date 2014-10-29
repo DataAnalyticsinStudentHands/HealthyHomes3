@@ -1,8 +1,10 @@
-HHApp.directive('gridManip',function(layoutObjectModel,$window){
+HHApp.directive('gridManip',function(layoutObjectModel,offSets,$window){
     return {
         restrict: 'AE',
         //templateUrl: 'partials/gridlines.html',
         link: function(scope,elem,attr) {
+//            var offsetLeft = offSets.offsetLeft;
+//            var offsetLeft = offSets.offsetTop;
             scope.layoutObjectModel = layoutObjectModel;
             //alert($window.outerHeight);
             scope.gridShow1 = true; //in case we want to turn them off for some views
@@ -58,8 +60,8 @@ HHApp.directive('gridManip',function(layoutObjectModel,$window){
                 //findGridOffsets();
             };
         var gridElem = {};
-        var offLeft = 0;
-        var offTop = 0;
+//        var offLeft = 0;
+//        var offTop = 0;
         
 //        var findGridOffsets = function(){
 //            gridElem = angular.element(document.getElementById('floor-container'));
