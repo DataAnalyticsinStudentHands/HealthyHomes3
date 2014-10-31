@@ -53,7 +53,7 @@ http://render.openstreetmap.org/cgi-bin/export?bbox=-95.400000,29.727000,-95.390
 
             </g>
             <g class="roomLines" ng-repeat="(rm, name) in currentFloor.rooms">
-                <g room-manip roomPts="{{currentFloor.rooms[$index].roomPoints}}">
+                <g room-manip roompts="currentFloor.rooms[$index].roomPoints">
                 <text ng-attr-x="{{currentFloor.rooms[$index].roomPoints[0][0]+3}}" 
                       ng-attr-y="{{currentFloor.rooms[$index].roomPoints[0][1]+10}}" 
                       font-size="12"
@@ -99,6 +99,7 @@ http://render.openstreetmap.org/cgi-bin/export?bbox=-95.400000,29.727000,-95.390
                 
                 <g ng-repeat="(indic,values) in layoutObjs track by indic"
                        >
+                    <g icon-manip iconpts="layoutObjs">
                     <image ng-attr-x="{{values[0]}}" 
                            ng-attr-y="{{values[1]}}" 
                            ng-attr-width="{{iconWidth}}" 
@@ -106,6 +107,7 @@ http://render.openstreetmap.org/cgi-bin/export?bbox=-95.400000,29.727000,-95.390
                            hm-drag = "dragLayoutObjs($event,indic)"
                            hm-tap = "openNote()"
                            xlink:href="{{'img/'+values[2]+'.png'}}"></image>
+                    </g>
 <!--
                 <text     ng-attr-x="{{values[0]}}"
                       ng-attr-y="{{values[1]}}"

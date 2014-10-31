@@ -17,6 +17,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
 //        $scope.toggleSideMenu = function() {
 //            $ionicSideMenuDelegate.toggleLeft();
 //    };
+        
         $scope.icons=[{
               icontype:  'sink'
             },{
@@ -283,7 +284,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
                 console.log(currentRoom)
                 console.log(roomInd + ' roomInd')
                 if (!currentRoom.roomPoints){
-                    currentRoom.roomPoints = $scope.roomPoints = [[120,120],[220,120],[220,220],[120,220]]; //should be calculated from previous?
+                    currentRoom.roomPoints = $scope.roomPoints = [[120.0,120.0],[220.0,120.0],[220.0,220.0],[120.0,220.0]]; //should be calculated from previous?
                     
                 };
                 if (!currentRoom.measurePoints){
@@ -448,12 +449,12 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
                 //addObj.newObj($scope,obj,layoutObjInd);
             };
         };
-        $scope.dragLayoutObjs = function($event,i){
-            //findGridOffsets(); 
-            $event.preventDefault();
-            currentRoom.layoutObjs[i][0] = 10*Math.round((($event.gesture.center.pageX-offLeft)*gridMag)/10);
-            currentRoom.layoutObjs[i][1] = 10*Math.round((($event.gesture.center.pageY-offTop)*gridMag)/10);
-        };
+//        $scope.dragLayoutObjs = function($event,i){
+//            //findGridOffsets(); 
+//            $event.preventDefault();
+//            currentRoom.layoutObjs[i][0] = 10*Math.round((($event.gesture.center.pageX-offLeft)*gridMag)/10);
+//            currentRoom.layoutObjs[i][1] = 10*Math.round((($event.gesture.center.pageY-offTop)*gridMag)/10);
+//        };
         var notes = [];
         var note = $scope.note = '';
         $scope.showNote = false;

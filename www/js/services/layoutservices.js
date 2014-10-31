@@ -101,13 +101,13 @@ layoutServices.service('layoutObjectModel', ['Restangular', 'uuid', function(Res
             }
         };
         return arrOut;
-    }
-})
-.factory('offSets',function() {
-    var gridElem = angular.element(document.getElementById('floor-container'));
-    console.log(gridElem);
-    var offSetLeft = gridElem[0].offsetLeft || 0;
-    var offSetTop = gridElem[0].offsetTop || 0;
+    };
+    this.offSetLeft = function(offElem){
+        return offElem[0].offsetLeft || 0;
+    };
+    this.offSetTop = function(offElem){
+        return offElem[0].offsetTop || 0;
+    };
 })
 .factory('addObj',['$compile',function($compile) {
     var rtnObj = {

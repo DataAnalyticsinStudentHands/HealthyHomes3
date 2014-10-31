@@ -1,4 +1,4 @@
-HHApp.directive('gridManip',function(layoutObjectModel,offSets,$window){
+HHApp.directive('gridManip',function(layoutObjectModel,$window){
     return {
         restrict: 'AE',
         //templateUrl: 'partials/gridlines.html',
@@ -44,9 +44,11 @@ HHApp.directive('gridManip',function(layoutObjectModel,offSets,$window){
                 dragtheGrid =! dragtheGrid;
                 scope.dragtheGrid = dragtheGrid;
             };
+//            $ionicSideMenuDelegate.canDragContent(true);
             scope.dragGrid = function($event){
             if (dragtheGrid){
                 $event.preventDefault();
+                 
                 var deltaX = $event.gesture.deltaX;
                 var deltaY = $event.gesture.deltaY;
                 var offTop = $event.target.offsetTop + deltaY;
