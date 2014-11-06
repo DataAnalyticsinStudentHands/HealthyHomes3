@@ -7,17 +7,11 @@ http://angular-ui.github.io/ui-router/site/#/api/ui.router.util.$resolve?*/
 var HHApp = angular.module('HHApp', [
     'ionic',
 	'HHControllers', 
-    //'ngNotify',
-	//'ui.router', 
-    //'angular-gestures',
-	//'ngCordova',  
 	'jsonServices',
-    //'userServiceModule',
     'layoutModuleServices',
 	'databaseServicesModule', 
     'restangular',
-	//'checklist-model'
-]); //dependencies
+]); 
 
 HHApp.config(function(RestangularProvider) {
                 RestangularProvider.setBaseUrl('/json');
@@ -93,7 +87,6 @@ HHApp.config(function(RestangularProvider) {
       .state('layout.floor.room', {
              resolve: {
                 floorData: function(layoutObjectModel) {
-                    console.log('in app.js')
                     return layoutObjectModel;
                 }
              }

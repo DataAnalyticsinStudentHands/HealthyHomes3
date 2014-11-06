@@ -1,8 +1,8 @@
 'use strict';
 /* Controllers */
-var layoutController = angular.module('layoutModuleController', []);
+//var layoutController = angular.module('HHControllers', []);
 
-layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layoutObjectModel','addObj','addSvgPoint','findGeom',
+angular.module('HHControllers').controller('layoutCtrl', ['$scope', '$window','$state', 'layoutObjectModel','addObj','addSvgPoint','findGeom',
 	function ($scope, $window, $state, layoutObjectModel, addObj, addSvgPoint, findGeom, $cordovaCamera, Gesture) { 
 //        document.addEventListener("deviceready", onDeviceReady, false);
 //        function onDeviceReady() {
@@ -17,7 +17,12 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
 //        $scope.toggleSideMenu = function() {
 //            $ionicSideMenuDelegate.toggleLeft();
 //    };
-        
+//        $scope.showMeasures = 'adfsadsfdfsafads';
+//        $scope.showMeasures = function() {
+//            $scope.roomLineEdit = true;
+//            $scope.$apply;
+//        };
+//        $scope.roomLineEdit = false;
         $scope.icons=[{
               icontype:  'sink'
             },{
@@ -52,7 +57,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
         };
         //findClosestLine.testFunc();
 //        document.addEventListener("deviceready", onDeviceReady, false);
-    
+    //are the touchHandlers needed with ionic? in each directive?
         function touchHandler(event)
             {
             var touches = event.changedTouches,
@@ -92,7 +97,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
         var floor = $scope.floor;
         var floorPoints = $scope.floorPoints = []; //if empty, nothing is drawn on floor.html 
         //$scope.floorPoints = [[100,100],[150,100],[150,150],[100,150]];
-        $scope.roomLineEdit = false; //svgEdit is now set through isolate scopes on drag-save, but may change
+        //$scope.roomLineEdit = false; //svgEdit is now set through isolate scopes on drag-save, but may change
         var rooms = [];
         var room = $scope.room;
         var roomPoints = $scope.roomPoints = [[10,10],[150,100],[150,150],[100,150]]; //[]; //have to decide which one is active on first load; how do we get from $scope?
@@ -118,13 +123,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
             floorPoints = $scope.floorPoints = currentInspection.floors[floorInd].floorPoints;
         };
             
-        $scope.pointPath = function(arr){
-            var rtnStr = '';
-            for (var i = 0; i < arr.length; i++){
-                rtnStr+=(' ' + arr[i][0]+','+arr[i][1]);
-            }
-            return rtnStr;
-        };
+        $scope.pointPath = findGeom.pointPath;
         //http://geomalgorithms.com/a03-_inclusion.html [0 is online;>0 is Left of line;<0 is Right of Line
         var onLine = function(x1,y1,x2,y2,xTest,yTest){
             return ( ((x2-x1)*(yTest-y1)) - ((xTest-x1)* (y2-y1)) )
@@ -166,14 +165,15 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
             }else{
                 currentRoom.roomPoints.splice(ind4new,0,[newX,newY]);
             }
-            currentRoom.measurePoints = $scope.measurePoints = findGeom.showMeasures(currentRoom.roomPoints);
+//            currentRoom.measurePoints = $scope.measurePoints = findGeom.showMeasures(currentRoom.roomPoints);
         }
         $scope.pointPathDonut = function(arr){
             firstStr = $scope.pointPath(arr);
             insideDirection = arr.reverse();
             //add points to see if inside, and give a distance based on size of polygon
-        }
-                
+        };
+        
+        $scope.Measures = true;
         $scope.addMeasures = function(arr){
             var rtnStr = 'M'+arr[0][0]+','+arr[0][1]+' ';
             //INSTEAD: Have it extend on the slope, and draw a line perpendicular to the ditance line
@@ -287,11 +287,13 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
                     currentRoom.roomPoints = $scope.roomPoints = [[120.0,120.0],[220.0,120.0],[220.0,220.0],[120.0,220.0]]; //should be calculated from previous?
                     
                 };
+//                $scope.showMeasures = findGeom.showMeasures(currentRoom.roomPoints);
                 if (!currentRoom.measurePoints){
                     currentRoom.measurePoints = $scope.measurePoints = findGeom.showMeasures(currentRoom.roomPoints);
-                }
+                }; //have to do them here, or overloads $digest
                 $scope.currentFloor = currentFloor;
                 currentInspection.floors[floorInd] = currentFloor;
+                //$scope.$apply;
             } else {
                 alert('Must add floor/area to place room inside');
                 return
@@ -334,7 +336,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
             currentRoom.measurePoints = $scope.measurePoints = findGeom.showMeasures(currentRoom.roomPoints);
         };
         
-        $scope.dragShapes = function($event){ //need to work in zoom stuff - needs copy and drag from left top to smooth it 
+        $scope.dragShapesOLD = function($event){ //need to work in zoom stuff - needs copy and drag from left top to smooth it 
             var copyPoints = _.clone(currentRoom.roomPoints)
             $event.preventDefault();
             var xtraOffX = 0;
@@ -354,12 +356,9 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
         $scope.closestIndices = 0;
         $scope.dragLineStart = function($event){
             $event.preventDefault();
-//            $scope.gesture = $event.gesture;
             var arr = _.clone(currentRoom.roomPoints);
             var fingerX = ($event.gesture.center.pageX-offLeft)*gridMag;
             var fingerY = ($event.gesture.center.pageY-offTop)*gridMag;
-//            var hypotRatio = 0;
-//            var newRatio = 0;
             var ind4new = 0;
             $scope.ind4new = ind4new = findGeom.closestLine(arr,fingerX,fingerY);
             $scope.xtraOffX1 = fingerX - arr[ind4new-1][0];
@@ -368,7 +367,7 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
             $scope.xtraOffX2 = fingerX - arr[ind4new][0];
             $scope.xtraOffY2 = fingerY - arr[ind4new][1];
         }
-        $scope.dragLines = function($event){
+        $scope.dragLinesOLD = function($event){
             $event.preventDefault();
             var ind4new = $scope.ind4new;
             var xtraOffX1 = $scope.xtraOffX1;
@@ -393,9 +392,9 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
 //            };
             currentRoom.measurePoints = $scope.measurePoints = findGeom.showMeasures(currentRoom.roomPoints);
         };
-        $scope.showMeasurePoints = function(){
-            return findGeom.showMeasures(currentRoom.roomPoints);
-        }
+//        $scope.showMeasurePoints = function(){
+//            return findGeom.showMeasures(currentRoom.roomPoints);
+//        }
         
         $scope.cons = function(){
             console.log(currentInspection)
@@ -416,10 +415,25 @@ layoutController.controller('layoutCtrl', ['$scope', '$window','$state', 'layout
         $scope.iconWidth = 45;
         $scope.iconHeight = 45;
         $scope.iconFill = '#60FF00'; //green - red= #FF0000; yellow=#FFFF0D;
-        var layoutObjs = [];
+        
         var layoutObjInd = 0; //layoutObjs.indexOf(layoutObj);
         var XYObj = [];
         $scope.newObj = function(obj,$event){
+            var layoutObjs = [];
+            if (currentRoom.layoutObjs != null) { // && currentRoom.layoutObjs.length>0){
+                layoutObjs = currentRoom.layoutObjs;};
+            //need to catch if it exists? this always adds more by same name???
+            $scope.iconWidth = 15;
+            $scope.iconHeight = 15;
+            var iconX = 10;
+            var iconY = 10;
+            XYObj = [iconX,iconY,obj];
+            layoutObjs.push(XYObj);
+            currentRoom.layoutObjs = $scope.layoutObjs = layoutObjs;
+            //$scope.currentRoom = currentRoom;
+            console.log(layoutObjs);
+        }
+        $scope.newObjOLD = function(obj,$event){
             //findGridOffsets();
             if (currentRoom.length==0) { //have to rethink
                 alert('Must add room to place objects inside'); 

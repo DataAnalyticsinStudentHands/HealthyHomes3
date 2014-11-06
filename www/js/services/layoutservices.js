@@ -53,6 +53,7 @@ layoutServices.service('layoutObjectModel', ['Restangular', 'uuid', function(Res
   }])
 .service('findGeom', function() {
     this.testFunc = function(){alert('in service')};
+    this.gridMag = 1;
     this.closestLine = function(arrIn,fingerX,fingerY){
         var arr = _.clone(arrIn);
         var ind4new = 0;
@@ -80,6 +81,13 @@ layoutServices.service('layoutObjectModel', ['Restangular', 'uuid', function(Res
     }
     var pythagDist = this.pythagDist = function(x1,x2,y1,y2){
         return Math.sqrt(((x1-x2)*(x1-x2))+((y1-y2)*(y1-y2)))
+    };
+    this.pointPath = function(arr){
+        var rtnStr = '';
+        for (var i = 0; i < arr.length; i++){
+            rtnStr+=(' ' + arr[i][0]+','+arr[i][1]);
+        }
+        return rtnStr;
     }
     this.showMeasures = function(arrIn){
         var arrOut = [];

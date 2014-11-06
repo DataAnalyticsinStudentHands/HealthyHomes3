@@ -77,15 +77,17 @@
     <div ion-nav-view name="questions"></div>
 		 
 
+<!--
 	<div id="side_tabs" ng-controller="tabCtrl">
 		<span class="side_tabs" ng-repeat="tab in tabs"><a ui-sref="questions.tabs({tabId: tab.id})"><img ng-src="{{tab.imageUrl}}"></a></span>
 	</div>	
+-->
     </ion-side-menu>
     
 
 
     </ion-side-menus>
-    <div id="floor-controls" >
+    <div id="floor-controls" ng-click="roomLineEdit=!roomLineEdit">
         
         <div id="mag-controls" grid-manip>
         <img ng-click="hideFloor = !hideFloor"

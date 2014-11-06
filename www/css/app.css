@@ -403,6 +403,13 @@
 }
 
 
+.roomEditLine {
+    display:none;
+}
+.roomDashArray {
+    stroke=#ba4920; 
+    stroke-dasharray:3,3,3,3,3,3;
+}
 
 
 
@@ -838,10 +845,6 @@ body{
     position:absolute;
     width:100%;
     height:100%;
-/*
-    width:2000px;
-    height:2000px;
-*/
     top:0px;
     left:0px;
     border-style:inset;

@@ -17,8 +17,8 @@ http://render.openstreetmap.org/cgi-bin/export?bbox=-95.400000,29.727000,-95.390
 -->
         <svg id="floor-container" style='stroke-width: 0px; '
              viewBox="0 0 2000 2000" 
+             preserveAspectRatio = "xMidYmid slice"
              grid-manip
-             ng-click="alert('grid'+windowHt)"
              hm-dragend="dragGrid($event)">
             <g ng-show="gridShow5" 
                stroke="#6bea3b" 
@@ -41,6 +41,7 @@ http://render.openstreetmap.org/cgi-bin/export?bbox=-95.400000,29.727000,-95.390
                 
             </g> 
             
+            
 <!--            <room-manip></room-manip> -->
             <g class="floorLines" stroke="#bb3bea" fill="none" fill-opacity="0.2" stroke-width="3">
 <!--                <polygon points="10,10 150,10 150,150 10,150"/>-->
@@ -53,55 +54,68 @@ http://render.openstreetmap.org/cgi-bin/export?bbox=-95.400000,29.727000,-95.390
 
             </g>
             <g class="roomLines" ng-repeat="(rm, name) in currentFloor.rooms">
-                <g room-manip roompts="currentFloor.rooms[$index].roomPoints">
-                <text ng-attr-x="{{currentFloor.rooms[$index].roomPoints[0][0]+3}}" 
+                <g room-manip roompts="currentFloor.rooms[$index].roomPoints" 
+                   measurepts="currentFloor.rooms[$index].measurePoints">
+                <text ng-attr-x="{{currentFloor.rooms[$index].roomPoints[0][0]+5}}" 
                       ng-attr-y="{{currentFloor.rooms[$index].roomPoints[0][1]+10}}" 
                       font-size="12"
+                      class="roomEditLine"
                       ng-show="!roomLineEdit"
                       >{{name[0]}}</text>
                 <polygon stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2" 
-                         hm-pinch = "pinchResize($event)"
-                         hm-hold="roomLineEdit=!roomLineEdit"
                          hm-drag = "dragShapes($event)"
-                         hm-tap = "makeActive()"
                          hm-double-tap = "centerView($event)"
                          class="roomShowLine" 
                          ng-show="!roomLineEdit" 
                          ng-attr-points="{{pointPath(currentFloor.rooms[$index].roomPoints)}}" 
                 />
-                
-                <polygon stroke="#ba4920" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2"
-                         stroke-dasharray="3,3,3,3,3,3"
+    
+<!--
+                <polygon stroke="#ba4920" fill="#fcfbfa"
+                         fill-opacity="1" stroke-width="20"
                          hm-dragstart = "dragLineStart($event)"
                          hm-drag = "dragLines($event)"
                          hm-double-tap = "addPoint($event,currentFloor.rooms[$index].roomPoints)"
                          hm-hold="roomLineEdit=!roomLineEdit"
                          class="roomEditLine" 
-                         ng-show="roomLineEdit" 
+                         ng-show="!roomLineEdit" 
                          ng-attr-points="{{pointPath(currentFloor.rooms[$index].roomPoints)}}" 
                 />
-
-                <circle ng-repeat="(i, vals) in currentFloor.rooms[$index].roomPoints"
+-->
+                <g ng-repeat="(i, vals) in currentFloor.rooms[$index].roomPoints">
+                    <circle 
                         hm-drag = "dragPoints($event,i)"
-                        ng-show="roomLineEdit"
+                        ng-show="!roomLineEdit"
                         class="roomEditLine"
                         ng-attr-cx="{{vals[0]}}"
                         ng-attr-cy="{{vals[1]}}"
                         r = 6
-                />
-                
-                <text ng-repeat="(ind,vals) in currentFloor.rooms[$index].measurePoints track by ind"
-                      ng-show="roomLineEdit"
-                      ng-attr-x="{{vals[0]}}"
-                      ng-attr-y="{{vals[1]}}"
-                      font-size="12"
-                        >{{vals[2]/10+' ft'}}</text>
-                
+                    />
+                </g>
+                <g id="measures2show" ng-show="!roomLineEdit" 
+                   ng-repeat="(ind,vals) in currentFloor.rooms[$index].measurePoints track by ind">
+<!--
+                <g id="measures2show" ng-show="!roomLineEdit" ng-repeat="(ind,vals) in showMeasures(currentFloor.rooms[$index].roomPoints) track by ind"
+                   >
+-->
+<!--    If we want it to show on the line, or when not in edit
+                    <rect ng-attr-x="{{vals[0]-10}}" ng-attr-y="{{vals[1]-8}}" 
+                          width="30" height="15" fill="white">
+                    </rect>
+-->
+                    
+                    <text ng-attr-x="{{vals[0]}}"
+                          ng-attr-y="{{vals[1]}}"
+                          font-size="12"
+                          class="roomEditLine"
+                            >{{vals[2]/10+"'"}}
+                    </text>
+                </g>
                 <g ng-repeat="(indic,values) in layoutObjs track by indic"
                        >
-                    <g icon-manip iconpts="layoutObjs">
-                    <image ng-attr-x="{{values[0]}}" 
-                           ng-attr-y="{{values[1]}}" 
+                    <g icon-manip iconpts="layoutObjs" currentRoom="currentRoom">
+                    <image ng-attr-x="{{values[0]+currentFloor.rooms[$index].roomPoints[0][0]}}" 
+                           ng-attr-y="{{values[1]+currentFloor.rooms[$index].roomPoints[0][1]}}" 
                            ng-attr-width="{{iconWidth}}" 
                            ng-attr-height="{{iconHeight}}"
                            hm-drag = "dragLayoutObjs($event,indic)"

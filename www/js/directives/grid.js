@@ -1,10 +1,10 @@
-HHApp.directive('gridManip',function(layoutObjectModel,$window){
+HHApp.directive('gridManip',function(layoutObjectModel,$window,findGeom){
     return {
         restrict: 'AE',
         //templateUrl: 'partials/gridlines.html',
         link: function(scope,elem,attr) {
-//            var offsetLeft = offSets.offsetLeft;
-//            var offsetLeft = offSets.offsetTop;
+            var offsetLeft = findGeom.offsetLeft;
+            var offsetTop = findGeom.offsetTop;
             scope.layoutObjectModel = layoutObjectModel;
             //alert($window.outerHeight);
             scope.gridShow1 = true; //in case we want to turn them off for some views
@@ -26,15 +26,18 @@ HHApp.directive('gridManip',function(layoutObjectModel,$window){
             scope.gridlinePtsOLD = function(gridSizeHt,gridSizeWd){
                 return '5,5 ' + gridSizeWd,gridSizeWd // 2000,2000'
             }
-            var gridMag = 1;
+            var gridMag = findGeom.gridMag;
             var gridElem = angular.element(document.getElementById('floor-container'));
             scope.magnifyGrid = function(num){
-                gridElem = angular.element(document.getElementById('floor-container'));
+                //gridElem = angular.element(document.getElementById('floor-container'));
                 var elemWidth = gridElem[0].offsetWidth;
                 if (elemWidth == 2016){elemWidth = 2000}; //have to figure out where the margins are coming from
                 var newNum = num * (elemWidth); 
-                gridElem.css({'width':newNum+'px','height':newNum+'px'});
+                //gridElem.css({'viewBox': '0 0 4000 4000' });
+                gridElem.css({'width':(num*10)+'in','height':(num*10)+'in'});
+                //gridElem.css({'width':(num*100)+'%','height':(num*100)+'%'});
                 gridMag = 2000/newNum;
+                findGeom.gridMag = gridMag;
                 //findGridOffsets();
 //            windowHt = $scope.windowHt = $window.outerHeight*gridMag;
 //            windowWd = $scope.windowWd = $window.outerWidth*gridMag;
