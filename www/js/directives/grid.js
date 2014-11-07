@@ -27,21 +27,27 @@ HHApp.directive('gridManip',function(layoutObjectModel,$window,findGeom){
                 return '5,5 ' + gridSizeWd,gridSizeWd // 2000,2000'
             }
             var gridMag = findGeom.gridMag;
+            var canvasSize = scope.canvasSize = 2000; //200ft
+            //scope.viewB = '0 0 '+canvasSize+' '+canvasSize
             var gridElem = angular.element(document.getElementById('floor-container'));
-            scope.magnifyGrid = function(num){
+            
+            var magnifyGrid = scope.magnifyGrid = function(num){
                 //gridElem = angular.element(document.getElementById('floor-container'));
                 var elemWidth = gridElem[0].offsetWidth;
                 if (elemWidth == 2016){elemWidth = 2000}; //have to figure out where the margins are coming from
                 var newNum = num * (elemWidth); 
-                //gridElem.css({'viewBox': '0 0 4000 4000' });
-                gridElem.css({'width':(num*10)+'in','height':(num*10)+'in'});
+                
                 //gridElem.css({'width':(num*100)+'%','height':(num*100)+'%'});
-                gridMag = 2000/newNum;
+                gridMag = newNum/canvasSize;
                 findGeom.gridMag = gridMag;
+                gridElem.css({'width':newNum+'px','height':newNum+'px'});
+//                console.log(gridMag);
+//                console.log(elemWidth);
+//                console.log(newNum);
                 //findGridOffsets();
 //            windowHt = $scope.windowHt = $window.outerHeight*gridMag;
 //            windowWd = $scope.windowWd = $window.outerWidth*gridMag;
-            }
+            };
             var dragtheGrid = scope.dragtheGrid = false;
             scope.gridDrag = function(){
                 dragtheGrid =! dragtheGrid;

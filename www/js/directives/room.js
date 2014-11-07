@@ -25,6 +25,8 @@ HHApp.directive('roomManip',function(layoutObjectModel,$ionicGesture,$ionicSideM
     var startDrag = function(e){
         e.preventDefault();
         $ionicSideMenuDelegate.canDragContent(false);
+        gridMag = findGeom.gridMag;
+        console.log(gridMag)
     };
     
     var dragLines = function(e){ //need to work in zoom stuff

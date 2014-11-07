@@ -87,6 +87,7 @@ angular.module('HHControllers').controller('layoutCtrl', ['$scope', '$window','$
         
 //        var viewContainer = document.getElementById('grid-container');
 //        layoutObjectModel.testFunc()
+        
         $scope.newFloorRoom = function(){
             $scope.newFloorOrRoom = !$scope.newFloorOrRoom
         };

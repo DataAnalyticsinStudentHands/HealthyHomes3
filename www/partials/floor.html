@@ -15,9 +15,9 @@ giving viewbox a margin, but doing interior measures on 100%/
 http://render.openstreetmap.org/cgi-bin/export?bbox=-95.400000,29.727000,-95.390000,29.720000&scale=20000&format=svg
              
 -->
+
         <svg id="floor-container" style='stroke-width: 0px; '
-             viewBox="0 0 2000 2000" 
-             preserveAspectRatio = "xMidYmid slice"
+             viewBox = "0 0 2000 2000"
              grid-manip
              hm-dragend="dragGrid($event)">
             <g ng-show="gridShow5" 
@@ -28,71 +28,54 @@ http://render.openstreetmap.org/cgi-bin/export?bbox=-95.400000,29.727000,-95.390
                stroke-width="1">
                 <animate ng-if="dragtheGrid" attributeType="CSS" attributeName="stroke-dasharray" 
          from="5,5,5,5,5,5" to="2,2,2,2,2,2" dur="16s" repeatCount="indefinite" />
-                <line ng-repeat="gridpt in gridLineNumber(windowHt,50)" ng-attr-x1="{{gridpt}}" y1="0" ng-attr-x2="{{gridpt}}" ng-attr-y2="{{windowHt}}" />
-                <line ng-repeat="gridpt in gridLineNumber(windowWd,50)" x1="0" ng-attr-y1="{{gridpt}}" ng-attr-x2="{{windowWd}}" ng-attr-y2="{{gridpt}}" />  
+                <line ng-repeat="gridpt in gridLineNumber(canvasSize,50)" ng-attr-x1="{{gridpt}}" y1="0" ng-attr-x2="{{gridpt}}" ng-attr-y2="{{canvasSize}}" />
+                <line ng-repeat="gridpt in gridLineNumber(canvasSize,50)" x1="0" ng-attr-y1="{{gridpt}}" ng-attr-x2="{{canvasSize}}" ng-attr-y2="{{gridpt}}" />  
     
             </g>    
 <!--<image x="-555" y="-155" width="1300px" height="1300px" xlink:href="{{'img/Galvestonmap.svg'}}"></image>-->
 
             <g 
                ng-show="gridShow1" stroke="#6bea3b" stroke-dasharray="2,2,2,2,2,2" fill="#fcfbfa" fill-opacity="0.2" stroke-width=".2">
-                <line ng-repeat="gridpt in gridLineNumber(windowHt,10)" ng-attr-x1="{{gridpt}}" y1="0" ng-attr-x2="{{gridpt}}" ng-attr-y2="{{windowHt}}" />
-                <line ng-repeat="gridpt in gridLineNumber(windowWd,10)" x1="0" ng-attr-y1="{{gridpt}}" ng-attr-x2="{{windowWd}}" ng-attr-y2="{{gridpt}}" />            
+                <line ng-repeat="gridpt in gridLineNumber(canvasSize,10)" ng-attr-x1="{{gridpt}}" y1="0" ng-attr-x2="{{gridpt}}" ng-attr-y2="{{canvasSize}}" />
+                <line ng-repeat="gridpt in gridLineNumber(canvasSize,10)" x1="0" ng-attr-y1="{{gridpt}}" ng-attr-x2="{{canvasSize}}" ng-attr-y2="{{gridpt}}" />            
                 
             </g> 
             
-            
-<!--            <room-manip></room-manip> -->
             <g class="floorLines" stroke="#bb3bea" fill="none" fill-opacity="0.2" stroke-width="3">
-<!--                <polygon points="10,10 150,10 150,150 10,150"/>-->
+                
                 <polygon class="floorShowline" 
                          ng-click="alert('whole rect')"
                          hm-dragend="dragFloors($event)"
-                         ng-show="!svgEdit" 
                          hm-hold="svgEdit=!svgEdit" 
                          ng-attr-points="{{pointPath(floorPoints)}}"/>
 
             </g>
-            <g class="roomLines" ng-repeat="(rm, name) in currentFloor.rooms">
-                <g room-manip roompts="currentFloor.rooms[$index].roomPoints" 
+            <g class="roomLines" ng-repeat="(rm, name) in currentFloor.rooms"
+               room-manip roompts="currentFloor.rooms[$index].roomPoints" 
                    measurepts="currentFloor.rooms[$index].measurePoints">
+                    
                 <text ng-attr-x="{{currentFloor.rooms[$index].roomPoints[0][0]+5}}" 
-                      ng-attr-y="{{currentFloor.rooms[$index].roomPoints[0][1]+10}}" 
+                      ng-attr-y="{{currentFloor.rooms[$index].roomPoints[0][1]+12}}" 
                       font-size="12"
                       class="roomEditLine"
-                      ng-show="!roomLineEdit"
                       >{{name[0]}}</text>
                 <polygon stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2" 
                          hm-drag = "dragShapes($event)"
                          hm-double-tap = "centerView($event)"
                          class="roomShowLine" 
-                         ng-show="!roomLineEdit" 
                          ng-attr-points="{{pointPath(currentFloor.rooms[$index].roomPoints)}}" 
                 />
     
-<!--
-                <polygon stroke="#ba4920" fill="#fcfbfa"
-                         fill-opacity="1" stroke-width="20"
-                         hm-dragstart = "dragLineStart($event)"
-                         hm-drag = "dragLines($event)"
-                         hm-double-tap = "addPoint($event,currentFloor.rooms[$index].roomPoints)"
-                         hm-hold="roomLineEdit=!roomLineEdit"
-                         class="roomEditLine" 
-                         ng-show="!roomLineEdit" 
-                         ng-attr-points="{{pointPath(currentFloor.rooms[$index].roomPoints)}}" 
-                />
--->
                 <g ng-repeat="(i, vals) in currentFloor.rooms[$index].roomPoints">
                     <circle 
                         hm-drag = "dragPoints($event,i)"
-                        ng-show="!roomLineEdit"
                         class="roomEditLine"
                         ng-attr-cx="{{vals[0]}}"
                         ng-attr-cy="{{vals[1]}}"
                         r = 6
                     />
                 </g>
-                <g id="measures2show" ng-show="!roomLineEdit" 
+                <g id="measures2show"
                    ng-repeat="(ind,vals) in currentFloor.rooms[$index].measurePoints track by ind">
 <!--
                 <g id="measures2show" ng-show="!roomLineEdit" ng-repeat="(ind,vals) in showMeasures(currentFloor.rooms[$index].roomPoints) track by ind"
@@ -122,55 +105,8 @@ http://render.openstreetmap.org/cgi-bin/export?bbox=-95.400000,29.727000,-95.390
                            hm-tap = "openNote()"
                            xlink:href="{{'img/'+values[2]+'.png'}}"></image>
                     </g>
-<!--
-                <text     ng-attr-x="{{values[0]}}"
-                      ng-attr-y="{{values[1]}}"
-                      font-size="16"
-                        >{{values[2]+' ft'+indic}}</text>
--->
+               </g>
 
-<!--
-                    <g 
-                        ng-include="'{{img/'+values[2]+'.svg}}'"></g>
--->
-                </g>
-                </g>
-                
-<!--                
-
-                <text   
-                      ng-repeat="(i, vals) in currentFloor[$index].roomPoints"
-                      ng-attr-x="{{vals[0]}}"
-                      ng-attr-y="{{vals[1]}}"
-                      font-size="40"
-                      >{{i}}</text>
--->
-                <!--
-<g ng-include="'img/trash.svg'"></g>
-
-For room in currentFloor, but needs to have gone through separate scope
-Instead of separate scope, can just keep them straight as they're added by points - then have functions that rearrange them in the controller
-hm-dragend = "dragShapes($event)"
-                         hm-drag = "dragShapes2($event)"
-
-                        hm-dragend="dragAloneRoom($event,i,vals)"
-hm-dragstart = "dragRecord($index)"
--->
-<!--
-                <path ng-repeat="i in [0,1,2,3]" 
-                      ng-attr-d="{{'M'+currentFloor[$index].roomPoints[i][0]+20+' '+currentFloor[$index].roomPoints[i][1]+20+' '+
-                                 currentFloor[$index].roomPoints[3][0]+' '+currentFloor[$index].roomPoints[3][1]}}" />
--->
             </g>
-<!--        <svg ng-attr-height="{{floorHeight()}}" width="{{floorWidth()}}" viewBox="0 0 100 100" >-->
-            
-            
-<!--
-            <g ng-show="svgEdit" ng-repeat="points in floorPoints" stroke="#BC9D73" stroke-dasharray="10,5,5,5,5,10" fill="#F5F0EA" fill-opacity="0.8" stroke-width="1">
-                <circle hm-dragend='dragAlone($event,$index)' ng-attr-cx={{points[0]}} ng-attr-cy={{points[1]}} r="6" />
-            </g>
--->
-            
-            
 
         </svg>
