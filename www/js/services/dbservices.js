@@ -2,7 +2,7 @@
 
 
 
-var databaseServices = angular.module('databaseServicesModule', ['ngResource', 'ngCookies']);
+var databaseServices = angular.module('databaseServicesModule', ['ngCookies']);
 
 databaseServices.factory('Auth', ['Base64', '$http', '$cookieStore', function (Base64, $http, $cookieStore) {
     // initialize to whatever is in the cookie, if anything

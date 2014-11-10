@@ -7,9 +7,7 @@ http://angular-ui.github.io/ui-router/site/#/api/ui.router.util.$resolve?*/
 var HHApp = angular.module('HHApp', [
     'ionic',
 	'HHControllers', 
-	'jsonServices',
-    'layoutModuleServices',
-	'databaseServicesModule', 
+    'layoutModuleServices', 
     'restangular',
 ]); 
 
@@ -53,6 +51,25 @@ HHApp.config(function(RestangularProvider) {
 //					controller: 'layoutCtrl' 				
 //					}
           }
+      })
+      .state('map', {
+          abstract: true,
+          templateUrl: 'partials/map.html',
+          controller: 'mapCtrl'
+      })
+      .state('map.city', {
+          url:"/city",
+          views: {
+                "surroundCity": {
+                    templateUrl: 'partials/city.html'
+                },
+                "neighborhood": {
+                    templateUrl: 'partials/neighborhood.html'
+                },
+                "dataCtrls": {
+                    templateUrl: 'partials/data-ctrls.html'
+                }
+            }
       })
       .state('layout', {	
           abstract: true,
@@ -108,14 +125,6 @@ HHApp.config(function(RestangularProvider) {
 		  }
 	  })
     });
-//      .state('topMenu', {
-//          views: {
-//              'topMenu': {
-//                  templateUrl: 'partials/topMenu.html'
-//              }
-//          }
-//      })         
-    // perhaps for note, too?
 //    http://stackoverflow.com/questions/23231608/angular-ui-router-modal-removes-parent-state
 //      .state('camera', { //I'm not sure how this has been envisioned
 //          url: "/login/camera",

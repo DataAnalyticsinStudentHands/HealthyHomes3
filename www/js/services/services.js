@@ -115,15 +115,15 @@ databaseServices.factory('Base64', function() {
 
 -------------- dynamic json GET requests module --------------*/
 
-var jsonServices = angular.module('jsonServices', ['ngResource']);
-
-jsonServices.factory('Tab', ['$resource',
-  function($resource){
-    return $resource('json/:tabId.json', {}, { //why are there two query methods?
-		query: {method:'GET', params:{tabId:'tabs'}, isArray:true},
-		query2: {method:'GET', params:{tabId:'tabs'}, isArray:true}
-    });
-  }]);
+//var jsonServices = angular.module('jsonServices', ['ngResource']);
+//
+//jsonServices.factory('Tab', ['$resource',
+//  function($resource){
+//    return $resource('json/:tabId.json', {}, { //why are there two query methods?
+//		query: {method:'GET', params:{tabId:'tabs'}, isArray:true},
+//		query2: {method:'GET', params:{tabId:'tabs'}, isArray:true}
+//    });
+//  }]);
 
 
 /*----------------checklist module in questions----------------

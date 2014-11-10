@@ -2,56 +2,19 @@
 /* Controllers */
 //var layoutController = angular.module('HHControllers', []);
 
-angular.module('HHControllers').controller('layoutCtrl', ['$scope', '$window','$state','layoutObjectModel','findGeom',
-	function ($scope, $window, $state, layoutObjectModel,findGeom, $cordovaCamera, Gesture) { 
-//        document.addEventListener("deviceready", onDeviceReady, false);
-//        function onDeviceReady() {
-        //https://github.com/hammerjs/hammer.js/wiki/Event-delegation-and-how-to-stopPropagation---preventDefaults
-//        $scope.flagicons=[{
-//                icontype: 'greenflag'
-//            },{
-//                icontype: 'yellowflag'
-//            },{
-//                icontype: 'redflag'
-//        }];
-//        $scope.toggleSideMenu = function() {
-//            $ionicSideMenuDelegate.toggleLeft();
-//    };
-//        $scope.showMeasures = 'adfsadsfdfsafads';
-//        $scope.showMeasures = function() {
-//            $scope.roomLineEdit = true;
-//            $scope.$apply;
-//        };
-//        $scope.roomLineEdit = false;
-        $scope.icons=[{
-              icontype:  'sink'
-            },{
-              icontype:  'window'
-            },{
-              icontype:  'stairs'
-            },{
-              icontype:  'fire'
-            },{
-              icontype:  'toilet'
-            },{
-              icontype:  'tub'
-            },{
-              icontype:  'door'
-            },{
-              icontype: 'greenflag'
-            },{
-              icontype: 'yellowflag'
-            },{
-              icontype: 'redflag'
-        }];
-//        $scope.iconSVGs=[{
-//              icontype:  'svg_line'
-//            },{
-//              icontype:  'svg_rectangle'
-//            },{
-//              icontype:  'svg_circle'
-//        }];
-        //console.log(_.range(0,2000,50))
+angular.module('HHControllers').controller('mapCtrl', ['$scope', '$window','$state','layoutObjectModel','findGeom',
+	function ($scope, $window, $state, layoutObjectModel,findGeom, $cordovaCamera, Gesture, $http) { 
+        var geojson_data = {}
+        $http.get('/json/houston-roads_gen0.geojson')
+            .then(function(response) {
+                geojson_data = response.data;
+        });
+        //var geojson_data = data;
+        console.log(geojson_data['type']);
+        console.log(geojson_data['features'][0]);
+        //need to check if it has UTM or lat/lon
+        //need to write back to it, if it's changed
+        
         $scope.alert = function (text) {
             alert(text+'inside layoutCtrl');
         };

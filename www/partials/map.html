@@ -1,0 +1,53 @@
+<div id="wrapper"> 
+    
+    <div id="grid-container">
+        <ion-nav-view id="city-wrap" name="city">
+        </ion-nav-view>
+    </div>
+        
+<!--
+    <div id="smallWrap" 
+             ng-if="hideFloor"
+             style="position:absolute;width:280px;height:130px;overflow:hidden;">
+            <ion-nav-view id="floor-wrap-small" 
+                 style="position:absolute;width:280px;height:280px;" 
+                 name="floor">
+            </ion-nav-view>
+        </div>
+-->
+
+    <div id="floor-controls" ng-click="roomLineEdit=!roomLineEdit">
+        
+        <div id="mag-controls" grid-manip>
+        <img ng-click="hideFloor = !hideFloor"
+             ng-dblclick="gridDrag()" 
+                style="width:20px"
+                 ng-src="img/gridDrag.png" />
+        <img id="magnifySmaller" 
+                 ng-click="magnifyGrid(.5)"
+                 ng-src="img/magnify.png" />
+        
+        <img id="magnifyLarger" 
+                 ng-click="magnifyGrid(2)"
+                 ng-src="img/magnify.png" />
+        </div> 
+            <select ng-model="floor" 
+                required
+                style="float:right"
+                ng-change="newFloor(floor)"
+                ng-options="floor for floor in floorLists">
+            <option value="">-- choose floor --</option>
+        </select>
+        <br>
+        <select ng-model="room" 
+                style="float:right"
+                required
+                ng-change="newRoom(room)"
+                ng-if="(floor)"
+                ng-options="room for room in roomLists">
+            <option value="">-- choose room --</option>
+        </select>
+         
+        </div>
+    
+</div>
