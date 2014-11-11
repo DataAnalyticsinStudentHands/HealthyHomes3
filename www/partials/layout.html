@@ -1,0 +1,124 @@
+<div id="wrapper"> 
+
+<!--
+    <div ng-include="'partials/topMenu.html'">
+    </div>
+-->
+<ion-side-menus>
+    <ion-side-menu-content drag-content="true">
+        
+
+    
+    <div id="grid-container">
+        <ion-nav-view id="floor-wrap" name="floor"></ion-nav-view>
+<!--        <div ng-include="'partials/floor.html'"></div>-->
+<!--
+        <div id="floor-wrap" ui-view="floor">
+        </div>
+-->
+    </div>
+        
+    <div id="noteBox" ng-show="showNote">
+        <div id="noteTopBar">
+            <img ng-src="{{noteIcon}}" /> 
+            <img href="" style="display:none;position:absolute;width:60px;height:60px;float:right;" 
+                 id="smallImage" 
+                 src="" />
+            <img id="cameraIcon" 
+                 ng-click="takePicture()"
+                ng-src="img/camera.png"/>
+            <span id="noteClose"
+                  ng-click="showNote = !showNote">X</span>
+        </div>
+        <textarea id="noteText"
+                  ng-click="focus()"
+                  ng-model="note">
+
+        </textarea>
+    </div>
+        
+    </ion-side-menu-content>
+        
+    <ion-side-menu id="leftSideMenu" width="80" side="left" expose-aside-when="large">
+
+        <ion-header-bar class="bar bar-header bar-dark">
+            <h1 class="title">
+                <div id="menubg">  
+		      <div id="wrap_menus">
+                <div id="minilogo">
+                    <div class="wrapanimate2">
+                    <div class="cube2">
+                        <div class="front2"><img class ="front_image2" src="img/logo_big.svg"></div>
+   
+                    </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            </h1>
+        </ion-header-bar>
+<!--        <ion-view name="sideLeft"></ion-view>-->
+        <div ng-include="'partials/left.html'"></div>
+    
+        
+    <div id="smallWrap" 
+             ng-if="hideFloor"
+             style="position:absolute;width:280px;height:130px;overflow:hidden;">
+            <ion-nav-view id="floor-wrap-small" 
+                 style="position:absolute;width:280px;height:280px;" 
+                 name="floor">
+            </ion-nav-view>
+        </div>
+
+    
+
+        </ion-side-menu>
+<ion-side-menu side="right">
+    <div ion-nav-view name="questions"></div>
+		 
+
+<!--
+	<div id="side_tabs" ng-controller="tabCtrl">
+		<span class="side_tabs" ng-repeat="tab in tabs"><a ui-sref="questions.tabs({tabId: tab.id})"><img ng-src="{{tab.imageUrl}}"></a></span>
+	</div>	
+-->
+    </ion-side-menu>
+    
+
+
+    </ion-side-menus>
+    <div id="floor-controls" ng-click="roomLineEdit=!roomLineEdit">
+        
+        <div id="mag-controls" grid-manip>
+        <img ng-click="hideFloor = !hideFloor"
+             ng-dblclick="gridDrag()" 
+                style="width:20px"
+                 ng-src="img/gridDrag.png" />
+        <img id="magnifySmaller" 
+                 ng-click="magnifyGrid(.5)"
+                 ng-src="img/magnify.png" />
+        
+        <img id="magnifyLarger" 
+                 ng-click="magnifyGrid(2)"
+                 ng-src="img/magnify.png" />
+        </div> 
+            <select ng-model="floor" 
+                required
+                style="float:right"
+                ng-change="newFloor(floor)"
+                ng-options="floor for floor in floorLists">
+            <option value="">-- choose floor --</option>
+        </select>
+        <br>
+        <select ng-model="room" 
+                style="float:right"
+                required
+                ng-change="newRoom(room)"
+                ng-if="(floor)"
+                ng-options="room for room in roomLists">
+            <option value="">-- choose room --</option>
+        </select>
+         
+        </div>
+    
+</div>

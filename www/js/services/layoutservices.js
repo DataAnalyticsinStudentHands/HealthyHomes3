@@ -3,9 +3,10 @@
 using factories, not services, 
 Now moving to controllers with Restangular
 */
-var layoutServices = angular.module('layoutModuleServices', []);
+//var layoutServices = angular.module('layoutModuleServices', []);
+//var layoutServices = angular.module('HHServices', []);
 //layoutServices.service('layoutObjectModel', ['Restangular','$state','$stateParams', 'uuid', function(Restangular,$state,$stateParams,uuid) {
-layoutServices.service('layoutObjectModel', ['Restangular', 'uuid', function(Restangular,uuid) {
+angular.module('HHServices', []).service('layoutObjectModel', function(Restangular,uuid) {
     //console.log($state)
     var layoutObjectModel = Restangular.service('inspections');
     Restangular.extendModel('inspections',function(model) {
@@ -23,7 +24,8 @@ layoutServices.service('layoutObjectModel', ['Restangular', 'uuid', function(Res
     //for now, to make 24 a defined fail
     if (layoutObjectModel['inspections'] == null) {
         layoutObjectModel['inspections'] = [[uuid.new()]];
-    }
+    };
+    
 //    var inspectionId = layoutObjectModel.inspections[0][0];
 //    var inspections = layoutObjectModel.inspections;
 //    console.log('insp')
@@ -50,7 +52,7 @@ layoutServices.service('layoutObjectModel', ['Restangular', 'uuid', function(Res
 //    };
     
     return layoutObjectModel;
-  }])
+  })
 .service('findGeom', function() {
     this.testFunc = function(){alert('in service')};
     this.gridMag = 1;
@@ -117,6 +119,15 @@ layoutServices.service('layoutObjectModel', ['Restangular', 'uuid', function(Res
         return offElem[0].offsetTop || 0;
     };
 })
+.factory('mapData',function($http){
+    var geojson_data = {'adfs':'dafs'};
+    $http.get('/json/houston_texas-roads_gen0.geojson')
+        .then(function(response) {
+            geojson_data = response.data;
+    });
+    return geojson_data;
+})
+
 .factory('addObj',['$compile',function($compile) {
     var rtnObj = {
         newObj: function(scope,objType,objIndex){

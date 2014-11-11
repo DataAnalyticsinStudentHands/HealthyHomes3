@@ -2,27 +2,13 @@
 /* Controllers */
 //var layoutController = angular.module('HHControllers', []);
 
-angular.module('HHControllers').controller('layoutCtrl', ['$scope', '$window','$state','layoutObjectModel','findGeom',
-	function ($scope, $window, $state, layoutObjectModel,findGeom, $cordovaCamera, Gesture) { 
+angular.module('HHControllers').controller('layoutCtrl', 
+	function ($scope, $window, $state, layoutObjectModel,findGeom) { 
 //        document.addEventListener("deviceready", onDeviceReady, false);
 //        function onDeviceReady() {
         //https://github.com/hammerjs/hammer.js/wiki/Event-delegation-and-how-to-stopPropagation---preventDefaults
-//        $scope.flagicons=[{
-//                icontype: 'greenflag'
-//            },{
-//                icontype: 'yellowflag'
-//            },{
-//                icontype: 'redflag'
-//        }];
-//        $scope.toggleSideMenu = function() {
-//            $ionicSideMenuDelegate.toggleLeft();
-//    };
-//        $scope.showMeasures = 'adfsadsfdfsafads';
-//        $scope.showMeasures = function() {
-//            $scope.roomLineEdit = true;
-//            $scope.$apply;
-//        };
-//        $scope.roomLineEdit = false;
+
+        //console.log(geojson_data['features'][0]);
         $scope.icons=[{
               icontype:  'sink'
             },{
@@ -577,6 +563,6 @@ angular.module('HHControllers').controller('layoutCtrl', ['$scope', '$window','$
         //scope.topPosition = e.gesture.center.pageY;
         };
         
- }]);
+ });
 
 

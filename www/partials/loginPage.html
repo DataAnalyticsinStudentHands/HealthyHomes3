@@ -14,7 +14,7 @@
   </div>
 </div>
         
-         <div id="city">HOUSTON</div>
+         
     
     </div>
     
@@ -46,8 +46,9 @@ For once Restful is working
             <p>{{loginResult}}</p>
         </div>
 -->
-        <div id="login">
+        <div id="login" ng-click="goCityMap()">
         <form ng-submit="send()">   
+                <div id="city">HOUSTON</div>
             
                 InspectorID: <input ng-model="queryA">
                 <br><br>

@@ -2,21 +2,17 @@
 /* Controllers */
 //var layoutController = angular.module('HHControllers', []);
 
-angular.module('HHControllers').controller('mapCtrl', ['$scope', '$window','$state','layoutObjectModel','findGeom',
-	function ($scope, $window, $state, layoutObjectModel,findGeom, $cordovaCamera, Gesture, $http) { 
-        var geojson_data = {}
-        $http.get('/json/houston-roads_gen0.geojson')
-            .then(function(response) {
-                geojson_data = response.data;
-        });
+angular.module('HHControllers').controller('mapCtrl', 
+	function ($scope, $window, $state, layoutObjectModel,findGeom,mapData) { 
+        
         //var geojson_data = data;
-        console.log(geojson_data['type']);
-        console.log(geojson_data['features'][0]);
+        //console.log(geojson_data['type']);
+        console.log(mapData);
         //need to check if it has UTM or lat/lon
         //need to write back to it, if it's changed
         
         $scope.alert = function (text) {
-            alert(text+'inside layoutCtrl');
+            alert(text+'inside mapCtrl');
         };
         //findClosestLine.testFunc();
 //        document.addEventListener("deviceready", onDeviceReady, false);
@@ -540,6 +536,6 @@ angular.module('HHControllers').controller('mapCtrl', ['$scope', '$window','$sta
         //scope.topPosition = e.gesture.center.pageY;
         };
         
- }]);
+ });
 
 

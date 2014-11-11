@@ -1,4 +1,4 @@
-'use strict';
+angular.module('HHServices', []);
 
 /*
 Need to think through json services

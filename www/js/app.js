@@ -7,7 +7,7 @@ http://angular-ui.github.io/ui-router/site/#/api/ui.router.util.$resolve?*/
 var HHApp = angular.module('HHApp', [
     'ionic',
 	'HHControllers', 
-    'layoutModuleServices', 
+    'HHServices', 
     'restangular',
 ]); 
 
@@ -67,13 +67,13 @@ HHApp.config(function(RestangularProvider) {
                     templateUrl: 'partials/neighborhood.html'
                 },
                 "dataCtrls": {
-                    templateUrl: 'partials/data-ctrls.html'
+                    templateUrl: 'partials/left.html'
                 }
             }
       })
       .state('layout', {	
           abstract: true,
-          templateUrl: 'partials/layoutPage.html',
+          templateUrl: 'partials/layout.html',
           controller: 'layoutCtrl'
 //          views: {
 //                "pagelayout": { 
@@ -112,7 +112,7 @@ HHApp.config(function(RestangularProvider) {
 		  abstract: true,										//has to have children
           url: "/questions",
           views: {
-			"app": { templateUrl: 'partials/layoutPage.html' }
+			"app": { templateUrl: 'partials/layout.html' }
             }
       })
 	  .state('questions.tabs', {

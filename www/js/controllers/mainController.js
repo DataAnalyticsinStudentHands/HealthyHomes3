@@ -10,4 +10,7 @@ angular.module('HHControllers').controller('mainController', function($scope, $s
     $scope.goLayout = function() {
         $state.go('layout.floor');
     };
+    $scope.goCityMap = function() {
+        $state.go('map.city');
+    };
 });
