@@ -1,17 +1,39 @@
 <svg id="map-container" style='stroke-width: 0px; '
-             viewBox = "0 0 2000 2000"
-             map-manip>   
-<!--<image x="-555" y="-155" width="1300px" height="1300px" xlink:href="{{'img/Galvestonmap.svg'}}"></image>-->
+      viewBox = "304493.3036 3240046.3036 10000 10000"
+             
+             >   
+<!--map-manip
+viewBox = "280000 320000 3000000 340000"
+viewBox = "0 0 2000 2000"
+<image x="-555" y="-155" width="1300px" height="1300px" xlink:href="{{'img/Galvestonmap.svg'}}"></image>-->
             
-            <g class="floorLines" stroke="#bb3bea" fill="none" fill-opacity="0.2" stroke-width="3">
-                
-                <polygon class="floorShowline" 
-                         ng-click="alert('whole rect')"
-                         hm-dragend="dragFloors($event)"
-                         hm-hold="svgEdit=!svgEdit" 
-                         ng-attr-points="{{pointPath(floorPoints)}}"/>
+            <g class="map">
+<!--                <line x1="10" y1="10" x2="330" y2="330" stroke-width="4" ng-click="alert(features[110].geometry.type)"></line>-->
+            
 
-            </g>
+            <g ng-repeat="item in features | limitTo : 40000 " ng-click="alert($index)" font-size="32">
+<!--
+                <polygon points="294493.3036,3220046.3036 290000.3036,330000.3036 300000.3036,340000.3036"
+                         style="fill:lime;stroke:purple;stroke-width:1000"
+                         ></polygon>
+-->
+<!--                <line x1="10" y1="10" x2="430" y2="3330" stroke-width="4" ng-click="alert(eachobj.geometry.type)"></line>-->
+                <polygon ng-attr-points="{{pointPath(item.geometry.coordinates)}}"
+                         style="stroke:purple;stroke-width:10"
+                         ></polygon>
+<!--
+                <polygon ng-click="alert(pointPath(item.geometry.coordinates))"
+                         ng-attr-points="{{item.geometry.coordinates[0][0]}},{{item.geometry.coordinates[0][1]}} {{item.geometry.coordinates[1][0]}},{{item.geometry.coordinates[1][1]}} {{item.geometry.coordinates[2][0]}},{{item.geometry.coordinates[2][1]}}"
+                         style="fill:lime;stroke:purple;stroke-width:100"
+                         ></polygon>
+-->
+<!--
+                <text ng-attr-x="{{$index*10}}" y="10">{{item.geometry.type}}</text>
+                <text x="{{$index*1000}}" y="100">{{item.geometry.coordinates[0]}}</text>
+-->
+            </g>    
+
+                
             <g class="roomLines" ng-repeat="(rm, name) in currentFloor.rooms"
                room-manip roompts="currentFloor.rooms[$index].roomPoints" 
                    measurepts="currentFloor.rooms[$index].measurePoints">

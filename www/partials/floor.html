@@ -36,6 +36,7 @@ http://render.openstreetmap.org/cgi-bin/export?bbox=-95.400000,29.727000,-95.390
 
             <g 
                ng-show="gridShow1" stroke="#6bea3b" stroke-dasharray="2,2,2,2,2,2" fill="#fcfbfa" fill-opacity="0.2" stroke-width=".2">
+                
                 <line ng-repeat="gridpt in gridLineNumber(canvasSize,10)" ng-attr-x1="{{gridpt}}" y1="0" ng-attr-x2="{{gridpt}}" ng-attr-y2="{{canvasSize}}" />
                 <line ng-repeat="gridpt in gridLineNumber(canvasSize,10)" x1="0" ng-attr-y1="{{gridpt}}" ng-attr-x2="{{canvasSize}}" ng-attr-y2="{{gridpt}}" />            
                 

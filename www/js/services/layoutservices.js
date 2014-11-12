@@ -119,13 +119,16 @@ angular.module('HHServices', []).service('layoutObjectModel', function(Restangul
         return offElem[0].offsetTop || 0;
     };
 })
-.factory('mapData',function($http){
+.service('mapData',function($http){
     var geojson_data = {'adfs':'dafs'};
-    $http.get('/json/houston_texas-roads_gen0.geojson')
-        .then(function(response) {
-            geojson_data = response.data;
-    });
-    return geojson_data;
+    this.mapCoords = function(){
+        return $http.get('/json/houston_texas-roads_gen0-UTM.geojson')
+//            .success(function(response) {
+//                geojson_data = response.data;
+//            });
+        //return geojson_data;
+    };
+    //return geojson_data;
 })
 
 .factory('addObj',['$compile',function($compile) {

@@ -3,11 +3,17 @@
 //var layoutController = angular.module('HHControllers', []);
 
 angular.module('HHControllers').controller('mapCtrl', 
-	function ($scope, $window, $state, layoutObjectModel,findGeom,mapData) { 
+	function ($scope, $window, $state,layoutObjectModel,findGeom,mapData) { 
         
         //var geojson_data = data;
         //console.log(geojson_data['type']);
-        console.log(mapData);
+        $scope.features = null;
+        $scope.coords = null;
+        //console.log(mapData)
+        mapData.mapCoords().then(function(geojson_data) {
+            $scope.features = geojson_data.data.features; //['features']
+        });
+        //console.log(mapData)
         //need to check if it has UTM or lat/lon
         //need to write back to it, if it's changed
         
