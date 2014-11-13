@@ -16,10 +16,18 @@ angular.module('HHControllers').controller('mapCtrl',
         //console.log(mapData)
         //need to check if it has UTM or lat/lon
         //need to write back to it, if it's changed
-        
+//    $scope.changeVB = function(){
+//        alert('nagsd');
+//        //elem[0].setAttribute('viewBox', newVB);
+//    };
         $scope.alert = function (text) {
             alert(text+'inside mapCtrl');
         };
+        //$scope.vb = "294493.3036 3240046.3036 100000 100000";
+        $scope.newVb = function() {
+            $scope.vb = "280000 3200000 10000 10000"
+            //return "280000 3200000 10000 10000";
+        }
         //findClosestLine.testFunc();
 //        document.addEventListener("deviceready", onDeviceReady, false);
     //are the touchHandlers needed with ionic? in each directive?
