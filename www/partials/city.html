@@ -3,7 +3,9 @@
      map-manip
      ng-click="changeVB()"
              >   
-    
+    <polygon points="240000,3250000 240000,3250030 240010,3250030"
+            style="stroke:purple;stroke-width:1"
+                         ></polygon>
 <!--    <text x="0" y="0" font-size='22222222' fill='black'>WTF</text>-->
 <!--map-manip add as attribute to directive??
 ng-attr-viewBox="{{vb}}"
@@ -15,7 +17,7 @@ viewBox = "294493.3036 3240046.3036 100000 100000"
 <!--        <g class="map">-->
 <!--                <line x1="10" y1="10" x2="330" y2="330" stroke-width="4" ng-click="alert(features[110].geometry.type)"></line>-->
 
-            <g ng-repeat="item in features | limitTo : 1000" font-size="32">
+            <g ng-repeat="item in features | limitTo : 10" font-size="32">
 <!--ng-click="alert(features[4339].properties.type)"
                 <polygon points="294493.3036,3220046.3036 290000.3036,330000.3036 300000.3036,340000.3036"
                          style="fill:lime;stroke:purple;stroke-width:1000"
@@ -23,23 +25,25 @@ viewBox = "294493.3036 3240046.3036 100000 100000"
 -->
 <!--                <line x1="10" y1="10" x2="430" y2="3330" stroke-width="4" ng-click="alert(eachobj.geometry.type)"></line>-->
 <!--                <line stroke-width="444" x1="280493" y1="3200046" x2="293019" y2="3218492"></line>-->
+                <line style="stroke:rgb(255,0,0);stroke-width:22"
+                        ng-click="alert({{item.geometry.coordinates[1][1]}})"
+                      ng-attr-x1="{{item.geometry.coordinates[0][0]}}"
+                      ng-attr-y1="{{item.geometry.coordinates[0][1]}}"
+                      ng-attr-x2="{{item.geometry.coordinates[1][0]}}"
+                      ng-attr-y2="{{item.geometry.coordinates[1][1]}}"></line>
 <!--
-                <line stroke-width="44"
-                        ng-click="alert({{item.geometry.coordinates[0][0]}})"
-                      ng-attr-x1="{{item.geometry.coordinates[0][1]}}"
-                      ng-attr-y1="{{item.geometry.coordinates[0][0]}}"
-                      ng-attr-x2="{{item.geometry.coordinates[1][1]}}"
-                      ng-attr-y2="{{item.geometry.coordinates[1][0]}}"></line>
--->
                 <polygon 
                          ng-attr-points="{{pointPath(item.geometry.coordinates)}}"
                          style="stroke:purple;stroke-width:10"
                          ></polygon>
-<!--
-                <text ng-attr-x="{{pointPath(item.geometry.coordinates)[0][0]}}"
-                      ng-attr-y="{{pointPath(item.geometry.coordinates)[0][1]}}"
-                      font-size="36">{{item.properties.type}}"</text>
 -->
+                <text ng-attr-x="{{item.geometry.coordinates[0][0]}}"
+                      ng-attr-y="{{item.geometry.coordinates[0][1]}}"
+                      fill="blue"
+                      font-size="36">
+                    {{item.properties.type}}
+                    {{item.type}}
+                </text>
 <!--
                 <polygon ng-click="alert(pointPath(item.geometry.coordinates))"
                          ng-attr-points="{{item.geometry.coordinates[0][0]}},{{item.geometry.coordinates[0][1]}} {{item.geometry.coordinates[1][0]}},{{item.geometry.coordinates[1][1]}} {{item.geometry.coordinates[2][0]}},{{item.geometry.coordinates[2][1]}}"

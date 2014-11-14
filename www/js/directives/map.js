@@ -3,8 +3,8 @@ HHApp.directive('mapManip',function(layoutObjectModel,$ionicGesture,$ionicSideMe
         restrict: 'AE',
         link: function(scope,elem,attr) {
             console.log(elem[0])
-    var viewBox = scope.viewbox = "244493.3036 3250046.3036 100000 100000"
-    var newVB = "224500 3260000 100000 100000"
+    var viewBox = scope.viewbox = "240000 3250000 100 100"; //"240000 3250000 100000 100000"
+    var newVB = "244601.1111 3263412.1111 2000 2000"
     //elem[0].viewBox = firstVB;
     elem[0].setAttribute('viewBox', viewBox);
     scope.changeVB = function(){
