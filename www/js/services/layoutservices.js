@@ -6,8 +6,10 @@ Now moving to controllers with Restangular
 //var layoutServices = angular.module('layoutModuleServices', []);
 //var layoutServices = angular.module('HHServices', []);
 //layoutServices.service('layoutObjectModel', ['Restangular','$state','$stateParams', 'uuid', function(Restangular,$state,$stateParams,uuid) {
-angular.module('HHServices', []).service('layoutObjectModel', function(Restangular,uuid) {
+angular.module('HHServices', []).factory('layoutObjectModel', function(Restangular,uuid,$q,$http) {
+    localStorage.clear();
     //console.log($state)
+    //http://sauceio.com/index.php/2014/07/angularjs-data-models-http-vs-resource-vs-restangular/
     var layoutObjectModel = Restangular.service('inspections');
     Restangular.extendModel('inspections',function(model) {
         model.getResult = function(){
@@ -21,10 +23,62 @@ angular.module('HHServices', []).service('layoutObjectModel', function(Restangul
  
       return model;
     });
-    //for now, to make 24 a defined fail
-    if (layoutObjectModel['inspections'] == null) {
-        layoutObjectModel['inspections'] = [[uuid.new()]];
+    Storage.prototype.setObject = function(key, value) {
+        this.setItem(key, JSON.stringify(value));
     };
+
+    Storage.prototype.getObject = function(key) {
+        var value = this.getItem(key);
+        return value && JSON.parse(value);
+    };
+    return {
+    getInspections : function(){
+        
+        
+            return $http.get('/json/inspections.json')
+                    .success(function(data, status, headers, config) {
+                        //layoutObjectModel['inspections'] = data;
+                        localStorage.setObject('inspections', data);
+                        //console.log(layoutObjectModel['inspections'])
+                    })
+                    .error(function(data, status, headers, config) {
+                        console.log(data)
+                    })
+    }
+    }
+})
+    //if (layoutObjectModel['inspections'] == null) {
+//    this.getInspections = function(){
+      //$q(function(resolve, reject) {
+        //var deferred = $q.defer();
+        //if (localStorage.getObject('inspections') == null){
+           // console.log('inspections is null');
+            //setTimeout(5000)
+            //deferred.resolve(
+//            $q(function(resolve, reject) {
+//                var deferred = $q.defer();
+            //return    'fuck you'
+//            })
+            //layoutObjectModel['inspections'] = [[uuid.new()]];
+        //} else {
+           // console.log('we have inspections');
+            //deferred.resolve(
+                //layoutObjectModel['inspections'] = localStorage.getObject('inspections')
+            //
+        //}
+//        var storedInspections = deferred.promise;
+//        layoutObjectModel['inspections'] = storedInspections;
+        
+          //console.log(deferred)
+      //}
+    
+
+    //this.storedInspections = localStorage.getObject('inspections');
+    //console.log(storedInspections)
+    
+    
+    //console.log(localStorage)
+    //this.inspections = function()
     
 //    var inspectionId = layoutObjectModel.inspections[0][0];
 //    var inspections = layoutObjectModel.inspections;
@@ -51,8 +105,6 @@ angular.module('HHServices', []).service('layoutObjectModel', function(Restangul
 //        layoutObjectModel.inspections['floors'] = []
 //    };
     
-    return layoutObjectModel;
-  })
 .service('findGeom', function() {
     this.testFunc = function(){alert('in service')};
     this.gridMag = 1;
@@ -122,6 +174,7 @@ angular.module('HHServices', []).service('layoutObjectModel', function(Restangul
 .service('mapData',function($http){
     var geojson_data = {'adfs':'dafs'};
     this.mapCoords = function(){
+        //return $http.get('/json/Census2010_Tracts_CoH.json')
         return $http.get('/json/houston_texas-roads_gen0-UTM.geojson')
 //            .success(function(response) {
 //                geojson_data = response.data;
@@ -176,7 +229,7 @@ angular.module('HHServices', []).service('layoutObjectModel', function(Restangul
     };
      
     return svc;
-});;
+});
     
     
     

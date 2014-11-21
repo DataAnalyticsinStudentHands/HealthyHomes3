@@ -3,12 +3,9 @@
 //var layoutController = angular.module('HHControllers', []);
 
 angular.module('HHControllers').controller('layoutCtrl', 
-	function ($scope, $window, $state, layoutObjectModel,findGeom) { 
+	function ($scope, $window, $state,Restangular,layoutObjectModel,findGeom) { 
 //        document.addEventListener("deviceready", onDeviceReady, false);
 //        function onDeviceReady() {
-        //https://github.com/hammerjs/hammer.js/wiki/Event-delegation-and-how-to-stopPropagation---preventDefaults
-
-        //console.log(geojson_data['features'][0]);
         $scope.icons=[{
               icontype:  'sink'
             },{
@@ -41,7 +38,6 @@ angular.module('HHControllers').controller('layoutCtrl',
         $scope.alert = function (text) {
             alert(text+'inside layoutCtrl');
         };
-        //findClosestLine.testFunc();
 //        document.addEventListener("deviceready", onDeviceReady, false);
     //are the touchHandlers needed with ionic? in each directive?
         function touchHandler(event)
@@ -73,7 +69,7 @@ angular.module('HHControllers').controller('layoutCtrl',
         
 //        var viewContainer = document.getElementById('grid-container');
 //        layoutObjectModel.testFunc()
-        
+        //var types = $scope.types = Restangular.all().getList().$object;
         $scope.newFloorRoom = function(){
             $scope.newFloorOrRoom = !$scope.newFloorOrRoom
         };
@@ -85,17 +81,27 @@ angular.module('HHControllers').controller('layoutCtrl',
         var floorPoints = $scope.floorPoints = []; //if empty, nothing is drawn on floor.html 
         //$scope.floorPoints = [[100,100],[150,100],[150,150],[100,150]];
         //$scope.roomLineEdit = false; //svgEdit is now set through isolate scopes on drag-save, but may change
-        var rooms = [];
-        var room = $scope.room;
-        var roomPoints = $scope.roomPoints = [[10,10],[150,100],[150,150],[100,150]]; //[]; //have to decide which one is active on first load; how do we get from $scope?
-        $scope.layoutObjectModel = layoutObjectModel; 
-        //console.log(layoutObjectModel.inspections);
-        var inspectInd = 0; //will get from service or $state.params
-        var currentInspection = layoutObjectModel.inspections[inspectInd];
-        //console.log(currentInspection)
+         //[]; //have to decide which one is active on first load; how do we get from $scope?
+        console.log(layoutObjectModel)
+        if (layoutObjectModel['inspections'] == null) {
+            console.log('null')
+            layoutObjectModel.getInspections().then(function(inspects){
+                layoutObjectModel['inspections'] = inspects;
+                $scope.layoutObjectModel = layoutObjectModel; 
+                console.log(layoutObjectModel.inspections);
+                var inspectInd = 0; //will get from service or $state.params
+        
+                var currentInspection = layoutObjectModel.inspections[inspectInd];
+                console.log(layoutObjectModel)
+                console.log(currentInspection)
+            });
+        }else{
+            layoutObjectModel['inspections'] = localStorage.getObject('inspections');
+        };
+        
 //        $state.param.inspectInd = 0;
-//        var currentInspection = layoutObjectModel.currentInspection();
-        currentInspection.floors = floors;
+        
+        //currentInspection.floors = floors;
 
         //console.log(layoutObjectModel)
         var currentFloor = $scope.currentFloor = [];
@@ -109,6 +115,9 @@ angular.module('HHControllers').controller('layoutCtrl',
             currentFloor = $scope.currentFloor = currentInspection.floors[floorInd];
             floorPoints = $scope.floorPoints = currentInspection.floors[floorInd].floorPoints;
         };
+        var rooms = [];
+        var room = $scope.room;
+        var roomPoints = $scope.roomPoints = [[10,10],[150,100],[150,150],[100,150]];
             
         $scope.pointPath = findGeom.pointPath;
         //http://geomalgorithms.com/a03-_inclusion.html [0 is online;>0 is Left of line;<0 is Right of Line

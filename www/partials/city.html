@@ -1,5 +1,5 @@
 <svg id="map-container" style='stroke-width: 0px; '
-     width="1000px" height="1000px"
+     width="100%" height="100%"
      map-manip
      ng-click="changeVB()"
              >   
@@ -17,7 +17,8 @@ viewBox = "294493.3036 3240046.3036 100000 100000"
 <!--        <g class="map">-->
 <!--                <line x1="10" y1="10" x2="330" y2="330" stroke-width="4" ng-click="alert(features[110].geometry.type)"></line>-->
 
-            <g ng-repeat="item in features | limitTo : 10" font-size="32">
+            <g ng-repeat="item in features | limitTo : 10000
+                          " font-size="32">
 <!--ng-click="alert(features[4339].properties.type)"
                 <polygon points="294493.3036,3220046.3036 290000.3036,330000.3036 300000.3036,340000.3036"
                          style="fill:lime;stroke:purple;stroke-width:1000"

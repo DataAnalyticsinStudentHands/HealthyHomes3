@@ -824,7 +824,7 @@ body{
 
 /* grid background
 *********************************************************************************************/
-#grid_containerOLD{
+#grid_container{
     position: absolute;
     width:100%;
     top:0px;
