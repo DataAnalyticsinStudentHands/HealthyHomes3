@@ -2,7 +2,7 @@
 /* Controllers */
 //var layoutController = angular.module('HHControllers', []);
 
-angular.module('HHControllers').controller('mapCtrl', 
+angular.module('Controllers').controller('mapCtrl', 
 	function ($scope, $window, $state,layoutObjectModel,findGeom,mapData) { 
         
         //var geojson_data = data;

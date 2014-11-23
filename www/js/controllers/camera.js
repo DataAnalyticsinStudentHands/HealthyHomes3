@@ -1,4 +1,4 @@
-angular.module('HHControllers').controller('PictureCtrl', function($scope, $cordovaCamera) {
+angular.module('Controllers').controller('PictureCtrl', function($scope, $cordovaCamera) {
 
   $scope.takePicture = function() {
 		$scope.alert = 'accessed function of take picture';

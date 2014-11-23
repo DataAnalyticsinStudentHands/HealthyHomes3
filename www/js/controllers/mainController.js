@@ -1,4 +1,4 @@
-angular.module('HHControllers').controller('mainController', function($scope, $state) {
+angular.module('Controllers').controller('mainController', function($scope, $state) {
     $scope.main = {};
     console.log('loaded main controller');
     $scope.alert = function (text) {

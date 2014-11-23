@@ -6,9 +6,12 @@ http://angular-ui.github.io/ui-router/site/#/api/ui.router.util.$resolve?*/
 
 var HHApp = angular.module('HHApp', [
     'ionic',
-	'HHControllers', 
-    'HHServices', 
+	'Controllers', 
+    'Services',
     'restangular',
+    'ngNotify',
+    'databaseControllerModule',
+    'databaseServicesModule'
 ]); 
 
 HHApp.config(function(RestangularProvider) {

@@ -5,7 +5,11 @@ node_modules/
 platforms/
 
 #bower stuff in www
-www/bower_components/
+www/lib
+#third party
+www/js/third-party.js
+www/css/third-party.css
+.brackets.json
 
 #and no logs
 *.log

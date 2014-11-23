@@ -1,4 +1,4 @@
-angular.module('HHServices', []);
+angular.module('Services', []);
 
 /*
 Need to think through json services

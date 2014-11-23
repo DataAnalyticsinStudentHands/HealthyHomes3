@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name terry.controller:UserService
+ * @name service:UserService
  * @description
  * # UserService
- * Service for the terry
+ * Service
  */
-angular.module('userServiceModule').factory('UserService', function (Restangular, $q, $filter) {
+angular.module('Services').factory('UserService', function (Restangular, $q, $filter, ngNotify) {
     'use strict';
 
     var allUsers,
@@ -15,43 +15,85 @@ angular.module('userServiceModule').factory('UserService', function (Restangular
         myUser,
         updating;
     return {
-        //ACCESSES SERVER AND UPDATES THE LIST OF USERS
-        updateUsers: function (update) {
-            if (update || (!allUsers && !updating)) {
-                promAllUsers = Restangular.all("users").getList();
-                updating = true;
-                promAllUsers.then(function (success) {
-                    updating = false;
-                    success = Restangular.stripRestangular(success);
-                    allUsers = success;
-                }, function (fail) {
-
+        updateUsers:
+            //ACCESSES SERVER AND UPDATES THE LIST OF USERS
+            function (update) {
+                if (update || (!allUsers && !updating)) {
+                    promAllUsers = Restangular.all("users").getList();
+                    updating = true;
+                    promAllUsers.then(function (success) {
+                        updating = false;
+                        success = Restangular.stripRestangular(success);
+                        allUsers = success;
+                    }, function (fail) {
+                        
+                    });
+                    return promAllUsers;
+                } else if (updating) {
+                    return promAllUsers;
+                } else {
+                    var defer = $q.defer();
+                    defer.resolve("DONE");
+                    return defer.promise;
+                }
+            },
+        getAllUsers:
+            function () {
+                return this.updateUsers().then(function (success) {
+                    return allUsers;
                 });
-                return promAllUsers;
-            } else if (updating) {
-                return promAllUsers;
-            } else {
-                var defer = $q.defer();
-                defer.resolve("DONE");
-                return defer.promise;
+            },
+        getMyUser:
+            function () {
+                return Restangular.all("users").all("myUser").getList();
+            },
+        getUser:
+            function (user_id) {
+                return this.updateUsers().then(function (success) {
+                    return $filter('getById')(allUsers, user_id);
+                });
+            },
+        getMyRole:
+            function () {
+                return Restangular.all("users").all("myRole").getList().then(function (success) { return success[0]; });
+            },
+        addUser:
+            function (user) {
+                return Restangular.all("users").post(user).then(
+                    function (result) {
+                    ngNotify.set("Succesfully created user.", {
+                        position: 'bottom',
+                        type: 'success'
+                    });
+                },
+                function (error) {
+                    ngNotify.set("Could not create user!", {
+                        position: 'bottom',
+                        type: 'error'
+                    });
+                }
+                );
+            },
+        editUser:
+            function (id, user) {
+                return Restangular.all("users").all(id).post(user);
+            },
+        deleteUser:
+            function (userId) {
+                Restangular.all('users').all(userId).remove().then(
+                function (result) {
+                    ngNotify.set("Succesfully deleted user.", {
+                        position: 'bottom',
+                        type: 'success'
+                    });
+                },
+                function (error) {
+                    ngNotify.set("Could not delete user!", {
+                        position: 'bottom',
+                        type: 'error'
+                    });
+                }
+            );
             }
-        },
-        getAllUsers: function () {
-            return this.updateUsers().then(function (success) {
-                return allUsers;
-            });
-        },
-        getUser: function () {
-            return Restangular.all("users").getList();
-        },
-        addUser: function (user) {
-            return Restangular.all("users").post(user);
-        },
-        editUser: function (id, user) {
-            return Restangular.all("users").all(id).post(user);
-        },
-        deleteUser: function (uid) {
-            return Restangular.all("users").all(uid).remove();
-        }
     };
 });

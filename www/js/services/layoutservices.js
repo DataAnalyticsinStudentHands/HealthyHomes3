@@ -6,7 +6,7 @@ Now moving to controllers with Restangular
 //var layoutServices = angular.module('layoutModuleServices', []);
 //var layoutServices = angular.module('HHServices', []);
 //layoutServices.service('layoutObjectModel', ['Restangular','$state','$stateParams', 'uuid', function(Restangular,$state,$stateParams,uuid) {
-angular.module('HHServices', []).factory('layoutObjectModel', function(Restangular,uuid,$q,$http) {
+angular.module('Services', []).factory('layoutObjectModel', function(Restangular,uuid,$q,$http) {
     localStorage.clear();
     //console.log($state)
     //http://sauceio.com/index.php/2014/07/angularjs-data-models-http-vs-resource-vs-restangular/

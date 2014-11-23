@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('HHControllers', []);
+angular.module('Controllers', []);

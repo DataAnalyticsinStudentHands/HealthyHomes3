@@ -2,7 +2,7 @@
 /* Controllers */
 //var layoutController = angular.module('HHControllers', []);
 
-angular.module('HHControllers').controller('layoutCtrl', 
+angular.module('Controllers').controller('layoutCtrl', 
 	function ($scope, $window, $state,Restangular,layoutObjectModel,findGeom) { 
 //        document.addEventListener("deviceready", onDeviceReady, false);
 //        function onDeviceReady() {
