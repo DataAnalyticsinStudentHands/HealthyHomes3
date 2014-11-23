@@ -10,12 +10,14 @@
 	<link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="lib/ionic/css/ionic.css">
-    <link rel="stylesheet" href="lib/ng-notify/dist/ng-notify.min.css">
+<!--    <link rel="stylesheet" href="lib/ng-notify/dist/ng-notify.min.css"> if don't add hack on z-index:99 from README-->
+    <link rel="stylesheet" href="lib/ng-notify/src/styles/ng-notify.css">
     <script src="lib/ionic/js/ionic.bundle.js"></script>
     
     <script src="lib/lodash/dist/lodash.underscore.js"></script>
     <script src="lib/restangular/dist/restangular.js"></script>
     <script src="lib/ng-notify/dist/ng-notify.min.js"></script>
+    <script src="lib/ngstorage/ngStorage.js"></script>
     
 <!--    <script src="lib/ngCordova/dist/ng-cordova.js"></script>-->
 
@@ -37,6 +39,7 @@
     <script src="js/Controllers/map-controller.js"></script>
     <script src="js/Controllers/camera.js"></script>
     
+    <script src="js/Directives/directives.js"></script>
     <script src="js/Directives/map.js"></script>
     <script src="js/Directives/grid.js"></script>
     <script src="js/Directives/floor.js"></script>
@@ -48,49 +51,21 @@
 </head> 
     
 <body ng-app="HHApp"> 
-<!--    <ion-nav-view></ion-nav-view>-->
-
-<!--
-    <ion-side-menus>
-    <ion-side-menu-content drag-content="true">
--->
-
-        <ion-nav-view></ion-nav-view>
-        
-<!--
-    </ion-side-menu-content>
-        
-    <ion-side-menu side="left" expose-aside-when="large">
-
-        <ion-header-bar class="bar bar-header bar-dark">
-            <h1 class="title">
-                <div id="menubg">  
-		      <div id="wrap_menus">
-                <div id="minilogo">
-                    <div class="wrapanimate2">
-                    <div class="cube2">
-                        <div class="front2"><img class ="front_image2" src="img/logo_big.svg"></div>
-   
-                    </div>
-                    </div>
-                </div>
-              </div>
-            </div>
-            </h1>
-        </ion-header-bar>
-        <ion-view name="sideLeft"></ion-view>
-        <div ng-include="'partials/left.html'"></div>
-    </ion-side-menu>
-
-        
-    <ion-side-menu side="right">
-        Why not?
-    </ion-side-menu>
-    
-
-
-    </ion-side-menus>
--->
+    <!-- 
+      The nav bar that will be updated as we navigate between views.
+    -->
+    <ion-nav-bar class="bar-stable nav-title-slide-ios7" back-button-type="button-icon" back-button-icon="ion-arrow-left-c">
+        <ion-nav-back-button class="button-clear">
+            <i class="ion-arrow-left-c"></i> Back
+        </ion-nav-back-button>
+    </ion-nav-bar>
+    <!-- 
+      The views will be rendered in the <ion-nav-view> directive below
+      Templates are in the /templates folder (but you could also
+      have templates inline in this html file if you'd like).
+    -->
+    <ion-nav-view animation="slide-left-right"></ion-nav-view>
+</body>
 
 </body>
     

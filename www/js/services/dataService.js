@@ -2,10 +2,10 @@
 
 /**
  * @ngdoc function
- * @name terry.service:DataService
+ * @name HH.service:DataService
  * @description
  * # DataService
- * Service for the terry
+ * Service for the Healthy Homes App
  */
 angular.module('Services').factory('DataService', function ($http, $ionicLoading, Restangular, ngNotify) {
     'use strict';
@@ -13,7 +13,7 @@ angular.module('Services').factory('DataService', function ($http, $ionicLoading
     //Load data for form data for terry application
     var application_form;
 
-    $http.get('json/form_application.json').success(function (data) {
+    $http.get('json/asthma.json').success(function (data) {
         application_form = data;
     });
 

@@ -1,4 +1,4 @@
-HHApp.directive('roomManip',function(layoutObjectModel,$ionicGesture,$ionicSideMenuDelegate,findGeom){
+angular.module('Directives').directive('roomManip',function(layoutObjectModel,$ionicGesture,$ionicSideMenuDelegate,findGeom){
     return {
         restrict: 'AE',
         scope: {

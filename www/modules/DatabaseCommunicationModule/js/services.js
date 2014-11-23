@@ -11,6 +11,7 @@ databaseServices.factory('Auth', ['Base64', '$http', function (Base64, $http) {
 //            console.log(encoded);
             localStorage.setItem('authdata', encoded);
             localStorage.setItem("authdata-conf", false);
+            //localStorage.setItem("authdata-conf", true); //for testing?
         },
         clearCredentials: function () {
             document.execCommand("ClearAuthenticationCache");

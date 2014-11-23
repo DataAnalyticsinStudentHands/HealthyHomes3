@@ -1,4 +1,4 @@
-HHApp.directive('gridManip',function(layoutObjectModel,$window,findGeom){
+angular.module('Directives').directive('gridManip',function(layoutObjectModel,$window,findGeom){
     return {
         restrict: 'AE',
         //templateUrl: 'partials/gridlines.html',

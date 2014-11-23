@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="248px" height="248px" viewBox="0 0 2048 2048" enable-background="new 0 0 2048 2048" xml:space="preserve">
+<g id="Layer_1_1_">
+	<g id="Gold" display="none">
+		<circle id="_x33_4" display="inline" fill="#F6BE00" cx="912" cy="992" r="272"/>
+		<circle id="_x32_1" display="inline" fill="#C8102E" cx="975.9" cy="960" r="168"/>
+		<circle id="_x35_5" display="inline" fill="#535FCB" cx="1320" cy="776" r="440"/>
+		<circle id="_x33_4_2_" display="inline" fill="#FFF9D9" cx="912" cy="864" r="272"/>
+		<circle id="_x33_4_1_" display="inline" fill="#FFF9D9" cx="1152" cy="870.1" r="272"/>
+		<circle id="_x31_3" display="inline" fill="#F6BE00" cx="1320" cy="776" r="88"/>
+		<circle id="_x35_" display="inline" fill="#00B388" cx="1320" cy="776" r="40"/>
+		<circle id="_x33_" display="inline" fill="#F6BE00" cx="1512" cy="488" r="24"/>
+		<circle id="_x38_" display="inline" fill="#F6BE00" cx="432" cy="576" r="64"/>
+		<line display="inline" fill="none" x1="1152" y1="870.1" x2="1040" y2="1088"/>
+		<line display="inline" fill="none" x1="1320" y1="776" x2="1258.5" y2="713.1"/>
+		<line display="inline" fill="none" x1="1292" y1="747.4" x2="1040" y2="1088"/>
+		<line display="inline" fill="none" x1="832" y1="784" x2="832" y2="784"/>
+	</g>
+	<polygon fill="#F6BE00" points="976.4,960.4 748.8,1141.1 912,832 	"/>
+	<circle id="_x32_" fill="#00B388" cx="912" cy="832" r="32"/>
+	<circle id="_x33__1_" fill="#00B388" cx="1040" cy="1088" r="32"/>
+	<circle id="_x31_" fill="#00B388" cx="736" cy="1168" r="32"/>
+	<path id="A1" fill="#00B388" d="M926.5,839.4l-176,335.899c-4.2,8-14.1,11.101-22.1,6.9l0,0c-8-4.2-11.101-14.101-6.9-22.101
+		l176-335.899c4.2-8,14.1-11.101,22.1-6.9l0,0C927.6,821.5,930.7,831.5,926.5,839.4z"/>
+	<path id="A2" fill="#00B388" d="M927.2,825.3L1055,1080.9c4,8.1,0.7,17.899-7.3,22l0,0c-8.101,4-17.9,0.699-22-7.301L897.9,839.9
+		c-4-8.101-0.7-17.9,7.3-22l0,0C913.2,813.9,923.1,817.2,927.2,825.3z"/>
+	<path id="A3" fill="#00B388" d="M1030.2,1070.7L1275.6,745c5.4-7.2,15.7-8.6,22.9-3.2l0,0c7.2,5.4,8.6,15.7,3.2,22.9l-245.4,325.7
+		c-5.399,7.199-15.7,8.6-22.899,3.199l0,0C1026.3,1088.2,1024.8,1077.9,1030.2,1070.7z"/>
+</g>
+<g id="Layer_2">
+	<rect x="1096" y="720" fill="none" width="576" height="480"/>
+	<text transform="matrix(1 0 0 1 1098.8828 1155.1953)" fill="#A9A9A9" font-family="'MiloOT-Light'" font-size="640">sh</text>
+	<rect x="417" y="1200" fill="none" width="1271.2" height="96"/>
+	<text transform="matrix(1 0 0 1 466.7979 1266.6387)" fill="#A9A9A9" font-family="'MiloOT-Thin'" font-size="98">Data Analytics in Student Hands</text>
+	<rect x="396.1" y="720" fill="none" width="432" height="448"/>
+	<text transform="matrix(1 0 0 1 417.542 1155.1953)" fill="#A9A9A9" font-family="'MiloOT-Light'" font-size="640">D</text>
+	<rect x="414.8" y="377" fill="none" width="1315.8" height="480"/>
+	
+		<text transform="matrix(1 0 0 1 414.7939 812.2139)" display="none" fill="#888B8D" enable-background="new    " font-family="'MiloOT-Light'" font-size="640">DAsh</text>
+</g>
+</svg>

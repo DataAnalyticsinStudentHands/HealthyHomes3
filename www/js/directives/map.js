@@ -1,4 +1,4 @@
-HHApp.directive('mapManip',function(layoutObjectModel,$ionicGesture,$ionicSideMenuDelegate,findGeom){
+angular.module('Directives').directive('mapManip',function(layoutObjectModel,$ionicGesture,$ionicSideMenuDelegate,findGeom){
     return {
         restrict: 'AE',
         link: function(scope,elem,attr) {

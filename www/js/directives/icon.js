@@ -1,4 +1,4 @@
-HHApp.directive('iconManip',function(layoutObjectModel,$ionicGesture,findGeom){
+angular.module('Directives').directive('iconManip',function(layoutObjectModel,$ionicGesture,findGeom){
     return {
         restrict: 'AE',
         scope: {

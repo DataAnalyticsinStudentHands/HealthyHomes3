@@ -1,4 +1,4 @@
-HHApp.directive('floorManip',function(layoutObjectModel){
+angular.module('Directives').directive('floorManip',function(layoutObjectModel){
     return {
         restrict: 'E',
         template: '',

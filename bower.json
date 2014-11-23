@@ -19,6 +19,7 @@
   "dependencies": {
         "ionic": "driftyco/ionic-bower#1.0.0-beta.13",
         "lodash": "latest",
+        "ngstorage": "latest",
         "ng-notify": "latest",
         "restangular": "latest",
         "angular-ui-utils": "latest",

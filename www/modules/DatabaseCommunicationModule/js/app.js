@@ -42,7 +42,7 @@ databaseModule.config(
 
 databaseModule.run(['Restangular', '$rootScope', 'Auth', '$q', '$state', function(Restangular, $rootScope, Auth, $q, $state) {
 //    Restangular.setBaseUrl("http://localhost:8080/RESTFUL-WS/services/");
-    Restangular.setBaseUrl("http://www.housuggest.org:8888/VolunteerApp/");     //HOUSUGGEST FOR VMA CORE
+    Restangular.setBaseUrl("http://www.housuggest.org:8888/HHTest/");     //HOUSUGGEST FOR VMA CORE
     $rootScope.Restangular = function() {
         return Restangular;
     }
