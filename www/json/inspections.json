@@ -1,5 +1,28 @@
 [
-    { "inspectionID" : 0,
+    { "inspectionIndex" : 0,
+      "inspectorID" : 0,
+      "contact_household" : {
+            "contact_name" : {"last" : "Smith", "first" : "Debby", "middle" : "Sue" }, 
+            "relation" : "mother",
+            "initiated_by" : "mother's request",
+            "other_adults" : [{"name" : "Jane Smith",
+                               "relation" : "Paternal Grandmother"},
+                              {"name" : "Doris Jones",
+                               "relation" : "Father" }]
+            },
+      "address" : "123 Main St.",
+      "city" : "Houston",
+      "state" : "Texas",
+      "zip" : "77004",
+      "clinical_data" : {"patient_name" : 
+                            {"last" : "Smith", "first" : "Suzie", "middle" : "Q." }, 
+                         "access" : "to be determined",
+                         "clinic_contact" : "Dr. Whitecoat"},
+      "questionSet" : [ [0,1,2],[0,0,0] ],
+      "answers" : [ [0,1,"text of answer"],
+                    [1,0,"text of answer"],
+                    [2,1,"text of answer"]
+                  ],
       "floors" : { "name" : "first",
                    "color" : "#ed0e0e",
                    "rooms" : 
@@ -59,6 +82,91 @@
             }
             }
         ]
-                    }
+                }
+    },
+    { "inspectionIndex" : 1,
+      "inspectorID" : 0,
+      "contact_household" : {
+            "contact_name" : {"last" : "Jones", "first" : "Betty", "middle" : "Sue" }, 
+            "relation" : "mother",
+            "initiated_by" : "mother's request",
+            "other_adults" : [{"name" : "Jane Smith",
+                               "relation" : "Paternal Grandmother"},
+                              {"name" : "Doris Jones",
+                               "relation" : "Father" }]
+            },
+      "address" : "423 Oak St.",
+      "city" : "Houston",
+      "state" : "Texas",
+      "zip" : "77224",
+      "clinical_data" : {"patient_name" : 
+                            {"last" : "Smith", "first" : "Suzie", "middle" : "Q." }, 
+                         "access" : "to be determined",
+                         "clinic_contact" : "Dr. Whitecoat"},
+      "questionSet" : [ [0,1,2],[0,0,0] ],
+      "answers" : [ [0,1,"text of answer"],
+                    [1,0,"text of answer"],
+                    [2,1,"text of answer"]
+                  ],
+      "floors" : { "name" : "first",
+                   "color" : "#ed0e0e",
+                   "rooms" : 
+        [
+            {   "type" : "Polygon",
+            "properties" : {
+                "name" : "TestExample",
+                "color" : "#ed0e0e"
+            },
+            "active" : true,
+            "contains" : [ 0, 4, 6 ],
+            "shares" : [ 2, 5, 7 ],  
+            "text" : [ [2,[0]], [4,[3,4]], [6,[null]] ],
+            "arcs" : [ [2,[0]], [4,[3,4]], [6,[null]] ],
+            "projections" : {
+                "transform" : [ [1,[2,3,8]], [4,[3,6,5]] ],
+                "scale" : [ 3, 0 ],
+                "translate" : [ 3 ], 
+                "rotate" : [ 0 ],
+                "eigens" : [[0,0.2223432],[2,0.00122323]] 
+            }
+            },
+            {   "type" : "Note",
+            "properties" : {
+                "name" : "Living Room",
+                "color" : "#ed0e0e"
+            },
+            "active" : true, 
+            "contains" : [ 0, 4, 6 ], 
+            "shares" : [ 2, 5, 7 ],  
+            "text" : [ [2,[0]], [4,[3,4]], [6,[null]] ],
+            "arcs" : [ [2,[0]], [4,[3,4]], [6,[null]] ], 
+            "projections" : {
+                "transform" : [ 1, 4, 5 ],
+                "scale" : [ 3, 0 ],
+                "translate" : [ 3 ], 
+                "rotate" : [ 0 ],
+                "eigens" : [[0,0.2223432],[2,0.00122323]] 
+            }
+            },
+            {   "type" : "Image",
+            "properties" : {
+                "name" : "Living Room",
+                "color" : "#ed0e0e"
+            },
+            "active" : true, 
+            "contains" : [ 0, 4, 6 ], 
+            "shares" : [ 2, 5, 7 ],  
+            "text" : [ [2,[0]], [4,[3,4]], [6,[null]] ],
+            "arcs" : [ [2,[0]], [4,[3,4]], [6,[null]] ], 
+            "projections" : {
+                "transform" : [ 1, 4, 5 ],
+                "scale" : [ 3, 0 ],
+                "translate" : [ 3 ], 
+                "rotate" : [ 0 ],
+                "eigens" : [[0,0.2223432],[2,0.00122323]] 
+            }
+            }
+        ]
+                }
     }
 ]

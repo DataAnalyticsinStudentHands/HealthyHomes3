@@ -1,0 +1,53 @@
+<ion-view title="Inspections for {{todayDate}}">
+  <ion-side-menus> 
+      <ion-side-menu-content drag-content="true">
+    
+        <h1 class="item item-icon-left item-text-wrap">TESTING</h1>Why is top covered?
+          
+        <div class="bar bar-header item-input-inset">
+            <ion-search placeholder="Search applications" filter="search"></ion-search>
+        </div>
+        <div ng-repeat="inspect in inspections">
+            <div class="item item-icon-left energized" >
+<!--                <a href="#/layout/{{inspect.inspectionIndex}}">-->
+                <a ui-sref="secure.inspections.layout({inspectionIndex : inspect.inspectionIndex})">
+                    <p>{{inspect.contact_household.contact_name.first}} {{inspect.contact_household.contact_name.last}}</p>
+                    <p>{{inspect.address}}, {{inspect.city}}, {{inspect.zip}}</p>
+                </a>
+            </div>
+          
+        </div>
+        
+        
+        
+    </ion-side-menu-content>
+    <ion-side-menu id="leftSideMenu" side="left" expose-aside-when="large">
+       <img src="img/Galvestonmap.svg"/>
+    </ion-side-menu>
+   </ion-side-menus>
+</ion-view>
+<!--
+href="#/layout.floor/:{{inspect.inspectionID}}"
+
+<ion-tabs>
+    <ion-tab title="schedule">
+
+        <ion-nav-view id="inspect-schedule" name="schedule"></ion-nav-view>
+        <ion-nav-view id="inspect-general" name="general"></ion-nav-view>
+        
+    </ion-tab>
+        
+    <ion-tab title="overview">
+
+        <ion-header-bar class="bar bar-header bar-dark">
+            <h1 class="title">Overview</h1>
+        </ion-header-bar>
+        <ion-nav-view id="inspect-overview" name="overview"></ion-nav-view>
+ 
+    </ion-tab>
+    <ion-tab title="summary">
+        <ion-nav-view id="inspect-summary" name="summary"></ion-nav-view>
+		 
+    </ion-side-menu>
+    
+</ion-tabs>-->

@@ -1,8 +1,16 @@
-angular.module('Directives').directive('gridManip',function(layoutObjectModel,$window,findGeom){
+angular.module('Directives').directive('gridManip',function(layoutObjectModel,$ionicSideMenuDelegate,$window,findGeom){
     return {
         restrict: 'AE',
         //templateUrl: 'partials/gridlines.html',
         link: function(scope,elem,attr) {
+//            ionic.Platform.ready(function () {
+//                toggleLeftSideMenu();
+//            });
+//            $scope.toggleLeftSideMenu = var toggleLeftSideMenu = function() {
+//                $ionicSideMenuDelegate.toggleLeft();
+//            };
+        //var currentInspection = 
+           // console.log($ionicSideMenuDelegate.isOpenLeft());
             var offsetLeft = findGeom.offsetLeft;
             var offsetTop = findGeom.offsetTop;
             scope.layoutObjectModel = layoutObjectModel;
@@ -71,6 +79,7 @@ angular.module('Directives').directive('gridManip',function(layoutObjectModel,$w
                 //findGridOffsets();
             };
         var gridElem = {};
+                
 //        var offLeft = 0;
 //        var offTop = 0;
         

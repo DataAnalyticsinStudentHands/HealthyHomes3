@@ -897,7 +897,7 @@ body{
 }
 #floor-controls{
     position:absolute;
-    bottom:5px;
+    bottom:75px;
     width:220px;
     border-style: solid;
     border-color: #16A770;

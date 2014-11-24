@@ -7,19 +7,68 @@
  * # DataService
  * Service for the Healthy Homes App
  */
-angular.module('Services').factory('DataService', function ($http, $ionicLoading, Restangular, ngNotify) {
+angular.module('Services').factory('DataService', function ($http, $q, $sessionStorage, $localStorage, $ionicLoading, Restangular, ngNotify) {
     'use strict';
+    //for BCM, would use sessionStorage - version control for questions
 
-    //Load data for form data for terry application
-    var application_form;
+    //Load data 
+    var inspections;
+    var questions;
 
-    $http.get('json/asthma.json').success(function (data) {
-        application_form = data;
+//    $http.get('json/inspections.json').success(function (data) {
+//        inspections = data;
+//    });
+    
+//    var asthma_questions;
+//
+//    $http.get('json/asthma.json').success(function (data) {
+//        asthma_questions = data;
+//    });
+    
+    var lead_questions;
+
+    $http.get('json/lead.json').success(function (data) {
+        lead_questions = data;
+    });
+    
+    var pesticide_questions;
+
+    $http.get('json/pesticide.json').success(function (data) {
+        pesticide_questions = data;
     });
 
     return {
-        getApplicationForm: function () {
-            return application_form;
+        getInspections: function () {
+            $localStorage.$reset(); //$sessionStorage.$reset();
+            //need to return as a promise for resolve in app.js
+            if ($localStorage['inspections'] != null){
+                inspections = $localStorage['inspections']; 
+                return inspections;
+            }
+            else {
+                var defer = $q.defer();
+                $http.get('json/inspections.json').success(function (data) {
+                    inspections = data;
+                    defer.resolve(inspections);
+                    $localStorage['inspections'] = inspections;
+                    });
+                return defer.promise;
+            }
+        },
+        getQuestions: function () { //need logic for versioning etc. should return a list of questionsets, at top level, then the questions - think of arc index
+            if ($localStorage['questions'] != null){
+                questions = $localStorage['questions']; 
+                return questions;
+            }
+            else {
+                var defer = $q.defer();
+                $http.get('json/asthma.json').success(function (data) {
+                    questions = data;
+                    defer.resolve(inspections);
+                    $localStorage['questions'] = questions;
+                    });
+                return defer.promise;
+            }
         },
         addItem: function (type, item) {
 

@@ -1,6 +1,10 @@
-angular.module('Controllers').controller('mainController', function($scope, $state) {
+angular.module('Controllers').controller('mainController', function($scope, inspections, $sessionStorage, $localStorage, $state) {
+    
     $scope.main = {};
-    console.log('loaded main controller');
+    var d = new Date();
+    $scope.todayDate = d.toLocaleDateString();
+    $scope.inspections = inspections;
+    console.log($localStorage['inspections']);
     $scope.alert = function (text) {
         alert(text+'in');
     };

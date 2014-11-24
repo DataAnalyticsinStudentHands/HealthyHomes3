@@ -5,6 +5,7 @@ angular.module('HHApp', [
     'Directives',
     'restangular',
     'ngNotify',
+    'ngStorage',
     'databaseControllerModule',
     'databaseServicesModule'
 ]).run(function ($ionicPlatform, Restangular, $rootScope, Auth, $q, $state) {
@@ -54,6 +55,26 @@ angular.module('HHApp', [
             reload: true
         });
     };
+    
+    // Some watchdogs for fixing ui-route issues Credits: Adam's answer in http://stackoverflow.com/a/20786262/69362
+    $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams) {
+        console.log('$stateChangeError - fired when an error occurs during transition.');
+        console.log(arguments);
+    });
+
+    $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+        console.log('$stateChangeSuccess to ' + toState.name + '- fired once the state transition is complete.');
+        console.log($state);
+    });
+
+    $rootScope.$on('$viewContentLoaded', function (event) {
+        console.log('$viewContentLoaded - fired after dom rendered', event);
+    });
+
+    $rootScope.$on('$stateNotFound', function (event, unfoundState, fromState, fromParams) {
+        console.log('$stateNotFound ' + unfoundState.to + '  - fired when a state cannot be found by its name.');
+        console.log(unfoundState, fromState, fromParams);
+    });
 })
 .config(function ($stateProvider, $urlRouterProvider) {
         'use strict';
@@ -65,31 +86,30 @@ angular.module('HHApp', [
           url: "/login",
           templateUrl: 'templates/login.html',
           controller: 'loginCtrl',
-          onEnter: function(){
-            console.log("enter inspection");
-          },
           authenticate: true
       })
       .state('secure', {
-                url: "/tab",
-                abstract: true,
-                authenticate: true,
-                templateUrl: "templates/tabs.html",
-                resolve: {
-                    items: function (DataService, $ionicLoading) {
-                        return DataService.getAllItems('applications');
-                    }
-                } 
+            abstract: true,
+            url: "/tab",
+            authenticate: true,
+            templateUrl: "templates/tabs.html",
+            controller: "mainController",
+            resolve: {
+                inspections: function (DataService, $ionicLoading) {
+                    return DataService.getInspections();
+                }
+            } 
       })
       .state('secure.inspections', {
           url: "/inspections",
-          
-          views: {
+          views: { //as separate views so we can access them directly
+            "inspections": { templateUrl: "templates/inspections.html"
+                         },
             "schedule": { templateUrl: "templates/inspectionSchedule.html",
                           controller: "scheduleController"
                          },
             "general": { templateUrl: "templates/inspectionGeneral.html",
-                        controller: "inspectionController"
+                        controller: "generalController"
                        },
             "summary": { templateUrl: "templates/summary.html",
                         controller: "summaryController"
@@ -103,14 +123,19 @@ angular.module('HHApp', [
 //					}
           }
       })
-      .state('map', {
-          abstract: true,
-          templateUrl: 'templates/map.html',
-          controller: 'mapCtrl'
-      })
-      .state('map.city', {
-          url:"/city",
+//      .state('secure.map', {
+//          abstract: true,
+//          templateUrl: 'templates/map.html',
+//          controller: 'mapCtrl'
+//      })
+    //should all work like layout
+      .state('secure.inspections.map', {
+          url:"/map",
           views: {
+                "map@secure": {
+                    templateUrl: 'templates/map.html',
+                    controller: 'mapCtrl'
+                },
                 "surroundCity": {
                     templateUrl: 'templates/city.html'
                 },
@@ -122,43 +147,30 @@ angular.module('HHApp', [
                 }
             }
       })
-      .state('layout', {	
-          abstract: true,
-          templateUrl: 'templates/layout.html',
-          controller: 'layoutCtrl'
-//          views: {
-//                "pagelayout": { 
-//					templateUrl: 'templates/layoutPage.html',
-//					controller: 'layoutCtrl' 				
-//					}
-//            } 
-      })
-      .state('layout.floor', {
-          url: "/layout",
+      .state('secure.inspections.layout', {	
+          url: "/layout/:inspectionIndex",
           views: {
-                "floor": {
-                    templateUrl: 'templates/floor.html'
-                },
-                "sideLeft": {
-                    templateUrl: 'templates/left.html'
+                "inspections@secure": { 
+					templateUrl: 'templates/layout.html',
+					controller: 'layoutCtrl' 				
+					}
                 }
-            }//,
-//          data:{
-//             resolve: {
-//                floorData: function($stateParams, layoutObjectModel) {
-//                    var thisFloor = $stateParams.floorName;
-//                    var currentFloor = layoutObjectModel.inspection[thisFloor]; //need to rethink
-//                    return currentFloor;
+      })
+      .state('secure.inspections.questions', {	
+          url: "/questions/:inspectionIndex",
+          views: {
+                "inspections@secure": { 
+					templateUrl: 'templates/questions.html'
+					}
+                }
+      })
+//      .state('secure.inspections.floor', {
+//        url: "/floor/:inspectionIndex",
+//        views: {
+//                    templateUrl: 'templates/floor.html'
 //                }
-//             }
-      })
-      .state('layout.floor.room', {
-             resolve: {
-                floorData: function(layoutObjectModel) {
-                    return layoutObjectModel;
-                }
-             }
-      })
+//      });
+
     });
 //    http://stackoverflow.com/questions/23231608/angular-ui-router-modal-removes-parent-state
 //      .state('camera', { //I'm not sure how this has been envisioned

@@ -3,7 +3,13 @@
 //var layoutController = angular.module('HHControllers', []);
 
 angular.module('Controllers').controller('layoutCtrl', 
-	function ($scope, $window, $state,Restangular,layoutObjectModel,findGeom) { 
+	function ($scope, $window, $state, $stateParams, Restangular, layoutObjectModel,inspections, findGeom) { 
+        console.log('in layoutCtrl');
+        var inspectionIndex = 0;
+        $scope.inspectionIndex = inspectionIndex;
+        var currentInspection = inspections[inspectionIndex];
+        
+        
 //        document.addEventListener("deviceready", onDeviceReady, false);
 //        function onDeviceReady() {
         $scope.icons=[{
@@ -82,23 +88,22 @@ angular.module('Controllers').controller('layoutCtrl',
         //$scope.floorPoints = [[100,100],[150,100],[150,150],[100,150]];
         //$scope.roomLineEdit = false; //svgEdit is now set through isolate scopes on drag-save, but may change
          //[]; //have to decide which one is active on first load; how do we get from $scope?
-        console.log(layoutObjectModel)
-        if (layoutObjectModel['inspections'] == null) {
-            console.log('null')
-            layoutObjectModel.getInspections().then(function(inspects){
-                layoutObjectModel['inspections'] = inspects;
-                $scope.layoutObjectModel = layoutObjectModel; 
-                console.log(layoutObjectModel.inspections);
-                var inspectInd = 0; //will get from service or $state.params
-        
-                var currentInspection = layoutObjectModel.inspections[inspectInd];
-                console.log(layoutObjectModel)
-                console.log(currentInspection)
-            });
-        }else{
-            layoutObjectModel['inspections'] = localStorage.getObject('inspections');
-        };
-        
+//        console.log(layoutObjectModel)
+//        if (layoutObjectModel['inspections'] == null) {
+//            console.log('null')
+//            layoutObjectModel.getInspections().then(function(inspects){
+//                layoutObjectModel['inspections'] = inspects;
+//                $scope.layoutObjectModel = layoutObjectModel; 
+//                console.log(layoutObjectModel.inspections);
+//                var inspectInd = 0; //will get from service or $state.params
+//        
+//                var currentInspection = layoutObjectModel.inspections[inspectionIndex];
+//                console.log(layoutObjectModel)
+//                console.log(currentInspection)
+//            });
+//        }else{
+//            layoutObjectModel['inspections'] = localStorage.getObject('inspections');
+//        };
 //        $state.param.inspectInd = 0;
         
         //currentInspection.floors = floors;

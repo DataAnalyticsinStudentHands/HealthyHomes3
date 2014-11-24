@@ -8,7 +8,6 @@ databaseController.controller('loginCtrl', ['$scope', 'Auth', '$state',
          //Point 'em to logged in page of app
          $state.go('secure.inspections');
      }
-     alert($scope.isAuthenticated())
      //we need to put the salt on server + client side and it needs to be static
      $scope.salt = "nfp89gpe"; //PENDING
      
