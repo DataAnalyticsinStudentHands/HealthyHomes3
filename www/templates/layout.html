@@ -5,11 +5,11 @@
     </div>
 -->
 <ion-side-menus>
-    <ion-side-menu id="grid" side="left" drag-content="true">
+    <ion-side-menu width="{{gridWd}}" id="grid" side="left" drag-content="false">
         
-
+<div id="floor-wrap">
     
-    <div id="grid-container" ng-click="alert('fuck you')">
+    <div id="grid-container">
 <!--        <ion-nav-view id="floor-wrap" name="floor"></ion-nav-view>-->
             <svg id="floor-container" style='stroke-width: 0px; '
              viewBox = "0 0 2000 2000"
@@ -36,32 +36,41 @@
                 
             </g> 
             
-            <g class="floorLines" stroke="#bb3bea" fill="none" fill-opacity="0.2" stroke-width="3">
+            <g ng-repeat="floor in currentInspection.floors">
                 
                 <polygon class="floorShowline" 
+                         floor-manip
+                         floor='floor'
                          ng-click="alert('whole rect')"
                          hm-dragend="dragFloors($event)"
                          hm-hold="svgEdit=!svgEdit" 
-                         ng-attr-points="{{pointPath(floorPoints)}}"/>
-
-            </g>
-            <g class="roomLines" ng-repeat="(rm, name) in currentFloor.rooms"
-               room-manip roompts="currentFloor.rooms[$index].roomPoints" 
-                   measurepts="currentFloor.rooms[$index].measurePoints">
+                         ng-attr-points="{{floor.points}}"/>
+<!--
+                <polygon points="250,190 110,111" style="fill:lime;stroke:purple;stroke-width:19" />
+                <path d="M100,200 C100,100 250,100 250,200"
+        fill="red" stroke="blue" stroke-width="3" />
+                <path d="m100,200 L100.001,200.001"
+        fill="red" stroke="blue" stroke-width="3" />
+-->
+            
+            <g class="roomLines" 
+               ng-repeat="room in currentFloor.rooms"
+               room = 'room'
+               room-manip >
                     
-                <text ng-attr-x="{{currentFloor.rooms[$index].roomPoints[0][0]+5}}" 
-                      ng-attr-y="{{currentFloor.rooms[$index].roomPoints[0][1]+12}}" 
-                      font-size="12"
-                      class="roomEditLine"
-                      >{{name[0]}}</text>
+                <text x="{{room.roomNameX}}" 
+                      y="{{room.roomNameY}}" 
+                      font-size="112"
+                      >{{room.properties.name}}</text>
+                
                 <polygon stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2" 
                          hm-drag = "dragShapes($event)"
                          hm-double-tap = "centerView($event)"
                          class="roomShowLine" 
-                         ng-attr-points="{{pointPath(currentFloor.rooms[$index].roomPoints)}}" 
+                         ng-attr-points="{{pointPath(room.roomPoints)}}" 
                 />
     
-                <g ng-repeat="(i, vals) in currentFloor.rooms[$index].roomPoints">
+                <g ng-repeat="(i, vals) in room.roomPoints">
                     <circle 
                         hm-drag = "dragPoints($event,i)"
                         class="roomEditLine"
@@ -71,7 +80,7 @@
                     />
                 </g>
                 <g id="measures2show"
-                   ng-repeat="(ind,vals) in currentFloor.rooms[$index].measurePoints track by ind">
+                   ng-repeat="(ind,vals) in room.measurePoints track by ind">
 <!--
                 <g id="measures2show" ng-show="!roomLineEdit" ng-repeat="(ind,vals) in showMeasures(currentFloor.rooms[$index].roomPoints) track by ind"
                    >
@@ -101,7 +110,7 @@
                            xlink:href="{{'img/'+values[2]+'.png'}}"></image>
                     </g>
                </g>
-
+                </g>
             </g>
 
         </svg>
@@ -159,7 +168,7 @@
         </select>
          
         </div>
-        
+        </div>
     </ion-side-menu>
         
 <!--    <ion-side-menu id="leftSideMenu" width="80" side="left" expose-aside-when="large">-->
@@ -189,7 +198,7 @@
 
 <!--        </ion-side-menu>-->
 
-    <ion-side-menu-content>
+    <ion-side-menu-content ng-click="toggleLeftSideMenu()">
         <ion-view name="questions"></ion-view>
     </ion-side-menu-content>
 		 

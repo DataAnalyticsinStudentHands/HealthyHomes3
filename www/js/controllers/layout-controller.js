@@ -3,12 +3,15 @@
 //var layoutController = angular.module('HHControllers', []);
 
 angular.module('Controllers').controller('layoutCtrl', 
-	function ($scope, $window, $state, $stateParams, Restangular, layoutObjectModel,inspections, findGeom) { 
-        console.log('in layoutCtrl');
+	function ($scope, $window, $state, $stateParams, Restangular, layoutObjectModel,inspections, $ionicSideMenuDelegate, $ionicNavBarDelegate, findGeom) {
         var inspectionIndex = 0;
         $scope.inspectionIndex = inspectionIndex;
         var currentInspection = inspections[inspectionIndex];
-        
+        var toggleLeft = $scope.toggleLeftSideMenu = function() {
+            $ionicSideMenuDelegate.toggleLeft();
+        };
+        $scope.gridWd = $window.innerWidth*.95;
+        $window.setTimeout(toggleLeft,500);
         
 //        document.addEventListener("deviceready", onDeviceReady, false);
 //        function onDeviceReady() {
@@ -76,56 +79,44 @@ angular.module('Controllers').controller('layoutCtrl',
 //        var viewContainer = document.getElementById('grid-container');
 //        layoutObjectModel.testFunc()
         //var types = $scope.types = Restangular.all().getList().$object;
-        $scope.newFloorRoom = function(){
-            $scope.newFloorOrRoom = !$scope.newFloorOrRoom
-        };
+//        $scope.newFloorRoom = function(){
+//            $scope.newFloorOrRoom = !$scope.newFloorOrRoom
+//        };
 
         $scope.floorLists = ['neighborhood', 'exterior', 'first', 'second', 'third', 'basement', 'attic', 'garage', 'section'];
         $scope.roomLists = ['exterior','living room','bath','closet','kitchen','dining room'];
-        var floors = []; 
-        var floor = $scope.floor;
-        var floorPoints = $scope.floorPoints = []; //if empty, nothing is drawn on floor.html 
-        //$scope.floorPoints = [[100,100],[150,100],[150,150],[100,150]];
-        //$scope.roomLineEdit = false; //svgEdit is now set through isolate scopes on drag-save, but may change
-         //[]; //have to decide which one is active on first load; how do we get from $scope?
-//        console.log(layoutObjectModel)
-//        if (layoutObjectModel['inspections'] == null) {
-//            console.log('null')
-//            layoutObjectModel.getInspections().then(function(inspects){
-//                layoutObjectModel['inspections'] = inspects;
-//                $scope.layoutObjectModel = layoutObjectModel; 
-//                console.log(layoutObjectModel.inspections);
-//                var inspectInd = 0; //will get from service or $state.params
-//        
-//                var currentInspection = layoutObjectModel.inspections[inspectionIndex];
-//                console.log(layoutObjectModel)
-//                console.log(currentInspection)
-//            });
-//        }else{
-//            layoutObjectModel['inspections'] = localStorage.getObject('inspections');
-//        };
-//        $state.param.inspectInd = 0;
         
-        //currentInspection.floors = floors;
-
-        //console.log(layoutObjectModel)
+        var floors = []; 
         var currentFloor = $scope.currentFloor = [];
-        var newFloorOrRoom = $scope.newFloorOrRoom = true;
-        if(currentInspection.floors.length > 0){
-            //take values from layoutObjectModel
-            newFloorOrRoom = $scope.newFloorOrRoom = false;
+        var floorInd = 0;
+        if ($state.params.floorInd) {floorInd = $state.params.floorInd};
+        if (currentInspection.floors){
             floors = currentInspection.floors;
-            var floorInd = $state.params.floorInd = floors.indexOf(floor);
-            if (floorInd == -1) { floorInd = 0 }; //just in case they have an inspection without a first floor
-            currentFloor = $scope.currentFloor = currentInspection.floors[floorInd];
-            floorPoints = $scope.floorPoints = currentInspection.floors[floorInd].floorPoints;
-        };
+//            if (floors.length > 1){
+//                floorInd = floors.indexOf(floor);
+//            }
+//            if (floorInd == -1) { floorInd = 0 }; //just in case they have an inspection without a first floor
+            var newTitle = currentInspection.address + ': <b>' + floors[floorInd].name.toUpperCase() + '</b> floor';
+            $ionicNavBarDelegate.changeTitle(newTitle, 'left');
+             } else {
+                 currentInspection['floors'] = [ { "name" : "first", "color" : "#ed0e0e","rooms" : [] } ];
+                 //need to think through adding if no inspection fed to it
+             };
+        $state.params.floorInd = floorInd
+        currentFloor = $scope.currentFloor = currentInspection.floors[floorInd];
+        
         var rooms = [];
-        var room = $scope.room;
-        var roomPoints = $scope.roomPoints = [[10,10],[150,100],[150,150],[100,150]];
-            
+        if (currentFloor.rooms){
+            console.log(currentFloor.rooms)};
+        //var room = $scope.room;
+//        var roomPoints = $scope.roomPoints = [[10,10],[350,100],[150,850],[100,150]];
+//        currentFloor.rooms[0]['roomPoints'] = roomPoints;
+//        currentFloor.rooms[1]['roomPoints'] = roomPoints;
+//        currentFloor.rooms[2]['roomPoints'] = roomPoints;
+        $scope.currentFloor = currentFloor;
+        $scope.currentInspection = currentInspection;
         $scope.pointPath = findGeom.pointPath;
-        //http://geomalgorithms.com/a03-_inclusion.html [0 is online;>0 is Left of line;<0 is Right of Line
+        /*http://geomalgorithms.com/a03-_inclusion.html [0 is online;>0 is Left of line;<0 is Right of Line
         var onLine = function(x1,y1,x2,y2,xTest,yTest){
             return ( ((x2-x1)*(yTest-y1)) - ((xTest-x1)* (y2-y1)) )
         }
@@ -154,6 +145,7 @@ angular.module('Controllers').controller('layoutCtrl',
             var wn = windingTest($event.gesture.center.pageX,$event.gesture.center.pageY,arr)
             return wn
         }
+        */
         $scope.addPoint = function($event,arr){
             var fingerX = $event.gesture.center.pageX;
             var fingerY = $event.gesture.center.pageY;

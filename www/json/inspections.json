@@ -1,5 +1,6 @@
 [
     { "inspectionIndex" : 0,
+      "arcs" : [ [ [0.452,0.22,0.12],[0.332,0.04,0.77],[0.221,0.7,0.9] ] ],
       "inspectorID" : 0,
       "contact_household" : {
             "contact_name" : {"last" : "Smith", "first" : "Debby", "middle" : "Sue" }, 
@@ -23,7 +24,8 @@
                     [1,0,"text of answer"],
                     [2,1,"text of answer"]
                   ],
-      "floors" : { "name" : "first",
+      "floors" : [
+                { "name" : "first",
                    "color" : "#ed0e0e",
                    "rooms" : 
         [
@@ -82,9 +84,11 @@
             }
             }
         ]
-                }
+            }
+        ]
     },
     { "inspectionIndex" : 1,
+      "arcs" : [ [ [0.452,0.22,0.12],[0.332,0.04,0.77],[0.221,0.7,0.9] ] ],
       "inspectorID" : 0,
       "contact_household" : {
             "contact_name" : {"last" : "Jones", "first" : "Betty", "middle" : "Sue" }, 
@@ -108,9 +112,10 @@
                     [1,0,"text of answer"],
                     [2,1,"text of answer"]
                   ],
-      "floors" : { "name" : "first",
-                   "color" : "#ed0e0e",
-                   "rooms" : 
+      "floors" : [
+                    {   "name" : "first",
+                        "color" : "#ed0e0e",
+                        "rooms" : 
         [
             {   "type" : "Polygon",
             "properties" : {
@@ -167,6 +172,7 @@
             }
             }
         ]
-                }
+                    }
+      ]
     }
 ]

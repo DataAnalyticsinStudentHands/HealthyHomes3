@@ -108,6 +108,9 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 .service('findGeom', function() {
     this.testFunc = function(){alert('in service')};
     this.gridMag = 1;
+    this.setGridMag = function(newMag){
+        this.gridMag = newMag;
+    };
     this.closestLine = function(arrIn,fingerX,fingerY){
         var arr = _.clone(arrIn);
         var ind4new = 0;
@@ -138,7 +141,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
     };
     this.pointPath = function(arr){
         var rtnStr = '';
-        for (var i = 0; i < arr.length; i++){
+        for (var i in arr){
             rtnStr+=(' ' + arr[i][0]+','+arr[i][1]);
         }
         return rtnStr;

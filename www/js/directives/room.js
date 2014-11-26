@@ -1,15 +1,30 @@
-angular.module('Directives').directive('roomManip',function(layoutObjectModel,$ionicGesture,$ionicSideMenuDelegate,findGeom){
+angular.module('Directives').directive('roomManip',function($ionicGesture,$ionicSideMenuDelegate,findGeom){
     return {
         restrict: 'AE',
         scope: {
-            roompts: '=roompts',
-            measurepts: '=measurepts'
+            room: '='
         },
+//        templateNamespace: 'svg',
+//        template: '<circle fill="red" stroke="blue" stroke-width="3" cx="250" cy="200" r="100" />',
+        controller: ['$scope', function($scope){
+            
+        }],
         link: function(scope,elem,attr) {
-    var points = scope.roompts;
-    var measurepts = scope.measurepts;
+            console.log(scope.room.properties.name)
+            
+            scope.room.roomNameX = 250
+            scope.room.roomNameY = 250
+            if (scope.room.properties.name == "Living Room"){
+                scope.room.roomNameX = 350;
+                scope.room.roomNameY = 250;}
+            scope.room.roomPoints = [[120.0,120.0],[220.0,120.0],[220.0,220.0],[120.0,220.0]];  //get from service as map from arcs
+            
+    var points = scope.room.roomPoints;
+    var measurepts = scope.room.measurepts;
     var measurepts = findGeom.showMeasures(points)
-    var alertTap = function(){
+    var alertTap = function(e){
+        e.preventDefault();
+        e.stopPropagation();
         alert('inside room.js');
     };
     for (var n = 0;n<points.length;n++){
@@ -20,16 +35,18 @@ angular.module('Directives').directive('roomManip',function(layoutObjectModel,$i
     var gridElem = angular.element(document.getElementById('floor-container'));
     var offLeft = findGeom.offSetLeft(gridElem);
     var offTop = findGeom.offSetTop(gridElem);
-    var gridMag = findGeom.gridMag; //findGeom.gridMag;
-            
+    var gridMag = 50;/ findGeom.gridMag; //findGeom.gridMag;
+//            
     var startDrag = function(e){
         e.preventDefault();
+        e.stopPropagation();
         $ionicSideMenuDelegate.canDragContent(false);
         gridMag = findGeom.gridMag;
-        console.log(gridMag)
+        //console.log(gridMag)
     };
-    
+//    
     var dragLines = function(e){ //need to work in zoom stuff
+        e.stopPropagation();
         var xtraOffX = 0;
         var xtraOffY = 0;
         if(points.length > 3){ //change to center of polygon
@@ -45,7 +62,7 @@ angular.module('Directives').directive('roomManip',function(layoutObjectModel,$i
         scope.measurepts = findGeom.showMeasures(points);
         scope.$apply();
     };
-        
+//        
     var endDrag = function(e){
         $ionicSideMenuDelegate.canDragContent(true);
         for (var n = 0;n<points.length;n++){

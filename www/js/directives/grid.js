@@ -1,39 +1,23 @@
-angular.module('Directives').directive('gridManip',function(layoutObjectModel,$ionicSideMenuDelegate,$window,findGeom){
+angular.module('Directives').directive('gridManip',function($ionicGesture,$window,$timeout,findGeom){
     return {
         restrict: 'AE',
         //templateUrl: 'partials/gridlines.html',
         link: function(scope,elem,attr) {
-//            ionic.Platform.ready(function () {
-//                toggleLeftSideMenu();
-//            });
-//            $scope.toggleLeftSideMenu = var toggleLeftSideMenu = function() {
-//                $ionicSideMenuDelegate.toggleLeft();
-//            };
-        //var currentInspection = 
-           // console.log($ionicSideMenuDelegate.isOpenLeft());
             var offsetLeft = findGeom.offsetLeft;
             var offsetTop = findGeom.offsetTop;
-            scope.layoutObjectModel = layoutObjectModel;
             //alert($window.outerHeight);
             scope.gridShow1 = true; //in case we want to turn them off for some views
             scope.gridShow5 = true;
-        //$scope.gridSizeHt = 2000; //just ng-init these? or get from some settings?
-        //var gridSizeWd = $window.outerWidth; //2000;
-        //have this in an if that has to do with the state for the smaller ui-view
             var windowHt = scope.windowHt = 1.2*$window.outerHeight; //plus the offset!!
             var windowWd = scope.windowWd = 1.2*$window.outerWidth;
-//        console.log(windowWd + ' windowWd')
-        //use to only draw grid lines that are needed - combination of this and magnify - and such that it picks up on smaller version???
-//        var gridElem = document.getElementById('floor-container');
-//        var gridWd = gridElem.width;
             scope.gridLineNumber = function(gridSize,gridInterval){
                 //console.log(gridSize);
                 return _.range(0,gridSize,gridInterval) //everyfive feet
-            }
+            };
         //console.log($scope.gridLineNumber(11,11))
             scope.gridlinePtsOLD = function(gridSizeHt,gridSizeWd){
                 return '5,5 ' + gridSizeWd,gridSizeWd // 2000,2000'
-            }
+            };
             var gridMag = findGeom.gridMag;
             var canvasSize = scope.canvasSize = 2000; //200ft
             //scope.viewB = '0 0 '+canvasSize+' '+canvasSize
@@ -49,49 +33,70 @@ angular.module('Directives').directive('gridManip',function(layoutObjectModel,$i
                 gridMag = newNum/canvasSize;
                 findGeom.gridMag = gridMag;
                 gridElem.css({'width':newNum+'px','height':newNum+'px'});
-//                console.log(gridMag);
-//                console.log(elemWidth);
-//                console.log(newNum);
-                //findGridOffsets();
-//            windowHt = $scope.windowHt = $window.outerHeight*gridMag;
-//            windowWd = $scope.windowWd = $window.outerWidth*gridMag;
             };
-            var dragtheGrid = scope.dragtheGrid = false;
-            scope.gridDrag = function(){
-                dragtheGrid =! dragtheGrid;
-                scope.dragtheGrid = dragtheGrid;
-            };
-//            $ionicSideMenuDelegate.canDragContent(true);
-            scope.dragGrid = function($event){
-            if (dragtheGrid){
-                $event.preventDefault();
-                 
-                var deltaX = $event.gesture.deltaX;
-                var deltaY = $event.gesture.deltaY;
-                var offTop = $event.target.offsetTop + deltaY;
-                var offLeft = $event.target.offsetLeft + deltaX;
-                if (offTop > 0) { offTop = 0}; //need to also keep it from going off to the right
-                if (offLeft > 0) { offLeft = 0};
-//                windowHt = $scope.windowHt = $window.outerHeight*gridMag+offTop;
-//                windowWd = $scope.windowWd = $window.outerWidth*gridMag+offLeft;
-                var gridElem = angular.element(document.getElementById('floor-container'));
-                gridElem.css({'top':offTop,'left':offLeft});
-                //findGridOffsets();
-            };
-        var gridElem = {};
+        var gridElem = angular.element(document.getElementById('floor-container'));
+        var gridoffTop = gridElem[0].offsetTop;
+        var gridoffLeft = gridElem[0].offsetLeft;
+        var dragGrid = function($event){
+            $event.preventDefault();
+            var deltaX = $event.gesture.deltaX;
+            var deltaY = $event.gesture.deltaY;
+            var offTop = gridoffTop + deltaY;
+            var offLeft = gridoffLeft + deltaX;
+            if (offTop > 0) { offTop = 0}; 
+            if (offLeft > 0) { offLeft = 0};
+            gridElem.css({'top':offTop,'left':offLeft});
+        };
+        var alertTap = function(e){
+            e.preventDefault();
+            //console.log(attr);
+            alert('inside grid.js');
+        };
+        var dubTap = function(e){
+            e.preventDefault();
+            console.log(e);
+            
+        };
+        var startDrag = function(e){
+            e.preventDefault();
+        };
+        var endDrag = function(e){
+            e.preventDefault();
+            gridoffTop = gridElem[0].offsetTop;
+            gridoffLeft = gridElem[0].offsetLeft;
+        };
+        var holdTap = function(e){
+            e.preventDefault();
+            alert('inside grid.js');
+        };
+        var tripTap = function(e){
+            e.preventDefault();
+            alert('inside grid.js');
+        };
+            //http://hammerjs.github.io/require-failure/
+        var tapGesture = $ionicGesture.on('tap', alertTap, elem);
+            tapGesture.options.tap_always = false;
+            tapGesture.options.requireFailure = 'doubleTap';
+        console.log(tapGesture.options);
+        var doubleTapGesture = $ionicGesture.on('doubletap', dubTap, elem);
+            doubleTapGesture.options.recognizeWith = 'tapGesture';
+        var tripleTapGesture = $ionicGesture.on('tripletap', tripTap, elem);
+        var dragStartGesture = $ionicGesture.on('dragstart', startDrag, elem);
+        var dragGesture = $ionicGesture.on('drag', dragGrid, elem);
+        var dragEndGesture = $ionicGesture.on('dragend', endDrag, elem);
+        var holdGesture = $ionicGesture.on('hold', holdTap, elem);
+//        doubleTapGesture.recognizeWith(tapGesture);
+//        doubleTapGesture.requireFailure(tripleTapGesture);
                 
-//        var offLeft = 0;
-//        var offTop = 0;
-        
-//        var findGridOffsets = function(){
-//            gridElem = angular.element(document.getElementById('floor-container'));
-//            offLeft = gridElem[0].offsetLeft || 0;
-//            offTop = gridElem[0].offsetTop || 0;
-//        }
-
-        }
-//        $scope.gridMag = windowWd/gridWd;
-//        console.log('gridMag: '+$scope.gridMag);
+        scope.$on('$destroy', function() {
+            $ionicGesture.off(tapGesture, 'tap', alertTap);
+            $ionicGesture.off(doubleTapGesture, 'doubletap', dubTap);
+            $ionicGesture.off(tripleTapGesture, 'tripletap', tripTap);
+            $ionicGesture.off(dragStartGesture, 'dragstart', startDrag);
+            $ionicGesture.off(dragGesture, 'drag', dragGrid);
+            $ionicGesture.off(dragEndGesture, 'dragend', endDrag);
+            $ionicGesture.off(holdGesture, 'hold', holdTap);
+        });
         }
     };
 });
