@@ -42,6 +42,9 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
         e.stopPropagation();
         $ionicSideMenuDelegate.canDragContent(false);
         gridMag = findGeom.gridMag;
+        offLeft = findGeom.offSetLeft(gridElem); 
+        //write this to json for this room? or for floor as a whole?
+        offTop = findGeom.offSetTop(gridElem);
         //console.log(gridMag)
     };
 //    
@@ -50,11 +53,11 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
         var xtraOffX = 0;
         var xtraOffY = 0;
         if(points.length > 3){ //change to center of polygon
-            xtraOffX = Math.abs(points[0][0]-points[1][0])/2;
-            xtraOffY = Math.abs(points[0][1]-points[2][1])/2; //works well for squares
+            xtraOffX = (Math.abs(points[0][0]-points[1][0])/2);//+offLeft;
+            xtraOffY = (Math.abs(points[0][1]-points[2][1])/2);//+offTop; //works well for squares
         }
-        var dragX = ((e.gesture.center.pageX-offLeft)*gridMag)-points[0][0]-xtraOffX;
-        var dragY = ((e.gesture.center.pageY-offTop)*gridMag)-points[0][1]-xtraOffY;
+        var dragX = (((e.gesture.center.pageX-offLeft)/gridMag)-points[0][0])-xtraOffX;
+        var dragY = (((e.gesture.center.pageY-offTop)/gridMag)-points[0][1])-xtraOffY;
         for (var n = 0;n<points.length;n++){
             points[n][0] = points[n][0] + dragX;
             points[n][1] = points[n][1] + dragY;

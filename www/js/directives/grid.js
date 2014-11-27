@@ -3,9 +3,9 @@ angular.module('Directives').directive('gridManip',function($ionicGesture,$windo
         restrict: 'AE',
         //templateUrl: 'partials/gridlines.html',
         link: function(scope,elem,attr) {
-            var offsetLeft = findGeom.offsetLeft;
-            var offsetTop = findGeom.offsetTop;
-            //alert($window.outerHeight);
+            var gridElem = angular.element(document.getElementById('floor-container'));
+            var offsetLeft = findGeom.offSetLeft(gridElem);
+            var offsetTop = findGeom.offSetTop(gridElem);
             scope.gridShow1 = true; //in case we want to turn them off for some views
             scope.gridShow5 = true;
             var windowHt = scope.windowHt = 1.2*$window.outerHeight; //plus the offset!!
@@ -21,7 +21,7 @@ angular.module('Directives').directive('gridManip',function($ionicGesture,$windo
             var gridMag = findGeom.gridMag;
             var canvasSize = scope.canvasSize = 2000; //200ft
             //scope.viewB = '0 0 '+canvasSize+' '+canvasSize
-            var gridElem = angular.element(document.getElementById('floor-container'));
+            
             
             var magnifyGrid = scope.magnifyGrid = function(num){
                 //gridElem = angular.element(document.getElementById('floor-container'));
@@ -47,15 +47,15 @@ angular.module('Directives').directive('gridManip',function($ionicGesture,$windo
             if (offLeft > 0) { offLeft = 0};
             gridElem.css({'top':offTop,'left':offLeft});
         };
-        var alertTap = function(e){
-            e.preventDefault();
-            //console.log(attr);
-            alert('inside grid.js');
-        };
+//        var alertTap = function(e){
+            //can't get require-failure to work properly
+//            e.preventDefault();
+//            //console.log(attr);
+//            alert('inside grid.js');
+//        };
         var dubTap = function(e){
             e.preventDefault();
-            console.log(e);
-            
+            magnifyGrid(.9);
         };
         var startDrag = function(e){
             e.preventDefault();
@@ -64,20 +64,22 @@ angular.module('Directives').directive('gridManip',function($ionicGesture,$windo
             e.preventDefault();
             gridoffTop = gridElem[0].offsetTop;
             gridoffLeft = gridElem[0].offsetLeft;
+            
         };
         var holdTap = function(e){
             e.preventDefault();
-            alert('inside grid.js');
+            magnifyGrid(1.1);
+            //recenter on finger
         };
         var tripTap = function(e){
             e.preventDefault();
             alert('inside grid.js');
         };
             //http://hammerjs.github.io/require-failure/
-        var tapGesture = $ionicGesture.on('tap', alertTap, elem);
-            tapGesture.options.tap_always = false;
-            tapGesture.options.requireFailure = 'doubleTap';
-        console.log(tapGesture.options);
+//        var tapGesture = $ionicGesture.on('tap', alertTap, elem);
+//            tapGesture.options.tap_always = false;
+//            tapGesture.options.requireFailure = 'doubleTap';
+//        console.log(tapGesture.options);
         var doubleTapGesture = $ionicGesture.on('doubletap', dubTap, elem);
             doubleTapGesture.options.recognizeWith = 'tapGesture';
         var tripleTapGesture = $ionicGesture.on('tripletap', tripTap, elem);
