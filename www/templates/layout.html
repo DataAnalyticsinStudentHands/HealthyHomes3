@@ -4,7 +4,7 @@
     <div ng-include="'partials/topMenu.html'">
     </div>
 -->
-<ion-side-menus>
+<ion-side-menus hide-nav-bar="true">
     <ion-side-menu width="{{gridWd}}" id="grid" side="left" drag-content="false">
         
 <div id="floor-wrap">
@@ -58,9 +58,9 @@
                room = 'room'
                room-manip >
                     
-                <text x="{{room.roomNameX}}" 
-                      y="{{room.roomNameY}}" 
-                      font-size="112"
+                <text x="{{room.roomPoints[0][0]+10}}" 
+                      y="{{room.roomPoints[0][1]+10}}" 
+                      font-size="12"
                       >{{room.properties.name}}</text>
                 
                 <polygon stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2" 
@@ -79,6 +79,7 @@
                         r = 6
                     />
                 </g>
+                <!--if event target is circle, then...-->
                 <g id="measures2show"
                    ng-repeat="(ind,vals) in room.measurePoints track by ind">
 <!--
@@ -138,10 +139,6 @@
             <div id="floor-controls" ng-click="roomLineEdit=!roomLineEdit">
         
         <div id="mag-controls" grid-manip>
-        <img ng-click="hideFloor = !hideFloor"
-             ng-dblclick="gridDrag()" 
-                style="width:20px"
-                 ng-src="img/gridDrag.png" />
         <img id="magnifySmaller" 
                  ng-click="magnifyGrid(.5)"
                  ng-src="img/magnify.png" />

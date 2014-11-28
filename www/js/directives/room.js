@@ -10,16 +10,11 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
             
         }],
         link: function(scope,elem,attr) {
-            console.log(scope.room.properties.name)
-            
-            scope.room.roomNameX = 250
-            scope.room.roomNameY = 250
-            if (scope.room.properties.name == "Living Room"){
-                scope.room.roomNameX = 350;
-                scope.room.roomNameY = 250;}
-            scope.room.roomPoints = [[120.0,120.0],[220.0,120.0],[220.0,220.0],[120.0,220.0]];  //get from service as map from arcs
+    scope.room.roomPoints = [[120.0,120.0],[220.0,120.0],[220.0,220.0],[120.0,220.0]];  //get from service as map from arcs
             
     var points = scope.room.roomPoints;
+    scope.room.roomNameX = points[0][0] + 10;
+    scope.room.roomNameY = points[0][1] + 10;        
     var measurepts = scope.room.measurepts;
     var measurepts = findGeom.showMeasures(points)
     var alertTap = function(e){
@@ -80,6 +75,7 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
     //var newElem = angular.element(elem);
 //    scope.measurePoints = findGeom.showMeasures(points);
     var measures = function(e){
+        e.stopPropagation();
 //        elem.find('polygon').css('stroke-dasharray','3,3,3,3,3,3');
         elem.find('polygon').toggleClass('roomDashArray');
         elem.find('circle').toggleClass('roomEditLine');//css('display','block');

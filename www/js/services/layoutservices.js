@@ -106,10 +106,14 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 //    };
     
 .service('findGeom', function() {
-    this.testFunc = function(){alert('in service')};
-    this.gridMag = 1;
-    this.setGridMag = function(newMag){
-        this.gridMag = newMag;
+    var gridMag = this.gridMag = 1;
+    var gridElem = this.gridElem = angular.element(document.getElementById('floor-container'));
+    var canvasSize = this.canvasSize = 2000;
+    this.magnifyGrid = function(num){
+        var elemWidth = gridElem[0].offsetWidth;
+        if (elemWidth == 2016){elemWidth = 2000}; //have to figure out
+        var newMag = num * (elemWidth); 
+        return newMag
     };
     this.closestLine = function(arrIn,fingerX,fingerY){
         var arr = _.clone(arrIn);

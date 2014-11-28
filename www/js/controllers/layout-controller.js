@@ -13,6 +13,12 @@ angular.module('Controllers').controller('layoutCtrl',
         $scope.gridWd = $window.innerWidth*.95;
         $window.setTimeout(toggleLeft,500);
         
+        var gridElem = findGeom.gridElem;
+        var magnifyGrid = findGeom.magnifyGrid;
+        $scope.magnifyGrid = function(num){
+            newMag = magnifyGrid(num);
+            gridElem.css({'width':newMag+'px','height':newMag+'px'});
+        }
 //        document.addEventListener("deviceready", onDeviceReady, false);
 //        function onDeviceReady() {
         $scope.icons=[{
@@ -158,8 +164,7 @@ angular.module('Controllers').controller('layoutCtrl',
             }else{
                 currentRoom.roomPoints.splice(ind4new,0,[newX,newY]);
             }
-//            currentRoom.measurePoints = $scope.measurePoints = findGeom.showMeasures(currentRoom.roomPoints);
-        }
+        }; //might need to be on grid.js? or on floor.js?
         $scope.pointPathDonut = function(arr){
             firstStr = $scope.pointPath(arr);
             insideDirection = arr.reverse();

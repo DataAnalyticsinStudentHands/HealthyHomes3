@@ -897,8 +897,8 @@ body{
     padding:3px;
 }
 #floor-controls{
-    position:absolute;
-    bottom:75px;
+    position:fixed;
+    top:5px;
     width:220px;
     border-style: solid;
     border-color: #16A770;
