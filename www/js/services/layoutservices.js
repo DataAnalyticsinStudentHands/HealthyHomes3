@@ -10,28 +10,29 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
     localStorage.clear();
     //console.log($state)
     //http://sauceio.com/index.php/2014/07/angularjs-data-models-http-vs-resource-vs-restangular/
-    var layoutObjectModel = Restangular.service('inspections');
-    Restangular.extendModel('inspections',function(model) {
-        model.getResult = function(){
-            if (this.status == 'complete') {
-          if (this.passed === null) return "Finished";
-          else if (this.passed === true) return "Pass";
-          else if (this.passed === false) return "Fail";
-        }
-        else return "Running";
-      };
- 
-      return model;
-    });
-    Storage.prototype.setObject = function(key, value) {
-        this.setItem(key, JSON.stringify(value));
-    };
-
-    Storage.prototype.getObject = function(key) {
-        var value = this.getItem(key);
-        return value && JSON.parse(value);
-    };
+//    var layoutObjectModel = Restangular.service('inspections');
+    // Restangular.extendModel('inspections',function(model) {
+//         model.getResult = function(){
+//             if (this.status == 'complete') {
+//           if (this.passed === null) return "Finished";
+//           else if (this.passed === true) return "Pass";
+//           else if (this.passed === false) return "Fail";
+//         }
+//         else return "Running";
+//       };
+//
+//       return model;
+//     });
+    // Storage.prototype.setObject = function(key, value) {
+    //     this.setItem(key, JSON.stringify(value));
+    // };
+    //
+    // Storage.prototype.getObject = function(key) {
+    //     var value = this.getItem(key);
+    //     return value && JSON.parse(value);
+    // };
     return {
+		
     getInspections : function(){
         
         
@@ -117,12 +118,15 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
     };
     this.closestLine = function(arrIn,fingerX,fingerY){
         var arr = _.clone(arrIn);
-        var ind4new = 0;
+        var ind4new = [];
+		var testInd = 0;
         var newRatio = 0;
         var hypotRatio = 0;
         var touchLegOne = 0;
         var touchLegTwo = 0;
         var lineLength = 0;
+		var pointOnly = false;
+		//var pointInd = 0;
         arr.push([arr[0][0],arr[0][1]])
         for (var i = 0;i<arr.length-1;i++){
 //find sides from finger to endpoints of line and then look for closest to same length
@@ -134,10 +138,15 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
             if (newRatio > hypotRatio){
                 hypotRatio = newRatio;
                 newRatio = 0;
-                ind4new = i+1;
-            };
+                testInd = i;
+            };	
         };
-//        arr.pop();
+		ind4new.push(testInd); //need logic for only a point
+		if(testInd<arr.length-2){
+			ind4new.push(testInd+1);
+		}else{
+			ind4new.push(0);
+		}
         return ind4new;
     }
     var pythagDist = this.pythagDist = function(x1,x2,y1,y2){

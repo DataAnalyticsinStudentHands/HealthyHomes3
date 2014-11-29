@@ -817,9 +817,11 @@ body{
 
 
 
-/* side tabs
+/* inspection
 *********************************************************************************************/
-
+.activeInspection{
+	background-color:red;
+}
 
 
 /* grid background

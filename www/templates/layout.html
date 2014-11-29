@@ -52,7 +52,7 @@
                room = 'room'
                room-manip >
                     
-                <text x="{{room.roomPoints[0][0]+10}}" 
+                <text x="{{room.roomPoints[0][0]+5}}" 
                       y="{{room.roomPoints[0][1]+10}}" 
                       font-size="12"
                       >{{room.properties.name}}</text>
@@ -64,9 +64,8 @@
                          ng-attr-points="{{pointPath(room.roomPoints)}}" 
                 />
     
-                <g ng-repeat="(i, vals) in room.roomPoints">
+                <g ng-repeat="(i, vals) in room.roomPoints track by i">
                     <circle 
-                        hm-drag = "dragPoints($event,i)"
                         class="roomEditLine"
                         ng-attr-cx="{{vals[0]}}"
                         ng-attr-cy="{{vals[1]}}"
@@ -74,23 +73,12 @@
                     />
                 </g>
                 <!--if event target is circle, then...-->
-                <g id="measures2show"
-                   ng-repeat="(ind,vals) in room.measurePoints track by ind">
-<!--
-                <g id="measures2show" ng-show="!roomLineEdit" ng-repeat="(ind,vals) in showMeasures(currentFloor.rooms[$index].roomPoints) track by ind"
-                   >
--->
-<!--    If we want it to show on the line, or when not in edit
-                    <rect ng-attr-x="{{vals[0]-10}}" ng-attr-y="{{vals[1]-8}}" 
-                          width="30" height="15" fill="white">
-                    </rect>
--->
-                    
+                <g ng-repeat="(ind,vals) in room.measurePoints track by ind">
                     <text ng-attr-x="{{vals[0]}}"
                           ng-attr-y="{{vals[1]}}"
+						  class="roomEditLine"
                           font-size="12"
-                          class="roomEditLine"
-                            >{{vals[2]/10+"'"}}
+                            >{{vals[2]/10}}'
                     </text>
                 </g>
                 <g ng-repeat="(indic,values) in layoutObjs track by indic"

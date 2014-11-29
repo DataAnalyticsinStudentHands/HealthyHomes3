@@ -3,7 +3,7 @@
 //var layoutController = angular.module('HHControllers', []);
 
 angular.module('Controllers').controller('layoutCtrl', 
-	function ($scope, $window, $timeout, $state, $stateParams, Restangular, layoutObjectModel,inspections, $ionicSideMenuDelegate, $ionicNavBarDelegate, findGeom) {
+	function ($scope, $window, $timeout, $state, $stateParams, Restangular, layoutObjectModel, inspections, $ionicSideMenuDelegate, $ionicNavBarDelegate, findGeom) {
         var inspectionIndex = $state.params.inspectionIndex;
         var currentInspection = $scope.currentInspection = inspections[inspectionIndex];
         var toggleLeft = $scope.toggleLeftSideMenu = function() {
@@ -83,86 +83,6 @@ angular.module('Controllers').controller('layoutCtrl',
 		$scope.currentFloor = currentFloor;
         $scope.currentInspection = currentInspection;
         $scope.pointPath = findGeom.pointPath;
-        /*http://geomalgorithms.com/a03-_inclusion.html [0 is online;>0 is Left of line;<0 is Right of Line
-        var onLine = function(x1,y1,x2,y2,xTest,yTest){
-            return ( ((x2-x1)*(yTest-y1)) - ((xTest-x1)* (y2-y1)) )
-        }
-        var windingTest = function(xTest,yTest, arr){
-            var wn = 0;
-            arr.push([arr[0][0],arr[0][1]])
-            for (var i = 0; i < arr.length-1; i++) {
-                if (arr[i][1] <= yTest) {
-                    if (arr[i+1][1] > yTest){
-                        if (onLine(arr[i][0],arr[i][1],arr[i+1][0],arr[i+1][1],xTest,yTest) > 0) {
-                            wn += 1; }
-                    }
-                } else {
-                    if (arr[i+1][1] <= yTest){
-                        if (onLine(arr[i][0],arr[i][1],arr[i+1][0],arr[i+1][1],xTest,yTest) < 0){
-                            wn -= 1; }
-                    }
-                }
-            }
-            arr.pop();
-            return wn
-        }
-        $scope.testWn = function($event,arr){
-            console.log(arr)
-            $event.preventDefault();
-            var wn = windingTest($event.gesture.center.pageX,$event.gesture.center.pageY,arr)
-            return wn
-        }
-        */
-        $scope.addPoint = function($event,arr){
-            var fingerX = $event.gesture.center.pageX;
-            var fingerY = $event.gesture.center.pageY;
-            var ind4new = findGeom.closestLine(arr,fingerX,fingerY);
-            
-            var newX = fingerX*gridMag;
-            var newY = fingerY*gridMag;
-            if(ind4new+1>arr.length || ind4new == 0 ){
-                currentRoom.roomPoints.push([newX,newY]); //to end??
-            }else{
-                currentRoom.roomPoints.splice(ind4new,0,[newX,newY]);
-            }
-        }; //might need to be on grid.js? or on floor.js?
-        $scope.pointPathDonut = function(arr){
-            firstStr = $scope.pointPath(arr);
-            insideDirection = arr.reverse();
-            //add points to see if inside, and give a distance based on size of polygon
-        };
-        
-        $scope.Measures = true;
-        $scope.addMeasures = function(arr){
-            var rtnStr = 'M'+arr[0][0]+','+arr[0][1]+' ';
-            //INSTEAD: Have it extend on the slope, and draw a line perpendicular to the ditance line
-//            arr.push([arr[0][0],arr[0][1]]) ---i equals different things depending on ng-whim
-            
-            for (var n = 0; n < arr.length+1; n++){
-                var i = 0;
-                if (n != arr.length){ i = n};
-                //var i = 0;
-                //if (n == arr.length){ i=0 } else { i=n-1 };
-                var controlX = arr[i][0]*1.1;
-                var controlY = arr[i][1]*1.1;
-                var control2X = arr[i][0]*1.1;
-                var control2Y = arr[i][1]*1.1;
-                var insidePoly = windingTest(controlX,controlY,arr)
-                if (insidePoly == 0){
-                    console.log('insidePoly'+i)
-                    controlX = arr[i][0]*1.9;
-                    controlY = arr[i][1]*1.9;
-                    control2X = arr[i][0]*1.9;
-                    control2Y = arr[i][1]*1.9;
-                };
-                rtnStr += 'C';
-                rtnStr += ' '+controlX +','+controlY; //first control
-                rtnStr += ' '+control2X +','+control2Y; //second control point
-                rtnStr += ' '+arr[i][0]+','+arr[i][1]; //actual points
-            }
-//            arr.pop();
-            return rtnStr;
-        }
         $scope.newFloor = function(floor){
             console.log(floors)
 			console.log(currentFloor);
@@ -246,10 +166,6 @@ angular.module('Controllers').controller('layoutCtrl',
                     currentRoom.roomPoints = $scope.roomPoints = [[120.0,120.0],[220.0,120.0],[220.0,220.0],[120.0,220.0]]; //should be calculated from previous?
                     
                 };
-//                $scope.showMeasures = findGeom.showMeasures(currentRoom.roomPoints);
-                if (!currentRoom.measurePoints){
-                    currentRoom.measurePoints = $scope.measurePoints = findGeom.showMeasures(currentRoom.roomPoints);
-                }; //have to do them here, or overloads $digest
                 $scope.currentFloor = currentFloor;
                 currentInspection.floors[floorInd] = currentFloor;
                 //$scope.$apply;
@@ -272,13 +188,7 @@ angular.module('Controllers').controller('layoutCtrl',
             console.log(currentRoom)
             };
         };
-        $scope.makeActive = function(){
-            currentRoom = currentFloor.rooms[this.$index];
-        }
-        $scope.centerView = function($event){
-            console.log(offLeft)
-        }
-        $scope.dragPoints = function($event,i){
+        $scope.dragPointsOLD = function($event,i){
             $event.preventDefault();
             currentRoom.roomPoints[i][0] = 10*Math.round((($event.gesture.center.pageX-offLeft)*gridMag)/10);
             currentRoom.roomPoints[i][1] = 10*Math.round((($event.gesture.center.pageY-offTop)*gridMag)/10);
@@ -303,7 +213,7 @@ angular.module('Controllers').controller('layoutCtrl',
             currentRoom.measurePoints = $scope.measurePoints = findGeom.showMeasures(currentRoom.roomPoints);
         };
         $scope.closestIndices = 0;
-        $scope.dragLineStart = function($event){
+        $scope.dragLineStartOLD = function($event){
             $event.preventDefault();
             var arr = _.clone(currentRoom.roomPoints);
             var fingerX = ($event.gesture.center.pageX-offLeft)*gridMag;

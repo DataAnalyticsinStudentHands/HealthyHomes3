@@ -7,7 +7,7 @@
             <ion-search placeholder="Search inspections" filter="search"></ion-search>
         </div>
         <div ng-repeat="inspect in inspections">
-            <div class="item item-icon-left energized" >
+            <div class="item item-icon-left energized" ui-sref-active='activeInspection'>
 <!--                <a href="#/layout/{{inspect.inspectionIndex}}">-->
                 <a ui-sref="secure.inspections.layout({inspectionIndex : inspect.inspectionIndex, floorInd : inspect.floorInd || 0})">
                     <p>{{inspect.contact_household.contact_name.first}} {{inspect.contact_household.contact_name.last}}</p>
