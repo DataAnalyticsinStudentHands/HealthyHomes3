@@ -78,33 +78,42 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
         offTop = findGeom.offSetTop(gridElem);
 		xtraOffX = (Math.abs(points[0][0] - (e.gesture.center.pageX-offLeft)/gridMag));
 		xtraOffY = (Math.abs(points[0][1] - (e.gesture.center.pageY-offTop)/gridMag));
-		//xtraOffX = points[0][0] - (e.gesture.center.pageX-offLeft)/gridMag;
-		//xtraOffY = points[0][1] - (e.gesture.center.pageY-offTop)/gridMag;
     };
-	var dragX2;
-	var dragY2;
+	var points2 = [];
 	var new4line;
 	var assignPoints = function(e){ //have to force it to iterate from n=0
-		dragX = (((e.gesture.center.pageX-offLeft)/gridMag)-points[0][0])-xtraOffX;
-        dragY = (((e.gesture.center.pageY-offTop)/gridMag)-points[0][1])-xtraOffY;
+		//dragX = (((e.gesture.center.pageX-offLeft)/gridMag)-points[0][0])-xtraOffX;
+        //dragY = (((e.gesture.center.pageY-offTop)/gridMag)-points[0][1])-xtraOffY;
+        dragX = (((e.gesture.center.pageX)/gridMag)-points[0][0])-xtraOffX;
+        dragY = (((e.gesture.center.pageY)/gridMag)-points[0][1])-xtraOffY;
 		if (!dragWhole){
-	        /*new4line = newIndex4line[0];
-			inPts = _.map(points,function(num){return false});
-			inPts[new4line] = true;
-			if (newIndex4line.length>1){
-				inPts[newIndex4line[1]] = true;
-			}else{ */
-			inPts = _.map(points,function(num){return true});
+	        new4line = newIndex4line[0];
+			points2 = [];
+			points2.push(points[new4line]);
+			if ((new4line+1)<points.length){
+				points2.push(points[new4line+1]);
+			}else{
+				points2.push(points[0]);
+			}
+			
+			//inPts = _.map(points,function(num){return false});
+			//inPts[new4line] = true;
+			//if (newIndex4line.length>1){
+			//	inPts[newIndex4line[1]] = true;
+			//}else{ 
+			//	inPts = _.map(points,function(num){return true});
 			//};
-	        dragX = (((e.gesture.center.pageX-offLeft)/gridMag)-points[0][0])+xtraOffX;
-	        dragY = (((e.gesture.center.pageY-offTop)/gridMag)-points[0][1])+xtraOffY;
+	        dragX = (((e.gesture.center.pageX)/gridMag)-points2[0][0])-offLeft; //xtraOffX;
+	        dragY = (((e.gesture.center.pageY)/gridMag)-points2[0][1])-offTop; //xtraOffY;
+		}else{
+			points2 = points;
 		};
         
 		//console.log(points2);
-    	for (n=0;n<points.length;n++){
+    	for (n=0;n<points2.length;n++){
 			if (inPts[n]){
-				points[n][0] = points[n][0] + dragX;
-				points[n][1] = points[n][1] + dragY;
+				points2[n][0] = points2[n][0] + dragX;
+				points2[n][1] = points2[n][1] + dragY;
  			};
 			//points[n][0] = points[n][0] + dragX2;
     		//points[n][1] = points[n][1] + dragY2;
@@ -125,7 +134,7 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
         };
         scope.room.measurePoints = findGeom.showMeasures(points);
         //elem.find('polygon').css('display','none');
-        
+        points2 = [];
         scope.$apply();
     };
 	var measures = function(e){
