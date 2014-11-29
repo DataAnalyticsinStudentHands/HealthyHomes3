@@ -57,6 +57,8 @@ angular.module('Directives').directive('gridManip',function($ionicGesture,$windo
             var pinchGest = function(e){
                 e.preventDefault();
                 console.log(e);
+	            scope.touches = e.gesture.touches[0];
+	            scope.touches1 = e.gesture.touches[1];
                 //put in some logic for magnifyGrid;
                 //magnifyGrid(1.1);
                 //recenter on finger

@@ -148,7 +148,7 @@ angular.module('HHApp', [
             }
       })
       .state('secure.inspections.layout', {	
-          url: "/layout/:inspectionIndex",
+          url: "/layout/:inspectionIndex/:floorInd",
           views: {
                 "inspections@secure": { 
 					templateUrl: 'templates/layout.html',
@@ -157,7 +157,7 @@ angular.module('HHApp', [
                 }
       })
       .state('secure.inspections.questions', {	
-          url: "/questions/:inspectionIndex",
+          url: "/questions/:inspectionIndex/:floorInd",
           views: {
                 "inspections@secure": { 
 					templateUrl: 'templates/questions.html'

@@ -1,10 +1,4 @@
-<div id="wrapper"> 
-<!--<ion-view>-->
-<!--
-    <div ng-include="'partials/topMenu.html'">
-    </div>
--->
-<ion-side-menus hide-nav-bar="true">
+<ion-side-menus>
     <ion-side-menu width="{{gridWd}}" id="grid" side="left" drag-content="false">
         
 <div id="floor-wrap">
@@ -136,36 +130,40 @@
 
         </textarea>
     </div>
-            <div id="floor-controls" ng-click="roomLineEdit=!roomLineEdit">
+            
+			<div id="floor-controls">
+		        <img id="magnifySmaller" 
+		                 ng-click="magnifyGrid(.9)"
+		                 ng-src="img/zoomout.svg" />
+		         <select ng-model="currentFloor" 
+		                required
+		                style="float:right;position:relative"
+		                ng-change="newFloor(toFloor)"
+		                ng-options="toFloor for toFloor in floorLists">
+		            <option value="">{{currentFloor.name.toUpperCase()}}</option>
+		        </select>
+		        <select ng-model="room" 
+		                style="float:right"
+		                required
+		                ng-change="newRoom(room)"
+		                ng-if="(currentFloor)"
+		                ng-options="room for room in roomLists">
+		            <option value="">-- choose room --</option>
+		        </select>
+		        <select ng-model="inRoomAction" 
+						id="roomAction"
+		                style="float:right"
+		                ng-change="action4room(action)"
+		                ng-if="(currentRoom)"
+		                ng-options="action for action in actionLists">
+		            <option value="">-- add to room --</option>
+		        </select>
+		        <img id="magnifyLarger" 
+		                 ng-click="magnifyGrid(1.1)"
+		                 ng-src="img/zoomin.svg" />
+		        </div>
+  	   </div>
         
-        <div id="mag-controls" grid-manip>
-        <img id="magnifySmaller" 
-                 ng-click="magnifyGrid(.5)"
-                 ng-src="img/magnify.png" />
-        
-        <img id="magnifyLarger" 
-                 ng-click="magnifyGrid(2)"
-                 ng-src="img/magnify.png" />
-        </div> 
-            <select ng-model="floor" 
-                required
-                style="float:right"
-                ng-change="newFloor(floor)"
-                ng-options="floor for floor in floorLists">
-            <option value="">-- choose floor --</option>
-        </select>
-        <br>
-        <select ng-model="room" 
-                style="float:right"
-                required
-                ng-change="newRoom(room)"
-                ng-if="(floor)"
-                ng-options="room for room in roomLists">
-            <option value="">-- choose room --</option>
-        </select>
-         
-        </div>
-        </div>
     </ion-side-menu>
         
 <!--    <ion-side-menu id="leftSideMenu" width="80" side="left" expose-aside-when="large">-->
@@ -210,6 +208,3 @@
 
 
 </ion-side-menus>
-
-<!--    </ion-content>-->
-</div>

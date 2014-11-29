@@ -17,10 +17,12 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
     scope.room.roomNameY = points[0][1] + 10;        
     var measurepts = scope.room.measurepts;
     var measurepts = findGeom.showMeasures(points)
-    var alertTap = function(e){
+    var addTap = function(e){
         e.preventDefault();
         e.stopPropagation();
-        alert('inside room.js');
+		var selectBox = document.getElementById('roomAction');
+		selectBox.size = 5;
+		selectBox.value = 3;
     };
     for (var n = 0;n<points.length;n++){
         points[n][0] = parseInt(points[n][0]);
@@ -82,8 +84,7 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
         elem.find('text').toggleClass('roomEditLine');
         var dragType = 'segment';
     };
-    var tapGesture = $ionicGesture.on('tap', alertTap, elem);
-    var doubleTapGesture = $ionicGesture.on('doubletap', alertTap, elem);
+    var tapGesture = $ionicGesture.on('tap', addTap, elem);
     var dragStartGesture = $ionicGesture.on('dragstart', startDrag, elem);
     var dragGesture = $ionicGesture.on('drag', dragLines, elem);
     var dragEndGesture = $ionicGesture.on('dragend', endDrag, elem);
@@ -91,8 +92,7 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
 
             
     scope.$on('$destroy', function() {
-        $ionicGesture.off(tapGesture, 'tap', alertTap);
-        $ionicGesture.off(doubleTapGesture, 'doubletap', alertTap);
+        $ionicGesture.off(tapGesture, 'tap', addTap);
         $ionicGesture.off(dragStartGesture, 'dragstart', startDrag);
         $ionicGesture.off(dragGesture, 'drag', dragLines);
         $ionicGesture.off(dragEndGesture, 'dragend', endDrag);

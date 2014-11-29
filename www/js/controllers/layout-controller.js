@@ -3,10 +3,9 @@
 //var layoutController = angular.module('HHControllers', []);
 
 angular.module('Controllers').controller('layoutCtrl', 
-	function ($scope, $window, $state, $stateParams, Restangular, layoutObjectModel,inspections, $ionicSideMenuDelegate, $ionicNavBarDelegate, findGeom) {
-        var inspectionIndex = 0;
-        $scope.inspectionIndex = inspectionIndex;
-        var currentInspection = inspections[inspectionIndex];
+	function ($scope, $window, $timeout, $state, $stateParams, Restangular, layoutObjectModel,inspections, $ionicSideMenuDelegate, $ionicNavBarDelegate, findGeom) {
+        var inspectionIndex = $state.params.inspectionIndex;
+        var currentInspection = $scope.currentInspection = inspections[inspectionIndex];
         var toggleLeft = $scope.toggleLeftSideMenu = function() {
             $ionicSideMenuDelegate.toggleLeft();
         };
@@ -15,44 +14,12 @@ angular.module('Controllers').controller('layoutCtrl',
         
         var gridElem = findGeom.gridElem;
         var magnifyGrid = findGeom.magnifyGrid;
+		var newMag;
         $scope.magnifyGrid = function(num){
             newMag = magnifyGrid(num);
             gridElem.css({'width':newMag+'px','height':newMag+'px'});
         }
-//        document.addEventListener("deviceready", onDeviceReady, false);
-//        function onDeviceReady() {
-        $scope.icons=[{
-              icontype:  'sink'
-            },{
-              icontype:  'window'
-            },{
-              icontype:  'stairs'
-            },{
-              icontype:  'fire'
-            },{
-              icontype:  'toilet'
-            },{
-              icontype:  'tub'
-            },{
-              icontype:  'door'
-            },{
-              icontype: 'greenflag'
-            },{
-              icontype: 'yellowflag'
-            },{
-              icontype: 'redflag'
-        }];
-//        $scope.iconSVGs=[{
-//              icontype:  'svg_line'
-//            },{
-//              icontype:  'svg_rectangle'
-//            },{
-//              icontype:  'svg_circle'
-//        }];
-        //console.log(_.range(0,2000,50))
-        $scope.alert = function (text) {
-            alert(text+'inside layoutCtrl');
-        };
+
 //        document.addEventListener("deviceready", onDeviceReady, false);
     //are the touchHandlers needed with ionic? in each directive?
         function touchHandler(event)
@@ -80,46 +47,40 @@ angular.module('Controllers').controller('layoutCtrl',
         document.addEventListener("touchmove", touchHandler, true);
         document.addEventListener("touchend", touchHandler, true);
         document.addEventListener("touchcancel", touchHandler, true);  
-    //}
-        
-//        var viewContainer = document.getElementById('grid-container');
-//        layoutObjectModel.testFunc()
-        //var types = $scope.types = Restangular.all().getList().$object;
-//        $scope.newFloorRoom = function(){
-//            $scope.newFloorOrRoom = !$scope.newFloorOrRoom
-//        };
+
 
         $scope.floorLists = ['neighborhood', 'exterior', 'first', 'second', 'third', 'basement', 'attic', 'garage', 'section'];
         $scope.roomLists = ['exterior','living room','bath','closet','kitchen','dining room'];
-        
+        $scope.actionLists = ['add flag','add note','add image from camera','add image from file'];
+		$scope.editRooms = ['change name','add point to shape','add door','add window','add stairs','add outlet']; // when edit mode
+		$scope.insideRooms = ['add toilet','add sink','add refrigerator','add flame','add tub','add shower','add vent'];
         var floors = []; 
         var currentFloor = $scope.currentFloor = [];
-        var floorInd = 0;
         if ($state.params.floorInd) {floorInd = $state.params.floorInd};
+		$scope.showBar = function(){
+			$ionicNavBarDelegate.showBar(true);
+		};
+		var hideBar = $scope.hideBar = function(){
+			$ionicNavBarDelegate.showBar(false);
+		};
+		$timeout(hideBar,1000);
         if (currentInspection.floors){
             floors = currentInspection.floors;
-//            if (floors.length > 1){
-//                floorInd = floors.indexOf(floor);
-//            }
-//            if (floorInd == -1) { floorInd = 0 }; //just in case they have an inspection without a first floor
             var newTitle = currentInspection.address + ': <b>' + floors[floorInd].name.toUpperCase() + '</b> floor';
             $ionicNavBarDelegate.changeTitle(newTitle, 'left');
-             } else {
-                 currentInspection['floors'] = [ { "name" : "first", "color" : "#ed0e0e","rooms" : [] } ];
-                 //need to think through adding if no inspection fed to it
-             };
-        $state.params.floorInd = floorInd
+        } else {
+            currentInspection['floors'] = [ { "name" : "first", "color" : "#ed0e0e","rooms" : [] } ];
+            //need to think through adding if no inspection fed to it -- Don't like this with navbar...
+        };
+			 
+        var floorInd = $state.params.floorInd 
         currentFloor = $scope.currentFloor = currentInspection.floors[floorInd];
         
         var rooms = [];
         if (currentFloor.rooms){
             console.log(currentFloor.rooms)};
-        //var room = $scope.room;
-//        var roomPoints = $scope.roomPoints = [[10,10],[350,100],[150,850],[100,150]];
-//        currentFloor.rooms[0]['roomPoints'] = roomPoints;
-//        currentFloor.rooms[1]['roomPoints'] = roomPoints;
-//        currentFloor.rooms[2]['roomPoints'] = roomPoints;
-        $scope.currentFloor = currentFloor;
+        
+		$scope.currentFloor = currentFloor;
         $scope.currentInspection = currentInspection;
         $scope.pointPath = findGeom.pointPath;
         /*http://geomalgorithms.com/a03-_inclusion.html [0 is online;>0 is Left of line;<0 is Right of Line
@@ -203,7 +164,8 @@ angular.module('Controllers').controller('layoutCtrl',
             return rtnStr;
         }
         $scope.newFloor = function(floor){
-            //$scope.magnifyGrid(3);
+            console.log(floors)
+			console.log(currentFloor);
             $scope.layoutObjs = [];
             $scope.rooms = [];
             if (floors.indexOf(floor)==-1){
@@ -224,7 +186,6 @@ angular.module('Controllers').controller('layoutCtrl',
                // };
                 currentInspection.floors[floorInd] = [floor];
                 currentInspection.floors[floorInd].rooms = [];
-                currentInspection.floors[floorInd].floorPoints = $scope.floorPoints = floorPoints; 
                 rooms = $scope.rooms = [];
                 //need floorPoints to be added here!!!!
             }else{
@@ -236,7 +197,7 @@ angular.module('Controllers').controller('layoutCtrl',
             };
             console.log(floorInd + 'floorInd')
 //            floorInd = 0;
-            $state.go('layout.floor');
+            //$state.go('layout.inspections.floor');
             $state.params.inspectInd = 0; //will need to do this differently
             $state.params.floorName = floor; //can that have an ng-show or ui-sref-active???
             currentFloor = currentInspection.floors[floorInd]; //make sure picks up original
@@ -258,7 +219,7 @@ angular.module('Controllers').controller('layoutCtrl',
         var room = $scope.room || '';
         var rooms = $scope.rooms = [];
         var roomInd = $state.params.roomInd = rooms.indexOf(room);
-        var currentRoom = [];
+        var currentRoom = $scope.currentRoom = ['test']; //maybe get it from stateParams, which would change from the directive?
         //var currentRoom = currentFloor[roomInd] || false;
         $scope.newRoom = function(room){
 //            console.log(currentFloor.length+' currentfloot')
@@ -275,7 +236,7 @@ angular.module('Controllers').controller('layoutCtrl',
                 } else {
                     roomInd = $state.params.roomInd = rooms.indexOf(room);
                 };
-                $state.go('layout.floor.room');
+                //$state.go('layout.floor.room');
                 newFloorOrRoom = $scope.newFloorOrRoom = false;
                 $state.params.roomName = room; //can that have an ng-show or ui-sref-active??? how is it inherited?
                 currentRoom = currentFloor.rooms[roomInd]; //make sure picks up original
@@ -317,16 +278,6 @@ angular.module('Controllers').controller('layoutCtrl',
         $scope.centerView = function($event){
             console.log(offLeft)
         }
-        
-        $scope.pinchResize = function($event){
-            
-            $event.preventDefault();
-            
-            $scope.gesture = $event.gesture;
-            $scope.touches = $event.gesture.touches[0];
-            $scope.touches1 = $event.gesture.touches[1];
-            currentRoom.measurePoints = $scope.measurePoints = findGeom.showMeasures(currentRoom.roomPoints);
-        };
         $scope.dragPoints = function($event,i){
             $event.preventDefault();
             currentRoom.roomPoints[i][0] = 10*Math.round((($event.gesture.center.pageX-offLeft)*gridMag)/10);

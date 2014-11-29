@@ -882,44 +882,45 @@ body{
     z-index:55;
     text-align:center;
 }
-#floorName{
+#floorNameOLD{
     font-style:bold;
     font-size:1.5em;
     color:red;
-    position:fixed;
-    top:90px;
-    left:10px;
+    position:relative;
     border-style:none;
     border-width:2px;
     border-color:#16A770;
     border-radius: 4px;
-    background-color:white;
+    background-color:transparent;
     padding:3px;
 }
 #floor-controls{
     position:fixed;
     top:5px;
+	right:55px;
     width:220px;
     border-style: solid;
     border-color: #16A770;
     border-width: 3px;
-    background-color:#16A770;
+    background-color:transparent;
     z-index:111;
     margin: 12px;
     padding: 4px;
-}
-#mag-controls{
-    width:30%;
-    border-style:hidden;
+	display:inline;
 }
 #magnifyLarger{
-    width:60px;
-    float:left;
+	margin-top:-5px;
+    width:30px;
 }
 #magnifySmaller{
-    display:block;
-    width:30px;
-    float:right;
+	margin-top:-5px;
+    display:inline;
+    width:20px;
+}
+#floorName{
+	position:relative;
+	font-size:1.2em;
+	font-style:bold;
 }
 #smallWrap{
     position:absolute;

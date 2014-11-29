@@ -4,7 +4,7 @@ angular.module('Controllers').controller('mainController', function($scope, insp
     var d = new Date();
     $scope.todayDate = d.toLocaleDateString();
     $scope.inspections = inspections;
-    console.log($localStorage['inspections']);
+    //console.log($localStorage['inspections']);
     $scope.alert = function (text) {
         alert(text+'in');
     };
