@@ -63,7 +63,6 @@
                          class="roomShowLine" 
                          ng-attr-points="{{pointPath(room.roomPoints)}}" 
                 />
-    
                 <g ng-repeat="(i, vals) in room.roomPoints track by i">
                     <circle 
                         class="roomEditLine"
@@ -76,8 +75,8 @@
                 <g ng-repeat="(ind,vals) in room.measurePoints track by ind">
                     <text ng-attr-x="{{vals[0]}}"
                           ng-attr-y="{{vals[1]}}"
-						  class="roomEditLine"
                           font-size="12"
+						  class="roomEditLine"
                             >{{vals[2]/10}}'
                     </text>
                 </g>

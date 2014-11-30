@@ -126,28 +126,45 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
         var touchLegTwo = 0;
         var lineLength = 0;
 		var pointOnly = false;
+		var shortestLine = 0;
+		var secondShortestLine = 0;
+		var lineInd = 0;
 		//var pointInd = 0;
         arr.push([arr[0][0],arr[0][1]])
         for (var i = 0;i<arr.length-1;i++){
-//find sides from finger to endpoints of line and then look for closest to same length
-            touchLegOne = pythagDist(fingerX,arr[i][0],fingerY,arr[i][1]);
-            touchLegTwo = pythagDist(fingerX,arr[i+1][0],fingerY,arr[i+1][1]);
+//find sides from finger to endpoints of line and then look for closest to same length and ratio for choosing point instead of line
+			touchLegOne = pythagDist(fingerX,arr[i][0],fingerY,arr[i][1]);
+			touchLegTwo = pythagDist(fingerX,arr[i+1][0],fingerY,arr[i+1][1]);
+			if (i==0){
+				shortestLine = secondShortestLine = touchLegOne;
+			};
+			if (touchLegTwo<shortestLine){
+				lineInd = i+1;
+				secondShortestLine = shortestLine;
+				shortestLine = touchLegTwo;
+			};
             lineLength = pythagDist(arr[i][0],arr[i+1][0],arr[i][1],arr[i+1][1]);
             newRatio = lineLength/(touchLegOne + touchLegTwo)
-//            console.log(i + 'i and new' + newRatio)
             if (newRatio > hypotRatio){
                 hypotRatio = newRatio;
                 newRatio = 0;
                 testInd = i;
-            };	
-        };
-		ind4new.push(testInd); //need logic for only a point
-		if(testInd<arr.length-2){
-			ind4new.push(testInd+1);
-		}else{
-			ind4new.push(0);
-		}
-        return ind4new;
+            };
+		};
+		if (secondShortestLine/shortestLine > 7 || secondShortestLine/shortestLine == 1){
+			pointOnly = true;
+			testInd = lineInd;
+			if (testInd>arr.length-2){testInd=0;};
+		};
+		ind4new.push(testInd); 
+		if (!pointOnly){
+			if(testInd<arr.length-2){
+				ind4new.push(testInd+1);
+			}else{
+				ind4new.push(0);
+			};
+		};
+        return [ind4new, pointOnly];
     }
     var pythagDist = this.pythagDist = function(x1,x2,y1,y2){
         return Math.sqrt(((x1-x2)*(x1-x2))+((y1-y2)*(y1-y2)))
