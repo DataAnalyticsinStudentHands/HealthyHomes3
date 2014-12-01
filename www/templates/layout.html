@@ -36,8 +36,9 @@
                 <polygon class="floorShowline" 
                          ng-attr-points="{{floor.points}}"/>
             
+<!--ng-repeat="room in currentFloor.rooms track by $index"-->
             <g class="roomLines" 
-               ng-repeat="room in currentFloor.rooms track by $index"
+               ng-repeat="room in shapes track by $index"
                room = 'room'
                room-manip >
                     
@@ -87,7 +88,8 @@
         </svg>
 <!--        <div ng-include="'partials/floor.html'"></div>-->
     </div>
-        
+
+<!--Should we have a box that is populated when viewed, or make full boxes and make invisible?-->
     <div id="noteBox" ng-show="showNote">
         <div id="noteTopBar">
             <img ng-src="{{noteIcon}}" /> 

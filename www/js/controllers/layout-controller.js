@@ -116,9 +116,38 @@ angular.module('Controllers').controller('layoutCtrl',
         } else {
             rooms = currentFloor['rooms'] = testRoom;
         };
-		
-        var currentRoom = $scope.currentRoom = currentInspection.floors[floorInd].rooms[roomInd];
 		if ($state.params.roomInd) {roomInd = $state.params.roomInd};
+        var currentRoom = $scope.currentRoom = currentInspection.floors[floorInd].rooms[roomInd];
+		var features = [];
+        var shapes = [];
+        var roomArcs = [];
+        var notes = [];
+        var images = [];
+        var roomItem;
+        //will I need to call this again? in a function?
+        for (var itemInd=0; itemInd<currentFloor.rooms.length; itemInd++){
+            roomItem = currentFloor.rooms[itemInd]
+            if (roomItem.type == "Feature"){
+                features.push(roomItem)
+            };
+            if (roomItem.type == "Polygon"){
+                shapes.push(roomItem)
+            };
+            if (roomItem.type == "openArc"){
+                roomArcs.push(roomItem)
+            };
+            if (roomItem.type == "Note"){
+                notes.push(roomItem)
+            };
+            if (roomItem.type == "Polygon"){
+                shapes.push(roomItem)
+            };
+        };
+        $scope.features = features;
+        $scope.shapes = shapes;
+        console.log(shapes);
+        $scope.notes = notes;
+        $scope.images = images;
 		
 		var addNewRoomCheck = function(room){ //this means that the floor indices change for others, too!
 			for (var r=0;r<rooms.length;r++){
