@@ -11,11 +11,11 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
         }],
         link: function(scope,elem,attr) {
     scope.room.roomPoints = [[120.0,120.0],[220.0,120.0],[220.0,220.0],[120.0,220.0]];  //get from service as map from arcs
-            
+    console.log(scope.room)
     var points = scope.room.roomPoints;
-    scope.room.roomNameX = points[0][0] + 10;
-    scope.room.roomNameY = points[0][1] + 10;        
-    scope.room.measurePoints = findGeom.showMeasures(points);
+    //scope.room.roomNameX = points[0][0] + 10;
+    //scope.room.roomNameY = points[0][1] + 10;        
+    //scope.room.measurePoints = findGeom.showMeasures(points);
 	var fingerX;
 	var fingerY;
 	var ind4new;

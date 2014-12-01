@@ -10,7 +10,7 @@ angular.module('Directives').directive('floorManip',function(){
         }],
         link: function(scope,elem,attr) {
             console.log(scope.floor)
-            scope.floor.points = ""; //eventually have it draw perimeter automatically
+            //scope.floor.points = ""; //eventually have it draw perimeter automatically
         }
     };
 });

@@ -29,7 +29,7 @@
                    "color" : "#ed0e0e",
                    "rooms" : 
         [
-            {   "type" : "Polygon",
+          {   "type" : "Polygon",
             "properties" : {
                 "name" : "TestExample",
                 "color" : "#ed0e0e"

@@ -11,7 +11,7 @@ angular.module('Controllers').controller('layoutCtrl',
         };
         $scope.gridWd = $window.innerWidth*.95;
         $window.setTimeout(toggleLeft,500);
-        
+        $scope.pointPath = findGeom.pointPath;
         var gridElem = findGeom.gridElem;
         var magnifyGrid = findGeom.magnifyGrid;
 		var newMag;
@@ -19,7 +19,13 @@ angular.module('Controllers').controller('layoutCtrl',
             newMag = magnifyGrid(num);
             gridElem.css({'width':newMag+'px','height':newMag+'px'});
         }
-
+		/*$scope.showBar = function(){
+			$ionicNavBarDelegate.showBar(true);
+		};*/
+		var hideBar = $scope.hideBar = function(){
+			$ionicNavBarDelegate.showBar(false);
+		};
+		$timeout(hideBar,1000);
 //        document.addEventListener("deviceready", onDeviceReady, false);
     //are the touchHandlers needed with ionic? in each directive?
         function touchHandler(event)
@@ -48,235 +54,100 @@ angular.module('Controllers').controller('layoutCtrl',
         document.addEventListener("touchend", touchHandler, true);
         document.addEventListener("touchcancel", touchHandler, true);  
 
-
         $scope.floorLists = ['neighborhood', 'exterior', 'first', 'second', 'third', 'basement', 'attic', 'garage', 'section'];
         $scope.roomLists = ['exterior','living room','bath','closet','kitchen','dining room'];
         $scope.actionLists = ['add flag','add note','add image from camera','add image from file'];
 		$scope.editRooms = ['change name','add point to shape','add door','add window','add stairs','add outlet']; // when edit mode
 		$scope.insideRooms = ['add toilet','add sink','add refrigerator','add flame','add tub','add shower','add vent'];
+		
         var floors = []; 
-        var currentFloor = $scope.currentFloor = [];
+		var floorInd = 0;
         if ($state.params.floorInd) {floorInd = $state.params.floorInd};
-		$scope.showBar = function(){
-			$ionicNavBarDelegate.showBar(true);
-		};
-		var hideBar = $scope.hideBar = function(){
-			$ionicNavBarDelegate.showBar(false);
-		};
-		$timeout(hideBar,1000);
+
         if (currentInspection.floors){
             floors = currentInspection.floors;
-            var newTitle = currentInspection.address + ': <b>' + floors[floorInd].name.toUpperCase() + '</b> floor';
-            $ionicNavBarDelegate.changeTitle(newTitle, 'left');
+            var newFloorTitle = currentInspection.address + ': <b>' + floors[floorInd].name.toUpperCase() + '</b> floor';
+            $ionicNavBarDelegate.changeTitle(newFloorTitle, 'left');
         } else {
-            currentInspection['floors'] = [ { "name" : "first", "color" : "#ed0e0e","rooms" : [] } ];
-            //need to think through adding if no inspection fed to it -- Don't like this with navbar...
+            floors = currentInspection['floors'] = [ { "name" : "first", "color" : "#ed0e0e","rooms" : [] } ];
         };
-			 
-        var floorInd = $state.params.floorInd 
-        currentFloor = $scope.currentFloor = currentInspection.floors[floorInd];
-        
-        var rooms = [];
-        if (currentFloor.rooms){
-            console.log(currentFloor.rooms)};
-        
-		$scope.currentFloor = currentFloor;
-        $scope.currentInspection = currentInspection;
-        $scope.pointPath = findGeom.pointPath;
+		
+        var currentFloor = $scope.currentFloor = currentInspection.floors[floorInd];
+		
+		var addNewFloorCheck = function(floor){ //this means that the floor indices change for others, too!
+			for (var k=0;k<floors.length;k++){
+				if (floors[k].name == floor){
+					floorInd = k;
+					return false; //does this break??
+				} else {
+					floorInd = floors.length;
+					return true;
+				};
+			};
+		}
         $scope.newFloor = function(floor){
-            console.log(floors)
-			console.log(currentFloor);
-            $scope.layoutObjs = [];
-            $scope.rooms = [];
-            if (floors.indexOf(floor)==-1){
-                room = '';
-                rooms = [];
-//                $scope.tpospx = '250px';
-//                $scope.lpospx = '150px';
-//                $scope.container = 'grid-container';
-                floors.push(floor);
-                floorInd = $state.params.floorInd = floors.indexOf(floor);
-//                if (!$scope.drawFromRooms){
-//                floorPoints = $scope.floorPoints = [[100,100],[300,100],[300,300],[100,300]]; //add this way and can bezier later
-                    //console.log('still need to think through')
-                    //create a floorPoint list with four corners
-                    //addObj.newObj($scope,floor+"_floor",floorInd)
-                //} else {
-                //    floorPoints = $scope.floorPoints = [];
-               // };
-                currentInspection.floors[floorInd] = [floor];
-                currentInspection.floors[floorInd].rooms = [];
-                rooms = $scope.rooms = [];
-                //need floorPoints to be added here!!!!
+			var addNewFloor = addNewFloorCheck(floor);
+			if(addNewFloor){
+                floors.push({"name" : floor, "color" : "#ed0e0e", "rooms" : []});
+				currentFloor = $scope.currentFloor = currentInspection.floors[floorInd];
             }else{
-                floorInd = $state.params.floorInd = floors.indexOf(floor); //because indexOf doesn't update in order
-                rooms = $scope.rooms = currentInspection.floors[floorInd].rooms;
-                console.log(rooms)
-                console.log('that was rooms, but as object or list?')
-                //will I need to redo all the sub indices, or will the .state do it??
+				currentFloor = $scope.currentFloor = currentInspection.floors[floorInd];
             };
-            console.log(floorInd + 'floorInd')
-//            floorInd = 0;
-            //$state.go('layout.inspections.floor');
-            $state.params.inspectInd = 0; //will need to do this differently
-            $state.params.floorName = floor; //can that have an ng-show or ui-sref-active???
-            currentFloor = currentInspection.floors[floorInd]; //make sure picks up original
-            console.log(currentInspection.floors);
-            console.log('was currentInspect');
-            console.log(currentFloor);
-            
-            //floorPoints
-            
-            //
-            //all the state management things
         };
-//        $scope.floorPoints4Lines = [[100,100,300,100],[300,100,300,300],[300,300,100,300],[100,300,100,100]]
-        
-//        var floorInd = $stateParams.floorInd = floors.indexOf(floor);
-        $scope.floorPointPath = function(){
-            //returns value of floorPoints, etc.
-        }
-        var room = $scope.room || '';
-        var rooms = $scope.rooms = [];
-        var roomInd = $state.params.roomInd = rooms.indexOf(room);
-        var currentRoom = $scope.currentRoom = ['test']; //maybe get it from stateParams, which would change from the directive?
-        //var currentRoom = currentFloor[roomInd] || false;
+		var testRoom = [{"type" : "Polygon", 
+				"properties" : {"name" : "TestExample", "color" : "#ed0e0e"},
+				"active" : true,
+            	"contains" : [ 0, 4, 6 ],
+            	"shares" : [ 2, 5, 7 ],  
+            	"text" : [ [2,[0]], [4,[3,4]], [6,[null]] ],
+            	"arcs" : [ [2,[0]], [4,[3,4]], [6,[null]] ],
+            	"projections" : {
+                	"transform" : [ [1,[2,3,8]], [4,[3,6,5]] ],
+                	"scale" : [ 3, 0 ],
+                	"translate" : [ 3 ], 
+                	"rotate" : [ 0 ],
+                	"eigens" : [[0,0.2223432],[2,0.00122323]] 
+            	}
+            	}];
+		var rooms;
+		var roomInd = 0;
+        if (currentInspection.floors[floorInd].rooms){
+            rooms = currentFloor.rooms;
+        } else {
+            rooms = currentFloor['rooms'] = testRoom;
+        };
+		
+        var currentRoom = $scope.currentRoom = currentInspection.floors[floorInd].rooms[roomInd];
+		if ($state.params.roomInd) {roomInd = $state.params.roomInd};
+		
+		var addNewRoomCheck = function(room){ //this means that the floor indices change for others, too!
+			for (var r=0;r<rooms.length;r++){
+				if (rooms[r].name == room){
+					roomInd = r;
+					return false; //does this break??
+				} else {
+					roomInd = room.length;
+					return true;
+				};
+			};
+		}
         $scope.newRoom = function(room){
-//            console.log(currentFloor.length+' currentfloot')
-            if (currentFloor.length > 0) {
-                if (rooms.indexOf(room)==-1){
-                    //have room list add possibility of room2 as well as existing 
-                    //http://www.bennadel.com/blog/2452-mixing-static-and-dynamic-data-in-an-angularjs-select-menu.htm
-                    rooms.push(room);
-                    $scope.rooms = rooms;
-                    roomInd = $state.params.roomInd = rooms.indexOf(room);
-                    //addSvgPoint.newSvg($scope,'line',3);
-                    //addObj.newObj($scope,room+"_room",roomInd);
-                    currentFloor.rooms[roomInd] = [room];
-                } else {
-                    roomInd = $state.params.roomInd = rooms.indexOf(room);
-                };
-                //$state.go('layout.floor.room');
-                newFloorOrRoom = $scope.newFloorOrRoom = false;
-                $state.params.roomName = room; //can that have an ng-show or ui-sref-active??? how is it inherited?
-                currentRoom = currentFloor.rooms[roomInd]; //make sure picks up original
-                console.log(currentRoom)
-                console.log(roomInd + ' roomInd')
-                if (!currentRoom.roomPoints){
-                    currentRoom.roomPoints = $scope.roomPoints = [[120.0,120.0],[220.0,120.0],[220.0,220.0],[120.0,220.0]]; //should be calculated from previous?
-                    
-                };
-                $scope.currentFloor = currentFloor;
-                currentInspection.floors[floorInd] = currentFloor;
+			var addNewRoom = addNewRoomCheck(room)
+            if (addNewRoom) {
+				console.log(testRoom[0].properties.name)
+				testRoom[0].properties.name = room;
+				rooms.push(testRoom);
+				currentFloor.rooms = $scope.currentFloor.rooms = rooms;
+			} else {
+				rooms = $scope.currentFloor.rooms = currentFloor.rooms;
+			};
+			if (!currentRoom.roomPoints){
+				currentRoom.roomPoints = $scope.roomPoints = [[520.0,320.0],[520.0,520.0],[320.0,520.0],[320.0,320.0]]; 
+			};
+			//$scope.currentFloor = currentFloor;
+			//currentInspection.floors[floorInd] = currentFloor;
                 //$scope.$apply;
-            } else {
-                alert('Must add floor/area to place room inside');
-                return
-//                if (!currentFloor[roomInd]){
-//                    console.log('roomInd'+roomInd)
-//                    currentFloor[roomInd] = $scope.rooms = rooms;
-//                }else{
-//                    rooms = $scope.rooms = currentFloor.rooms;
-//                };
-                //roomPoints = currentRoom.roomPoints;
-                
-//                if (!currentRoom[layoutObj]){
-//                    currentRoom[layoutObj] = layoutObjs;
-//                }else{
-//                    rooms = currentRoom.layoutObjs;
-//            }
-            console.log(currentRoom)
-            };
-        };
-        $scope.dragPointsOLD = function($event,i){
-            $event.preventDefault();
-            currentRoom.roomPoints[i][0] = 10*Math.round((($event.gesture.center.pageX-offLeft)*gridMag)/10);
-            currentRoom.roomPoints[i][1] = 10*Math.round((($event.gesture.center.pageY-offTop)*gridMag)/10);
-            currentRoom.measurePoints = $scope.measurePoints = findGeom.showMeasures(currentRoom.roomPoints);
-        };
-        
-        $scope.dragShapesOLD = function($event){ //need to work in zoom stuff - needs copy and drag from left top to smooth it 
-            var copyPoints = _.clone(currentRoom.roomPoints)
-            $event.preventDefault();
-            var xtraOffX = 0;
-            var xtraOffY = 0;
-            if(copyPoints.length > 3){ //change to center of polygon
-                xtraOffX = Math.abs(copyPoints[0][0]-copyPoints[1][0])/2;
-                xtraOffY = Math.abs(copyPoints[0][1]-copyPoints[2][1])/2; //works well for squares
-            }
-            var dragX = (($event.gesture.center.pageX-offLeft)*gridMag)-copyPoints[0][0]-xtraOffX;
-            var dragY = (($event.gesture.center.pageY-offTop)*gridMag)-copyPoints[0][1]-xtraOffY;
-            for (var n = 0;n<currentRoom.roomPoints.length;n++){
-                currentRoom.roomPoints[n][0] = 10*Math.round((copyPoints[n][0] + dragX)/10);
-                currentRoom.roomPoints[n][1] = 10*Math.round((copyPoints[n][1] + dragY)/10);
-            };
-            currentRoom.measurePoints = $scope.measurePoints = findGeom.showMeasures(currentRoom.roomPoints);
-        };
-        $scope.closestIndices = 0;
-        $scope.dragLineStartOLD = function($event){
-            $event.preventDefault();
-            var arr = _.clone(currentRoom.roomPoints);
-            var fingerX = ($event.gesture.center.pageX-offLeft)*gridMag;
-            var fingerY = ($event.gesture.center.pageY-offTop)*gridMag;
-            var ind4new = 0;
-            $scope.ind4new = ind4new = findGeom.closestLine(arr,fingerX,fingerY);
-            $scope.xtraOffX1 = fingerX - arr[ind4new-1][0];
-            $scope.xtraOffY1 = fingerY - arr[ind4new-1][1];
-            if(ind4new+1>arr.length){ind4new = 0};
-            $scope.xtraOffX2 = fingerX - arr[ind4new][0];
-            $scope.xtraOffY2 = fingerY - arr[ind4new][1];
-        }
-        $scope.dragLinesOLD = function($event){
-            $event.preventDefault();
-            var ind4new = $scope.ind4new;
-            var xtraOffX1 = $scope.xtraOffX1;
-            var xtraOffY1 = $scope.xtraOffY1;
-            var xtraOffX2 = $scope.xtraOffX2;
-            var xtraOffY2 = $scope.xtraOffY2;
-            var dragX1 = (($event.gesture.center.pageX-offLeft)*gridMag)-xtraOffX1;
-            var dragY1 = (($event.gesture.center.pageY-offTop)*gridMag)-xtraOffY1;
-            var dragX2 = (($event.gesture.center.pageX-offLeft)*gridMag)-xtraOffX2;
-            var dragY2 = (($event.gesture.center.pageY-offTop)*gridMag)-xtraOffY2;
-            
-//            var dragX = ($event.gesture.center.pageX*gridMag)-arr[0][0]-xtraOffX;
-//            var dragY = ($event.gesture.center.pageY*gridMag)-arr[0][1]-xtraOffY;
-            currentRoom.roomPoints[ind4new-1][0] = 10*Math.round(dragX1/10);// 10*Math.round((arr[ind4new-1][0] + dragX)/10);
-            currentRoom.roomPoints[ind4new-1][1] = 10*Math.round(dragY1/10); //10*Math.round((arr[ind4new-1][1] + dragY)/10);
-            if(ind4new+1>currentRoom.roomPoints.length){ind4new = 0};
-            currentRoom.roomPoints[ind4new][0] = 10*Math.round(dragX2/10); //10*Math.round((arr[ind4new][0] + dragX)/10);
-            currentRoom.roomPoints[ind4new][1] = 10*Math.round(dragY2/10); //10*Math.round((arr[ind4new][1] + dragY)/10);
-//            for (var n = ind4new-1;n<ind4new+1;n++){
-//                currentRoom.roomPoints[n][0] = 10*Math.round((arr[n][0] + dragX)/10);
-//                currentRoom.roomPoints[n][1] = 10*Math.round((arr[n][1] + dragY)/10);
-//            };
-            currentRoom.measurePoints = $scope.measurePoints = findGeom.showMeasures(currentRoom.roomPoints);
-        };
-//        $scope.showMeasurePoints = function(){
-//            return findGeom.showMeasures(currentRoom.roomPoints);
-//        }
-        
-        $scope.cons = function(){
-            console.log(currentInspection)
-        }
-//        $scope.dragLines = function($event){
-//            setTimeout(100);
-//            var deltaX = $event.gesture.deltaX;
-//            var deltaY = $event.gesture.deltaY;
-//            console.log($event)
-//            console.log($event.target.attributes[4])
-//            for (var n = 0;n<$scope.floorPoints4Lines.length;n++){
-//                $scope.floorPoints4Lines[n][0] += deltaX;
-//                $scope.floorPoints4Lines[n][1] += deltaY;
-//                $scope.floorPoints4Lines[n][2] += deltaX;
-//                $scope.floorPoints4Lines[n][3] += deltaY;
-//            }
-//        };
-        $scope.iconWidth = 45;
-        $scope.iconHeight = 45;
-        $scope.iconFill = '#60FF00'; //green - red= #FF0000; yellow=#FFFF0D;
-        
-        var layoutObjInd = 0; //layoutObjs.indexOf(layoutObj);
-        var XYObj = [];
+		};
         $scope.newObj = function(obj,$event){
             var layoutObjs = [];
             if (currentRoom.layoutObjs != null) { // && currentRoom.layoutObjs.length>0){
@@ -322,12 +193,6 @@ angular.module('Controllers').controller('layoutCtrl',
                 //addObj.newObj($scope,obj,layoutObjInd);
             };
         };
-//        $scope.dragLayoutObjs = function($event,i){
-//            //findGridOffsets(); 
-//            $event.preventDefault();
-//            currentRoom.layoutObjs[i][0] = 10*Math.round((($event.gesture.center.pageX-offLeft)*gridMag)/10);
-//            currentRoom.layoutObjs[i][1] = 10*Math.round((($event.gesture.center.pageY-offTop)*gridMag)/10);
-//        };
         var notes = [];
         var note = $scope.note = '';
         $scope.showNote = false;
@@ -383,27 +248,9 @@ angular.module('Controllers').controller('layoutCtrl',
           alert('Failed because: ' + message);
         };
         */
-        $scope.testFunction = function () {
-            alert('from controller')
-        };
         
         //var svgItems = []; //internal descriptors go here, but are placed from directive
         //var layoutItems = [];
-        var relPositions = []; //x,y as transformed into percent of relContainer
-        
-        var layoutObjects = [];
-    //var relContainer = []; //height and width, although used as 100% reference for relPositions -- is each room a relative container/ no just the background grid at full size????
-        var rooms = []; //is relative position for objects - what happens if a room is added after tags?? need to add included objects?
-        var floors = []; //includes all rooms as positioned relative to it
-    
-        var layoutData = [];
-//        this.addNewLayoutObject = function(layoutObject){
-//            layoutData[$state.current].floors[$state.floor].rooms[$state.room].layoutObjects.push(layoutObject);
-//        };
-//        this.addNewRoom = function(roomObject){
-//        };
-//        this.addNewFloor = function(floorObject){
-//        };
         
         $scope.selectLayoutObject = function (layoutObject) {
             layoutObjectModel.setSelectedObject(layoutObject);

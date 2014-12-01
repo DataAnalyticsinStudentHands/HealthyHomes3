@@ -14,13 +14,10 @@
                fill="#fcfbfa" 
                fill-opacity="0.2" 
                stroke-width="1">
-                <animate ng-if="dragtheGrid" attributeType="CSS" attributeName="stroke-dasharray" 
-         from="5,5,5,5,5,5" to="2,2,2,2,2,2" dur="16s" repeatCount="indefinite" />
                 <line ng-repeat="gridpt in gridLineNumber(canvasSize,50)" ng-attr-x1="{{gridpt}}" y1="0" ng-attr-x2="{{gridpt}}" ng-attr-y2="{{canvasSize}}" />
                 <line ng-repeat="gridpt in gridLineNumber(canvasSize,50)" x1="0" ng-attr-y1="{{gridpt}}" ng-attr-x2="{{canvasSize}}" ng-attr-y2="{{gridpt}}" />  
     
             </g>    
-<!--<image x="-555" y="-155" width="1300px" height="1300px" xlink:href="{{'img/Galvestonmap.svg'}}"></image>-->
 
             <g 
                ng-show="gridShow1" stroke="#6bea3b" stroke-dasharray="2,2,2,2,2,2" fill="#fcfbfa" fill-opacity="0.2" stroke-width=".2">
@@ -30,25 +27,17 @@
                 
             </g> 
             
-            <g ng-repeat="floor in currentInspection.floors">
+<!--            <g ng-repeat="floor in currentInspection.floors">
+			-->
+			<g floor-manip
+               floor='floor'
+			   id="wholeFloor">
                 
                 <polygon class="floorShowline" 
-                         floor-manip
-                         floor='floor'
-                         ng-click="alert('whole rect')"
-                         hm-dragend="dragFloors($event)"
-                         hm-hold="svgEdit=!svgEdit" 
                          ng-attr-points="{{floor.points}}"/>
-<!--
-                <polygon points="250,190 110,111" style="fill:lime;stroke:purple;stroke-width:19" />
-                <path d="M100,200 C100,100 250,100 250,200"
-        fill="red" stroke="blue" stroke-width="3" />
-                <path d="m100,200 L100.001,200.001"
-        fill="red" stroke="blue" stroke-width="3" />
--->
             
             <g class="roomLines" 
-               ng-repeat="room in currentFloor.rooms"
+               ng-repeat="room in currentFloor.rooms track by $index"
                room = 'room'
                room-manip >
                     
@@ -125,8 +114,8 @@
 		         <select ng-model="currentFloor" 
 		                required
 		                style="float:right;position:relative"
-		                ng-change="newFloor(toFloor)"
-		                ng-options="toFloor for toFloor in floorLists">
+		                ng-change="newFloor(currentFloor)"
+		                ng-options="currentFloor.toUpperCase() for currentFloor in floorLists">
 		            <option value="">{{currentFloor.name.toUpperCase()}}</option>
 		        </select>
 		        <select ng-model="room" 
