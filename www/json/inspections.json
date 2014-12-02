@@ -119,7 +119,7 @@
         [
             {   "type" : "Polygon",
             "properties" : {
-                "name" : "TestExample",
+                "name" : "JonesRoom",
                 "color" : "#ed0e0e"
             },
             "active" : true,

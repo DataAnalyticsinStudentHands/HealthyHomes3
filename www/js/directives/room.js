@@ -150,7 +150,7 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
 			angular.element(elem.find('text')[0]).removeClass('roomEditLine');
 		}
 		dragWhole =! dragWhole;
-		//  elem.find('polygon').css('stroke-dasharray','3,3,3,3,3,3');
+		//elem.find('polygon').css('stroke-dasharray','3,3,3,3,3,3');
 		elem.find('polygon').toggleClass('roomDashArray');
 		//elem.find('circle').toggleClass('roomEditLine');//css('display','block');
 		//elem.find('text').toggleClass('roomEditLine');
@@ -168,6 +168,8 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
         $ionicGesture.off(dragEndGesture, 'dragend', endDrag);
         $ionicGesture.off(holdGesture, 'hold', measures);
     });
+
       }
+                     
     };
 });

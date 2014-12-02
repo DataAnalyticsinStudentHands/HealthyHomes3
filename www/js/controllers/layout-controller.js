@@ -64,6 +64,8 @@ angular.module('Controllers').controller('layoutCtrl',
 		var floorInd = 0;
         if ($state.params.floorInd) {floorInd = $state.params.floorInd};
 
+        var currentFloor = $scope.currentFloor = currentInspection.floors[floorInd];
+        
         if (currentInspection.floors){
             floors = currentInspection.floors;
             var newFloorTitle = currentInspection.address + ': <b>' + floors[floorInd].name.toUpperCase() + '</b> floor';
@@ -71,8 +73,6 @@ angular.module('Controllers').controller('layoutCtrl',
         } else {
             floors = currentInspection['floors'] = [ { "name" : "first", "color" : "#ed0e0e","rooms" : [] } ];
         };
-		
-        var currentFloor = $scope.currentFloor = currentInspection.floors[floorInd];
 		
 		var addNewFloorCheck = function(floor){ //this means that the floor indices change for others, too!
 			for (var k=0;k<floors.length;k++){
@@ -87,6 +87,7 @@ angular.module('Controllers').controller('layoutCtrl',
 		}
         $scope.newFloor = function(floor){
 			if(currentFloor!=floor){
+                console.log(currentFloor)
 				var addNewFloor = addNewFloorCheck(floor);
 				if(addNewFloor){
         	        floors.push({"name" : floor, "color" : "#ed0e0e", "rooms" : []});
@@ -94,10 +95,13 @@ angular.module('Controllers').controller('layoutCtrl',
         	    }else{
 					currentFloor = $scope.currentFloor = currentInspection.floors[floorInd];
         	    };
+                console.log(currentFloor)
+                clearFloorContents();
 				setFloorContents();
 			}
         };
 		var testRoom = [{"type" : "Polygon", 
+                "id" : 45,
 				"properties" : {"name" : "TestExample", "color" : "#ed0e0e"},
 				"active" : true,
             	"contains" : [ 0, 4, 6 ],
@@ -127,10 +131,20 @@ angular.module('Controllers').controller('layoutCtrl',
         var notes = [];
         var images = [];
         var roomItem;
+        var clearFloorContents = function(){
+            features = [];
+            shapes = [];
+            roomArcs = [];
+            notes = [];
+            images = [];
+        };
         //will I need to call this again? in a function?
 		var setFloorContents = function(){
+            console.log('current floor')
+            console.log(currentFloor.rooms);
     	    for (var itemInd=0; itemInd<currentFloor.rooms.length; itemInd++){
     	        roomItem = currentFloor.rooms[itemInd]
+                roomItem.id = itemInd;
     	        if (roomItem.type == "Feature"){
     	            features.push(roomItem)
     	        };
@@ -168,19 +182,13 @@ angular.module('Controllers').controller('layoutCtrl',
         $scope.newRoom = function(room){
 			var addNewRoom = addNewRoomCheck(room)
             if (addNewRoom) {
-				console.log(testRoom[0].properties.name)
 				testRoom[0].properties.name = room;
-				rooms.push(testRoom);
+				rooms.push(testRoom[0]);
 				currentFloor.rooms = $scope.currentFloor.rooms = rooms;
 			} else {
 				rooms = $scope.currentFloor.rooms = currentFloor.rooms;
 			};
-			if (!currentRoom.roomPoints){
-				currentRoom.roomPoints = $scope.roomPoints = [[520.0,320.0],[520.0,520.0],[320.0,520.0],[320.0,320.0]]; 
-			};
-			//$scope.currentFloor = currentFloor;
-			//currentInspection.floors[floorInd] = currentFloor;
-                //$scope.$apply;
+			setFloorContents();
 		};
         $scope.newObj = function(obj,$event){
             var layoutObjs = [];
