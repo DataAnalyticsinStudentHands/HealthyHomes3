@@ -86,13 +86,16 @@ angular.module('Controllers').controller('layoutCtrl',
 			};
 		}
         $scope.newFloor = function(floor){
-			var addNewFloor = addNewFloorCheck(floor);
-			if(addNewFloor){
-                floors.push({"name" : floor, "color" : "#ed0e0e", "rooms" : []});
-				currentFloor = $scope.currentFloor = currentInspection.floors[floorInd];
-            }else{
-				currentFloor = $scope.currentFloor = currentInspection.floors[floorInd];
-            };
+			if(currentFloor!=floor){
+				var addNewFloor = addNewFloorCheck(floor);
+				if(addNewFloor){
+        	        floors.push({"name" : floor, "color" : "#ed0e0e", "rooms" : []});
+					currentFloor = $scope.currentFloor = currentInspection.floors[floorInd];
+        	    }else{
+					currentFloor = $scope.currentFloor = currentInspection.floors[floorInd];
+        	    };
+				setFloorContents();
+			}
         };
 		var testRoom = [{"type" : "Polygon", 
 				"properties" : {"name" : "TestExample", "color" : "#ed0e0e"},
@@ -125,29 +128,31 @@ angular.module('Controllers').controller('layoutCtrl',
         var images = [];
         var roomItem;
         //will I need to call this again? in a function?
-        for (var itemInd=0; itemInd<currentFloor.rooms.length; itemInd++){
-            roomItem = currentFloor.rooms[itemInd]
-            if (roomItem.type == "Feature"){
-                features.push(roomItem)
-            };
-            if (roomItem.type == "Polygon"){
-                shapes.push(roomItem)
-            };
-            if (roomItem.type == "openArc"){
-                roomArcs.push(roomItem)
-            };
-            if (roomItem.type == "Note"){
-                notes.push(roomItem)
-            };
-            if (roomItem.type == "Polygon"){
-                shapes.push(roomItem)
-            };
-        };
-        $scope.features = features;
-        $scope.shapes = shapes;
-        console.log(shapes);
-        $scope.notes = notes;
-        $scope.images = images;
+		var setFloorContents = function(){
+    	    for (var itemInd=0; itemInd<currentFloor.rooms.length; itemInd++){
+    	        roomItem = currentFloor.rooms[itemInd]
+    	        if (roomItem.type == "Feature"){
+    	            features.push(roomItem)
+    	        };
+    	        if (roomItem.type == "Polygon"){
+    	            shapes.push(roomItem)
+    	        };
+    	        if (roomItem.type == "openArc"){
+    	            roomArcs.push(roomItem)
+    	        };
+    	        if (roomItem.type == "Note"){
+    	            notes.push(roomItem)
+    	        };
+    	        if (roomItem.type == "Polygon"){
+    	            shapes.push(roomItem)
+    	        };
+    	    };
+	        $scope.features = features;
+	        $scope.shapes = shapes;
+	        $scope.notes = notes;
+	        $scope.images = images;
+		};
+        setFloorContents();
 		
 		var addNewRoomCheck = function(room){ //this means that the floor indices change for others, too!
 			for (var r=0;r<rooms.length;r++){

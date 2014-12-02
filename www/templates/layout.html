@@ -2,7 +2,7 @@
     <ion-side-menu width="{{gridWd}}" id="grid" side="left" drag-content="false">
         
 <div id="floor-wrap">
-    
+    <div style="position:fixed;left:40%;z-index:333" id="floorName" ng-model="currentFloor">{{currentFloor.name}}</div>
     <div id="grid-container">
 <!--        <ion-nav-view id="floor-wrap" name="floor"></ion-nav-view>-->
             <svg id="floor-container" style='stroke-width: 0px; '
@@ -27,16 +27,15 @@
                 
             </g> 
             
-<!--            <g ng-repeat="floor in currentInspection.floors">
-			-->
-			<g floor-manip
-               floor='floor'
-			   id="wholeFloor">
+            
+				
+			<g id="wholeFloor">
+                
                 
                 <polygon class="floorShowline" 
                          ng-attr-points="{{floor.points}}"/>
             
-<!--ng-repeat="room in currentFloor.rooms track by $index"-->
+<!--ng-repeat="room in currentFloor.rooms track by $index" - change to id on the json?-->
             <g class="roomLines" 
                ng-repeat="room in shapes track by $index"
                room = 'room'
@@ -82,9 +81,8 @@
                            xlink:href="{{'img/'+values[2]+'.png'}}"></image>
                     </g>
                </g>
-                </g>
             </g>
-
+		</g>
         </svg>
 <!--        <div ng-include="'partials/floor.html'"></div>-->
     </div>
