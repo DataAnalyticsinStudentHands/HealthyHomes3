@@ -26,33 +26,6 @@ angular.module('Controllers').controller('layoutCtrl',
 			$ionicNavBarDelegate.showBar(false);
 		};
 		$timeout(hideBar,1000);
-//        document.addEventListener("deviceready", onDeviceReady, false);
-    //are the touchHandlers needed with ionic? in each directive?
-        function touchHandler(event)
-            {
-            var touches = event.changedTouches,
-            first = touches[0],
-            type = "";
-            switch(event.type)
-            {
-            case "touchstart": type = "mousedown"; break;
-            case "touchmove":  type="mousemove"; break;        
-            case "touchend":   type="mouseup"; break;
-            default: return;
-            }
-            var simulatedEvent = document.createEvent("MouseEvent");
-            simulatedEvent.initMouseEvent(type, true, true, window, 1,
-                first.screenX, first.screenY,
-                   first.clientX, first.clientY, false,
-                         false, false, false, 0/*left*/, null);
-            first.target.dispatchEvent(simulatedEvent);
-             event.preventDefault();
-             return;
-            }
-        document.addEventListener("touchstart", touchHandler, true);
-        document.addEventListener("touchmove", touchHandler, true);
-        document.addEventListener("touchend", touchHandler, true);
-        document.addEventListener("touchcancel", touchHandler, true);  
 
         $scope.floorLists = ['neighborhood', 'exterior', 'first', 'second', 'third', 'basement', 'attic', 'garage', 'section'];
         $scope.roomLists = ['exterior','living room','bath','closet','kitchen','dining room'];
@@ -142,6 +115,7 @@ angular.module('Controllers').controller('layoutCtrl',
 		var setFloorContents = function(){
             console.log('current floor')
             console.log(currentFloor.rooms);
+            clearFloorContents();
     	    for (var itemInd=0; itemInd<currentFloor.rooms.length; itemInd++){
     	        roomItem = currentFloor.rooms[itemInd]
                 roomItem.id = itemInd;
@@ -178,16 +152,22 @@ angular.module('Controllers').controller('layoutCtrl',
 					return true;
 				};
 			};
-		}
+		};
+        var newRoom;
         $scope.newRoom = function(room){
 			var addNewRoom = addNewRoomCheck(room)
             if (addNewRoom) {
-				testRoom[0].properties.name = room;
-				rooms.push(testRoom[0]);
+                console.log(rooms)
+                newRoom = _.clone(testRoom[0])
+				newRoom.properties.name = room;
+				rooms.push(newRoom);
+                console.log(rooms)
 				currentFloor.rooms = $scope.currentFloor.rooms = rooms;
+                console.log(rooms)
 			} else {
 				rooms = $scope.currentFloor.rooms = currentFloor.rooms;
 			};
+            clearFloorContents();
 			setFloorContents();
 		};
         $scope.newObj = function(obj,$event){
@@ -290,9 +270,7 @@ angular.module('Controllers').controller('layoutCtrl',
           alert('Failed because: ' + message);
         };
         */
-        
-        //var svgItems = []; //internal descriptors go here, but are placed from directive
-        //var layoutItems = [];
+
         
         $scope.selectLayoutObject = function (layoutObject) {
             layoutObjectModel.setSelectedObject(layoutObject);
@@ -300,30 +278,8 @@ angular.module('Controllers').controller('layoutCtrl',
         $scope.isSelected = function(layoutObject) {
             return layoutObject === layoutObjectModel.selectedLayoutObject;
         };
-        $scope.txt = 'I am in the controller $scope';
-//        $scope.myDrag = function($event) {
-//            console.log($event.gesture);
-//            $scope.gesture = $event.gesture;
-//        };
-        $scope.type = '--';    
-        //$scope.gesture = $event.gesture;
-        $scope.handleGesture = function($event) {
-//http://stackoverflow.com/questions/10246305/android-browser-touch-events-stop-display-being-updated-inc-canvas-elements-h/10495741#10495741
-            function touchHandlerDummy($event) 
-                {
-                $event.preventDefault();
-                return false;
-                }
-            document.addEventListener("touchstart", touchHandlerDummy, false);
-            document.addEventListener("touchmove", touchHandlerDummy, false);
-            document.addEventListener("touchend", touchHandlerDummy, false);
-            console.log($event.type);
-            //console.log($event.gesture);
-            $scope.type = $event.type;
-            $scope.gesture = $event.gesture;
-        //scope.topPosition = e.gesture.center.pageY;
-        };
-        
+
+
  });
 
 

@@ -135,6 +135,60 @@
                 "eigens" : [[0,0.2223432],[2,0.00122323]] 
             }
             },
+            {   "type" : "Polygon",
+            "properties" : {
+                "name" : "sRoom",
+                "color" : "#ed0e0e"
+            },
+            "active" : true,
+            "contains" : [ 0, 4, 6 ],
+            "shares" : [ 2, 5, 7 ],  
+            "text" : [ [2,[0]], [4,[3,4]], [6,[null]] ],
+            "arcs" : [ [2,[0]], [4,[3,4]], [6,[null]] ],
+            "projections" : {
+                "transform" : [ [1,[2,3,8]], [4,[3,6,5]] ],
+                "scale" : [ 3, 0 ],
+                "translate" : [ 3 ], 
+                "rotate" : [ 0 ],
+                "eigens" : [[0,0.2223432],[2,0.00122323]] 
+            }
+            },
+            {   "type" : "Polygon",
+            "properties" : {
+                "name" : "JoRoom",
+                "color" : "#ed0e0e"
+            },
+            "active" : true,
+            "contains" : [ 0, 4, 6 ],
+            "shares" : [ 2, 5, 7 ],  
+            "text" : [ [2,[0]], [4,[3,4]], [6,[null]] ],
+            "arcs" : [ [2,[0]], [4,[3,4]], [6,[null]] ],
+            "projections" : {
+                "transform" : [ [1,[2,3,8]], [4,[3,6,5]] ],
+                "scale" : [ 3, 0 ],
+                "translate" : [ 3 ], 
+                "rotate" : [ 0 ],
+                "eigens" : [[0,0.2223432],[2,0.00122323]] 
+            }
+            },
+            {   "type" : "Polygon",
+            "properties" : {
+                "name" : "JRoom",
+                "color" : "#ed0e0e"
+            },
+            "active" : true,
+            "contains" : [ 0, 4, 6 ],
+            "shares" : [ 2, 5, 7 ],  
+            "text" : [ [2,[0]], [4,[3,4]], [6,[null]] ],
+            "arcs" : [ [2,[0]], [4,[3,4]], [6,[null]] ],
+            "projections" : {
+                "transform" : [ [1,[2,3,8]], [4,[3,6,5]] ],
+                "scale" : [ 3, 0 ],
+                "translate" : [ 3 ], 
+                "rotate" : [ 0 ],
+                "eigens" : [[0,0.2223432],[2,0.00122323]] 
+            }
+            },
             {   "type" : "Note",
             "properties" : {
                 "name" : "Living Room",

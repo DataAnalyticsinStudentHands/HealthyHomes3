@@ -37,7 +37,7 @@
             
 <!--ng-repeat="room in currentFloor.rooms track by $index" - change to id on the json?-->
             <g class="roomLines" 
-               ng-repeat="room in shapes track by $index"
+               ng-repeat="(id, room) in shapes track by id"
                room = 'room'
                room-manip >
                     

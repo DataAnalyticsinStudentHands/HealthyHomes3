@@ -10,7 +10,7 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
             
         }],
         link: function(scope,elem,attr) {
-    scope.room.roomPoints = [[120.0,120.0],[220.0,120.0],[220.0,220.0],[120.0,220.0]];  //get from service as map from arcs
+    scope.room.roomPoints = [[20.0,120.0],[220.0,120.0],[220.0,220.0],[120.0,220.0]];  //get from service as map from arcs
     console.log(scope.room)
     var points = scope.room.roomPoints;
     //scope.room.roomNameX = points[0][0] + 10;
@@ -76,6 +76,8 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
     var startDrag = function(e){
         e.preventDefault();
         e.stopPropagation();
+        var dragElem = elem.find('polygon')
+        dragElem.css({'z-index':'0'})
 		//clonePts = _.clone(points);
 		inPts = _.map(points,function(num){return true});
 		fingerX = e.gesture.center.pageX;
@@ -128,6 +130,9 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
         scope.$apply();
     };
     var endDrag = function(e){
+        if (elem.id == 1){
+        var dragElem = elem.find('polygon')
+        dragElem.css({'z-index':'220'})}
         $ionicSideMenuDelegate.canDragContent(true);
         for (var n=0;n<points.length;n++){
             points[n][0] = 10*Math.round(points[n][0]/10);
