@@ -1,4 +1,4 @@
-angular.module('Directives').directive('roomManip',function($ionicGesture,$ionicSideMenuDelegate,findGeom){
+angular.module('Directives').directive('roomManip',function($ionicGesture,$ionicSideMenuDelegate,arcs,findGeom){
     return {
         restrict: 'AE',
         scope: {
@@ -74,15 +74,14 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
 	var dragX;
 	var dragY;
     var startDrag = function(e){
+        //needs to check for shared points to drag with - could it be in the setRoom function?? //what are we doing with inactive rooms??
         e.preventDefault();
         e.stopPropagation();
         var dragElem = elem.find('polygon')
         dragElem.css({'z-index':'0'})
 		//clonePts = _.clone(points);
 		inPts = _.map(points,function(num){return true});
-		fingerX = e.gesture.center.pageX;
-		fingerY = e.gesture.center.pageY;
-		newIndex4line = findGeom.closestLine(points,fingerX,fingerY);
+		
         $ionicSideMenuDelegate.canDragContent(false);
         gridMag = findGeom.gridMag;
         offLeft = findGeom.offSetLeft(gridElem); 
@@ -90,6 +89,9 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
         offTop = findGeom.offSetTop(gridElem);
 		xtraOffX = Math.abs(points[0][0] - (e.gesture.center.pageX-offLeft)/gridMag);
 		xtraOffY = Math.abs(points[0][1] - (e.gesture.center.pageY-offTop)/gridMag);
+        fingerX = (e.gesture.center.pageX/gridMag)-offLeft;
+		fingerY = (e.gesture.center.pageY/gridMag)-offTop;
+		newIndex4line = findGeom.closestLine(points,fingerX,fingerY);
     };
 	var points2 = [];
 	var new4line;
@@ -108,8 +110,8 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
 				xtraOffX = (points2[1][0] - points2[0][0])/(2*gridMag);
 				xtraOffY = (points2[1][1] - points2[0][1])/(2*gridMag);
 			}else{
-				xtraOffX = 0;
-				xtraOffY = 0;
+				xtraOffX = 2/gridMag;
+				xtraOffY = 2/gridMag;
 			}
 		}else{
 			points2 = points;
@@ -129,10 +131,11 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
 		scope.room.measurePoints = findGeom.showMeasures(points);
         scope.$apply();
     };
+    var highZ = 100; //need to figure out for dragging objects
     var endDrag = function(e){
         if (elem.id == 1){
         var dragElem = elem.find('polygon')
-        dragElem.css({'z-index':'220'})}
+        dragElem.css({'z-index':highZ})}
         $ionicSideMenuDelegate.canDragContent(true);
         for (var n=0;n<points.length;n++){
             points[n][0] = 10*Math.round(points[n][0]/10);
@@ -140,7 +143,11 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
         };
         scope.room.measurePoints = findGeom.showMeasures(points);
         //elem.find('polygon').css('display','none');
-        points2 = [];
+//        points2 = [];
+//        inPts = [];
+//        newIndex4line = [];
+//        new4line = 0;
+//        onlyPt = false;
         scope.$apply();
     };
 	var measures = function(e){

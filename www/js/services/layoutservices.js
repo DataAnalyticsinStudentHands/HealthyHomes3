@@ -105,7 +105,9 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 //    }else{
 //        layoutObjectModel.inspections['floors'] = []
 //    };
-    
+.factory('arcs',function() {
+    console.log('wtf on inspections');
+})
 .service('findGeom', function() {
     var gridMag = this.gridMag = 1;
     var gridElem = this.gridElem = angular.element(document.getElementById('floor-container'));
@@ -151,7 +153,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
                 testInd = i;
             };
 		};
-		if (secondShortestLine/shortestLine > 7 || secondShortestLine/shortestLine == 1){
+		if (secondShortestLine/shortestLine > 3 || secondShortestLine/shortestLine == 1){
 			pointOnly = true;
 			testInd = lineInd;
 			if (testInd>arr.length-2){testInd=0;};

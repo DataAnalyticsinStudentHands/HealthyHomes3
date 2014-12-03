@@ -6,6 +6,11 @@ angular.module('Controllers').controller('layoutCtrl',
 	function ($scope, $window, $timeout, $state, $stateParams, Restangular, layoutObjectModel, inspections, $ionicSideMenuDelegate, $ionicNavBarDelegate, findGeom) {
         var inspectionIndex = $state.params.inspectionIndex;
         var currentInspection = $scope.currentInspection = inspections[inspectionIndex];
+        var arcs = currentInspection.arcs;
+        console.log('arcs');
+        console.log(arcs);
+        console.log(arcs[0][0]);
+        console.log(arcs[0][0].slice(0,arcs[0][0].length)) //(position to start- 0 ind, count to end - 1 ind)
         var toggleLeft = $scope.toggleLeftSideMenu = function() {
             $ionicSideMenuDelegate.toggleLeft();
         };
