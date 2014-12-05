@@ -39,7 +39,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
             return $http.get('/json/inspections.json')
                     .success(function(data, status, headers, config) {
                         //layoutObjectModel['inspections'] = data;
-                        localStorage.setObject('inspections', data);
+                        localStorage.setObject('inspectionsNOTUSED', data);
                         //console.log(layoutObjectModel['inspections'])
                     })
                     .error(function(data, status, headers, config) {
@@ -177,7 +177,44 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
             rtnStr+=(' ' + arr[i][0]+','+arr[i][1]);
         }
         return rtnStr;
+    };
+    var segment;
+    this.svgPath = function(arr){
+        var rtnPathString = '';//+arr[0][0]+' '+arr[0][1];
+        //for (var key=0; k<arr.length; key++){
+        for (var key in arr){
+            segment = arr[key];
+            if(segment.pathType == "newSeg"){
+                rtnPathString += ' M'+segment.points[0][0]+' '+segment.points[0][1];
+            };
+            if(segment.pathType == "Line"){
+                rtnPathString += ' L'+segment.points[0][0]+' '+segment.points[0][1];
+            };
+            if(segment.pathType == "bez3"){
+                rtnPathString += ' C'+segment.points[0][0]+' '+segment.points[0][1]+' '+segment.points[1][0]+' '+segment.points[1][1]+' '+segment.points[2][0]+' '+segment.points[2][1];
+            };
+        }
+        return rtnPathString
     }
+    this.complexPath = function(arr){
+        var rtrnStr = 'M'+arr[0][0]+','+arr[0][1]
+        for (var i=0;i<arr.length;i++){
+            if (i>0 & i<3){
+                rtrnStr +=(' L' + arr[i][0]+' '+arr[i][1]);
+            };
+            if (i == 3){
+                rtrnStr +=(' C' +arr[i][0]+' '+arr[i][1]+' '+arr[i+1][0]+' '+arr[i+1][1]+' '+arr[i+2][0]+','+arr[i+2][1]);
+                //rtrnStr +=(' Q' +arr[i][0]+','+arr[i][1]+' '+arr[i+1][0]+','+arr[i+1][1]);
+            };
+            if (i==6){
+                rtrnStr += (' S' + arr[i][0]+' '+arr[i][1]+' '+arr[i+1][0]+' '+arr[i+1][1]);
+                //rtrnStr += (' T' + arr[i][0]+','+arr[i][1]);
+            };
+        };
+        //rtrnStr+= ' z';
+        //console.log(rtrnStr)
+        return rtrnStr;
+    };
     this.showMeasures = function(arrIn){
         var arrOut = [];
         if (arrIn == undefined) {

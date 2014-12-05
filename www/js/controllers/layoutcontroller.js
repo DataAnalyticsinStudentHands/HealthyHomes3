@@ -3,10 +3,15 @@
 //var layoutController = angular.module('HHControllers', []);
 
 angular.module('Controllers').controller('layoutCtrl', 
-	function ($scope, $window, $timeout, $state, $stateParams, Restangular, layoutObjectModel, inspections, $ionicSideMenuDelegate, $ionicNavBarDelegate, findGeom) {
+	function ($scope, $window, $timeout,$localStorage, $state, $stateParams, Restangular, layoutObjectModel, inspections, $ionicSideMenuDelegate, $ionicNavBarDelegate, findGeom) {
         var inspectionIndex = $state.params.inspectionIndex;
         var currentInspection = $scope.currentInspection = inspections[inspectionIndex];
         var arcs = currentInspection.arcs;
+        //$scope.$storage = $localStorage;
+        $scope.saveInspection = function(){
+            $localStorage.inspections[inspectionIndex] = $scope.currentInspection;
+            alert('saved to localstorage');
+        }
         console.log('arcs');
         console.log(arcs);
         console.log(arcs[0][0]);
@@ -16,6 +21,8 @@ angular.module('Controllers').controller('layoutCtrl',
         };
         $scope.gridWd = $window.innerWidth*.95;
         $window.setTimeout(toggleLeft,500);
+        $scope.complexPath = findGeom.complexPath;
+        $scope.svgPath = findGeom.svgPath;
         $scope.pointPath = findGeom.pointPath;
         var gridElem = findGeom.gridElem;
         var magnifyGrid = findGeom.magnifyGrid;
@@ -78,7 +85,7 @@ angular.module('Controllers').controller('layoutCtrl',
 				setFloorContents();
 			}
         };
-		var testRoom = [{"type" : "Polygon", 
+		var testRoom = [{"type" : "Path", 
                 "id" : 45,
 				"properties" : {"name" : "TestExample", "color" : "#ed0e0e"},
 				"active" : true,
@@ -104,6 +111,7 @@ angular.module('Controllers').controller('layoutCtrl',
 		if ($state.params.roomInd) {roomInd = $state.params.roomInd};
         var currentRoom = $scope.currentRoom = currentInspection.floors[floorInd].rooms[roomInd];
 		var features = [];
+        var paths = [];
         var shapes = [];
         var roomArcs = [];
         var notes = [];
@@ -111,6 +119,7 @@ angular.module('Controllers').controller('layoutCtrl',
         var roomItem;
         var clearFloorContents = function(){
             features = [];
+            paths = [];
             shapes = [];
             roomArcs = [];
             notes = [];
@@ -126,6 +135,9 @@ angular.module('Controllers').controller('layoutCtrl',
                 roomItem.id = itemInd;
     	        if (roomItem.type == "Feature"){
     	            features.push(roomItem)
+    	        };
+                if (roomItem.type == "Path"){
+    	            paths.push(roomItem)
     	        };
     	        if (roomItem.type == "Polygon"){
     	            shapes.push(roomItem)

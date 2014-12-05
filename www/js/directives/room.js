@@ -10,9 +10,54 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
             
         }],
         link: function(scope,elem,attr) {
-    scope.room.roomPoints = [[20.0,120.0],[220.0,120.0],[220.0,220.0],[120.0,220.0]];  //get from service as map from arcs
-    console.log(scope.room)
+    scope.room.roomPoints = [[20.0,120.0],[220.0,120.0],[220.0,220.0],[320.0,320.0],[220.0,420.0],[420.0,220.0],[620.0,620.0],[720.0,720.0]];  //get from service as map from arcs
+    //console.log(scope.room)
     var points = scope.room.roomPoints;
+    var svgArr = [];
+    svgArr = 
+    [ 
+        { "pathType" : "newSeg",
+                   
+         "points" : [[130,177]]
+                   
+        },
+        { "pathType" : "bez3",
+                   
+        "points" : [[310,440],[420,540],[520.0,640.0]],
+                   
+        },
+        { "pathType" : "newSeg",
+                   
+         "points" : [[530,577]]
+                   
+        },
+                   
+        { "pathType" : "Line",
+                   
+         "points" : [[630,777]]
+                   
+        }
+    ];
+    var nextPoints;
+    if(!scope.room.svgPoints){
+        scope.room.svgPoints = svgArr;//findGeom.svgPath(svgArr);
+    }else{
+        svgArr = scope.room.svgPoints;
+    };
+    points = [];
+    var setPoints = function(){
+        for (item in svgArr){
+            nextPoints = svgArr[item].points
+            if (nextPoints){
+                for (item in nextPoints){
+                    points.push(nextPoints[item])
+                }
+            }
+        }
+    };
+    setPoints();
+    console.log(points)
+    //points = points2;
     //scope.room.roomNameX = points[0][0] + 10;
     //scope.room.roomNameY = points[0][1] + 10;        
     //scope.room.measurePoints = findGeom.showMeasures(points);
@@ -21,6 +66,7 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
 	var ind4new;
 	var newX;
 	var newY;
+    var newXY = [];
 	var dragWhole = true;
 	var addPoint = function(e){ //needs to add circles properly
 		e.stopPropagation();
@@ -38,11 +84,15 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
     		gridMag = findGeom.gridMag;
 		    newX = fingerX*gridMag;
 		    newY = fingerY*gridMag;
+            newXY = [[newX,newY]];
 		    if(ind4new+1>points.length || ind4new == 0 ){
-		        points.push([newX,newY]); //to end??
+		        points.push([[newX,newY]]); //to end??
+                svgArr.push({"pathType" : "Line","points":newXY})
 		    }else{
 		        points.splice(ind4new,0,[newX,newY]);
+                svgArr.splice(ind4new,0,{"pathType" : "Line","points":newXY})
 		    };
+            setPoints();
 			scope.room.measurePoints = findGeom.showMeasures(points);
 			scope.$apply();
 		};
@@ -77,8 +127,8 @@ angular.module('Directives').directive('roomManip',function($ionicGesture,$ionic
         //needs to check for shared points to drag with - could it be in the setRoom function?? //what are we doing with inactive rooms??
         e.preventDefault();
         e.stopPropagation();
-        var dragElem = elem.find('polygon')
-        dragElem.css({'z-index':'0'})
+        //var dragElem = elem.find('polygon')
+        //dragElem.css({'z-index':'0'})
 		//clonePts = _.clone(points);
 		inPts = _.map(points,function(num){return true});
 		

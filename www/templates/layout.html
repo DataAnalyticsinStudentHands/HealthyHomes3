@@ -40,19 +40,50 @@
                ng-repeat="(id, room) in shapes track by id"
                room = 'room'
                room-manip >
+            
+                <path ng-attr-d="{{svgPath(room.svgPoints)}}" stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2"/>
+                <g ng-repeat="(i, vals) in room.svgPoints track by i">
+                    <text x={{vals.points[0][0]}}
+                          y={{vals.points[0][1]}}
+                          >{{vals.pathType}}</text>
+                    <circle firstcircle points="vals.points"
+                        ng-attr-cx={{vals.points[0][0]}}
+                        ng-attr-cy={{vals.points[0][1]}}
+                        r = 6
+                    />
+                    <circle fill="#ba202c"
+                        ng-attr-cx={{vals.points[1][0]}}
+                        ng-attr-cy={{vals.points[1][1]}}
+                        r = 6
+                    />
+                    <circle 
+                        ng-attr-cx={{vals.points[2][0]}}
+                        ng-attr-cy={{vals.points[2][1]}}
+                        r = 6
+                    />
+                </g>
+<!--                <path d="M130 130 C310 440 420 540 520 640 L630 630" stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2"/>-->
                     
+<!--
                 <text x="{{room.roomPoints[0][0]+5}}" 
                       y="{{room.roomPoints[0][1]+10}}" 
                       font-size="12"
                       >{{room.properties.name}}</text>
+-->
                 
+<!--
                 <polygon stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2" 
                          hm-drag = "dragShapes($event)"
                          hm-double-tap = "centerView($event)"
                          class="roomShowLine" 
                          ng-attr-points="{{pointPath(room.roomPoints)}}" 
                 />
-                <g ng-repeat="(i, vals) in room.roomPoints track by i">
+-->
+                
+<!--                <path d="{{complexPath(room.roomPoints)}}" stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2"/>-->
+                
+<!--
+                <g ng-repeat="(i, vals) in room.svgPoints track by i">
                     <circle 
                         class="roomEditLine"
                         ng-attr-cx="{{vals[0]}}"
@@ -60,7 +91,8 @@
                         r = 6
                     />
                 </g>
-                <!--if event target is circle, then...-->
+-->
+                <!--if event target is circle, then...
                 <g ng-repeat="(ind,vals) in room.measurePoints track by ind">
                     <text ng-attr-x="{{vals[0]}}"
                           ng-attr-y="{{vals[1]}}"
@@ -69,6 +101,7 @@
                             >{{vals[2]/10}}'
                     </text>
                 </g>
+-->
                 <g ng-repeat="(indic,values) in layoutObjs track by indic"
                        >
                     <g icon-manip iconpts="layoutObjs" currentRoom="currentRoom">
@@ -111,6 +144,10 @@
 		        <img id="magnifySmaller" 
 		                 ng-click="magnifyGrid(.9)"
 		                 ng-src="img/zoomout.svg" />
+                <img id="saveInspection" 
+                     ng-click="saveInspection()"
+                        style="width:30px"
+		                 ng-src="img/archive.svg" />
 		         <select ng-model="currentFloor" 
 		                required
 		                style="float:right;position:relative"
