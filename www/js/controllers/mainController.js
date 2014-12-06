@@ -6,7 +6,7 @@ angular.module('Controllers').controller('mainController', function($scope, insp
     $scope.inspections = inspections;
     //console.log($localStorage['inspections']);
     $scope.alert = function (text) {
-        alert(text+'in');
+        alert(text+'in Main');
     };
     $scope.test = function() {
         alert('test in ctrl scope');

@@ -3,7 +3,31 @@
 //var layoutController = angular.module('HHControllers', []);
 
 angular.module('Controllers').controller('layoutCtrl', 
-	function ($scope, $window, $timeout,$localStorage, $state, $stateParams, Restangular, layoutObjectModel, inspections, $ionicSideMenuDelegate, $ionicNavBarDelegate, findGeom) {
+	function ($scope, $window, $timeout,$localStorage, $state, $stateParams, Restangular, layoutObjectModel, inspections, $ionicSideMenuDelegate, $ionicNavBarDelegate, $ionicModal, findGeom) {
+        function touchHandler(event){ //necessary for andriod, but kills ionic's side
+            var touches = event.changedTouches,
+            first = touches[0],
+            type = "";
+            switch(event.type)
+            {
+            case "touchstart": type = "mousedown"; break;
+            case "touchmove":  type="mousemove"; break;        
+            case "touchend":   type="mouseup"; break;
+            default: return;
+            }
+            var simulatedEvent = document.createEvent("MouseEvent");
+            simulatedEvent.initMouseEvent(type, true, true, window, 1,
+                first.screenX, first.screenY,
+                   first.clientX, first.clientY, false,
+                         false, false, false, 0/*left*/, null);
+            first.target.dispatchEvent(simulatedEvent);
+             event.preventDefault();
+             return;
+        };
+        document.addEventListener("touchstart", touchHandler, true);
+        document.addEventListener("touchmove", touchHandler, true);
+        document.addEventListener("touchend", touchHandler, true);
+        document.addEventListener("touchcancel", touchHandler, true);  
         var inspectionIndex = $state.params.inspectionIndex;
         var currentInspection = $scope.currentInspection = inspections[inspectionIndex];
         var arcs = currentInspection.arcs;
@@ -12,10 +36,10 @@ angular.module('Controllers').controller('layoutCtrl',
             $localStorage.inspections[inspectionIndex] = $scope.currentInspection;
             alert('saved to localstorage');
         }
-        console.log('arcs');
-        console.log(arcs);
-        console.log(arcs[0][0]);
-        console.log(arcs[0][0].slice(0,arcs[0][0].length)) //(position to start- 0 ind, count to end - 1 ind)
+//        console.log('arcs');
+//        console.log(arcs);
+//        console.log(arcs[0][0]);
+//        console.log(arcs[0][0].slice(0,arcs[0][0].length)) //(position to start- 0 ind, count to end - 1 ind)
         var toggleLeft = $scope.toggleLeftSideMenu = function() {
             $ionicSideMenuDelegate.toggleLeft();
         };
@@ -58,7 +82,33 @@ angular.module('Controllers').controller('layoutCtrl',
         } else {
             floors = currentInspection['floors'] = [ { "name" : "first", "color" : "#ed0e0e","rooms" : [] } ];
         };
-		
+        $ionicModal.fromTemplateUrl('templates/floormodal.html', {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function(modal) {
+              $scope.modal = modal;
+            });
+            $scope.chooseFloor = function() {
+              $scope.modal.show();
+            };
+            $scope.closeModal = function() {
+              $scope.modal.hide();
+            };
+            //Cleanup the modal when we're done with it!
+            $scope.$on('$destroy', function() {
+              $scope.modal.remove();
+            });
+            // Execute action on hide modal
+            $scope.$on('modal.hidden', function() {
+              // Execute action
+            });
+            // Execute action on remove modal
+            $scope.$on('modal.removed', function() {
+              // Execute action
+        });
+//		$scope.chooseFloor = function(){
+//            
+//        };
 		var addNewFloorCheck = function(floor){ //this means that the floor indices change for others, too!
 			for (var k=0;k<floors.length;k++){
 				if (floors[k].name == floor){

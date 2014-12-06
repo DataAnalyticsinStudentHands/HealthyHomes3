@@ -2,7 +2,7 @@
     <ion-side-menu width="{{gridWd}}" id="grid" side="left" drag-content="false">
         
 <div id="floor-wrap">
-    <div style="position:fixed;left:40%;z-index:333" id="floorName" ng-model="currentFloor">{{currentFloor.name}}</div>
+    <div ng-click="chooseFloor()" style="position:fixed;left:40%;z-index:333" id="floorName">{{currentFloor.name}}</div>
     <div id="grid-container">
 <!--        <ion-nav-view id="floor-wrap" name="floor"></ion-nav-view>-->
             <svg id="floor-container" style='stroke-width: 0px; '
@@ -31,36 +31,58 @@
 				
 			<g id="wholeFloor">
                 
+<!--
                 
                 <polygon class="floorShowline" 
                          ng-attr-points="{{floor.points}}"/>
+-->
             
 <!--ng-repeat="room in currentFloor.rooms track by $index" - change to id on the json?-->
-            <g class="roomLines" 
+            <g class="floorLines" 
                ng-repeat="(id, room) in shapes track by id"
                room = 'room'
                room-manip >
             
                 <path ng-attr-d="{{svgPath(room.svgPoints)}}" stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2"/>
-                <g ng-repeat="(i, vals) in room.svgPoints track by i">
-                    <text x={{vals.points[0][0]}}
-                          y={{vals.points[0][1]}}
-                          >{{vals.pathType}}</text>
-                    <circle firstcircle points="vals.points"
+                
+                <g 
+                   ng-repeat="(i, vals) in room.svgPoints track by i">
+                    <text class="roomEditLine"
+                          x={{20+room.svgPoints[0].points[0][0]}}
+                          y={{20+room.svgPoints[0].points[0][1]}}
+                          >{{room.properties.name}}</text>
+                    <circle stroke="#030303" stroke-width="1"
+                        class="roomEditLine" 
+                        circle-manip circpoints="vals.points[0]"
                         ng-attr-cx={{vals.points[0][0]}}
                         ng-attr-cy={{vals.points[0][1]}}
-                        r = 6
+                        r = 16
                     />
-                    <circle fill="#ba202c"
+                    <!--seems to not need an ng-if on fail below-->
+                    <circle ng-if=(vals.points[1])
+                        stroke="#ba202c" stroke-width=".1"
+                        class="roomEditLine"
+                        circle-manip circpoints="vals.points[1]"
                         ng-attr-cx={{vals.points[1][0]}}
                         ng-attr-cy={{vals.points[1][1]}}
-                        r = 6
+                        r = 16
                     />
-                    <circle 
+                    <circle ng-if=(vals.points[1])
+                        stroke="#ba202c" stroke-width=".1"
+                        class="roomEditLine"
+                        circle-manip circpoints="vals.points[2]"
                         ng-attr-cx={{vals.points[2][0]}}
                         ng-attr-cy={{vals.points[2][1]}}
-                        r = 6
+                        r = 16
                     />
+                    <line ng-if=(vals.points[1])
+                          stroke="#ba202c" stroke-width=".5"
+                          class="roomEditLine"
+                          ng-attr-x1={{vals.points[1][0]}}
+                          ng-attr-y1={{vals.points[1][1]}}
+                          ng-attr-x2={{vals.points[2][0]}}
+                          ng-attr-y2={{vals.points[2][1]}} />
+                          
                 </g>
 <!--                <path d="M130 130 C310 440 420 540 520 640 L630 630" stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2"/>-->
                     
@@ -148,29 +170,7 @@
                      ng-click="saveInspection()"
                         style="width:30px"
 		                 ng-src="img/archive.svg" />
-		         <select ng-model="currentFloor" 
-		                required
-		                style="float:right;position:relative"
-		                ng-change="newFloor(currentFloor)"
-		                ng-options="currentFloor.toUpperCase() for currentFloor in floorLists">
-		            <option value="">{{currentFloor.name.toUpperCase()}}</option>
-		        </select>
-		        <select ng-model="room" 
-		                style="float:right"
-		                required
-		                ng-change="newRoom(room)"
-		                ng-if="(currentFloor)"
-		                ng-options="room for room in roomLists">
-		            <option value="">-- choose room --</option>
-		        </select>
-		        <select ng-model="inRoomAction" 
-						id="roomAction"
-		                style="float:right"
-		                ng-change="action4room(action)"
-		                ng-if="(currentRoom)"
-		                ng-options="action for action in actionLists">
-		            <option value="">-- add to room --</option>
-		        </select>
+
 		        <img id="magnifyLarger" 
 		                 ng-click="magnifyGrid(1.1)"
 		                 ng-src="img/zoomin.svg" />

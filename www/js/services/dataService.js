@@ -39,7 +39,7 @@ angular.module('Services').factory('DataService', function ($http, $q, $sessionS
 
     return {
         getInspections: function () {
-            //$localStorage.$reset(); //$sessionStorage.$reset();
+            $localStorage.$reset(); //$sessionStorage.$reset();
             //need to return as a promise for resolve in app.js
             if ($localStorage['inspections'] != null){
                 inspections = $localStorage['inspections'];

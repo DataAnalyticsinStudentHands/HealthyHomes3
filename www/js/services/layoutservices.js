@@ -191,7 +191,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
                 rtnPathString += ' L'+segment.points[0][0]+' '+segment.points[0][1];
             };
             if(segment.pathType == "bez3"){
-                rtnPathString += ' C'+segment.points[0][0]+' '+segment.points[0][1]+' '+segment.points[1][0]+' '+segment.points[1][1]+' '+segment.points[2][0]+' '+segment.points[2][1];
+                rtnPathString += ' C'+segment.points[2][0]+' '+segment.points[2][1]+' '+segment.points[1][0]+' '+segment.points[1][1]+' '+segment.points[0][0]+' '+segment.points[0][1];
             };
         }
         return rtnPathString

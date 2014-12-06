@@ -1,0 +1,34 @@
+<div class="modal">
+    <header class="bar bar-header bar-positive">
+          <h1 class="title">Choose a Floor or Room</h1>
+          <div class="button button-clear" ng-click="modal.hide()"><span class="icon ion-close"></span></div>
+    </header>
+        <content has-header="false" padding="true">
+            <div id="selectFloorRoom" style="position:absolute;top:20%">
+            <select ng-model="currentFloor" 
+		                required
+		                style="float:right;position:relative"
+		                ng-change="newFloor(currentFloor)"
+		                ng-options="currentFloor.toUpperCase() for currentFloor in floorLists">
+		            <option value="">{{currentFloor.name.toUpperCase()}}</option>
+		        </select>
+		        <select ng-model="room" 
+		                style="float:right"
+		                required
+		                ng-change="newRoom(room)"
+		                ng-if="(currentFloor)"
+		                ng-options="room for room in roomLists">
+		            <option value="">-- choose room --</option>
+		        </select>
+		        <select ng-model="inRoomAction" 
+						id="roomAction"
+		                style="float:right"
+		                ng-change="alert('fukc')"
+		                ng-if="(currentRoom)"
+		                ng-options="action for action in actionLists">
+		            <option value="">-- add to room --</option>
+                    <!--ng-change="action4room(action)"-->
+		        </select>
+                </div>
+            </content>
+    </div>

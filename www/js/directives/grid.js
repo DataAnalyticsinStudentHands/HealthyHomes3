@@ -1,4 +1,4 @@
-angular.module('Directives').directive('gridManip',function($ionicGesture,$window,$timeout,findGeom){
+angular.module('Directives').directive('gridManip',function($ionicGesture,$ionicSideMenuDelegate,$window,$timeout,findGeom){
     return {
         restrict: 'AE',
         //templateUrl: 'partials/gridlines.html',
@@ -26,6 +26,7 @@ angular.module('Directives').directive('gridManip',function($ionicGesture,$windo
             var gridoffLeft = gridElem[0].offsetLeft;
             var newMag;
             var dragGrid = function($event){
+                $ionicSideMenuDelegate.canDragContent(false);
                 $event.preventDefault();
                 var deltaX = $event.gesture.deltaX;
                 var deltaY = $event.gesture.deltaY;
@@ -47,6 +48,7 @@ angular.module('Directives').directive('gridManip',function($ionicGesture,$windo
                 e.preventDefault();
                 gridoffTop = gridElem[0].offsetTop;
                 gridoffLeft = gridElem[0].offsetLeft;
+                $ionicSideMenuDelegate.canDragContent(false);
             };
             var holdGest = function(e){
                 e.preventDefault();
