@@ -1,68 +1,70 @@
 <!doctype html>
-<html lang="en" ng-app="HHApp">
+<html lang="en">
     
 <head>
-<!--	<meta charset="utf-8">-->
-    <meta name="viewport" content="width=device-width, initial-scale=1"  charset="utf-8">
-	<title>Inspector Login Page</title>
-	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" >
+    
+	<title>Healthy Homes</title>
+    
 	<link rel="stylesheet" href="css/app.css">
-	<script src="bower_components/angular/angular.js"></script>
-<!--<script src="bower_components/angular-cookies/angular-cookies.js"></script>-->
-	<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-	<script src="/bower_components/angular-resource/angular-resource.js"></script>	
-<!--  <script src="bower_components/checklist-model/checklist-model.js"></script>	-->
-<script src="bower_components/lodash/dist/lodash.underscore.js"></script>
-    <script src="bower_components/restangular/dist/restangular.js"></script>
-	<script src="bower_components/angular-touch/angular-touch.js"></script>
-    <script src="bower_components/angular-gestures/gestures.min.js"></script>
-    <script src="bower_components/phonegap/lib/android/cordova.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="lib/ionic/css/ionic.css">
+    <link rel="stylesheet" href="lib/ng-notify/dist/ng-notify.min.css"> 
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    
+    <script src="lib/lodash/dist/lodash.underscore.js"></script>
+    <script src="lib/restangular/dist/restangular.js"></script>
+    <script src="lib/ng-notify/dist/ng-notify.min.js"></script>
+    <script src="lib/ngstorage/ngStorage.js"></script>
+    
+<!--    <script src="lib/ngCordova/dist/ng-cordova.js"></script>-->
+
+<!--	<script src="js/ng-cordova.js"></script>-->
+<!--    <script src="lib/phonegap/lib/android/cordova.js"></script>-->
+    
 	<script src="js/app.js"></script> 
-<!--<script src="js/dbcontroller.js"></script>-->
-  	<script src="js/controllers.js"></script>
-  	<script src="js/layoutservices.js"></script>
-    <script src="js/layout-controller.js"></script>
-    <script src="js/drag-save.js"></script>
-    <script src="js/camera.js"></script>
-	<script src="js/ng-cordova.js"></script>
-  	<script src="js/checklist-model.js"></script>	
-    <script src="js/services.js"></script>	
-<!--	<script src="cordova.js"></script>-->
-<!--<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha512.js"></script>-->
+    
+    <script src="js/Services/services.js"></script>
+    <script src="js/Services/layoutservices.js"></script>
+    <script src="js/Services/dataService.js"></script>
+    <script src="js/Services/downloadService.js"></script>
+    <script src="js/Services/userService.js"></script>
+    
+  	<script src="js/Controllers/controllers.js"></script>
+    <script src="js/Controllers/mainController.js"></script>
+  	
+    <script src="js/Controllers/layoutcontroller.js"></script>
+    <script src="js/Controllers/map-controller.js"></script>
+    <script src="js/Controllers/camera.js"></script>
+    
+    <script src="js/Directives/directives.js"></script>
+    <script src="js/Directives/map.js"></script>
+    <script src="js/Directives/grid.js"></script>
+    <script src="js/Directives/points.js"></script>
+    <script src="js/Directives/room.js"></script>
+    <script src="js/Directives/icon.js"></script>
+    <!-- modules -->
+    <script type="text/javascript" src="modules/DatabaseCommunicationModule/js/controllers.js"></script>
+    <script type="text/javascript" src="modules/DatabaseCommunicationModule/js/services.js"></script>
 </head> 
     
-<body> 
-    <div ui-view="app"></div> 
-<!--    <div ui-view="sideMenu"></div>-->
-    <div ui-view="layout"></div>
-
-<script type="text/javascript">
-
-    //Chrome passes the error object (5th param) which we must use since it now truncates the Msg (1st param).
-    window.onerror = function (errorMsg, url, lineNumber, columnNumber, errorObject) {
-        var errMsg;
-        //check the errorObject as IE and FF don't pass it through (yet)
-        if (errorObject && errorObject !== undefined) {
-                errMsg = errorObject.message;
-            }
-            else {
-                errMsg = errorMsg;
-            }
-        alert('Error: ' + errMsg);
-        document.write(errMsg);
-    }
-
-    var throwError = function () {
-        throw new Error(
-        'Something went wrong. Something went wrong. Something went wrong. Something went wrong. ' +
-        'Something went wrong. Something went wrong. Something went wrong. Something went wrong. ' + 
-        'Something went wrong. Something went wrong. Something went wrong. Something went wrong. ' + 
-        'Text does not get truncated! :-)');
-    }
-
-    </script>
-
-    <div id="error"></div>
+<body ng-app="HHApp" class="platform-android platform-cordova platform-webview"> 
+    <!-- 
+      The nav bar that will be updated as we navigate between views.
+    -->
+    <ion-nav-bar class="bar-stable nav-title-slide-ios7" back-button-type="button-icon" back-button-icon="ion-arrow-left-c">
+        <ion-nav-back-button class="button-clear">
+            <i class="ion-arrow-left-c"></i> Back
+        </ion-nav-back-button>
+    </ion-nav-bar>
+    <!-- 
+      The views will be rendered in the <ion-nav-view> directive below
+      Templates are in the /templates folder (but you could also
+      have templates inline in this html file if you'd like).
+    -->
+    <ion-nav-view animation="slide-left-right"></ion-nav-view>
+</body>
 
 </body>
     

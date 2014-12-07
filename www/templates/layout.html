@@ -1,8 +1,25 @@
-<ion-side-menus>
+<!--
+<ion-view ng-click="chooseFloor()"
+          title="{{currentInspection.address + ': <b>' + currentFloor.name.toUpperCase() + '</b> floor'}}"
+          >
+-->
+<ion-view>
+    <ion-nav-buttons>
+      <button class="button" ng-click="chooseFloor()" side="left">
+        {{currentInspection.address + ": "+currentFloor.name.toUpperCase()}}
+      </button>
+      <button class="button" ng-click="magnifyGrid(.9)" side="left">
+        <img id="magnifySmaller" ng-src="img/zoomout.svg" />
+      </button>
+      <button class="button" ng-click="magnifyGrid(1.1)" side="left">
+        <img id="magnifyLarger" ng-src="img/zoomin.svg" />
+      </button>
+    </ion-nav-buttons>
+    
+    <ion-side-menus>
     <ion-side-menu width="{{gridWd}}" id="grid" side="left" drag-content="false">
-        
 <div id="floor-wrap">
-    <div ng-click="chooseFloor()" style="position:fixed;left:40%;z-index:333" id="floorName">{{currentFloor.name}}</div>
+    
     <div id="grid-container">
 <!--        <ion-nav-view id="floor-wrap" name="floor"></ion-nav-view>-->
             <svg id="floor-container" style='stroke-width: 0px; '
@@ -41,6 +58,7 @@
             <g class="floorLines" 
                ng-repeat="(id, room) in shapes track by id"
                room = 'room'
+               openAdd2room = 'add2room()'
                room-manip >
             
                 <path ng-attr-d="{{svgPath(room.svgPoints)}}" stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2"/>
@@ -142,7 +160,7 @@
 <!--        <div ng-include="'partials/floor.html'"></div>-->
     </div>
 
-<!--Should we have a box that is populated when viewed, or make full boxes and make invisible?-->
+<!--Should we have a box that is populated when viewed, or make full boxes and make invisible? Will need to put in a modal-->
     <div id="noteBox" ng-show="showNote">
         <div id="noteTopBar">
             <img ng-src="{{noteIcon}}" /> 
@@ -162,19 +180,7 @@
         </textarea>
     </div>
             
-			<div id="floor-controls">
-		        <img id="magnifySmaller" 
-		                 ng-click="magnifyGrid(.9)"
-		                 ng-src="img/zoomout.svg" />
-                <img id="saveInspection" 
-                     ng-click="saveInspection()"
-                        style="width:30px"
-		                 ng-src="img/archive.svg" />
 
-		        <img id="magnifyLarger" 
-		                 ng-click="magnifyGrid(1.1)"
-		                 ng-src="img/zoomin.svg" />
-		        </div>
   	   </div>
         
     </ion-side-menu>
@@ -221,3 +227,4 @@
 
 
 </ion-side-menus>
+</ion-view>

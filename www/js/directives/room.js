@@ -2,12 +2,12 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
     return {
         restrict: 'AE',
         scope: {
-            room: '='
+            room: '=',
+            openAdd2room: '&'
         },
 //        templateNamespace: 'svg',
 //        template: '<circle fill="red" stroke="blue" stroke-width="3" cx="250" cy="200" r="100" />',
         controller: ['$scope', function($scope){
-            
         }],
         link: function(scope,elem,attr) {
     scope.room.roomPoints = [[20.0,120.0],[220.0,120.0],[220.0,220.0],[320.0,320.0],[220.0,420.0],[420.0,220.0],[620.0,620.0],[720.0,720.0]];  //get from service as map from arcs
@@ -15,6 +15,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
     scope.alert = function (text) {
         alert(text+'inroom');
     };
+    //var add2room = scope.add2room;
     var points = scope.room.roomPoints;
     var svgArr = [];
     svgArr = 
@@ -108,10 +109,28 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 	    //fingerY = e.gesture.center.pageY; //in case needed after select?
         e.preventDefault();
         e.stopPropagation();
+        scope.showAdd2Room();
 //		var selectBox = document.getElementById('roomAction');
 //		selectBox.size = 5;
 //		selectBox.value = 3;
     };
+    $ionicModal.fromTemplateUrl('templates/roommodal.html', {
+            id: "rmModal",
+            scope: scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+          scope.roomModal = modal;
+    });
+    scope.showAdd2Room = function() {
+        scope.roomModal.show();
+    };
+    scope.closeModal = function() {
+        scope.floorModal.hide();
+    };
+    scope.$on('$destroy', function() {
+        scope.floorModal.remove();
+    });
+    
     for (var n = 0;n<points.length;n++){
         points[n][0] = parseInt(points[n][0]);
         points[n][1] = parseInt(points[n][1]);

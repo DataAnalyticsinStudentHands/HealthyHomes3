@@ -58,10 +58,10 @@ angular.module('Controllers').controller('layoutCtrl',
 		/*$scope.showBar = function(){
 			$ionicNavBarDelegate.showBar(true);
 		};*/
-		var hideBar = $scope.hideBar = function(){
-			$ionicNavBarDelegate.showBar(false);
-		};
-		$timeout(hideBar,1000);
+//		var hideBar = $scope.hideBar = function(){
+//			$ionicNavBarDelegate.showBar(false);
+//		};
+//		$timeout(hideBar,1000);
 
         $scope.floorLists = ['neighborhood', 'exterior', 'first', 'second', 'third', 'basement', 'attic', 'garage', 'section'];
         $scope.roomLists = ['exterior','living room','bath','closet','kitchen','dining room'];
@@ -77,34 +77,37 @@ angular.module('Controllers').controller('layoutCtrl',
         
         if (currentInspection.floors){
             floors = currentInspection.floors;
-            var newFloorTitle = currentInspection.address + ': <b>' + floors[floorInd].name.toUpperCase() + '</b> floor';
-            $ionicNavBarDelegate.changeTitle(newFloorTitle, 'left');
+            //var newFloorTitle = currentInspection.address + ': <b>' + floors[floorInd].name.toUpperCase() + '</b> floor';
+            //$ionicNavBarDelegate.changeTitle(newFloorTitle, 'left');
         } else {
             floors = currentInspection['floors'] = [ { "name" : "first", "color" : "#ed0e0e","rooms" : [] } ];
         };
         $ionicModal.fromTemplateUrl('templates/floormodal.html', {
+                id: "flrModal",
                 scope: $scope,
                 animation: 'slide-in-up'
             }).then(function(modal) {
-              $scope.modal = modal;
-            });
-            $scope.chooseFloor = function() {
-              $scope.modal.show();
-            };
-            $scope.closeModal = function() {
-              $scope.modal.hide();
-            };
-            //Cleanup the modal when we're done with it!
-            $scope.$on('$destroy', function() {
-              $scope.modal.remove();
-            });
-            // Execute action on hide modal
-            $scope.$on('modal.hidden', function() {
-              // Execute action
-            });
-            // Execute action on remove modal
-            $scope.$on('modal.removed', function() {
-              // Execute action
+              $scope.floorModal = modal;
+        });
+//        $ionicModal.fromTemplateUrl('templates/roommodal.html', {
+//                id: "rmModal",
+//                scope: $scope,
+//                animation: 'slide-in-up'
+//            }).then(function(modal) {
+//              $scope.roomModal = modal;
+//        });
+        $scope.chooseFloor = function() {
+            $scope.floorModal.show();
+        };
+//        $scope.add2Room = function() {
+//            alert('adffads');
+//            $scope.roomModal.show();
+//        }; 
+        $scope.closeModal = function() {
+            $scope.floorModal.hide();
+        };
+        $scope.$on('$destroy', function() {
+            $scope.floorModal.remove();
         });
 //		$scope.chooseFloor = function(){
 //            
@@ -121,6 +124,7 @@ angular.module('Controllers').controller('layoutCtrl',
 			};
 		}
         $scope.newFloor = function(floor){
+            console.log(floor)
 			if(currentFloor!=floor){
                 console.log(currentFloor)
 				var addNewFloor = addNewFloorCheck(floor);
@@ -133,8 +137,14 @@ angular.module('Controllers').controller('layoutCtrl',
                 console.log(currentFloor)
                 clearFloorContents();
 				setFloorContents();
-			}
+			};
+            $scope.closeModal();
         };
+        $scope.changeFloorName = function(currFloor){
+            currentFloor['name'] = currFloor;
+            $scope.closeModal();
+        };
+        
 		var testRoom = [{"type" : "Path", 
                 "id" : 45,
 				"properties" : {"name" : "TestExample", "color" : "#ed0e0e"},

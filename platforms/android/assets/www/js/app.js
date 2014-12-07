@@ -1,125 +1,182 @@
-'use strict';
-
-/* App Module */
-/* NEED TO THINK THROUGH RESOLVES!
-http://angular-ui.github.io/ui-router/site/#/api/ui.router.util.$resolve?*/
-
-var HHApp = angular.module('HHApp', [
-	'HHControllers', 
-	'ui.router', 
-    'angular-gestures',
-	'ngCordova.plugins.camera',  
-	'jsonServices',
-	'dbServicesModule', 
+angular.module('HHApp', [
+    'ionic',
+	'Controllers',
+    'Services',
+    'Directives',
     'restangular',
-	'checklist-model'
-]); //dependencies
+    'ngNotify',
+    'ngStorage',
+    'databaseControllerModule',
+    'databaseServicesModule'
+]).run(function ($ionicPlatform, Restangular, $rootScope, Auth, $q, $state) {
+    'use strict';
 
-HHApp.config(function(RestangularProvider) {
-                RestangularProvider.setBaseUrl('/json');
-            })
-.config(
-  function($stateProvider) {
+    $ionicPlatform.ready(function () {
+        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+        // for form inputs)
+        if (window.cordova && window.cordova.plugins.Keyboard) {
+            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+        }
+        if (window.StatusBar) {
+            // org.apache.cordova.statusbar required
+            StatusBar.styleDefault();
+        }
+    }); 
+    //Restangular.setBaseUrl("http://www.housuggest.org:8080/HealthyHomes/");
+    //Restangular.setBaseUrl("http://www.housuggest.org:8080/HHtest/");
+ 
+    $rootScope.Restangular = function () {
+        return Restangular;
+    };
+    $rootScope.isAuthenticated = function () {
+        return true; //until through with testing
+        //return Auth.hasCredentials(); 
+    };
+
+    $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
+        console.log("$stateChangeStart");
+        console.log($rootScope.isAuthenticated());
+        if (toState.authenticate && !$rootScope.isAuthenticated()) {
+            console.log("non-authed");
+            // User isn’t authenticated
+            $state.go("login");
+            //What?
+            event.preventDefault();
+        } else {
+            console.log("authed");
+        }
+    });
+    
+    //Logout user by clearing credentials
+    $rootScope.logout = function () {
+        Auth.clearCredentials();
+        console.log("log out");
+        $state.go('login', {}, {
+            reload: true
+        });
+    };
+    
+    // Some watchdogs for fixing ui-route issues Credits: Adam's answer in http://stackoverflow.com/a/20786262/69362
+    $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams) {
+        console.log('$stateChangeError - fired when an error occurs during transition.');
+        console.log(arguments);
+    });
+
+    $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+        console.log('$stateChangeSuccess to ' + toState.name + '- fired once the state transition is complete.');
+        console.log($state);
+    });
+
+    $rootScope.$on('$viewContentLoaded', function (event) {
+        console.log('$viewContentLoaded - fired after dom rendered', event);
+    });
+
+    $rootScope.$on('$stateNotFound', function (event, unfoundState, fromState, fromParams) {
+        console.log('$stateNotFound ' + unfoundState.to + '  - fired when a state cannot be found by its name.');
+        console.log(unfoundState, fromState, fromParams);
+    });
+})
+.config(function ($stateProvider, $urlRouterProvider) {
+        'use strict';
+//    $urlRouterProvider.when("","/inspection");
+//    $urlRouterProvider.when("/","/inspection");
+    $urlRouterProvider.otherwise("/login");
     $stateProvider 
-      .state('login', {
-          url: "",
-          views: {
-            "app": {templateUrl: "partials/loginPage.html"} 
-          }
+      .state('login',{ //should all come from login?
+          url: "/login",
+          templateUrl: 'templates/login.html',
+          controller: 'loginCtrl',
+          authenticate: true
       })
-      .state('inspection',{
-          url: "/inspection",
-          views: {
-              "schedule": { templateUrl: "partials/inspectionSchedule.html",
+      .state('secure', {
+            abstract: true,
+            url: "/tab",
+            authenticate: true,
+            templateUrl: "templates/tabs.html",
+            controller: "mainController",
+            resolve: {
+                inspections: function (DataService, $ionicLoading) {
+                    return DataService.getInspections();
+                }
+            } 
+      })
+      .state('secure.inspections', {
+          url: "/inspections",
+          views: { //as separate views so we can access them directly
+            "inspections": { templateUrl: "templates/inspections.html"
+                         },
+            "schedule": { templateUrl: "templates/inspectionSchedule.html",
                           controller: "scheduleController"
                          },
-              "general": { templateUrl: "partials/inspectionGeneral.html",
-                          controller: "inspectionController"
-                         },
-              "summary": { templateUrl: "partials/summary.html",
-                          controller: "summaryController"
-                         },
-              "overview": { templateUrl: "partials/overview.html",
+            "general": { templateUrl: "templates/inspectionGeneral.html",
+                        controller: "generalController"
+                       },
+            "summary": { templateUrl: "templates/summary.html",
+                        controller: "summaryController"
+                       },
+            "overview": { templateUrl: "templates/overview.html",
                            controller: "overviewController"
                           }
+//            "layout": { 
+//					templateUrl: 'templates/layoutPage.html',
+//					controller: 'layoutCtrl' 				
+//					}
           }
-          //, is inspectionId being set with each inspection?
-//          resolve:
-//          data: 
-      })  
-      .state('layout', {	
-          abstract: true,
-//          url: "/layout",
-          views: {
-                "layout": { 
-					templateUrl: 'partials/layoutPage.html',
-					controller: 'layoutCtrl' 					
-					}//,
-//                "sideMenu": { //will give us more control later
-//                    templateUrl: 'partials/sideMenu.html',
-//                    controller: 'layoutCtrl'   
-//                    //controller: 'sideMenuController' //right now, it's just calling in json
-//                    }	  
-            } //,
-          //authenticate: true //add here once Carl's module included for authentication
       })
-      .state('layout.floor', {
-          url: "/layout",
+//      .state('secure.map', {
+//          abstract: true,
+//          templateUrl: 'templates/map.html',
+//          controller: 'mapCtrl'
+//      })
+    //should all work like layout
+      .state('secure.inspections.map', {
+          url:"/map",
           views: {
-                "floor": {
-                    templateUrl: 'partials/floor.html'
+                "map@secure": {
+                    templateUrl: 'templates/map.html',
+                    controller: 'mapCtrl'
+                },
+                "surroundCity": {
+                    templateUrl: 'templates/city.html'
+                },
+                "neighborhood": {
+                    templateUrl: 'templates/neighborhood.html'
+                },
+                "dataCtrls": {
+                    templateUrl: 'templates/left.html'
                 }
-            }//,
-//          data:{
-//             resolve: {
-//                floorData: function($stateParams, layoutObjectModel) {
-//                    var thisFloor = $stateParams.floorName;
-//                    var currentFloor = layoutObjectModel.inspection[thisFloor]; //need to rethink
-//                    return currentFloor;
-//                }
-//             }
-      })
-      .state('layout.floor.room', {
-             resolve: {
-                floorData: function(layoutObjectModel) {
-                    console.log('in app.js')
-                    return layoutObjectModel;
-                }
-             }
-      })
-      .state('questions', {										//same ^
-		  abstract: true,										//has to have children
-          url: "/questions",
-          views: {
-			"app": { templateUrl: 'partials/layoutPage.html' }
             }
       })
-	  .state('questions.tabs', {
-		  url: "/login/questions/:tabId",
-		  views: {
-			"questions": {
-				templateUrl: "partials/questions.html",
-				controller: 'questionsCtrl'
-			}
-		  }
-	  })
-      .state('topMenu', {
+      .state('secure.inspections.layout', {	
+          url: "/layout/:inspectionIndex/:floorInd",
           views: {
-              'topMenu': {
-                  templateUrl: 'partials/topMenu.html'
-              }
-          }
-      })         
-    // perhaps for note, too?
-//    http://stackoverflow.com/questions/23231608/angular-ui-router-modal-removes-parent-state
-      .state('camera', { //I'm not sure how this has been envisioned
-          url: "/login/camera",
+                "inspections@secure": { 
+					templateUrl: 'templates/layout.html',
+					controller: 'layoutCtrl' 				
+					}
+                }
+      })
+      .state('secure.inspections.questions', {	
+          url: "/questions/:inspectionIndex/:floorInd",
           views: {
-            "camera": {templateUrl: "partials/camera.html"} 
-          }
-      });
-  })
-    .run(function($state){ //need to discuss how we will do login, etc.
-   $state.go('login');
+                "inspections@secure": { 
+					templateUrl: 'templates/questions.html'
+					}
+                }
+      })
+//      .state('secure.inspections.floor', {
+//        url: "/floor/:inspectionIndex",
+//        views: {
+//                    templateUrl: 'templates/floor.html'
+//                }
+//      });
+
     });
+//    http://stackoverflow.com/questions/23231608/angular-ui-router-modal-removes-parent-state
+//      .state('camera', { //I'm not sure how this has been envisioned
+//          url: "/login/camera",
+//          views: {
+//            "camera": {templateUrl: "templates/camera.html"} 
+//          }
+//      });
   

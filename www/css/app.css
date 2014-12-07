@@ -884,14 +884,13 @@ body{
     z-index:55;
     text-align:center;
 }
-#floorNameOLD{
+#floorName{
     font-style:bold;
-    font-size:1.5em;
+    z-index:10;
+    left:45%;
     color:red;
-    position:relative;
+    position:fixed;
     border-style:none;
-    border-width:2px;
-    border-color:#16A770;
     border-radius: 4px;
     background-color:transparent;
     padding:3px;
