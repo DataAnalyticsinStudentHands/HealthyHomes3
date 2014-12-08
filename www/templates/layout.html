@@ -60,15 +60,15 @@
                room = 'room'
                openAdd2room = 'add2room()'
                room-manip >
-            
                 <path ng-attr-d="{{svgPath(room.svgPoints)}}" stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2"/>
-                
+                <text class="roomEditLine"
+                      x={{20+room.svgPoints[0].points[0][0]}}
+                      y={{20+room.svgPoints[0].points[0][1]}}
+                      >{{room.properties.name}}</text>
+				
                 <g 
                    ng-repeat="(i, vals) in room.svgPoints track by i">
-                    <text class="roomEditLine"
-                          x={{20+room.svgPoints[0].points[0][0]}}
-                          y={{20+room.svgPoints[0].points[0][1]}}
-                          >{{room.properties.name}}</text>
+					
                     <circle stroke="#030303" stroke-width="1"
                         class="roomEditLine" 
                         circle-manip circpoints="vals.points[0]"
@@ -100,7 +100,6 @@
                           ng-attr-y1={{vals.points[1][1]}}
                           ng-attr-x2={{vals.points[2][0]}}
                           ng-attr-y2={{vals.points[2][1]}} />
-                          
                 </g>
 <!--                <path d="M130 130 C310 440 420 540 520 640 L630 630" stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2"/>-->
                     

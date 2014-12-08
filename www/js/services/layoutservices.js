@@ -215,23 +215,32 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
         //console.log(rtrnStr)
         return rtrnStr;
     };
-    this.showMeasures = function(arrIn){
+    this.showMeasures = function(arrIn){ //should walk based on only first value in points, and give measures and a line?
         var arrOut = [];
         if (arrIn == undefined) {
             arr = [];
         }else{
-            var arr = _.clone(arrIn);
+            var arr = _.clone(arrIn); //try with and without - do a path for the text on arc/bez3?
             var centX = 0;
             var centY = 0;
             var dist = 0;
             var XYDist = [];
             arr.push([arr[0][0],arr[0][1]])
             for (var i = 0; i < arr.length-1; i++){
-                centX = Math.round((arr[i][0]+arr[i+1][0])/2);  //all should be positive
-                centY = Math.round((arr[i][1]+arr[i+1][1])/2);  //all should be positive
-                dist = Math.round(pythagDist(arr[i][0],arr[i+1][0],arr[i][1],arr[i+1][1]));
-                XYDist = [centX, centY, dist];
-                arrOut.push(XYDist);
+				if(arr[i+1].pathType=='newSeg'){
+					pass;
+				};
+				if(arr[i+1].pathType=='Line'){
+	                centX = Math.round((arr[i].points[0][0]+arr[i+1].points[0][0])/2);  //all should be positive
+	                centY = Math.round((arr[i].points[0][1]+arr[i+1].points[0][1])/2);  //all should be positive
+	                dist = Math.round(pythagDist(arr[i].points[0][0],arr[i+1].points[0][0],arr[i].points[0][1],arr[i+1].points[0][1]));
+	                XYDist = [centX, centY, dist];
+	                arrOut.push(XYDist); //push it to include the other points, so it can draw more smoothly with the lines for dragging??
+				};
+				if(arr[i+1].pathType=='bez3'){
+					//draw the same line for dragging, and then have a line for the measure - which means it can be pinched? or has a very thin line for each??
+				};
+                
             }
         };
         return arrOut;
