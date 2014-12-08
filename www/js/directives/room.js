@@ -63,7 +63,12 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
     //points = points2;
     //scope.room.roomNameX = points[0][0] + 10;
     //scope.room.roomNameY = points[0][1] + 10;        
-    scope.room.measurePoints = findGeom.showMeasures(points);
+    scope.room.measurePoints = findGeom.showMeasures(svgArr);
+//            console.log('measurepts')
+//            for (var line in scope.room.measurePoints){
+//                var item = scope.room.measurePoints[line]
+//                console.log(item)
+//            };
 	var fingerX;
 	var fingerY;
 	var ind4new;
@@ -96,7 +101,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
                 svgArr.splice(ind4new,0,{"pathType" : "Line","points":newXY})
 		    };
             setPoints();
-			scope.room.measurePoints = findGeom.showMeasures(points);
+			scope.room.measurePoints = findGeom.showMeasures(svgArr);
             elem.find('circle').addClass('roomEditLine');
             elem.find('line').addClass('roomEditLine');
             elem.find('circle').removeClass('roomEditLine');
@@ -199,8 +204,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
         if(dragWhole){
             assignPoints(e);
         };
-        
-		scope.room.measurePoints = findGeom.showMeasures(points);
+		scope.room.measurePoints = findGeom.showMeasures(svgArr);
         scope.$apply();
     };
     var highZ = 100; //need to figure out for dragging objects
@@ -210,7 +214,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
             points[n][0] = 10*Math.round(points[n][0]/10);
             points[n][1] = 10*Math.round(points[n][1]/10);
         };
-        scope.room.measurePoints = findGeom.showMeasures(points);
+        scope.room.measurePoints = findGeom.showMeasures(svgArr);
         scope.$apply();
     };
 	var measures = function(e){

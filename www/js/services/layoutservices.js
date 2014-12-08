@@ -225,21 +225,21 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
             var centY = 0;
             var dist = 0;
             var XYDist = [];
-            arr.push([arr[0][0],arr[0][1]])
+            arr.push(arr[0])
             for (var i = 0; i < arr.length-1; i++){
-				if(arr[i+1].pathType=='newSeg'){
-					pass;
-				};
+//				if(arr[i+1].pathType=='newSeg'){
+//					pass;
+//				};
 				if(arr[i+1].pathType=='Line'){
 	                centX = Math.round((arr[i].points[0][0]+arr[i+1].points[0][0])/2);  //all should be positive
 	                centY = Math.round((arr[i].points[0][1]+arr[i+1].points[0][1])/2);  //all should be positive
 	                dist = Math.round(pythagDist(arr[i].points[0][0],arr[i+1].points[0][0],arr[i].points[0][1],arr[i+1].points[0][1]));
-	                XYDist = [centX, centY, dist];
+	                XYDist = [arr[i],arr[i+1],centX, centY, dist];
 	                arrOut.push(XYDist); //push it to include the other points, so it can draw more smoothly with the lines for dragging??
 				};
-				if(arr[i+1].pathType=='bez3'){
-					//draw the same line for dragging, and then have a line for the measure - which means it can be pinched? or has a very thin line for each??
-				};
+//				if(arr[i+1].pathType=='bez3'){
+//					//draw the same line for dragging, and then have a line for the measure - which means it can be pinched? or has a very thin line for each??
+				//};
                 
             }
         };
