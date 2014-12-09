@@ -3,7 +3,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
         restrict: 'AE',
         scope: {
             room: '=',
-            openAdd2room: '&'
+            setFloorContents: '&' //doesn't seem to work
         },
 //        templateNamespace: 'svg',
 //        template: '<circle fill="red" stroke="blue" stroke-width="3" cx="250" cy="200" r="100" />',
@@ -58,6 +58,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
                 }
             }
         }
+        scope.setFloorContents();
     };
     setPoints();
     //points = points2;
@@ -102,10 +103,6 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		    };
             setPoints();
 			scope.room.measurePoints = findGeom.showMeasures(svgArr);
-            elem.find('circle').addClass('roomEditLine');
-            elem.find('line').addClass('roomEditLine');
-            elem.find('circle').removeClass('roomEditLine');
-            elem.find('line').removeClass('roomEditLine');
 			scope.$apply();
 		};
 	};
@@ -217,7 +214,6 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
         scope.room.measurePoints = findGeom.showMeasures(svgArr);
         scope.$apply();
     };
-    scope.room.editRoom = "roomEditLine";
     scope.room.editLines = true;
 	var measures = function(e){
 		e.stopPropagation();
@@ -229,10 +225,6 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		}
 		dragWhole =! dragWhole;
         setTimeout(scope.$apply,100);
-		//elem.find('polygon').css('stroke-dasharray','3,3,3,3,3,3');
-		//elem.find('polygon').toggleClass('roomDashArray');
-		//elem.find('circle').toggleClass('roomEditLine');//css('display','block');
-		//elem.find('text').toggleClass('roomEditLine');
     };
     var doubletapGesture = $ionicGesture.on('doubletap', addPoint, elem);
     var dragStartGesture = $ionicGesture.on('dragstart', startDrag, elem);

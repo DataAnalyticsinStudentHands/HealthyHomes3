@@ -403,10 +403,10 @@
 }
 
 
-.roomEditLine {
+.roomEditLineOLD {
     display:none;
 }
-.roomDashArray {
+.roomDashArrayOLD {
     stroke=#ba4920; 
     stroke-dasharray:3,3,3,3,3,3;
 }

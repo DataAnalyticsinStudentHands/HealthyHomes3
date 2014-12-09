@@ -171,13 +171,13 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
     var pythagDist = this.pythagDist = function(x1,x2,y1,y2){
         return Math.sqrt(((x1-x2)*(x1-x2))+((y1-y2)*(y1-y2)))
     };
-    this.pointPath = function(arr){
-        var rtnStr = '';
-        for (var i in arr){
-            rtnStr+=(' ' + arr[i][0]+','+arr[i][1]);
-        }
-        return rtnStr;
-    };
+//    this.pointPath = function(arr){
+//        var rtnStr = '';
+//        for (var i in arr){
+//            rtnStr+=(' ' + arr[i][0]+','+arr[i][1]);
+//        }
+//        return rtnStr;
+//    };
     var segment;
     this.svgPath = function(arr){
         var rtnPathString = '';//+arr[0][0]+' '+arr[0][1];
@@ -196,25 +196,6 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
         }
         return rtnPathString
     }
-    this.complexPath = function(arr){
-        var rtrnStr = 'M'+arr[0][0]+','+arr[0][1]
-        for (var i=0;i<arr.length;i++){
-            if (i>0 & i<3){
-                rtrnStr +=(' L' + arr[i][0]+' '+arr[i][1]);
-            };
-            if (i == 3){
-                rtrnStr +=(' C' +arr[i][0]+' '+arr[i][1]+' '+arr[i+1][0]+' '+arr[i+1][1]+' '+arr[i+2][0]+','+arr[i+2][1]);
-                //rtrnStr +=(' Q' +arr[i][0]+','+arr[i][1]+' '+arr[i+1][0]+','+arr[i+1][1]);
-            };
-            if (i==6){
-                rtrnStr += (' S' + arr[i][0]+' '+arr[i][1]+' '+arr[i+1][0]+' '+arr[i+1][1]);
-                //rtrnStr += (' T' + arr[i][0]+','+arr[i][1]);
-            };
-        };
-        //rtrnStr+= ' z';
-        //console.log(rtrnStr)
-        return rtrnStr;
-    };
     this.showMeasures = function(arrIn){ //should walk based on only first value in points, and give measures and a line?
         var arrOut = [];
         if (arrIn == undefined) {

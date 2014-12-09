@@ -186,9 +186,10 @@ angular.module('Controllers').controller('layoutCtrl',
             images = [];
         };
         //will I need to call this again? in a function?
-		var setFloorContents = function(){
-//            console.log('current floor')
-//            console.log(currentFloor.rooms[0].properties.name);
+//		var setFloorContents = $scope.setFloorContents = function(){
+        var setFloorContents = function(){
+            console.log('current floor done in layout setFloorContents')
+            console.log(currentFloor.rooms[0].properties.name);
             clearFloorContents();
     	    for (var itemInd=0; itemInd<currentFloor.rooms.length; itemInd++){
     	        roomItem = currentFloor.rooms[itemInd]
