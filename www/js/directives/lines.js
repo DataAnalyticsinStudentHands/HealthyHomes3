@@ -1,24 +1,26 @@
-angular.module('Directives').directive('circleManip',function($ionicSideMenuDelegate,$ionicGesture,findGeom){
+angular.module('Directives').directive('lineManip',function($ionicSideMenuDelegate,$ionicGesture,findGeom){
     return {
         restrict: 'AE',
         template: '',
         scope: {
-            circpoints: '='
+            linepoints: '='
         },
         controller: ['$scope', function($scope){
             //console.log($scope);
         }],
         link: function(scope,elem,attr) {
-            var circpoints = scope.circpoints;
-            scope.alert = function(text){
-                alert(text+'in points'+circpoints);
-            }
+    var linepoints = scope.linepoints;
+    scope.alert = function(text){
+        alert(text+'in points'+linepoints);
+    }
     var gridMag = findGeom.gridMag;
-    var gridElem = angular.element(document.getElementById('floor-container'));
-    var offLeft = findGeom.offSetLeft(gridElem);
-    var offTop = findGeom.offSetTop(gridElem);
-    var begDragX;
-    var begDragY;
+//    var gridElem = angular.element(document.getElementById('floor-container'));
+//    var offLeft = findGeom.offSetLeft(gridElem);
+//    var offTop = findGeom.offSetTop(gridElem);
+    var begDragX1;
+    var begDragY1;
+    var begDragX2;
+    var begDragY2;
     var startDrag = function(e){
         e.preventDefault();
         e.stopPropagation();
@@ -26,8 +28,10 @@ angular.module('Directives').directive('circleManip',function($ionicSideMenuDele
         gridMag = findGeom.gridMag;
 //        offLeft = findGeom.offSetLeft(gridElem); 
 //        offTop = findGeom.offSetTop(gridElem);
-        begDragX = circpoints[0];
-        begDragY = circpoints[1];
+        begDragX1 = linepoints[0].points[0][0];
+        begDragX2 = linepoints[1].points[0][0];
+        begDragY1 = linepoints[0].points[0][1];
+        begDragY2 = linepoints[1].points[0][1];
 		//xtraOffX = Math.abs(points[0][0] - (e.gesture.center.pageX-offLeft)/gridMag);
 		//xtraOffY = Math.abs(points[0][1] - (e.gesture.center.pageY-offTop)/gridMag);
 //        fingerX = (e.gesture.center.pageX/gridMag)-offLeft;
@@ -39,18 +43,23 @@ angular.module('Directives').directive('circleManip',function($ionicSideMenuDele
 //        dragY = (((e.gesture.deltaY)/gridMag)-points2[0][1])+xtraOffY;
         dragX = e.gesture.deltaX/gridMag;
         dragY = e.gesture.deltaY/gridMag;
-//        circpoints[0] = dragX;
-//        circpoints[1] = dragY;
-        circpoints[0] = begDragX + dragX;
-        circpoints[1] = begDragY + dragY;
+//        linepoints[0] = dragX;
+//        linepoints[1] = dragY;
+        linepoints[0].points[0][0] = begDragX1 + dragX;
+        linepoints[1].points[0][0] = begDragX2 + dragX;
+        linepoints[0].points[0][1] = begDragY1 + dragY;
+        linepoints[1].points[0][1] = begDragY2 + dragY;
 		//assignPoints(e);
 		//scope.room.measurePoints = findGeom.showMeasures(points);
         scope.$apply();
     };
     var endDrag = function(e){
         $ionicSideMenuDelegate.canDragContent(true);
-        circpoints[0] = 10*Math.round(circpoints[0]/10);
-        circpoints[1] = 10*Math.round(circpoints[1]/10);
+        linepoints[0].points[0][0] = 10*Math.round(linepoints[0].points[0][0]/10);
+        linepoints[0].points[0][1] = 10*Math.round(linepoints[0].points[0][1]/10);
+        linepoints[1].points[0][0] = 10*Math.round(linepoints[1].points[0][0]/10);
+        linepoints[1].points[0][1] = 10*Math.round(linepoints[1].points[0][1]/10);
+        console.log(linepoints)
         //scope.room.measurePoints = findGeom.showMeasures(points);
         scope.$apply();
     };

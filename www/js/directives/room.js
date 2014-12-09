@@ -130,10 +130,10 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
         scope.roomModal.show();
     };
     scope.closeModal = function() {
-        scope.floorModal.hide();
+        scope.roomModal.hide();
     };
     scope.$on('$destroy', function() {
-        scope.floorModal.remove();
+        scope.roomModal.remove();
     });
     
     for (var n = 0;n<points.length;n++){
@@ -217,21 +217,18 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
         scope.room.measurePoints = findGeom.showMeasures(svgArr);
         scope.$apply();
     };
+    scope.room.editRoom = "roomEditLine";
+    scope.room.editLines = true;
 	var measures = function(e){
 		e.stopPropagation();
+        e.preventDefault();
 		if (dragWhole) {
-			elem.find('circle').removeClass('roomEditLine');
-			elem.find('text').removeClass('roomEditLine');
-            elem.find('line').removeClass('roomEditLine');
-			//angular.element(elem.find('text')[0]).addClass('roomEditLine');
+            scope.room.editLines = false;
 		} else {
-			elem.find('circle').addClass('roomEditLine');
-			elem.find('text').addClass('roomEditLine');
-            elem.find('line').addClass('roomEditLine');
-			//angular.element(elem.find('text')[0]).removeClass('roomEditLine');
+            scope.room.editLines = true;
 		}
 		dragWhole =! dragWhole;
-        scope.$apply;
+        setTimeout(scope.$apply,100);
 		//elem.find('polygon').css('stroke-dasharray','3,3,3,3,3,3');
 		//elem.find('polygon').toggleClass('roomDashArray');
 		//elem.find('circle').toggleClass('roomEditLine');//css('display','block');

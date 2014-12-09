@@ -134,7 +134,6 @@ angular.module('Controllers').controller('layoutCtrl',
         	    }else{
 					currentFloor = $scope.currentFloor = currentInspection.floors[floorInd];
         	    };
-                console.log(currentFloor)
                 clearFloorContents();
 				setFloorContents();
 			};
@@ -163,12 +162,13 @@ angular.module('Controllers').controller('layoutCtrl',
             	}];
 		var rooms;
 		var roomInd = 0;
+        if ($state.params.roomInd) {roomInd = $state.params.roomInd};
+        //how am I tracking this between rooms when change floors?
         if (currentInspection.floors[floorInd].rooms){
             rooms = currentFloor.rooms;
         } else {
             rooms = currentFloor['rooms'] = testRoom;
         };
-		if ($state.params.roomInd) {roomInd = $state.params.roomInd};
         var currentRoom = $scope.currentRoom = currentInspection.floors[floorInd].rooms[roomInd];
 		var features = [];
         var paths = [];
@@ -187,8 +187,8 @@ angular.module('Controllers').controller('layoutCtrl',
         };
         //will I need to call this again? in a function?
 		var setFloorContents = function(){
-            console.log('current floor')
-            console.log(currentFloor.rooms);
+//            console.log('current floor')
+//            console.log(currentFloor.rooms[0].properties.name);
             clearFloorContents();
     	    for (var itemInd=0; itemInd<currentFloor.rooms.length; itemInd++){
     	        roomItem = currentFloor.rooms[itemInd]
@@ -234,18 +234,18 @@ angular.module('Controllers').controller('layoutCtrl',
         $scope.newRoom = function(room){
 			var addNewRoom = addNewRoomCheck(room)
             if (addNewRoom) {
-                console.log(rooms)
                 newRoom = _.clone(testRoom[0])
 				newRoom.properties.name = room;
 				rooms.push(newRoom);
-                console.log(rooms)
 				currentFloor.rooms = $scope.currentFloor.rooms = rooms;
+                console.log('new rooms')
                 console.log(rooms)
 			} else {
 				rooms = $scope.currentFloor.rooms = currentFloor.rooms;
 			};
             clearFloorContents();
 			setFloorContents();
+            $scope.closeModal();
 		};
         $scope.newObj = function(obj,$event){
             var layoutObjs = [];

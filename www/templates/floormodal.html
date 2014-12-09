@@ -5,7 +5,7 @@
   		<h1 class="title">{{'Now Showing: '+currentFloor.name.toUpperCase()}}</h1>
 	</div>
     <ion-content has-header="true" padding="true">
-		<form name="form" ng-model="currFloor" action="newFloor(currFloor)">
+<!--		<form name="form" ng-model="currFloor" action="newFloor(currFloor)">-->
             <br><br><br><!--why is this disappearing under title??-->
 			<ion-list>
                   <li class="item item-input item-select">
@@ -30,7 +30,7 @@
                 <ion-button class="button button-block button-positive" ng-click="changeFloorName(currFloor)">
 		  				Change This Floor Name
 				</ion-button>
-				<li ng-if="(currentRoom)" class="item item-input item-select">
+				<li class="item item-input item-select">
                       <div class="input-label">
                           Select Room
                       </div>
@@ -41,22 +41,22 @@
 		              <option value="">{{currentRoom.properties.name.toUpperCase()}}</option>
 		              </select>
                     </li>
-                <ion-button ng-if="(currentRoom)" class="button button-block button-positive" ng-click="newFloor(currFloor)">
-		  				Go to {{currRoom || currentRoom.name}}
+                <ion-button class="button button-block button-positive" ng-click="newRoom(currRoom)">
+		  				Go to {{currRoom || currentRoom.properties.name}}
 				</ion-button>
                 
-    <!--need all the other things to add from the lists!!-->            
+    <!--change names show up only on edit button ng-show, not ng-if!!-->            
                 
-                    <li ng-if="(currentRoom)" class="item item-input item-stacked-label">
+                    <li class="item item-input item-stacked-label">
 				  	<span class="input-label">Add Own Name</span>
 				    <input type="text" placeholder="" name="RoomName" ng-model="RoomName"  />					
 				    </li>
 				
                 <ion-button ng-if="(currentRoom)" class="button button-block button-positive" ng-click="changeRoomName(currRoom)">
-		  				Change This Floor Name
+		  				Change This Room Name
 				</ion-button>
 			</ion-list>
-		</form>
+<!--		</form>-->
     </ion-content>
     
   </div>
