@@ -50,25 +50,26 @@
             <g class="floorLines" 
                ng-repeat="(id, room) in shapes track by id"
                room = 'room'
-               openAdd2room = 'add2room()'
+               setFloorContents = 'setFloorContents'
                room-manip >
-                <g ng-repeat="lines in room.measurePoints"
+                
+                      
+                <path ng-attr-d="{{svgPath(room.svgPoints)}}" stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.01" stroke-width="2"/>
+                
+                <g ng-repeat="lines in room.measurePoints track by $index"
                    ng-show="(!room.editLines)">
-                    <path id="{{id+'textPath'}}" 
+                    <text font-size="12pt" fill="blue" >
+                        <textPath xlink:href="{{'#'+$index+'textPath'+room.properties.name}}" 
+                                  startOffset="50%">{{lines[4]/10}}'</textPath>
+                    </text>
+                    <path id="{{$index+'textPath'+room.properties.name}}" 
                           line-manip linepoints='lines'
                           ng-if="(lines[1].pathType=='Line')"
-                          stroke="white" stroke-opacity="1" stroke-width="24"
+                          stroke="white" stroke-opacity=".01" stroke-width="34"
                         ng-attr-d="M{{lines[0].points[0][0]}} {{lines[0].points[0][1]}}
                             L{{lines[1].points[0][0]}} {{lines[1].points[0][1]}}"
                     />
- 
-                    <text font-size="12pt" fill="blue" >
-                        <textPath xlink:href="{{'#'+id+'textPath'}}" 
-                                  startOffset="50%">{{lines[4]}}'</textPath>
-                    </text>
                 </g>
-                      
-                <path ng-attr-d="{{svgPath(room.svgPoints)}}" stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.1" stroke-width="2"/>
                 
                 <text 
                       ng-attr-x={{20+room.svgPoints[0].points[0][0]}}

@@ -35,10 +35,19 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
          "points" : [[530,577]]
                    
         },
-                   
         { "pathType" : "Line",
                    
          "points" : [[130,777]]
+                   
+        },
+        { "pathType" : "Line",
+                   
+         "points" : [[130,877]]
+                   
+        },        
+        { "pathType" : "Line",
+                   
+         "points" : [[230,777]]
                    
         }
     ];
@@ -57,7 +66,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
                     points.push(nextPoints[item])
                 }
             }
-        }
+        } 
         scope.setFloorContents();
     };
     setPoints();
@@ -101,8 +110,10 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		        points.splice(ind4new,0,[newX,newY]);
                 svgArr.splice(ind4new,0,{"pathType" : "Line","points":newXY})
 		    };
-            setPoints();
+            scope.svgArr = svgArr;
+            
 			scope.room.measurePoints = findGeom.showMeasures(svgArr);
+            setPoints();
 			scope.$apply();
 		};
 	};
@@ -155,11 +166,11 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
         e.stopPropagation();
 		inPts = _.map(points,function(num){return true});
         $ionicSideMenuDelegate.canDragContent(false);
-        gridMag = findGeom.gridMag;
+        gridMag = parseInt(findGeom.gridMag);
 //        offLeft = findGeom.offSetLeft(gridElem); 
 //        offTop = findGeom.offSetTop(gridElem);
-		xtraOffX = points[0][0]/gridMag;
-		xtraOffY = points[0][1]/gridMag;
+		xtraOffX = parseInt(points[0][0]/gridMag);
+		xtraOffY = parseInt(points[0][1]/gridMag);
 //        fingerX = (e.gesture.center.pageX/gridMag)-offLeft;
 //		fingerY = (e.gesture.center.pageY/gridMag)-offTop;
 		newIndex4line = findGeom.closestLine(points,fingerX,fingerY);
@@ -191,8 +202,8 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
         dragY = (((e.gesture.deltaY)/gridMag)-points2[0][1])+xtraOffY;
     	for (n=0;n<points2.length;n++){
 			if (inPts[n]){
-				points2[n][0] = points2[n][0] + dragX;
-				points2[n][1] = points2[n][1] + dragY;
+				points2[n][0] = parseInt(points2[n][0]) + parseInt(dragX);
+				points2[n][1] = parseInt(points2[n][1]) + parseInt(dragY);
  			};
     	};
 	};
@@ -204,12 +215,12 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		scope.room.measurePoints = findGeom.showMeasures(svgArr);
         scope.$apply();
     };
-    var highZ = 100; //need to figure out for dragging objects
+    //var highZ = 100; //need to figure out for dragging objects
     var endDrag = function(e){
         $ionicSideMenuDelegate.canDragContent(true);
         for (var n=0;n<points.length;n++){
-            points[n][0] = 10*Math.round(points[n][0]/10);
-            points[n][1] = 10*Math.round(points[n][1]/10);
+            points[n][0] = parseInt(10*Math.round(points[n][0]/10));
+            points[n][1] = parseInt(10*Math.round(points[n][1]/10));
         };
         scope.room.measurePoints = findGeom.showMeasures(svgArr);
         scope.$apply();

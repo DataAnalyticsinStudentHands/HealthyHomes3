@@ -186,8 +186,8 @@ angular.module('Controllers').controller('layoutCtrl',
             images = [];
         };
         //will I need to call this again? in a function?
-//		var setFloorContents = $scope.setFloorContents = function(){
-        var setFloorContents = function(){
+		var setFloorContents = $scope.setFloorContents = function(){
+//        var setFloorContents = function(){
             console.log('current floor done in layout setFloorContents')
             console.log(currentFloor.rooms[0].properties.name);
             clearFloorContents();

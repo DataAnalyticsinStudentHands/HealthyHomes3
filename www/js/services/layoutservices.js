@@ -218,9 +218,9 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 	                XYDist = [arr[i],arr[i+1],centX, centY, dist];
 	                arrOut.push(XYDist); //push it to include the other points, so it can draw more smoothly with the lines for dragging??
 				};
-//				if(arr[i+1].pathType=='bez3'){
+				if(arr[i+1].pathType=='bez3'){
 //					//draw the same line for dragging, and then have a line for the measure - which means it can be pinched? or has a very thin line for each??
-				//};
+				};
                 
             }
         };
