@@ -2,8 +2,8 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
     return {
         restrict: 'AE',
         scope: {
-            room: '=',
-            setFloorContents: '&' //doesn't seem to work
+            room: '='//,
+            //setFloorContents: '&' //doesn't seem to work
         },
 //        templateNamespace: 'svg',
 //        template: '<circle fill="red" stroke="blue" stroke-width="3" cx="250" cy="200" r="100" />',
@@ -59,6 +59,9 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
     };
     var points = [];
     var setPoints = function(){
+        //console.log(svgArr)
+        nextPoints = [];
+        points = [];
         for (item in svgArr){
             nextPoints = svgArr[item].points
             if (nextPoints){
@@ -67,7 +70,8 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
                 }
             }
         } 
-        scope.setFloorContents();
+        //scope.setFloorContents();
+        //have to do this at both floor and room levels!!!
     };
     setPoints();
     //points = points2;
@@ -88,21 +92,26 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 	var dragWhole = true;
 	var addPoint = function(e){ //needs to add circles properly
 		e.stopPropagation();
+        gridMag = parseFloat(findGeom.gridMag);
+        offLeft = parseInt(findGeom.offSetLeft(gridElem));
+        offTop = parseInt(findGeom.offSetTop(gridElem));
+        fingerX = parseInt((e.gesture.center.pageX/gridMag)-offLeft);
+        fingerY = parseInt((e.gesture.center.pageY/gridMag)-offTop);
 		if (dragWhole){
             addTap(e);
 		}else{
-		    fingerX = e.gesture.center.pageX;
-		    fingerY = e.gesture.center.pageY;
 		    ind4new = findGeom.closestLine(points,fingerX,fingerY)[0][0];
 			if (ind4new+1<points.length){
+                //console.log(points)
 				ind4new += 1;
 			}else{
 				ind4new = 0;
 			};
-    		gridMag = findGeom.gridMag;
-		    newX = fingerX*gridMag;
-		    newY = fingerY*gridMag;
-            newXY = [[newX,newY]];
+    		
+		    newX = fingerX;//*gridMag;
+		    newY = fingerY;//*gridMag;
+            newXY = [[parseInt(newX),parseInt(newY)]];
+            //console.log(svgArr)
 		    if(ind4new+1>points.length || ind4new == 0 ){
 		        points.push([[newX,newY]]); //to end??
                 svgArr.push({"pathType" : "Line","points":newXY})
@@ -110,10 +119,10 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		        points.splice(ind4new,0,[newX,newY]);
                 svgArr.splice(ind4new,0,{"pathType" : "Line","points":newXY})
 		    };
-            scope.svgArr = svgArr;
-            
+            //console.log(svgArr)
 			scope.room.measurePoints = findGeom.showMeasures(svgArr);
             setPoints();
+            scope.svgArr = svgArr;
 			scope.$apply();
 		};
 	};
@@ -173,7 +182,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		xtraOffY = parseInt(points[0][1]/gridMag);
 //        fingerX = (e.gesture.center.pageX/gridMag)-offLeft;
 //		fingerY = (e.gesture.center.pageY/gridMag)-offTop;
-		newIndex4line = findGeom.closestLine(points,fingerX,fingerY);
+//		newIndex4line = findGeom.closestLine(points,fingerX,fingerY);
     };
 	var points2 = [];
 	var new4line;

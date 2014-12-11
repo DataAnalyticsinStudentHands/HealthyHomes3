@@ -56,7 +56,7 @@
                       
                 <path ng-attr-d="{{svgPath(room.svgPoints)}}" stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.01" stroke-width="2"/>
                 
-                <g ng-repeat="lines in room.measurePoints track by $index"
+                <g ng-repeat="lines in room.measurePoints"
                    ng-show="(!room.editLines)">
                     <text font-size="12pt" fill="blue" >
                         <textPath xlink:href="{{'#'+$index+'textPath'+room.properties.name}}" 
@@ -77,9 +77,10 @@
                       >{{room.properties.name}}</text>
 				
                 <g ng-show="(!room.editLines)"
-                   ng-repeat="(i, vals) in room.svgPoints track by i">
+                   ng-repeat="(i, vals) in room.svgPoints">
 					
-                    <circle stroke="#030303" stroke-width="1"
+                    <circle stroke="#fcf8f8" stroke-width="16" 
+                        opacity=".2"
                         circle-manip circpoints="vals.points[0]"
                         ng-attr-cx={{vals.points[0][0]}}
                         ng-attr-cy={{vals.points[0][1]}}
@@ -87,14 +88,16 @@
                     />
                     <!--seems to not need an ng-if on fail below-->
                     <circle ng-if=(vals.points[1])
-                        stroke="#ba202c" stroke-width=".1"
+                        fill="#ba202c" stroke="#fcf8f8" stroke-width="16" 
+                        opacity=".2"
                         circle-manip circpoints="vals.points[1]"
                         ng-attr-cx={{vals.points[1][0]}}
                         ng-attr-cy={{vals.points[1][1]}}
                         r = 16
                     />
                     <circle ng-if=(vals.points[1])
-                        stroke="#ba202c" stroke-width=".1"
+                        fill="#ba202c" stroke="#fcf8f8" stroke-width="16" 
+                        opacity=".2"
                         circle-manip circpoints="vals.points[2]"
                         ng-attr-cx={{vals.points[2][0]}}
                         ng-attr-cy={{vals.points[2][1]}}
