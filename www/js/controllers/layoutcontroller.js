@@ -21,8 +21,8 @@ angular.module('Controllers').controller('layoutCtrl',
                    first.clientX, first.clientY, false,
                          false, false, false, 0/*left*/, null);
             first.target.dispatchEvent(simulatedEvent);
-             event.preventDefault();
-             return;
+            event.preventDefault();
+            return;
         };
         document.addEventListener("touchstart", touchHandler, true);
         document.addEventListener("touchmove", touchHandler, true);
@@ -77,8 +77,6 @@ angular.module('Controllers').controller('layoutCtrl',
         
         if (currentInspection.floors){
             floors = currentInspection.floors;
-            //var newFloorTitle = currentInspection.address + ': <b>' + floors[floorInd].name.toUpperCase() + '</b> floor';
-            //$ionicNavBarDelegate.changeTitle(newFloorTitle, 'left');
         } else {
             floors = currentInspection['floors'] = [ { "name" : "first", "color" : "#ed0e0e","rooms" : [] } ];
         };
@@ -89,29 +87,15 @@ angular.module('Controllers').controller('layoutCtrl',
             }).then(function(modal) {
               $scope.floorModal = modal;
         });
-//        $ionicModal.fromTemplateUrl('templates/roommodal.html', {
-//                id: "rmModal",
-//                scope: $scope,
-//                animation: 'slide-in-up'
-//            }).then(function(modal) {
-//              $scope.roomModal = modal;
-//        });
         $scope.chooseFloor = function() {
             $scope.floorModal.show();
         };
-//        $scope.add2Room = function() {
-//            alert('adffads');
-//            $scope.roomModal.show();
-//        }; 
         $scope.closeModal = function() {
             $scope.floorModal.hide();
         };
         $scope.$on('$destroy', function() {
             $scope.floorModal.remove();
         });
-//		$scope.chooseFloor = function(){
-//            
-//        };
 		var addNewFloorCheck = function(floor){ //this means that the floor indices change for others, too!
 			for (var k=0;k<floors.length;k++){
 				if (floors[k].name == floor){
@@ -124,9 +108,7 @@ angular.module('Controllers').controller('layoutCtrl',
 			};
 		}
         $scope.newFloor = function(floor){
-            console.log(floor)
 			if(currentFloor!=floor){
-                console.log(currentFloor)
 				var addNewFloor = addNewFloorCheck(floor);
 				if(addNewFloor){
         	        floors.push({"name" : floor, "color" : "#ed0e0e", "rooms" : []});
@@ -134,6 +116,7 @@ angular.module('Controllers').controller('layoutCtrl',
         	    }else{
 					currentFloor = $scope.currentFloor = currentInspection.floors[floorInd];
         	    };
+                rooms = currentFloor.rooms;
                 clearFloorContents();
 				setFloorContents();
 			};
@@ -144,7 +127,7 @@ angular.module('Controllers').controller('layoutCtrl',
             $scope.closeModal();
         };
         
-		var testRoom = [{"type" : "Path", 
+		var testRoom = {"type" : "Path", 
                 "id" : 45,
 				"properties" : {"name" : "TestExample", "color" : "#ed0e0e"},
 				"active" : true,
@@ -158,8 +141,30 @@ angular.module('Controllers').controller('layoutCtrl',
                 	"translate" : [ 3 ], 
                 	"rotate" : [ 0 ],
                 	"eigens" : [[0,0.2223432],[2,0.00122323]] 
-            	}
-            	}];
+            	},
+                "svgPoints" : [
+        { "pathType" : "newSeg",
+                   
+         "points" : [[130,177]]
+                   
+        },
+        { "pathType" : "Line",
+                   
+         "points" : [[130,777]]
+                   
+        },
+        { "pathType" : "Line",
+                   
+         "points" : [[630,877]]
+                   
+        },        
+        { "pathType" : "Line",
+                   
+         "points" : [[130,177]]
+                   
+        }
+    ]
+            	};
 		var rooms;
 		var roomInd = 0;
         if ($state.params.roomInd) {roomInd = $state.params.roomInd};
@@ -169,64 +174,64 @@ angular.module('Controllers').controller('layoutCtrl',
         } else {
             rooms = currentFloor['rooms'] = testRoom;
         };
+        //need to catch if not exist, or seed with a "blank room" - could be good for click
         var currentRoom = $scope.currentRoom = currentInspection.floors[floorInd].rooms[roomInd];
-		var features = [];
-        var paths = [];
-        var shapes = [];
-        var roomArcs = [];
-        var notes = [];
-        var images = [];
+//		var features = [];
+//        var paths = [];
+//        var shapes = [];
+//        var roomArcs = [];
+//        var notes = [];
+//        var images = [];
         var roomItem;
         var clearFloorContents = function(){
-            features = [];
-            paths = [];
-            shapes = [];
-            roomArcs = [];
-            notes = [];
-            images = [];
+            $scope.currentFloor.features = [];
+            $scope.currentFloor.paths = [];
+            $scope.currentFloor.shapes = [];
+            $scope.currentFloor.roomArcs = [];
+            $scope.currentFloor.notes = [];
+            $scope.currentFloor.images = [];
+            
         };
         //will I need to call this again? in a function?
-		var setFloorContents = $scope.setFloorContents = function(){
-//        var setFloorContents = function(){
-            console.log('current floor done in layout setFloorContents')
-            console.log(currentFloor.rooms[0].properties.name);
+		var setFloorContents = function(){
             clearFloorContents();
     	    for (var itemInd=0; itemInd<currentFloor.rooms.length; itemInd++){
-    	        roomItem = currentFloor.rooms[itemInd]
-                roomItem.id = itemInd;
+    	        roomItem = currentFloor.rooms[itemInd];
     	        if (roomItem.type == "Feature"){
-    	            features.push(roomItem)
+    	            $scope.currentFloor.features.push(roomItem)
     	        };
                 if (roomItem.type == "Path"){
-    	            paths.push(roomItem)
+    	            $scope.currentFloor.paths.push(roomItem)
+                    console.log($scope.currentFloor.paths)
     	        };
     	        if (roomItem.type == "Polygon"){
-    	            shapes.push(roomItem)
+    	            $scope.currentFloor.shapes.push(roomItem)
     	        };
     	        if (roomItem.type == "openArc"){
-    	            roomArcs.push(roomItem)
+    	            $scope.currentFloor.roomArcs.push(roomItem)
     	        };
     	        if (roomItem.type == "Note"){
-    	            notes.push(roomItem)
+    	            $scope.currentFloor.notes.push(roomItem)
     	        };
     	        if (roomItem.type == "Polygon"){
-    	            shapes.push(roomItem)
+    	            $scope.currentFloor.shapes.push(roomItem)
     	        };
     	    };
-	        $scope.features = features;
-	        $scope.shapes = shapes;
-	        $scope.notes = notes;
-	        $scope.images = images;
+//            $scope.currentRoom.paths = paths;
+//	        $scope.currentRoom.features = features;
+//	        $scope.currentRoom.shapes = shapes;
+//	        $scope.currentRoom.notes = notes;
+//	        $scope.currentRoom.images = images;
 		};
         setFloorContents();
 		
 		var addNewRoomCheck = function(room){ //this means that the floor indices change for others, too!
-			for (var r=0;r<rooms.length;r++){
-				if (rooms[r].name == room){
-					roomInd = r;
+            for (var rm in rooms){
+				if (rooms[rm].properties.name == room){
+					roomInd = rm;
 					return false; //does this break??
 				} else {
-					roomInd = room.length;
+					roomInd = rooms.length;
 					return true;
 				};
 			};
@@ -235,17 +240,19 @@ angular.module('Controllers').controller('layoutCtrl',
         $scope.newRoom = function(room){
 			var addNewRoom = addNewRoomCheck(room)
             if (addNewRoom) {
-                newRoom = _.clone(testRoom[0])
+                //newRoom = _.clone(testRoom[0])
+                newRoom = testRoom;
 				newRoom.properties.name = room;
 				rooms.push(newRoom);
 				currentFloor.rooms = $scope.currentFloor.rooms = rooms;
                 console.log('new rooms')
                 console.log(rooms)
+                clearFloorContents();
+                setFloorContents();
 			} else {
 				rooms = $scope.currentFloor.rooms = currentFloor.rooms;
 			};
-            clearFloorContents();
-			setFloorContents();
+            
             $scope.closeModal();
 		};
         $scope.newObj = function(obj,$event){

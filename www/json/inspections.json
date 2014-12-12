@@ -29,7 +29,7 @@
                    "color" : "#ed0e0e",
                    "rooms" : 
         [
-          {   "type" : "Polygon",
+          {   "type" : "Path",
             "properties" : {
                 "name" : "TestExample",
                 "color" : "#ed0e0e"
@@ -120,7 +120,7 @@
                         "color" : "#ed0e0e",
                         "rooms" : 
         [
-            {   "type" : "Polygon",
+            {   "type" : "Path",
             "properties" : {
                 "name" : "JonesRoom",
                 "color" : "#ed0e0e"
@@ -156,7 +156,7 @@
                 "eigens" : [[0,0.2223432],[2,0.00122323]] 
             }
             },
-            {   "type" : "Polygon",
+            {   "type" : "Path",
             "properties" : {
                 "name" : "JoRoom",
                 "color" : "#ed0e0e"

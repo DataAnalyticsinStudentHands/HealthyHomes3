@@ -15,6 +15,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
     scope.alert = function (text) {
         alert(text+'inroom');
     };
+            console.log('loaded'+scope.room)
     //var add2room = scope.add2room;
     //var points = scope.room.roomPoints;
     var svgArr = [];
@@ -53,6 +54,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
     ];
     var nextPoints;
     if(!scope.room.svgPoints){
+        console.log('addsvgpts');
         scope.room.svgPoints = svgArr;//findGeom.svgPath(svgArr);
     }else{
         svgArr = scope.room.svgPoints;
@@ -70,19 +72,9 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
                 }
             }
         } 
-        //scope.setFloorContents();
-        //have to do this at both floor and room levels!!!
     };
     setPoints();
-    //points = points2;
-    //scope.room.roomNameX = points[0][0] + 10;
-    //scope.room.roomNameY = points[0][1] + 10;        
     scope.room.measurePoints = findGeom.showMeasures(svgArr);
-//            console.log('measurepts')
-//            for (var line in scope.room.measurePoints){
-//                var item = scope.room.measurePoints[line]
-//                console.log(item)
-//            };
 	var fingerX;
 	var fingerY;
 	var ind4new;
@@ -90,7 +82,8 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 	var newY;
     var newXY = [];
 	var dragWhole = true;
-	var addPoint = function(e){ //needs to add circles properly
+
+	var addPoint = function(e){ 
 		e.stopPropagation();
         gridMag = parseFloat(findGeom.gridMag);
         offLeft = parseInt(findGeom.offSetLeft(gridElem));
@@ -102,16 +95,13 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		}else{
 		    ind4new = findGeom.closestLine(points,fingerX,fingerY)[0][0];
 			if (ind4new+1<points.length){
-                //console.log(points)
 				ind4new += 1;
 			}else{
 				ind4new = 0;
-			};
-    		
-		    newX = fingerX;//*gridMag;
-		    newY = fingerY;//*gridMag;
+			};		
+		    newX = fingerX;
+		    newY = fingerY;
             newXY = [[parseInt(newX),parseInt(newY)]];
-            //console.log(svgArr)
 		    if(ind4new+1>points.length || ind4new == 0 ){
 		        points.push([[newX,newY]]); //to end??
                 svgArr.push({"pathType" : "Line","points":newXY})
@@ -119,22 +109,18 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		        points.splice(ind4new,0,[newX,newY]);
                 svgArr.splice(ind4new,0,{"pathType" : "Line","points":newXY})
 		    };
-            //console.log(svgArr)
 			scope.room.measurePoints = findGeom.showMeasures(svgArr);
             setPoints();
             scope.svgArr = svgArr;
 			scope.$apply();
 		};
 	};
-    var addTap = function(e){
-	    //fingerX = e.gesture.center.pageX;
-	    //fingerY = e.gesture.center.pageY; //in case needed after select?
+    var addTap = function(e){ //should have a setFingerPoints
         e.preventDefault();
         e.stopPropagation();
+        scope.fingerX = fingerX;//parseInt((e.gesture.center.pageX/gridMag)-offLeft);
+        scope.fingerY = fingerY;//parseInt((e.gesture.center.pageY/gridMag)-offTop);
         scope.showAdd2Room();
-//		var selectBox = document.getElementById('roomAction');
-//		selectBox.size = 5;
-//		selectBox.value = 3;
     };
     $ionicModal.fromTemplateUrl('templates/roommodal.html', {
             id: "rmModal",
@@ -149,9 +135,9 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
     scope.closeModal = function() {
         scope.roomModal.hide();
     };
-    scope.$on('$destroy', function() {
-        scope.roomModal.remove();
-    });
+    //scope.$on('$destroy', function() {
+        //scope.roomModal.remove();
+    //});
     
     for (var n = 0;n<points.length;n++){
         points[n][0] = parseInt(points[n][0]);
@@ -244,7 +230,8 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
             scope.room.editLines = true;
 		}
 		dragWhole =! dragWhole;
-        setTimeout(scope.$apply,100);
+        scope.$apply()
+        //setTimeout(scope.$apply,100);
     };
     var doubletapGesture = $ionicGesture.on('doubletap', addPoint, elem);
     var dragStartGesture = $ionicGesture.on('dragstart', startDrag, elem);
@@ -253,6 +240,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
     var holdGesture = $ionicGesture.on('hold', measures, elem);
             
     scope.$on('$destroy', function() {
+        scope.roomModal.remove();
         $ionicGesture.off(doubletapGesture, 'doubletap', addPoint);
         $ionicGesture.off(dragStartGesture, 'dragstart', startDrag);
         $ionicGesture.off(dragGesture, 'drag', dragLines);

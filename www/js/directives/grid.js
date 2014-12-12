@@ -3,7 +3,9 @@ angular.module('Directives').directive('gridManip',function($ionicGesture,$ionic
         restrict: 'AE',
         //templateUrl: 'partials/gridlines.html',
         link: function(scope,elem,attr) {
-            var gridElem = angular.element(document.getElementById('floor-container'));
+            var gridElem = findGeom.gridElem;
+            //only started failing when started using nightly build ionic
+            //var gridElem = angular.element(document.getElementById('floor-container'));
             var offsetLeft = findGeom.offSetLeft(gridElem);
             var offsetTop = findGeom.offSetTop(gridElem);
             scope.gridShow1 = true; //in case we want to turn them off for some views
@@ -21,7 +23,7 @@ angular.module('Directives').directive('gridManip',function($ionicGesture,$ionic
             var gridMag = scope.gridMag = findGeom.gridMag;
             var canvasSize = scope.canvasSize = findGeom.canvasSize; 
             var magnifyGrid = findGeom.magnifyGrid;
-            var gridElem = findGeom.gridElem;
+            
             var gridoffTop = gridElem[0].offsetTop;
             var gridoffLeft = gridElem[0].offsetLeft;
             var newMag;

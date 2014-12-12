@@ -19,7 +19,6 @@
     <ion-side-menus>
     <ion-side-menu width="{{gridWd}}" id="grid" side="left" drag-content="false">
 <div id="floor-wrap">
-    
     <div id="grid-container">
 <!--        <ion-nav-view id="floor-wrap" name="floor"></ion-nav-view>-->
             <svg id="floor-container" style='stroke-width: 0px; '
@@ -32,25 +31,29 @@
                fill="#fcfbfa" 
                fill-opacity="0.2" 
                stroke-width="1">
+
                 <line ng-repeat="gridpt in gridLineNumber(canvasSize,50)" ng-attr-x1="{{gridpt}}" y1="0" ng-attr-x2="{{gridpt}}" ng-attr-y2="{{canvasSize}}" />
                 <line ng-repeat="gridpt in gridLineNumber(canvasSize,50)" x1="0" ng-attr-y1="{{gridpt}}" ng-attr-x2="{{canvasSize}}" ng-attr-y2="{{gridpt}}" />  
+
     
-            </g>    
+            </g>  
 
             <g 
                ng-show="gridShow1" stroke="#6bea3b" stroke-dasharray="2,2,2,2,2,2" fill="#fcfbfa" fill-opacity="0.2" stroke-width=".2">
                 
+
                 <line ng-repeat="gridpt in gridLineNumber(canvasSize,10)" ng-attr-x1="{{gridpt}}" y1="0" ng-attr-x2="{{gridpt}}" ng-attr-y2="{{canvasSize}}" />
                 <line ng-repeat="gridpt in gridLineNumber(canvasSize,10)" x1="0" ng-attr-y1="{{gridpt}}" ng-attr-x2="{{canvasSize}}" ng-attr-y2="{{gridpt}}" />            
+
                 
             </g> 
 				
+
 			<g id="wholeFloor">
 
-            <g class="floorLines" 
-               ng-repeat="(id, room) in shapes track by id"
+            <g class="floorLines"
+               ng-repeat="(id, room) in currentFloor.paths track by id"
                room = 'room'
-               setFloorContents = 'setFloorContents'
                room-manip >
                 
                       
@@ -86,7 +89,6 @@
                         ng-attr-cy={{vals.points[0][1]}}
                         r = 16
                     />
-                    <!--seems to not need an ng-if on fail below-->
                     <circle ng-if=(vals.points[1])
                         fill="#ba202c" stroke="#fcf8f8" stroke-width="16" 
                         opacity=".2"
@@ -113,7 +115,7 @@
 
                 
 
-                <g ng-repeat="(indic,values) in layoutObjs track by indic"
+                <g ng-repeat="(indic,values) in currentRoom.layoutObjs track by indic"
                        >
                     <g icon-manip iconpts="layoutObjs" currentRoom="currentRoom">
                     <image ng-attr-x="{{values[0]+currentFloor.rooms[$index].roomPoints[0][0]}}" 
@@ -126,9 +128,11 @@
                     </g>
                </g>
             </g>
+
 		</g>
         </svg>
 <!--        <div ng-include="'partials/floor.html'"></div>-->
+        
     </div>
 
 <!--Should we have a box that is populated when viewed, or make full boxes and make invisible? Will need to put in a modal-->

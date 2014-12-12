@@ -19,17 +19,19 @@
 		              <option value="">{{currentFloor.name.toUpperCase()}}</option>
 		              </select>
                     </li>
-                <ion-button class="button button-block button-positive" ng-click="newFloor(currFloor)">
+                <ion-button class="button button-balanced" ng-click="newFloor(currFloor)">
 		  				Go to {{currFloor || currentFloor.name}}
 				</ion-button>
                     <li class="item item-input item-stacked-label">
 				  	<span class="input-label">Add Own Name</span>
-				    <input type="text" placeholder="" name="FloorName" ng-model="FloorName"  />					
+				    <input type="text" placeholder="" name="FloorName" ng-model="currFloor"  />					
 				    </li>
 				
-                <ion-button class="button button-block button-positive" ng-click="changeFloorName(currFloor)">
+<!--
+                <ion-button class="button button-balanced" ng-click="changeFloorName(currFloor)">
 		  				Change This Floor Name
 				</ion-button>
+-->
 				<li class="item item-input item-select">
                       <div class="input-label">
                           Select Room
@@ -41,7 +43,7 @@
 		              <option value="">{{currentRoom.properties.name.toUpperCase()}}</option>
 		              </select>
                     </li>
-                <ion-button class="button button-block button-positive" ng-click="newRoom(currRoom)">
+                <ion-button class="button button-balanced" ng-click="newRoom(currRoom)">
 		  				Go to {{currRoom || currentRoom.properties.name}}
 				</ion-button>
                 
@@ -49,12 +51,14 @@
                 
                     <li class="item item-input item-stacked-label">
 				  	<span class="input-label">Add Own Name</span>
-				    <input type="text" placeholder="" name="RoomName" ng-model="RoomName"  />					
+				    <input type="text" size="15" placeholder="" name="RoomName" ng-model="currRoom"  />					
 				    </li>
 				
-                <ion-button ng-if="(currentRoom)" class="button button-block button-positive" ng-click="changeRoomName(currRoom)">
+<!--
+                <ion-button ng-if="(currentRoom)" class="button button-balanced" ng-click="changeRoomName(currRoom)">
 		  				Change This Room Name
 				</ion-button>
+-->
 			</ion-list>
 <!--		</form>-->
     </ion-content>
