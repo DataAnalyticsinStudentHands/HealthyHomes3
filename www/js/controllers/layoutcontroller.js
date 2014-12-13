@@ -73,13 +73,14 @@ angular.module('Controllers').controller('layoutCtrl',
 		var floorInd = 0;
         if ($state.params.floorInd) {floorInd = $state.params.floorInd};
 
-        var currentFloor = $scope.currentFloor = currentInspection.floors[floorInd];
         
         if (currentInspection.floors){
             floors = currentInspection.floors;
         } else {
             floors = currentInspection['floors'] = [ { "name" : "first", "color" : "#ed0e0e","rooms" : [] } ];
         };
+        var currentFloor = $scope.currentInspection.currentFloor = currentInspection.floors[floorInd];
+        
         $ionicModal.fromTemplateUrl('templates/floormodal.html', {
                 id: "flrModal",
                 scope: $scope,
@@ -112,14 +113,16 @@ angular.module('Controllers').controller('layoutCtrl',
 				var addNewFloor = addNewFloorCheck(floor);
 				if(addNewFloor){
         	        floors.push({"name" : floor, "color" : "#ed0e0e", "rooms" : []});
-					currentFloor = $scope.currentFloor = currentInspection.floors[floorInd];
+					currentFloor = $scope.currentInspection.currentFloor = currentInspection.floors[floorInd];
+					$state.params.floorInd = floorInd; //should we change to have it on data??
         	    }else{
-					currentFloor = $scope.currentFloor = currentInspection.floors[floorInd];
+					currentFloor = $scope.currentInspection.currentFloor = currentInspection.floors[floorInd];
         	    };
                 rooms = currentFloor.rooms;
                 clearFloorContents();
 				setFloorContents();
 			};
+			//how to deal with $state.params??
             $scope.closeModal();
         };
         $scope.changeFloorName = function(currFloor){
@@ -141,32 +144,35 @@ angular.module('Controllers').controller('layoutCtrl',
                 	"translate" : [ 3 ], 
                 	"rotate" : [ 0 ],
                 	"eigens" : [[0,0.2223432],[2,0.00122323]] 
-            	},
-                "svgPoints" : [
-        { "pathType" : "newSeg",
-                   
-         "points" : [[130,177]]
-                   
-        },
-        { "pathType" : "Line",
-                   
-         "points" : [[130,777]]
-                   
-        },
-        { "pathType" : "Line",
-                   
-         "points" : [[630,877]]
-                   
-        },        
-        { "pathType" : "Line",
-                   
-         "points" : [[130,177]]
-                   
-        }
-    ]
-            	};
+            	}//,
+			};
+                // "svgPoints" : [
+ //        { "pathType" : "newSeg",
+ //
+ //         "points" : [[130,177]]
+ //
+ //        },
+ //        { "pathType" : "Line",
+ //
+ //         "points" : [[130,777]]
+ //
+ //        },
+ //        { "pathType" : "Line",
+ //
+ //         "points" : [[630,877]]
+ //
+ //        },
+ //        { "pathType" : "Line",
+ //
+ //         "points" : [[130,177]]
+ //
+ //        }
+ //   ]
+ //           	};
 		var rooms;
 		var roomInd = 0;
+		var d = new Date();
+		var timeId;
         if ($state.params.roomInd) {roomInd = $state.params.roomInd};
         //how am I tracking this between rooms when change floors?
         if (currentInspection.floors[floorInd].rooms){
@@ -184,37 +190,37 @@ angular.module('Controllers').controller('layoutCtrl',
 //        var images = [];
         var roomItem;
         var clearFloorContents = function(){
-            $scope.currentFloor.features = [];
-            $scope.currentFloor.paths = [];
-            $scope.currentFloor.shapes = [];
-            $scope.currentFloor.roomArcs = [];
-            $scope.currentFloor.notes = [];
-            $scope.currentFloor.images = [];
-            
+            $scope.currentInspection.currentFloor.features = [];
+            $scope.currentInspection.currentFloor.paths = [];
+            $scope.currentInspection.currentFloor.shapes = [];
+            $scope.currentInspection.currentFloor.roomArcs = [];
+            $scope.currentInspection.currentFloor.notes = [];
+            $scope.currentInspection.currentFloor.images = [];
         };
         //will I need to call this again? in a function?
 		var setFloorContents = function(){
             clearFloorContents();
     	    for (var itemInd=0; itemInd<currentFloor.rooms.length; itemInd++){
+				//timeId = d.getTime();
     	        roomItem = currentFloor.rooms[itemInd];
     	        if (roomItem.type == "Feature"){
-    	            $scope.currentFloor.features.push(roomItem)
+    	            $scope.currentInspectioncurrentFloor.features.push(roomItem)
     	        };
                 if (roomItem.type == "Path"){
-    	            $scope.currentFloor.paths.push(roomItem)
-                    console.log($scope.currentFloor.paths)
+					//roomItem.id = timeId;
+    	            $scope.currentInspection.currentFloor.paths.push(roomItem)
     	        };
     	        if (roomItem.type == "Polygon"){
-    	            $scope.currentFloor.shapes.push(roomItem)
+    	            $scope.currentInspection.currentFloor.shapes.push(roomItem)
     	        };
     	        if (roomItem.type == "openArc"){
-    	            $scope.currentFloor.roomArcs.push(roomItem)
+    	            $scope.currentInspection.currentFloor.roomArcs.push(roomItem)
     	        };
     	        if (roomItem.type == "Note"){
-    	            $scope.currentFloor.notes.push(roomItem)
+    	            $scope.currentInspection.currentFloor.notes.push(roomItem)
     	        };
-    	        if (roomItem.type == "Polygon"){
-    	            $scope.currentFloor.shapes.push(roomItem)
+    	        if (roomItem.type == "Image"){
+    	            $scope.currentInspection.currentFloor.images.push(roomItem)
     	        };
     	    };
 //            $scope.currentRoom.paths = paths;
@@ -226,31 +232,41 @@ angular.module('Controllers').controller('layoutCtrl',
         setFloorContents();
 		
 		var addNewRoomCheck = function(room){ //this means that the floor indices change for others, too!
-            for (var rm in rooms){
-				if (rooms[rm].properties.name == room){
-					roomInd = rm;
-					return false; //does this break??
-				} else {
-					roomInd = rooms.length;
-					return true;
+			console.log(room)
+			console.log(rooms)
+			if(rooms.length==0){
+				return true;
+			}else{
+            	for (var rm in rooms){
+					if (rooms[rm].properties.name == room){
+						roomInd = rm;
+						return false; //does this break??
+					} else {
+						roomInd = rooms.length;
+						return true;
+					};
 				};
 			};
 		};
         var newRoom;
+		
         $scope.newRoom = function(room){
+			console.log(room)
 			var addNewRoom = addNewRoomCheck(room)
+			console.log(addNewRoom)
             if (addNewRoom) {
-                //newRoom = _.clone(testRoom[0])
-                newRoom = testRoom;
+				//timeId = d.getTime();
+                newRoom = angular.copy(testRoom);
 				newRoom.properties.name = room;
+				console.log(rooms)
+				//newRoom.id = timeId;
 				rooms.push(newRoom);
-				currentFloor.rooms = $scope.currentFloor.rooms = rooms;
-                console.log('new rooms')
-                console.log(rooms)
+				console.log(rooms)
+				currentFloor.rooms = $scope.currentInspection.currentFloor.rooms = rooms;
                 clearFloorContents();
                 setFloorContents();
 			} else {
-				rooms = $scope.currentFloor.rooms = currentFloor.rooms;
+				rooms = $scope.currentInspection.currentFloor.rooms = currentFloor.rooms;
 			};
             
             $scope.closeModal();

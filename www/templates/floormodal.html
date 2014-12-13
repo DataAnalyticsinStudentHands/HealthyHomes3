@@ -2,7 +2,7 @@
   
     <div class="bar bar-header bar-positive">
         <ion-button class="button icon-left ion-chevron-left button-clear" ng-click="closeModal()">Cancel</ion-button>
-  		<h1 class="title">{{'Now Showing: '+currentFloor.name.toUpperCase()}}</h1>
+  		<h1 class="title">{{'Now Showing: '+currentInspection.currentFloor.name.toUpperCase()}}</h1>
 	</div>
     <ion-content has-header="true" padding="true">
 <!--		<form name="form" ng-model="currFloor" action="newFloor(currFloor)">-->
@@ -16,11 +16,11 @@
 		                required
 		                style="float:right;position:relative"
 		                ng-options="currFloor.toUpperCase() for currFloor in floorLists">
-		              <option value="">{{currentFloor.name.toUpperCase()}}</option>
+		              <option value="">{{currentInspection.currentFloor.name.toUpperCase()}}</option>
 		              </select>
                     </li>
                 <ion-button class="button button-balanced" ng-click="newFloor(currFloor)">
-		  				Go to {{currFloor || currentFloor.name}}
+		  				Go to {{currFloor || currentInspection.currentFloor.name}}
 				</ion-button>
                     <li class="item item-input item-stacked-label">
 				  	<span class="input-label">Add Own Name</span>

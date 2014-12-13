@@ -6,7 +6,7 @@
 <ion-view>
     <ion-nav-buttons>
       <button class="button" ng-click="chooseFloor()" side="left">
-        {{currentInspection.address + ": "+currentFloor.name.toUpperCase()}}
+        {{currentInspection.address + ": "+currentInspection.currentFloor.name.toUpperCase()}}
       </button>
       <button class="button" ng-click="magnifyGrid(.9)" side="left">
         <img id="magnifySmaller" ng-src="img/zoomout.svg" />
@@ -52,12 +52,15 @@
 			<g id="wholeFloor">
 
             <g class="floorLines"
-               ng-repeat="(id, room) in currentFloor.paths track by id"
+               ng-repeat="(id, room) in currentInspection.currentFloor.paths track by id"
                room = 'room'
                room-manip >
                 
                       
-                <path ng-attr-d="{{svgPath(room.svgPoints)}}" stroke="#2050ba" fill="#fcfbfa" fill-opacity="0.01" stroke-width="2"/>
+                <path
+					ng-attr-d="{{svgPath(room.svgPoints)}}" 
+					stroke="#2050ba" fill="#fcfbfa" 
+					fill-opacity="0.01" stroke-width="2"/>
                 
                 <g ng-repeat="lines in room.measurePoints"
                    ng-show="(!room.editLines)">
@@ -118,8 +121,8 @@
                 <g ng-repeat="(indic,values) in currentRoom.layoutObjs track by indic"
                        >
                     <g icon-manip iconpts="layoutObjs" currentRoom="currentRoom">
-                    <image ng-attr-x="{{values[0]+currentFloor.rooms[$index].roomPoints[0][0]}}" 
-                           ng-attr-y="{{values[1]+currentFloor.rooms[$index].roomPoints[0][1]}}" 
+                    <image ng-attr-x="{{values[0]+currentInspection.currentFloor.rooms[$index].roomPoints[0][0]}}" 
+                           ng-attr-y="{{values[1]+currentInspection.currentFloor.rooms[$index].roomPoints[0][1]}}" 
                            ng-attr-width="{{iconWidth}}" 
                            ng-attr-height="{{iconHeight}}"
                            hm-drag = "dragLayoutObjs($event,indic)"

@@ -39,7 +39,7 @@ angular.module('Services').factory('DataService', function ($http, $q, $sessionS
 
     return {
         getInspections: function () {
-            //$localStorage.$reset(); //$sessionStorage.$reset();
+            $localStorage.$reset(); //$sessionStorage.$reset();
             //need to return as a promise for resolve in app.js
             if ($localStorage['inspections'] != null){
                 inspections = $localStorage['inspections'];
@@ -55,6 +55,9 @@ angular.module('Services').factory('DataService', function ($http, $q, $sessionS
                 return defer.promise;
             }
         },
+//		setCurrentFloor: function () {
+//			
+//		}
         getQuestions: function () { //need logic for versioning etc. should return a list of questionsets, at top level, then the questions - think of arc index
             if ($localStorage['questions'] != null){
                 questions = $localStorage['questions']; 

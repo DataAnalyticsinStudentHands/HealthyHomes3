@@ -154,7 +154,17 @@ angular.module('HHApp', [
 					templateUrl: 'templates/layout.html',
 					controller: 'layoutCtrl' 				
 					}
-                }
+                },
+		resolve: {
+	            currentFloor: function ($ionicLoading,inspections,$state) {
+					console.log(inspections)
+					console.log($state.current)
+	                  return inspections;
+	           	}
+			},
+			onEnter: function(inspections){
+				console.log(inspections)
+			}
       })
       .state('secure.inspections.questions', {	
           url: "/questions/:inspectionIndex/:floorInd",

@@ -8,18 +8,32 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 //        templateNamespace: 'svg',
 //        template: '<circle fill="red" stroke="blue" stroke-width="3" cx="250" cy="200" r="100" />',
         controller: ['$scope', function($scope){
+		    $ionicModal.fromTemplateUrl('templates/roommodal.html', {
+		            id: "rmModal",
+		            scope: $scope,
+		            animation: 'slide-in-up'
+		        }).then(function(modalRoom) {
+		          $scope.roomModal = modalRoom;
+		    });
+		    $scope.showAdd2Room = function() {
+		        $scope.roomModal.show();
+		    };
+		    $scope.closeModal = function() {
+		        $scope.roomModal.hide();
+		    };
+		    // $scope.$on('$destroy', function() { //causes error on __cleanup when close from controller
+// 		        $scope.roomModal.remove();
+// 		    });
         }],
         link: function(scope,elem,attr) {
     //scope.room.roomPoints = [[20.0,120.0],[220.0,120.0],[220.0,220.0],[320.0,320.0],[220.0,420.0],[420.0,220.0],[620.0,620.0],[720.0,720.0]];  //get from service as map from arcs
-    //console.log(scope.room)
+	console.log('inroom')
+    console.log(scope.room)
     scope.alert = function (text) {
         alert(text+'inroom');
     };
-            console.log('loaded'+scope.room)
-    //var add2room = scope.add2room;
-    //var points = scope.room.roomPoints;
     var svgArr = [];
-    svgArr = 
+    var svgArrTEST = 
     [ 
         { "pathType" : "newSeg",
                    
@@ -49,6 +63,29 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
         { "pathType" : "Line",
                    
          "points" : [[230,777]]
+                   
+        }
+    ];
+    svgArr = 
+    [ 
+    	{ "pathType" : "newSeg",
+    	           
+    	 "points" : [[130,130]]
+    	           
+    	},
+        { "pathType" : "Line",
+                   
+         "points" : [[130,230]]
+                   
+        },
+        { "pathType" : "Line",
+                   
+         "points" : [[230,230]]
+                   
+        },        
+        { "pathType" : "Line",
+                   
+         "points" : [[230,130]]
                    
         }
     ];
@@ -122,22 +159,6 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
         scope.fingerY = fingerY;//parseInt((e.gesture.center.pageY/gridMag)-offTop);
         scope.showAdd2Room();
     };
-    $ionicModal.fromTemplateUrl('templates/roommodal.html', {
-            id: "rmModal",
-            scope: scope,
-            animation: 'slide-in-up'
-        }).then(function(modal) {
-          scope.roomModal = modal;
-    });
-    scope.showAdd2Room = function() {
-        scope.roomModal.show();
-    };
-    scope.closeModal = function() {
-        scope.roomModal.hide();
-    };
-    //scope.$on('$destroy', function() {
-        //scope.roomModal.remove();
-    //});
     
     for (var n = 0;n<points.length;n++){
         points[n][0] = parseInt(points[n][0]);
@@ -238,9 +259,11 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
     var dragGesture = $ionicGesture.on('drag', dragLines, elem);
     var dragEndGesture = $ionicGesture.on('dragend', endDrag, elem);
     var holdGesture = $ionicGesture.on('hold', measures, elem);
-            
+	// elem.on('$destroy', function(){
+// 		scope.roomModal.remove();
+// 	    console.log('elem destroyed');
+// 	})
     scope.$on('$destroy', function() {
-        scope.roomModal.remove();
         $ionicGesture.off(doubletapGesture, 'doubletap', addPoint);
         $ionicGesture.off(dragStartGesture, 'dragstart', startDrag);
         $ionicGesture.off(dragGesture, 'drag', dragLines);
