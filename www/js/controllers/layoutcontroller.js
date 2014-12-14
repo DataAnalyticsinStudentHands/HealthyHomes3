@@ -101,6 +101,22 @@ angular.module('Controllers').controller('layoutCtrl',
         $scope.$on('$destroy', function() {
             $scope.floorModal.remove();
         });
+        $ionicModal.fromTemplateUrl('templates/addroomModal.html', {
+                id: "addrmModal",
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function(addrmmodal) {
+              $scope.addRoomModal = addrmmodal;
+        });
+        $scope.showAddRoomModal = function() {
+            $scope.addRoomModal.show();
+        };
+        $scope.closeAddRoomModal = function() {
+            $scope.addRoomModal.hide();
+        };
+        $scope.$on('$destroy', function() {
+            $scope.addRoomModal.remove();
+        });
 		var addNewFloorCheck = function(floor){ //this means that the floor indices change for others, too!
 			for (var k=0;k<currentInspection.floors.length;k++){
 				if (currentInspection.floors[k].name == floor){
@@ -244,7 +260,6 @@ angular.module('Controllers').controller('layoutCtrl',
 //	        $scope.currentRoom.images = images;
 		};
         setFloorContents();
-		
 		var addNewRoomCheck = function(room){ //this means that the floor indices change for others, too!
 			if(rooms.length==0){
 				return true;
@@ -261,7 +276,6 @@ angular.module('Controllers').controller('layoutCtrl',
 			};
 		};
         var newRoom;
-		
         $scope.newRoom = function(room){
 			var addNewRoom = addNewRoomCheck(room)
             if (addNewRoom) {
@@ -277,9 +291,9 @@ angular.module('Controllers').controller('layoutCtrl',
 				rooms = $scope.currentInspection.currentFloor.rooms = currentFloor.rooms;
 			};
             
-            $scope.closeModal();
+            $scope.closeAddRoomModal();
 		};
-        $scope.newObj = function(obj,$event){
+        $scope.newObjOLD = function(obj,$event){
             var layoutObjs = [];
             if (currentRoom.layoutObjs != null) { // && currentRoom.layoutObjs.length>0){
                 layoutObjs = currentRoom.layoutObjs;};
@@ -292,35 +306,6 @@ angular.module('Controllers').controller('layoutCtrl',
             layoutObjs.push(XYObj);
             currentRoom.layoutObjs = $scope.layoutObjs = layoutObjs;
         }
-        $scope.newObjOLD = function(obj,$event){
-            //findGridOffsets();
-            if (currentRoom.length==0) { //have to rethink
-                alert('Must add room to place objects inside'); 
-                return
-                //or have it just use room as container?? have it go to a modal container
-            } else {
-                if (currentRoom.layoutObjs != null) { // && currentRoom.layoutObjs.length>0){
-                    layoutObjs = currentRoom.layoutObjs;};
-                if ($event.type == 'click'){
-                    currentRoom.measurePoints = $scope.measurePoints = findGeom.showMeasures(currentRoom.roomPoints);
-                    var iconX = currentRoom.measurePoints[0][0];
-                    var iconY = currentRoom.measurePoints[0][1];
-                }else{
-                    var iconX = 10*Math.round((($event.gesture.center.pageX-offLeft)*gridMag)/10);
-                    var iconY = 10*Math.round((($event.gesture.center.pageY-offTop)*gridMag)/10);    
-                };
-//                    $scope.tpospx = '200px'; //need to figure out better process for placement
-//                    $scope.lpospx = '200px';
-//                    $scope.container = 'grid-container'; //make it room?
-                XYObj = [iconX,iconY,obj];
-                $scope.iconWidth = 15;
-                $scope.iconHeight = 15;
-                layoutObjs.push(XYObj);
-                layoutObjInd = layoutObjs.indexOf(XYObj);
-                currentRoom.layoutObjs = $scope.layoutObjs = layoutObjs;
-                //addObj.newObj($scope,obj,layoutObjInd);
-            };
-        };
         var notes = [];
         var note = $scope.note = '';
         $scope.showNote = false;
@@ -348,7 +333,7 @@ angular.module('Controllers').controller('layoutCtrl',
             smallImage.src = imageData;
 //            smallImage.src = "data:image/jpeg;base64," + imageData;
 //            alert(imageData)
-//            console.log(smallImage)
+//           console.log(smallImage)
         }
         function onPhotoURISuccess(imageURI) {
             var largeImage = document.getElementById('largeImage');

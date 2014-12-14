@@ -194,7 +194,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
                 rtnPathString += ' C'+segment.points[2][0]+' '+segment.points[2][1]+' '+segment.points[1][0]+' '+segment.points[1][1]+' '+segment.points[0][0]+' '+segment.points[0][1];
             };
         }
-        return rtnPathString + ' z'
+        return rtnPathString;// + ' z'
     }
     this.showMeasures = function(arrIn){ //should walk based on only first value in points, and give measures and a line?
         var arrOut = [];
@@ -207,28 +207,29 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
             var dist = 0;
             var XYDist = [];
 			var iterator = 0;
+			//var begSeg = false;
             arr.push(arr[0]);
 			//arr.push(arr[0])
             for (var i = 0; i < arr.length; i++){ 
 				iterator = i+1;
 				if(arr.length==i+1){iterator=0}
-//				if(arr[iterator].pathType=='newSeg'){
-//					pass;
-//				};
-				if(arr[iterator].pathType=='Line'){ //always start with an M
-	                centX = Math.round((arr[i].points[0][0]+arr[iterator].points[0][0])/2);  //all should be positive
-	                centY = Math.round((arr[i].points[0][1]+arr[iterator].points[0][1])/2);  //all should be positive
-	                dist = Math.round(pythagDist(arr[i].points[0][0],arr[iterator].points[0][0],arr[i].points[0][1],arr[iterator].points[0][1]));
-	                XYDist = [arr[i],arr[iterator],centX, centY, dist];
-	                arrOut.push(XYDist); //push it to include the other points, so it can draw more smoothly with the lines for dragging??
-				};
-				if(arr[iterator].pathType=='bez3'){
+				//if(arr[i].pathType=='newSeg'){
+				//	begSeg = true;
+				//}else{
+				//	begSeg = false;
+				//};
+				//if(arr[iterator].pathType=='Line'){ //always start with an M
+	            centX = Math.round((arr[i].points[0][0]+arr[iterator].points[0][0])/2);  //all should be positive
+	            centY = Math.round((arr[i].points[0][1]+arr[iterator].points[0][1])/2);  //all should be positive
+	            dist = Math.round(pythagDist(arr[i].points[0][0],arr[iterator].points[0][0],arr[i].points[0][1],arr[iterator].points[0][1]));
+	            XYDist = [arr[i],arr[iterator],centX, centY, dist];
+	            arrOut.push(XYDist); //push it to include the other points, so it can draw more smoothly with the lines for dragging??
+					//};
+				//if(arr[iterator].pathType=='bez3'){
 //					//draw the same line for dragging, and then have a line for the measure - which means it can be pinched? or has a very thin line for each??
-				};
+					//};
             }
         };
-		//console.log('arrOut')
-		//console.log(arrOut)
         return arrOut;
     };
     this.offSetLeft = function(offElem){

@@ -64,7 +64,6 @@ angular.module('HHApp', [
 
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
         console.log('$stateChangeSuccess to ' + toState.name + '- fired once the state transition is complete.');
-        console.log($state);
     });
 
     $rootScope.$on('$viewContentLoaded', function (event) {
@@ -164,11 +163,7 @@ angular.module('HHApp', [
 	        currentFloor: function ($ionicLoading,inspections,$stateParams) {
 				var inspInd = $stateParams.inspectionIndex || 0;
 				var floorInd = $stateParams.floorInd || 0;
-				console.log(inspections)
-				console.log(floorInd)
-				console.log(inspInd)
 				var currentFloor = inspections[inspInd].floors[floorInd];
-				console.log(currentFloor)
 	        	return currentFloor;
 	        }
 		}

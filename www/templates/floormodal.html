@@ -14,53 +14,23 @@
                       </div>
                       <select ng-model="currFloor" 
 		                required
-		                style="float:right;position:relative"
 		                ng-options="currFloor.toUpperCase() for currFloor in floorLists">
 		              <option value="">{{currentInspection.currentFloor.name.toUpperCase()}}</option>
 		              </select>
                     </li>
-                <ion-button class="button button-balanced" ng-click="newFloor(currFloor)">
-		  				Go to {{currFloor || currentInspection.currentFloor.name}}
-				</ion-button>
                     <li class="item item-input item-stacked-label">
-				  	<span class="input-label">Add Own Name</span>
+				  	<span class="input-label">New Floor Name</span>
 				    <input type="text" placeholder="" name="FloorName" ng-model="currFloor"  />					
 				    </li>
-				
-<!--
-                <ion-button class="button button-balanced" ng-click="changeFloorName(currFloor)">
-		  				Change This Floor Name
+                <ion-button class="button button-balanced" ng-click="newFloor(currFloor)">
+		  				Go to {{currFloor || currentInspection.currentFloor.name.toUpperCase()}}
 				</ion-button>
--->
-				<li class="item item-input item-select">
-                      <div class="input-label">
-                          Select Room
-                      </div>
-                      <select ng-model="currRoom" 
-		                required
-		                style="float:right;position:relative"
-		                ng-options="currRoom.toUpperCase() for currRoom in roomLists">
-		              <option value="">{{currentRoom.properties.name.toUpperCase()}}</option>
-		              </select>
-                    </li>
-                <ion-button class="button button-balanced" ng-click="newRoom(currRoom)">
-		  				Go to {{currRoom || currentRoom.properties.name}}
+
+                <ion-button ng-if="(currFloor == currentInspection.currentFloor.name)" class="button button-balanced" ng-click="changeFloorName(currFloor)">
+		  				Change To Floor Name
 				</ion-button>
-                
-    <!--change names show up only on edit button ng-show, not ng-if!!-->            
-                
-                    <li class="item item-input item-stacked-label">
-				  	<span class="input-label">Add Own Name</span>
-				    <input type="text" size="15" placeholder="" name="RoomName" ng-model="currRoom"  />					
-				    </li>
-				
-<!--
-                <ion-button ng-if="(currentRoom)" class="button button-balanced" ng-click="changeRoomName(currRoom)">
-		  				Change This Room Name
-				</ion-button>
--->
+
 			</ion-list>
-<!--		</form>-->
     </ion-content>
     
   </div>

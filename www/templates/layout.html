@@ -5,15 +5,18 @@
 -->
 <ion-view>
     <ion-nav-buttons>
-      <button class="button" ng-click="chooseFloor()" side="left">
+      <button class="button" ng-click="chooseFloor()">
         {{currentInspection.address + ": "+currentInspection.currentFloor.name.toUpperCase()}}
       </button>
-      <button class="button" ng-click="magnifyGrid(.9)" side="left">
+      <button class="button" ng-click="magnifyGrid(.9)">
         <img id="magnifySmaller" ng-src="img/zoomout.svg" />
       </button>
-      <button class="button" ng-click="magnifyGrid(1.1)" side="left">
+      <button class="button" ng-click="magnifyGrid(1.1)">
         <img id="magnifyLarger" ng-src="img/zoomin.svg" />
       </button>
+	  <button class="button" ng-click="showAddRoomModal()">
+		  Add room to {{currentInspection.currentFloor.name.toUpperCase()}}
+	  </button>
     </ion-nav-buttons>
     
     <ion-side-menus>
@@ -57,31 +60,30 @@
                room-manip >
                 
                       
-                <path
+                <path id="{{'roomPath'+room.properties.name}}"
 					ng-attr-d="{{svgPath(room.svgPoints)}}" 
 					stroke="#2050ba" fill="#fcfbfa" 
 					fill-opacity="0.01" stroke-width="2"/>
+                <text ng-click="showAddRoomModal()"
+					font-size="8pt" 
+					fill="black">
+                    <textPath xlink:href="{{'#roomPath'+room.properties.name}}"
+							dominant-baseline="hanging"
+                              startOffset="2%">{{room.properties.name}}</textPath>
+				</text>
                 
-                <g ng-repeat="lines in room.measurePoints"
-                   ng-show="(!room.editLines)">
-                    <text font-size="12pt" fill="blue" >
+                <g ng-repeat="lines in room.measurePoints" ng-show="(!room.editLines)">
+                    <text font-size="6pt" fill="blue" >
                         <textPath xlink:href="{{'#'+$index+'textPath'+room.properties.name}}" 
-                                  startOffset="50%">{{lines[4]/10}}'</textPath>
+                                  startOffset="45%">{{lines[4]/10}}'</textPath>
                     </text>
                     <path id="{{$index+'textPath'+room.properties.name}}" 
                           line-manip linepoints='lines'
-                          ng-if="(lines[1].pathType=='Line')"
                           stroke="white" stroke-opacity=".01" stroke-width="34"
                         ng-attr-d="M{{lines[0].points[0][0]}} {{lines[0].points[0][1]}}
                             L{{lines[1].points[0][0]}} {{lines[1].points[0][1]}}"
                     />
                 </g>
-                
-                <text 
-                      ng-attr-x={{20+room.svgPoints[0].points[0][0]}}
-                      ng-attr-y={{20+room.svgPoints[0].points[0][1]}}
-                      >{{room.properties.name}}</text>
-				
                 <g ng-show="(!room.editLines)"
                    ng-repeat="(i, vals) in room.svgPoints">
 					

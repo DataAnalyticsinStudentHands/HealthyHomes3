@@ -1,0 +1,27 @@
+<div class="modal">
+  
+    <div class="bar bar-header bar-positive">
+        <ion-button class="button icon-left ion-chevron-left button-clear" ng-click="closeLineModal()">Cancel</ion-button>
+  		<h1 class="title">Add to path in room at {{fingerX}},{{fingerY}}</h1>
+	</div>
+    <ion-content has-header="true" padding="true">
+            <br><br><br><!--why is this disappearing under title??-->
+			<ion-list>
+				<li class="item item-input item-select">
+                      <div class="input-label">
+                          Select a new segment type
+                      </div>
+                      <select ng-model="pthTyp" 
+		                required
+		                ng-options="pthTyp as value for (pthTyp, value) in pathTypes">
+		              <option value="">{{pthTyp}}</option>
+		              </select>
+                    </li>
+                <ion-button class="button button-balanced" ng-click="addSegment(fingerX,fingerY,pthTyp)">
+		  				Add {{value}} to room
+				</ion-button>
+			</ion-list>
+    </ion-content>
+    <!--could have a small window preview of room with new figure updating in an svg 
+	-->
+  </div>

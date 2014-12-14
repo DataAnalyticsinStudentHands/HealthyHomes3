@@ -1,21 +1,33 @@
 <div class="modal">
-  
     <div class="bar bar-header bar-positive">
-        <ion-button class="button icon-left ion-chevron-left button-clear" ng-click="closeModal()">Cancel</ion-button>
-  		<h1 class="title">Now Showing: {{currentFloor.name.toUpperCase()}}</h1>
-        <h1 class="title">{{currentRoom}}</h1>
+        <ion-button class="button icon-left ion-chevron-left button-clear" ng-click="closeAddRoomModal()">Cancel</ion-button>
+  		<h1 class="title">Add to room at {{fingerX}},{{fingerY}}</h1>
 	</div>
     <ion-content has-header="true" padding="true">
-		<form name="form" ng-model="currFloor" action="newFloor(currFloor)">
             <br><br><br><!--why is this disappearing under title??-->
 			<ion-list>
-                  <h1>{{fingerX}}</h1>
-                <h1>adsfdfsgadafgs</h1>
-                <h1>adsfdfsgadafgs</h1>
-                <h1>adsfdfsgadafgs</h1>
-				
+				<li class="item item-input item-select">
+                      <div class="input-label">
+                          Select a new room object
+                      </div>
+                      <select ng-model="rmObj" 
+		                required
+		                ng-options="rmObj as value for (rmObj, value) in rmobjTypes">
+		              <option value="">{{rmObj}}</option>
+		              </select>
+					  <select ng-model="typ"
+					  	required
+						ng-options="typ as value for (typ, value) in typs">
+		              <option value="">{{typ}}</option>
+		              </select>
+                    </li>
+                <ion-button class="button button-balanced" ng-click="addroomObj(fingerX,fingerY,rmObj)">
+		  				Add {{value}} to room
+				</ion-button>
 			</ion-list>
-		</form>
     </ion-content>
-    
+	<!--I think this can add objects through a $scope, so could be accessible and work without rooms
+	it should have a way that it can be attached to a point so it will drag - perhaps a schematic? 
+		these objects, once added, should allow to click to edit, resize, minimize, or add photos to the notes, etc.
+		as with rooms, when do they share points/walls?-->
   </div>

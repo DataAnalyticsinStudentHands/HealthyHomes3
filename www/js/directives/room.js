@@ -18,12 +18,45 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		    $scope.showAdd2Room = function() {
 		        $scope.roomModal.show();
 		    };
-		    $scope.closeModal = function() {
+		    $scope.closeAddRoomModal = function() {
 		        $scope.roomModal.hide();
 		    };
-		    // $scope.$on('$destroy', function() { //causes error on __cleanup when close from controller
-// 		        $scope.roomModal.remove();
-// 		    });
+			$scope.rmObj = 'Flag';
+			$scope.rmobjTypes = {
+				"Flag": "Flag",
+				"Note" : "Note",
+				"Image" : "Image"
+			};
+			$scope.typ = 'green';
+			$scope.typs = {
+				"Green": "Green",
+				"Yellow" : "Yellow",
+				"Red" : "Red"
+			};
+			// $scope.addroomObj = function(fingerX,fingerY,rmObj){
+// 						alert(fingerX);
+// 					}
+		    $ionicModal.fromTemplateUrl('templates/linemodal.html', {
+		            id: "lnModal",
+		            scope: $scope,
+		            animation: 'slide-in-up'
+		        }).then(function(modalLine) {
+		          $scope.lineModal = modalLine;
+		    });
+		    $scope.showAdd2Line = function() {
+		        $scope.lineModal.show();
+		    };
+		    $scope.closeLineModal = function() {
+		        $scope.lineModal.hide();
+		    };
+			$scope.pthTyp = 'Line';
+			$scope.pathTypes = {
+				"Line": "Line",
+				"Window" : "Window",
+				"Door" : "Door",
+				"bez3": "Cubic Bezier",
+				"newSeg": "Gap"
+			};
         }],
         link: function(scope,elem,attr) {
     //scope.room.roomPoints = [[20.0,120.0],[220.0,120.0],[220.0,220.0],[320.0,320.0],[220.0,420.0],[420.0,220.0],[620.0,620.0],[720.0,720.0]];  //get from service as map from arcs
@@ -31,7 +64,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
         alert(text+'inroom');
     };
     var svgArr = [];
-    var svgArrTEST = 
+    var svgArrOLD = 
     [ 
         { "pathType" : "newSeg",
                    
@@ -73,23 +106,27 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
     	},
         { "pathType" : "Line",
                    
-         "points" : [[130,230]]
+         "points" : [[230,130]]
                    
         },
         { "pathType" : "Line",
                    
          "points" : [[230,230]]
                    
-        },        
+        }, 
+    	{ "pathType" : "Line",
+    	           
+    	 "points" : [[130,230]]
+    	           
+    	},       
         { "pathType" : "Line",
                    
-         "points" : [[230,130]]
+         "points" : [[130,130]]
                    
         }
     ];
     var nextPoints;
     if(!scope.room.svgPoints){
-        console.log('addsvgpts');
         scope.room.svgPoints = svgArr;//findGeom.svgPath(svgArr);
     }else{
         svgArr = scope.room.svgPoints;
@@ -120,44 +157,57 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 
 	var addPoint = function(e){ 
 		e.stopPropagation();
+        e.preventDefault();
         gridMag = parseFloat(findGeom.gridMag);
         offLeft = parseInt(findGeom.offSetLeft(gridElem));
         offTop = parseInt(findGeom.offSetTop(gridElem));
-        fingerX = parseInt((e.gesture.center.pageX/gridMag)-offLeft);
-        fingerY = parseInt((e.gesture.center.pageY/gridMag)-offTop);
+        scope.fingerX = parseInt((e.gesture.center.pageX/gridMag)-offLeft);
+        scope.fingerY = parseInt((e.gesture.center.pageY/gridMag)-offTop);
 		if (dragWhole){
-            addTap(e);
+	        scope.showAdd2Room();
 		}else{
-		    ind4new = findGeom.closestLine(points,fingerX,fingerY)[0][0];
-			if (ind4new+1<points.length){
-				ind4new += 1;
-			}else{
-				ind4new = 0;
-			};		
-		    newX = fingerX;
-		    newY = fingerY;
-            newXY = [[parseInt(newX),parseInt(newY)]];
-		    if(ind4new+1>points.length || ind4new == 0 ){
-		        points.push([[newX,newY]]); //to end??
-                svgArr.push({"pathType" : "Line","points":newXY})
-		    }else{
-		        points.splice(ind4new,0,[newX,newY]);
-                svgArr.splice(ind4new,0,{"pathType" : "Line","points":newXY})
-		    };
-			scope.room.measurePoints = findGeom.showMeasures(svgArr);
-            setPoints();
-            scope.svgArr = svgArr;
-			scope.$apply();
+			scope.showAdd2Line();
 		};
+	}; 
+	scope.addroomObj = function(fingerX,fingerY,rmObj,typ){
+		//do closest line, then decide what side it's on and attach
+		//note,image,flag
+				//alert(fingerX);
 	};
-    var addTap = function(e){ //should have a setFingerPoints
-        e.preventDefault();
-        e.stopPropagation();
-        scope.fingerX = fingerX;//parseInt((e.gesture.center.pageX/gridMag)-offLeft);
-        scope.fingerY = fingerY;//parseInt((e.gesture.center.pageY/gridMag)-offTop);
-        scope.showAdd2Room();
-    };
-    
+    scope.addSegment = function(fingerX,fingerY,pthTyp){
+		scope.closeLineModal();
+		if(pthTyp == 'Window' || pthTyp == 'Door'){
+			alert('not yet implemented')
+			return //idea is to have it calculated so it moves with rest of line - maybe a segment?
+		}
+	    ind4new = findGeom.closestLine(points,fingerX,fingerY)[0][0];
+		if (ind4new+1<points.length){
+			ind4new += 1;
+		}else{
+			ind4new = 0;
+		};		
+	    newX = fingerX;
+	    newY = fingerY;
+		if (pthTyp == 'bez3'){
+			var ctrlX = (points[ind4new-1][0]+fingerX)/2;
+			var ctrlY = (points[ind4new-1][1]+fingerY)/2;
+			newXY = [[parseInt(newX),parseInt(newY)],[parseInt(ctrlX+10),parseInt(ctrlY+10)],[parseInt(ctrlX-10),parseInt(ctrlY-10)]]
+		}else{
+        	newXY = [[parseInt(newX),parseInt(newY)]];
+		};
+	    if(ind4new+1>points.length || ind4new == 0 ){
+		//if(ind4new+1>points.length){
+	        points.push([[newX,newY]]); //to end??
+            svgArr.push({"pathType" : pthTyp,"points":newXY})
+	    }else{
+	        points.splice(ind4new,0,[newX,newY]);
+            svgArr.splice(ind4new,0,{"pathType" : pthTyp,"points":newXY})
+	    };
+		scope.room.measurePoints = findGeom.showMeasures(svgArr);
+        setPoints();
+        scope.svgArr = svgArr;
+		//scope.$apply();
+    }
     for (var n = 0;n<points.length;n++){
         points[n][0] = parseInt(points[n][0]);
         points[n][1] = parseInt(points[n][1]);
