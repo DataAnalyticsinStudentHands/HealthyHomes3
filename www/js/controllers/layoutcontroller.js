@@ -3,7 +3,7 @@
 //var layoutController = angular.module('HHControllers', []);
 
 angular.module('Controllers').controller('layoutCtrl', 
-	function ($scope, $window, $timeout,$localStorage, $state, $stateParams, Restangular, layoutObjectModel, inspections, $ionicSideMenuDelegate, $ionicNavBarDelegate, $ionicModal, findGeom) {
+	function ($scope, $window, $timeout,$localStorage, $state, $stateParams, Restangular, layoutObjectModel, inspections,currentInspection,currentFloor,$ionicSideMenuDelegate, $ionicNavBarDelegate, $ionicModal, findGeom) {
         function touchHandler(event){ //necessary for andriod, but kills ionic's side
             var touches = event.changedTouches,
             first = touches[0],
@@ -28,9 +28,12 @@ angular.module('Controllers').controller('layoutCtrl',
         document.addEventListener("touchmove", touchHandler, true);
         document.addEventListener("touchend", touchHandler, true);
         document.addEventListener("touchcancel", touchHandler, true);  
-        var inspectionIndex = $state.params.inspectionIndex;
-        var currentInspection = $scope.currentInspection = inspections[inspectionIndex];
+        var inspectionIndex = $stateParams.inspectionIndex;
+        //var currentInspection = $scope.currentInspection;// = inspections[inspectionIndex];
+		//console.log(currentInspection)
         var arcs = currentInspection.arcs;
+		//currentInspection['currentFloor'] = currentFloor;
+		$scope.currentInspection = currentInspection;
         //$scope.$storage = $localStorage;
         $scope.saveInspection = function(){
             $localStorage.inspections[inspectionIndex] = $scope.currentInspection;
@@ -71,15 +74,16 @@ angular.module('Controllers').controller('layoutCtrl',
 		
         var floors = []; 
 		var floorInd = 0;
-        if ($state.params.floorInd) {floorInd = $state.params.floorInd};
+        if ($stateParams.floorInd) {floorInd = $stateParams.floorInd};
 
         
-        if (currentInspection.floors){
-            floors = currentInspection.floors;
-        } else {
-            floors = currentInspection['floors'] = [ { "name" : "first", "color" : "#ed0e0e","rooms" : [] } ];
-        };
-        var currentFloor = $scope.currentInspection.currentFloor = currentInspection.floors[floorInd];
+        // if (currentInspection.floors){
+//             floors = currentInspection.floors;
+//         } else {
+//             floors = currentInspection['floors'] = [ { "name" : "first", "color" : "#ed0e0e","rooms" : [] } ];
+//         };
+        //var currentFloor = $scope.currentInspection.currentFloor = currentInspection.floors[floorInd];
+		
         
         $ionicModal.fromTemplateUrl('templates/floormodal.html', {
                 id: "flrModal",
@@ -98,27 +102,34 @@ angular.module('Controllers').controller('layoutCtrl',
             $scope.floorModal.remove();
         });
 		var addNewFloorCheck = function(floor){ //this means that the floor indices change for others, too!
-			for (var k=0;k<floors.length;k++){
-				if (floors[k].name == floor){
+			for (var k=0;k<currentInspection.floors.length;k++){
+				if (currentInspection.floors[k].name == floor){
 					floorInd = k;
 					return false; //does this break??
 				} else {
-					floorInd = floors.length;
+					floorInd = currentInspection.floors.length;
 					return true;
 				};
 			};
 		}
+		var rooms;
         $scope.newFloor = function(floor){
 			if(currentFloor!=floor){
 				var addNewFloor = addNewFloorCheck(floor);
 				if(addNewFloor){
         	        floors.push({"name" : floor, "color" : "#ed0e0e", "rooms" : []});
-					currentFloor = $scope.currentInspection.currentFloor = currentInspection.floors[floorInd];
-					$state.params.floorInd = floorInd; //should we change to have it on data??
+					currentFloor = $scope.currentInspection.currentFloor = currentInspection.floors[floorInd] = floors[0];
         	    }else{
 					currentFloor = $scope.currentInspection.currentFloor = currentInspection.floors[floorInd];
         	    };
-                rooms = currentFloor.rooms;
+				inspections[inspectionIndex] = currentInspection
+				$stateParams.floorInd = floorInd;
+ 				$state.go("secure.inspections.layout",{floorInd:floorInd});
+				if (currentFloor.rooms){
+               		rooms = currentFloor.rooms;
+				}else{
+					currentFloor['rooms'] = [];
+				}
                 clearFloorContents();
 				setFloorContents();
 			};
@@ -169,19 +180,20 @@ angular.module('Controllers').controller('layoutCtrl',
  //        }
  //   ]
  //           	};
-		var rooms;
-		var roomInd = 0;
-		var d = new Date();
-		var timeId;
-        if ($state.params.roomInd) {roomInd = $state.params.roomInd};
+ 		var roomInd;
+        if ($stateParams.roomInd) {
+			roomInd = $stateParams.roomInd
+		}else{
+			$stateParams.roomInd = roomInd = 0;
+		};
         //how am I tracking this between rooms when change floors?
-        if (currentInspection.floors[floorInd].rooms){
+        if (currentFloor.rooms){
             rooms = currentFloor.rooms;
         } else {
             rooms = currentFloor['rooms'] = testRoom;
         };
         //need to catch if not exist, or seed with a "blank room" - could be good for click
-        var currentRoom = $scope.currentRoom = currentInspection.floors[floorInd].rooms[roomInd];
+        var currentRoom = currentFloor.rooms[roomInd];
 //		var features = [];
 //        var paths = [];
 //        var shapes = [];
@@ -190,12 +202,12 @@ angular.module('Controllers').controller('layoutCtrl',
 //        var images = [];
         var roomItem;
         var clearFloorContents = function(){
-            $scope.currentInspection.currentFloor.features = [];
-            $scope.currentInspection.currentFloor.paths = [];
-            $scope.currentInspection.currentFloor.shapes = [];
-            $scope.currentInspection.currentFloor.roomArcs = [];
-            $scope.currentInspection.currentFloor.notes = [];
-            $scope.currentInspection.currentFloor.images = [];
+            currentFloor.features = [];
+            currentFloor.paths = [];
+            currentFloor.shapes = [];
+            currentFloor.roomArcs = [];
+            currentFloor.notes = [];
+            currentFloor.images = [];
         };
         //will I need to call this again? in a function?
 		var setFloorContents = function(){
@@ -204,25 +216,27 @@ angular.module('Controllers').controller('layoutCtrl',
 				//timeId = d.getTime();
     	        roomItem = currentFloor.rooms[itemInd];
     	        if (roomItem.type == "Feature"){
-    	            $scope.currentInspectioncurrentFloor.features.push(roomItem)
+    	            currentFloor.features.push(roomItem)
     	        };
                 if (roomItem.type == "Path"){
 					//roomItem.id = timeId;
-    	            $scope.currentInspection.currentFloor.paths.push(roomItem)
+    	            currentFloor.paths.push(roomItem)
     	        };
     	        if (roomItem.type == "Polygon"){
-    	            $scope.currentInspection.currentFloor.shapes.push(roomItem)
+    	            currentFloor.shapes.push(roomItem)
     	        };
     	        if (roomItem.type == "openArc"){
-    	            $scope.currentInspection.currentFloor.roomArcs.push(roomItem)
+    	            currentFloor.roomArcs.push(roomItem)
     	        };
     	        if (roomItem.type == "Note"){
-    	            $scope.currentInspection.currentFloor.notes.push(roomItem)
+    	            currentFloor.notes.push(roomItem)
     	        };
     	        if (roomItem.type == "Image"){
-    	            $scope.currentInspection.currentFloor.images.push(roomItem)
+    	            currentFloor.images.push(roomItem)
     	        };
     	    };
+			currentInspection.currentFloor = currentFloor;
+			$scope.currentInspection = currentInspection;
 //            $scope.currentRoom.paths = paths;
 //	        $scope.currentRoom.features = features;
 //	        $scope.currentRoom.shapes = shapes;
@@ -232,8 +246,6 @@ angular.module('Controllers').controller('layoutCtrl',
         setFloorContents();
 		
 		var addNewRoomCheck = function(room){ //this means that the floor indices change for others, too!
-			console.log(room)
-			console.log(rooms)
 			if(rooms.length==0){
 				return true;
 			}else{
@@ -251,17 +263,13 @@ angular.module('Controllers').controller('layoutCtrl',
         var newRoom;
 		
         $scope.newRoom = function(room){
-			console.log(room)
 			var addNewRoom = addNewRoomCheck(room)
-			console.log(addNewRoom)
             if (addNewRoom) {
 				//timeId = d.getTime();
                 newRoom = angular.copy(testRoom);
 				newRoom.properties.name = room;
-				console.log(rooms)
 				//newRoom.id = timeId;
 				rooms.push(newRoom);
-				console.log(rooms)
 				currentFloor.rooms = $scope.currentInspection.currentFloor.rooms = rooms;
                 clearFloorContents();
                 setFloorContents();
@@ -283,8 +291,6 @@ angular.module('Controllers').controller('layoutCtrl',
             XYObj = [iconX,iconY,obj];
             layoutObjs.push(XYObj);
             currentRoom.layoutObjs = $scope.layoutObjs = layoutObjs;
-            //$scope.currentRoom = currentRoom;
-            console.log(layoutObjs);
         }
         $scope.newObjOLD = function(obj,$event){
             //findGridOffsets();
@@ -312,7 +318,6 @@ angular.module('Controllers').controller('layoutCtrl',
                 layoutObjs.push(XYObj);
                 layoutObjInd = layoutObjs.indexOf(XYObj);
                 currentRoom.layoutObjs = $scope.layoutObjs = layoutObjs;
-                console.log(layoutObjs);
                 //addObj.newObj($scope,obj,layoutObjInd);
             };
         };

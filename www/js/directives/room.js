@@ -27,8 +27,6 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
         }],
         link: function(scope,elem,attr) {
     //scope.room.roomPoints = [[20.0,120.0],[220.0,120.0],[220.0,220.0],[320.0,320.0],[220.0,420.0],[420.0,220.0],[620.0,620.0],[720.0,720.0]];  //get from service as map from arcs
-	console.log('inroom')
-    console.log(scope.room)
     scope.alert = function (text) {
         alert(text+'inroom');
     };

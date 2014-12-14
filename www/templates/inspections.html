@@ -9,7 +9,7 @@
         <div ng-repeat="inspect in inspections">
             <div class="item item-icon-left energized" ui-sref-active='activeInspection'>
 <!--                <a href="#/layout/{{inspect.inspectionIndex}}">-->
-                <a ui-sref="secure.inspections.layout({inspectionIndex : inspect.inspectionIndex, floorInd : inspect.floorInd || 0})">
+                <a ui-sref="secure.inspections.layout({inspectionIndex : inspect.inspectionIndex, floorInd : inspect.floorInd || 0, roomInd : inspect.roomInd || 0})">
                     <p>{{inspect.contact_household.contact_name.first}} {{inspect.contact_household.contact_name.last}}</p>
                     <p>{{inspect.address}}, {{inspect.city}}, {{inspect.zip}}</p>
                 </a>

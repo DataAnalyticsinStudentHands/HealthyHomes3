@@ -148,7 +148,7 @@ angular.module('HHApp', [
             }
       })
       .state('secure.inspections.layout', {	
-          url: "/layout/:inspectionIndex/:floorInd",
+          url: "/layout/:inspectionIndex/:floorInd/:roomInd",
           views: {
                 "inspections@secure": { 
 					templateUrl: 'templates/layout.html',
@@ -156,15 +156,22 @@ angular.module('HHApp', [
 					}
                 },
 		resolve: {
-	            currentFloor: function ($ionicLoading,inspections,$state) {
-					console.log(inspections)
-					console.log($state.current)
-	                  return inspections;
-	           	}
+			currentInspection: function ($ionicLoading,inspections,$stateParams) {
+				var inspInd = $stateParams.inspectionIndex || 0;
+				var currentInspection = inspections[inspInd];
+				return currentInspection;
 			},
-			onEnter: function(inspections){
+	        currentFloor: function ($ionicLoading,inspections,$stateParams) {
+				var inspInd = $stateParams.inspectionIndex || 0;
+				var floorInd = $stateParams.floorInd || 0;
 				console.log(inspections)
-			}
+				console.log(floorInd)
+				console.log(inspInd)
+				var currentFloor = inspections[inspInd].floors[floorInd];
+				console.log(currentFloor)
+	        	return currentFloor;
+	        }
+		}
       })
       .state('secure.inspections.questions', {	
           url: "/questions/:inspectionIndex/:floorInd",
