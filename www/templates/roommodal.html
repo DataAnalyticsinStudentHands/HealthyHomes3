@@ -21,8 +21,11 @@
 		              <option value="">{{typ}}</option>
 		              </select>
                     </li>
-                <ion-button class="button button-balanced" ng-click="addroomObj(fingerX,fingerY,rmObj)">
+                <ion-button class="button button-balanced" ng-click="addroomObj(fingerX,fingerY,rmObj)" ng-show="!deleteObj">
 		  				Add {{value}} to room
+				</ion-button>
+                <ion-button class="button button-balanced" ng-click="addroomObj(fingerX,fingerY,rmObj)" ng-show="deleteObj">
+		  				Remove {{value}} from room
 				</ion-button>
 			</ion-list>
     </ion-content>

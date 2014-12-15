@@ -127,7 +127,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
         var touchLegOne = 0;
         var touchLegTwo = 0;
         var lineLength = 0;
-		var pointOnly = false;
+		var pointIntersect = [100,100]; //if we return this, then places it on the line
 		var shortestLine = 0;
 		var secondShortestLine = 0;
 		var lineInd = 0;
@@ -135,6 +135,8 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
         arr.push([arr[0][0],arr[0][1]])
         for (var i = 0;i<arr.length-1;i++){
 //find sides from finger to endpoints of line and then look for closest to same length and ratio for choosing point instead of line
+			//seems to not work close to corners; can't figure out why
+			//perhaps redo whole logic??
 			touchLegOne = pythagDist(fingerX,arr[i][0],fingerY,arr[i][1]);
 			touchLegTwo = pythagDist(fingerX,arr[i+1][0],fingerY,arr[i+1][1]);
 			if (i==0){
@@ -159,14 +161,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 			if (testInd>arr.length-2){testInd=0;};
 		};
 		ind4new.push(testInd); 
-		if (!pointOnly){
-			if(testInd<arr.length-2){
-				ind4new.push(testInd+1);
-			}else{
-				ind4new.push(0);
-			};
-		};
-        return [ind4new, pointOnly];
+        return [ind4new, pointIntersect];
     }
     var pythagDist = this.pythagDist = function(x1,x2,y1,y2){
         return Math.sqrt(((x1-x2)*(x1-x2))+((y1-y2)*(y1-y2)))
@@ -193,8 +188,11 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
             if(segment.pathType == "bez3"){
                 rtnPathString += ' C'+segment.points[2][0]+' '+segment.points[2][1]+' '+segment.points[1][0]+' '+segment.points[1][1]+' '+segment.points[0][0]+' '+segment.points[0][1];
             };
+            if(segment.pathType == "bez4"){
+                rtnPathString += ' Q'+segment.points[1][0]+' '+segment.points[1][1]+' '+segment.points[0][0]+' '+segment.points[0][1];
+            };
         }
-        return rtnPathString;// + ' z'
+        return rtnPathString;// + ' z';
     }
     this.showMeasures = function(arrIn){ //should walk based on only first value in points, and give measures and a line?
         var arrOut = [];

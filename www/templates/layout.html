@@ -62,6 +62,7 @@
                       
                 <path id="{{'roomPath'+room.properties.name}}"
 					ng-attr-d="{{svgPath(room.svgPoints)}}" 
+					stroke-dasharray="{{room.dashStroke}}"
 					stroke="#2050ba" fill="#fcfbfa" 
 					fill-opacity="0.01" stroke-width="2"/>
                 <text ng-click="showAddRoomModal()"
@@ -110,7 +111,7 @@
                         ng-attr-cy={{vals.points[2][1]}}
                         r = 16
                     />
-                    <line ng-if=(vals.points[1])
+                    <line ng-if=(vals.points[2])
                           stroke="#ba202c" stroke-width=".5"
                           ng-attr-x1={{vals.points[1][0]}}
                           ng-attr-y1={{vals.points[1][1]}}

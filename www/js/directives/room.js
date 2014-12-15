@@ -54,6 +54,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 				"Line": "Line",
 				"Window" : "Window",
 				"Door" : "Door",
+				"bez4" : "Quadratic Bezier",
 				"bez3": "Cubic Bezier",
 				"newSeg": "Gap"
 			};
@@ -149,6 +150,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
     scope.room.measurePoints = findGeom.showMeasures(svgArr);
 	var fingerX;
 	var fingerY;
+	var closestLinePoints;
 	var ind4new;
 	var newX;
 	var newY;
@@ -180,23 +182,30 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 			alert('not yet implemented')
 			return //idea is to have it calculated so it moves with rest of line - maybe a segment?
 		}
-	    ind4new = findGeom.closestLine(points,fingerX,fingerY)[0][0];
+		closestLinePoints = findGeom.closestLine(points,fingerX,fingerY)
+	    ind4new = closestLinePoints[0][0];
 		if (ind4new+1<points.length){
 			ind4new += 1;
 		}else{
 			ind4new = 0;
 		};		
-	    newX = fingerX;
-	    newY = fingerY;
+	    newX = fingerX; //closestLinePoints[0][1][0]
+	    newY = fingerY; //closestLinePoints[0][1][1]
+		var ctrlX;
+		var ctrlY;
 		if (pthTyp == 'bez3'){
-			var ctrlX = (points[ind4new-1][0]+fingerX)/2;
-			var ctrlY = (points[ind4new-1][1]+fingerY)/2;
-			newXY = [[parseInt(newX),parseInt(newY)],[parseInt(ctrlX+10),parseInt(ctrlY+10)],[parseInt(ctrlX-10),parseInt(ctrlY-10)]]
+			ctrlX = (points[ind4new-1][0]+fingerX)/2;
+			ctrlY = (points[ind4new-1][1]+fingerY)/2;
+			newXY = [[parseInt(newX),parseInt(newY)],[parseInt(ctrlX+4),parseInt(ctrlY+4)],[parseInt(ctrlX-4),parseInt(ctrlY-4)]];
+		}else if (pthTyp == 'bez4'){
+			ctrlX = (points[ind4new-1][0]+fingerX)/2;
+			ctrlY = (points[ind4new-1][1]+fingerY)/2;
+			newXY = [[parseInt(newX),parseInt(newY)],[parseInt(ctrlX+4),parseInt(ctrlY+4)]];
 		}else{
         	newXY = [[parseInt(newX),parseInt(newY)]];
 		};
-	    if(ind4new+1>points.length || ind4new == 0 ){
-		//if(ind4new+1>points.length){
+	    //if(ind4new+1>points.length || ind4new == 0 ){
+		if(ind4new+1>points.length){
 	        points.push([[newX,newY]]); //to end??
             svgArr.push({"pathType" : pthTyp,"points":newXY})
 	    }else{
@@ -290,13 +299,16 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
         scope.$apply();
     };
     scope.room.editLines = true;
+	scope.room.dashStroke = '';
 	var measures = function(e){
 		e.stopPropagation();
         e.preventDefault();
 		if (dragWhole) {
             scope.room.editLines = false;
+			scope.room.dashStroke = '3 2';
 		} else {
             scope.room.editLines = true;
+			scope.room.dashStroke = '';
 		}
 		dragWhole =! dragWhole;
         scope.$apply()
