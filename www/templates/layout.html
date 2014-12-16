@@ -65,6 +65,7 @@
 					stroke-dasharray="{{room.dashStroke}}"
 					stroke="#2050ba" fill="#fcfbfa" 
 					fill-opacity="0.01" stroke-width="2"/>
+                
                 <text ng-click="showAddRoomModal()"
 					font-size="8pt" 
 					fill="black">
@@ -91,10 +92,22 @@
                     <circle stroke="#fcf8f8" stroke-width="16" 
                         opacity=".2"
                         circle-manip circpoints="vals.points[0]"
+                        circcnt = "i"
                         ng-attr-cx={{vals.points[0][0]}}
                         ng-attr-cy={{vals.points[0][1]}}
                         r = 16
                     />
+<!--
+                    <circle stroke="#fcf8f8" stroke-width="16" 
+                        opacity=".2"
+                        ng-if="(i==room.svgPoints.length-1)"
+                        circcnt = "i"
+                        circle-manip circpoints="room.svgPoints[0].points[0]"
+                        ng-attr-cx={{room.svgPoints[0].points[0][0]}}
+                        ng-attr-cy={{room.svgPoints[0].points[0][1]}}
+                        r = 16
+                    />
+-->
                     <circle ng-if=(vals.points[1])
                         fill="#ba202c" stroke="#fcf8f8" stroke-width="16" 
                         opacity=".2"
@@ -103,7 +116,7 @@
                         ng-attr-cy={{vals.points[1][1]}}
                         r = 16
                     />
-                    <circle ng-if=(vals.points[1])
+                    <circle ng-if=(vals.points[2])
                         fill="#ba202c" stroke="#fcf8f8" stroke-width="16" 
                         opacity=".2"
                         circle-manip circpoints="vals.points[2]"

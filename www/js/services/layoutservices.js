@@ -119,6 +119,13 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
         return newMag
     };
     this.closestLine = function(arrIn,fingerX,fingerY){
+        //because of SVG path ordering, want to insert so that the finger is pointing to the beginning of the segment
+        var arr = _.clone(arrIn);
+        var ind4new = [];
+        var pointIntersect = [100,100];
+        return [ind4new, pointIntersect];
+    };
+    this.closestLineOLD = function(arrIn,fingerX,fingerY){
         var arr = _.clone(arrIn);
         var ind4new = [];
 		var testInd = 0;
@@ -132,7 +139,8 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 		var secondShortestLine = 0;
 		var lineInd = 0;
 		//var pointInd = 0;
-        arr.push([arr[0][0],arr[0][1]])
+        //arr.push([arr[0][0],arr[0][1]])
+        arr.push([arr[0]])
         for (var i = 0;i<arr.length-1;i++){
 //find sides from finger to endpoints of line and then look for closest to same length and ratio for choosing point instead of line
 			//seems to not work close to corners; can't figure out why
@@ -156,7 +164,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
             };
 		};
 		if (secondShortestLine/shortestLine > 3 || secondShortestLine/shortestLine == 1){
-			pointOnly = true;
+			//pointOnly = true;
 			testInd = lineInd;
 			if (testInd>arr.length-2){testInd=0;};
 		};
@@ -175,24 +183,45 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 //    };
     var segment;
     this.svgPath = function(arr){
-        var rtnPathString = '';//+arr[0][0]+' '+arr[0][1];
+        var rtnPathString = 'M';//+arr[0][0]+' '+arr[0][1];
+        var add2rtnPathStr = '';
         //for (var key=0; k<arr.length; key++){
         for (var key in arr){
             segment = arr[key];
             if(segment.pathType == "newSeg"){
-                rtnPathString += ' M'+segment.points[0][0]+' '+segment.points[0][1];
+                if(rtnPathString=='M'){
+                    add2rtnPathStr='';
+                }else{
+                    add2rtnPathStr=' L';
+                }
+                rtnPathString += add2rtnPathStr+segment.points[0][0]+' '+segment.points[0][1];
             };
             if(segment.pathType == "Line"){
-                rtnPathString += ' L'+segment.points[0][0]+' '+segment.points[0][1];
+                if(rtnPathString=='M'){
+                    add2rtnPathStr='';
+                }else{
+                    add2rtnPathStr=' L';
+                }
+                rtnPathString += add2rtnPathStr+segment.points[0][0]+' '+segment.points[0][1];
             };
             if(segment.pathType == "bez3"){
-                rtnPathString += ' C'+segment.points[2][0]+' '+segment.points[2][1]+' '+segment.points[1][0]+' '+segment.points[1][1]+' '+segment.points[0][0]+' '+segment.points[0][1];
+                if(rtnPathString=='M'){
+                    add2rtnPathStr='';
+                }else{
+                    add2rtnPathStr=' C';
+                }
+                rtnPathString += add2rtnPathStr+segment.points[2][0]+' '+segment.points[2][1]+' '+segment.points[1][0]+' '+segment.points[1][1]+' '+segment.points[0][0]+' '+segment.points[0][1];
             };
             if(segment.pathType == "bez4"){
-                rtnPathString += ' Q'+segment.points[1][0]+' '+segment.points[1][1]+' '+segment.points[0][0]+' '+segment.points[0][1];
+                if(rtnPathString=='M'){
+                    add2rtnPathStr='';
+                }else{
+                    add2rtnPathStr=' Q';
+                }
+                rtnPathString += add2rtnPathStr+segment.points[1][0]+' '+segment.points[1][1]+' '+segment.points[0][0]+' '+segment.points[0][1];
             };
         }
-        return rtnPathString;// + ' z';
+        return rtnPathString + ' z';
     }
     this.showMeasures = function(arrIn){ //should walk based on only first value in points, and give measures and a line?
         var arrOut = [];

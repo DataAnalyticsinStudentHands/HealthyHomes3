@@ -55,8 +55,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 				"Window" : "Window",
 				"Door" : "Door",
 				"bez4" : "Quadratic Bezier",
-				"bez3": "Cubic Bezier",
-				"newSeg": "Gap"
+				"bez3": "Cubic Bezier"
 			};
         }],
         link: function(scope,elem,attr) {
@@ -118,11 +117,6 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
     	{ "pathType" : "Line",
     	           
     	 "points" : [[130,230]]
-    	           
-    	},       
-        { "pathType" : "Line",
-                   
-         "points" : [[130,130]]
                    
         }
     ];
@@ -180,7 +174,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		scope.closeLineModal();
 		if(pthTyp == 'Window' || pthTyp == 'Door'){
 			alert('not yet implemented')
-			return //idea is to have it calculated so it moves with rest of line - maybe a segment?
+			return //idea is to have it calculated so it moves with rest of line - maybe a new segment, with points calculated in between?
 		}
 		closestLinePoints = findGeom.closestLine(points,fingerX,fingerY)
 	    ind4new = closestLinePoints[0][0];
@@ -204,7 +198,6 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		}else{
         	newXY = [[parseInt(newX),parseInt(newY)]];
 		};
-	    //if(ind4new+1>points.length || ind4new == 0 ){
 		if(ind4new+1>points.length){
 	        points.push([[newX,newY]]); //to end??
             svgArr.push({"pathType" : pthTyp,"points":newXY})
@@ -215,7 +208,6 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		scope.room.measurePoints = findGeom.showMeasures(svgArr);
         setPoints();
         scope.svgArr = svgArr;
-		//scope.$apply();
     }
     for (var n = 0;n<points.length;n++){
         points[n][0] = parseInt(points[n][0]);
@@ -229,7 +221,6 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
     var xtraOffY = 0;
 	var newIndex4line;
 	var onlyPt;
-	//var clonePts = _.clone(points);
 	var n;
 	var inPts;
 	var dragX;
@@ -240,37 +231,13 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		inPts = _.map(points,function(num){return true});
         $ionicSideMenuDelegate.canDragContent(false);
         gridMag = parseInt(findGeom.gridMag);
-//        offLeft = findGeom.offSetLeft(gridElem); 
-//        offTop = findGeom.offSetTop(gridElem);
 		xtraOffX = parseInt(points[0][0]/gridMag);
 		xtraOffY = parseInt(points[0][1]/gridMag);
-//        fingerX = (e.gesture.center.pageX/gridMag)-offLeft;
-//		fingerY = (e.gesture.center.pageY/gridMag)-offTop;
-//		newIndex4line = findGeom.closestLine(points,fingerX,fingerY);
     };
 	var points2 = [];
 	var new4line;
-	var assignPoints = function(e){ //have to force it to iterate from n=0
-	//	if (!dragWhole){ //need to get draglines to work again
-//	        new4line = newIndex4line[0][0];
-//			onlyPt = newIndex4line[1];
-//			points2 = [];
-//			points2.push(points[new4line]);
-//			if (!onlyPt){
-//				if ((new4line+1)<points.length){
-//					points2.push(points[new4line+1]);
-//				}else{
-//					points2.push(points[0]);
-//				}
-//				xtraOffX = (points2[1][0] - points2[0][0])/(2*gridMag);
-//				xtraOffY = (points2[1][1] - points2[0][1])/(2*gridMag);
-//			}else{
-//				xtraOffX = 2/gridMag;
-//				xtraOffY = 2/gridMag;
-//			}
-//		}else{
+	var assignPoints = function(e){
         points2 = points;
-		//};
         dragX = (((e.gesture.deltaX)/gridMag)-points2[0][0])+xtraOffX;
         dragY = (((e.gesture.deltaY)/gridMag)-points2[0][1])+xtraOffY;
     	for (n=0;n<points2.length;n++){
