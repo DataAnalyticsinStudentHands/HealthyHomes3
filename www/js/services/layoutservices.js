@@ -120,7 +120,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
     };
     this.closestLine = function(arrIn,fingerX,fingerY){
         //because of SVG path ordering, want to insert so that the finger is pointing to the beginning of the segment
-        var arr = _.clone(arrIn);
+        var arr = angular.copy(arrIn); //_.clone(arrIn);
 		var iterator = 0;
         var ind4new = [];
 		var xDist;
@@ -149,14 +149,14 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 		for (var i = 0;i<arr.length-1;i++){
 			iterator = i+1;
 			if(arr.length==i+1){iterator=0};
+            shrtDist = 500;
             itX = arr[iterator].points[0][0];
             itY = arr[iterator].points[0][1];
             arrX = arr[i].points[0][0];
             arrY = arr[i].points[0][1];
 			xDist = Math.abs(itX-arrX);
 			yDist = Math.abs(itY-arrY);
-            console.log(arr[i].pathType)
-			num2iterate = 50/Math.max(xDist,yDist);
+			num2iterate = 5/Math.max(xDist,yDist);
 			if(arr[iterator].pathType =='bez4'){
                 cfX = arr[i].points[1][0];
                 cfY = arr[i].points[1][1];
@@ -185,6 +185,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 					};
 				};
 			}else{ //lines and new segments treated as lines
+                
                 if(arrY-itY==0){
                     slope=0;
                 }else if(arrX-itX==0){
@@ -198,21 +199,31 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 				    yintercept = arrY/(slope*arrX)
                 };
 				if (xDist>=yDist){
+                    
+                    //console.log('xDist'+slope,fingerX,xWd,fingerY,liney);
 					for(var k=0;k<xDist;k++){
-						liney = (slope*k)+yintercept;
-                        fingDist = pythagDist(fingerX,linex,fingerY,k);
+                        var xWd = k+Math.min(arrX,itX);
+						liney = (slope*xWd)+yintercept;//+Math.min(arrY,itY);
+                        console.log('xDist'+fingerX,xWd,fingerY,liney);
+                        fingDist = pythagDist(fingerX,xWd,fingerY,liney);
+                        console.log(fingDist)
 						if (fingDist<shrtDist){
+                            //console.log('Xnewshrt'+fingDist)
 							shrtDist=fingDist;
-							pointIntersect = [linex,liney];
+							pointIntersect = [xWd,liney];
 						};
 					};
 				}else{
 					for(var k=0;k<yDist;k++){
-						linex = (k-yintercept)/slope;
-						fingDist = pythagDist(fingerX,linex,fingerY,k);
+                        var yHt = k+Math.min(arrY,itY);
+						linex = (yHt-yintercept)/slope;
+//                        console.log('yDist '+fingerX,linex,fingerY,yHt);
+						fingDist = pythagDist(fingerX,linex,fingerY,yHt);
+//                        console.log(fingDist)
 						if (fingDist<shrtDist){
+//                            console.log('newshrt'+fingDist)
 							shrtDist=fingDist;
-							pointIntersect = [linex,liney];
+							pointIntersect = [linex,yHt];
 						};
 					};
 				}

@@ -180,13 +180,14 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 	    ind4new = closestLinePoints[0];
         console.log(closestLinePoints)
         console.log(ind4new+' ind4new')
-		if (ind4new+1<points.length){
-			ind4new += 1;
-		}else{
-			ind4new = 0;
-		};		
-	    newX = fingerX; //closestLinePoints[0][1][0]
-	    newY = fingerY; //closestLinePoints[0][1][1]
+//		if (ind4new+1<points.length){
+//			ind4new += 1;
+//		}else{
+//			ind4new = 0;
+//		};		
+        console.log(ind4new+' ind4new')
+	    newX = closestLinePoints[1][0]//fingerX; //closestLinePoints[0][1][0]
+	    newY = closestLinePoints[1][1]//fingerY; //closestLinePoints[0][1][1]
 		var ctrlX;
 		var ctrlY;
 		if (pthTyp == 'bez3'){
