@@ -176,7 +176,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 			alert('not yet implemented')
 			return //idea is to have it calculated so it moves with rest of line - maybe a new segment, with points calculated in between?
 		}
-		closestLinePoints = findGeom.closestLine(points,fingerX,fingerY)
+		closestLinePoints = findGeom.closestLine(svgArr,fingerX,fingerY)
 	    ind4new = closestLinePoints[0][0];
 		if (ind4new+1<points.length){
 			ind4new += 1;
@@ -222,7 +222,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 	var newIndex4line;
 	var onlyPt;
 	var n;
-	var inPts;
+	var inPts; //can we use this for drag together sorts of things?
 	var dragX;
 	var dragY;
     var startDrag = function(e){

@@ -121,8 +121,84 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
     this.closestLine = function(arrIn,fingerX,fingerY){
         //because of SVG path ordering, want to insert so that the finger is pointing to the beginning of the segment
         var arr = _.clone(arrIn);
+		var iterator = 0;
         var ind4new = [];
-        var pointIntersect = [100,100];
+		var xDist;
+		var yDist;
+		var linex;
+		var liney;
+		var slope;
+		var yintercept;
+		var fingDist;
+		var shrtDist = 500; //what happens if none is found shorter than this arbitrary number?
+		var shortestDist = 500;
+        var pointIntersect = [0,0];
+		var finalPts = [0,0];
+		var num2iterate; 
+		var cf0;
+		var cf1;
+		var cf2;
+		var cf3;
+		arr.push([arr[0]])
+		for (var i = 0;i<arr.length-1;i++){
+			iterator = i+1;
+			if(arr.length==i+1){iterator=0};
+			xDist = Math.abs(arr[iterator][0]-arr[i][0]);
+			yDist = Math.abs(arr[iterator][1]-arr[i][1]);
+			num2iterate = 5/Math.max(xDist,yDist);
+			if(arr[iterator].pathType =='bez4'){
+				for(t=num2iterate;t<1;t+=num2iterate){
+					linex = (1 - t) * (1 - t) * arr[iterator].points[0][0] + 2 * (1 - t) * t * arr[i].points[1][0] + t * t * arr[i].points[0][0];
+					liney = (1 - t) * (1 - t) * arr[iterator].points[0][1] + 2 * (1 - t) * t * arr[i].points[1][1] + t * t * arr[i].points[0][1];
+					fingDist = pythagDist(fingerX,linex,fingerY,liney);
+					if (fingDist<shrtDist){
+						shrtDist=fingDist;
+						pointIntersect = [linex,liney];
+					};
+				};
+			}
+			}else if(arr[i].pathType =='bez3'){
+				for(t=num2iterate;t<1;t+=num2iterate){
+					cf0 = (1-num2iterate)*(1-num2iterate)*(1-num2iterate);
+					cf1 = 3 * num2iterate * (1-num2iterate) * (1-num2iterate);
+					cf2 = 3 * num2iterate * num2iterate * (1-num2iterate);
+					cf3 = num2iterate * num2iterate * num2iterate;
+					linex = (cf0*arr[iterator].points[0][0]) + (cf1*arr[i].points[1][0])+(cf2*arr[i].points[2][0]) + (cf3*arr[i].points[0][0]);
+					liney = (cf0*arr[iterator].points[0][1]) + (cf1*arr[i].points[1][1])+(cf2*arr[i].points[2][1]) + (cf3*arr[i].points[0][1]);
+					fingDist = pythagDist(fingerX,linex,fingerY,liney);
+					if (fingDist<shrtDist){
+						shrtDist=fingDist;
+						pointIntersect = [linex,liney];
+					};
+				};
+			}else{ //lines and new segments treated as lines
+				slope = (arr[i].points[0][1]-arr[iterator].points[0][1]) / (arr[i].points[0][0]-arr[iterator].points[0][0]);
+				yintercept = arr[i].points[0][1]/(slope*arr[i].points[0][0])
+				if (xDist>yDist){
+					for(var k=0;k<xDist;k++){
+						liney = (slope*k)+yintercept;
+						fingDist = pythagDist(fingerX,k,fingerY,liney);
+						if (fingDist<shrtDist){
+							shrtDist=fingDist;
+							pointIntersect = [linex,liney];
+						};
+					};
+				}else{
+					for(var k=0;k<yDist;k++){
+						linex = (k-yintercept)/slope;
+						fingDist = pythagDist(fingerX,linex,fingerY,k);
+						if (fingDist<shrtDist){
+							shrtDist=fingDist;
+							pointIntersect = [linex,liney];
+						};
+					};
+				}
+			}
+			if (shrtDist<shortestDist){
+				shortestDist = shrtDist;
+				ind4new = iterator;
+				finalPts = pointIntersect;
+			}
         return [ind4new, pointIntersect];
     };
     this.closestLineOLD = function(arrIn,fingerX,fingerY){
@@ -239,7 +315,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 			//arr.push(arr[0])
             for (var i = 0; i < arr.length; i++){ 
 				iterator = i+1;
-				if(arr.length==i+1){iterator=0}
+				if(arr.length==i+1){iterator=0};
 				//if(arr[i].pathType=='newSeg'){
 				//	begSeg = true;
 				//}else{
