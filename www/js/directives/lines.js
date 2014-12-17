@@ -10,6 +10,8 @@ angular.module('Directives').directive('lineManip',function($ionicSideMenuDelega
         link: function(scope,elem,attr) {
     var linepoints = scope.linepoints;
     var gridMag = findGeom.gridMag;
+    var dragXline;
+    var dragYline;
     var begDragX1;
     var begDragY1;
     var begDragX2;
@@ -17,41 +19,41 @@ angular.module('Directives').directive('lineManip',function($ionicSideMenuDelega
     var startDrag = function(e){
         e.preventDefault();
         e.stopPropagation();
-        $ionicSideMenuDelegate.canDragContent(false);
         gridMag = findGeom.gridMag;
-        begDragX1 = linepoints[0].points[0][0];
-        begDragX2 = linepoints[1].points[0][0];
-        begDragY1 = linepoints[0].points[0][1];
-        begDragY2 = linepoints[1].points[0][1];
+        begDragX1 = parseInt(linepoints[0].points[0][0]);
+        begDragX2 = parseInt(linepoints[1].points[0][0]);
+        begDragY1 = parseInt(linepoints[0].points[0][1]);
+        begDragY2 = parseInt(linepoints[1].points[0][1]);
     };
-    var dragPoints = function(e){ //need to work in zoom stuff
+    var drag2Points = function(e){ 
+        e.preventDefault();
         e.stopPropagation();
-        dragX = e.gesture.deltaX/gridMag;
-        dragY = e.gesture.deltaY/gridMag;
-        linepoints[0].points[0][0] = begDragX1 + dragX;
-        linepoints[1].points[0][0] = begDragX2 + dragX;
-        linepoints[0].points[0][1] = begDragY1 + dragY;
-        linepoints[1].points[0][1] = begDragY2 + dragY;
-		//scope.room.measurePoints = findGeom.showMeasures(points);
+        dragXline = parseInt(e.gesture.deltaX/gridMag);
+        dragYline = parseInt(e.gesture.deltaY/gridMag);
+        if(begDragX1){
+            linepoints[0].points[0][0] = parseInt(begDragX1 + dragXline);};
+        if(begDragX2){
+            linepoints[1].points[0][0] = parseInt(begDragX2 + dragXline);};
+        if(begDragY1){
+            linepoints[0].points[0][1] = parseInt(begDragY1 + dragYline);};
+        if(begDragY2){
+            linepoints[1].points[0][1] = parseInt(begDragY2 + dragYline);};
         scope.$apply();
     };
     var endDrag = function(e){
-        $ionicSideMenuDelegate.canDragContent(true);
         linepoints[0].points[0][0] = 10*Math.round(linepoints[0].points[0][0]/10);
         linepoints[0].points[0][1] = 10*Math.round(linepoints[0].points[0][1]/10);
         linepoints[1].points[0][0] = 10*Math.round(linepoints[1].points[0][0]/10);
         linepoints[1].points[0][1] = 10*Math.round(linepoints[1].points[0][1]/10);
-        //scope.room.measurePoints = findGeom.showMeasures(points);
         scope.$apply();
     };
-    var dragStartGesture = $ionicGesture.on('dragstart', startDrag, elem);
-    var dragGesture = $ionicGesture.on('drag', dragPoints, elem);
-    var dragEndGesture = $ionicGesture.on('dragend', endDrag, elem);
-            
+    var dragLineStartGesture = $ionicGesture.on('dragstart', startDrag, elem);
+    var dragLineGesture = $ionicGesture.on('drag', drag2Points, elem);
+    var dragLineEndGesture = $ionicGesture.on('dragend', endDrag, elem);
     scope.$on('$destroy', function() {
-        $ionicGesture.off(dragStartGesture, 'dragstart', startDrag);
-        $ionicGesture.off(dragGesture, 'drag', dragPoints);
-        $ionicGesture.off(dragEndGesture, 'dragend', endDrag);
+        $ionicGesture.off(dragLineStartGesture, 'dragstart', startDrag);
+        $ionicGesture.off(dragLineGesture, 'drag', drag2Points);
+        $ionicGesture.off(dragLineEndGesture, 'dragend', endDrag);
     });
         }
     };

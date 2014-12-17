@@ -139,32 +139,45 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 		var cf1;
 		var cf2;
 		var cf3;
-		arr.push([arr[0]])
+        var cfX;
+        var cfY;
+        var itX;
+        var itY;
+        var arrX;
+        var arrY;
+		arr.push(arr[0]);
 		for (var i = 0;i<arr.length-1;i++){
 			iterator = i+1;
 			if(arr.length==i+1){iterator=0};
-			xDist = Math.abs(arr[iterator][0]-arr[i][0]);
-			yDist = Math.abs(arr[iterator][1]-arr[i][1]);
-			num2iterate = 5/Math.max(xDist,yDist);
+            itX = arr[iterator].points[0][0];
+            itY = arr[iterator].points[0][1];
+            arrX = arr[i].points[0][0];
+            arrY = arr[i].points[0][1];
+			xDist = Math.abs(itX-arrX);
+			yDist = Math.abs(itY-arrY);
+            console.log(arr[i].pathType)
+			num2iterate = 50/Math.max(xDist,yDist);
 			if(arr[iterator].pathType =='bez4'){
+                cfX = arr[i].points[1][0];
+                cfY = arr[i].points[1][1];
 				for(t=num2iterate;t<1;t+=num2iterate){
-					linex = (1 - t) * (1 - t) * arr[iterator].points[0][0] + 2 * (1 - t) * t * arr[i].points[1][0] + t * t * arr[i].points[0][0];
-					liney = (1 - t) * (1 - t) * arr[iterator].points[0][1] + 2 * (1 - t) * t * arr[i].points[1][1] + t * t * arr[i].points[0][1];
+					linex = (1 - t) * (1 - t) * itX + 2 * (1 - t) * t * cfX + t * t * arrX;
+					liney = (1 - t) * (1 - t) * itY + 2 * (1 - t) * t * cfY + t * t * arrY;
 					fingDist = pythagDist(fingerX,linex,fingerY,liney);
 					if (fingDist<shrtDist){
 						shrtDist=fingDist;
 						pointIntersect = [linex,liney];
 					};
 				};
-			}
 			}else if(arr[i].pathType =='bez3'){
-				for(t=num2iterate;t<1;t+=num2iterate){
-					cf0 = (1-num2iterate)*(1-num2iterate)*(1-num2iterate);
-					cf1 = 3 * num2iterate * (1-num2iterate) * (1-num2iterate);
-					cf2 = 3 * num2iterate * num2iterate * (1-num2iterate);
-					cf3 = num2iterate * num2iterate * num2iterate;
-					linex = (cf0*arr[iterator].points[0][0]) + (cf1*arr[i].points[1][0])+(cf2*arr[i].points[2][0]) + (cf3*arr[i].points[0][0]);
-					liney = (cf0*arr[iterator].points[0][1]) + (cf1*arr[i].points[1][1])+(cf2*arr[i].points[2][1]) + (cf3*arr[i].points[0][1]);
+                cf0 = (1-num2iterate)*(1-num2iterate)*(1-num2iterate);
+				cf1 = 3 * num2iterate * (1-num2iterate) * (1-num2iterate);
+				cf2 = 3 * num2iterate * num2iterate * (1-num2iterate);
+				cf3 = num2iterate * num2iterate * num2iterate;
+				for(var t=num2iterate;t<1;t+=num2iterate){
+					
+					linex = (cf0*itX) + (cf1*arr[i].points[1][0])+(cf2*arr[i].points[2][0]) + (cf3*arrX);
+					liney = (cf0*itY) + (cf1*arr[i].points[1][1])+(cf2*arr[i].points[2][1]) + (cf3*arrY);
 					fingDist = pythagDist(fingerX,linex,fingerY,liney);
 					if (fingDist<shrtDist){
 						shrtDist=fingDist;
@@ -172,12 +185,22 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 					};
 				};
 			}else{ //lines and new segments treated as lines
-				slope = (arr[i].points[0][1]-arr[iterator].points[0][1]) / (arr[i].points[0][0]-arr[iterator].points[0][0]);
-				yintercept = arr[i].points[0][1]/(slope*arr[i].points[0][0])
-				if (xDist>yDist){
+                if(arrY-itY==0){
+                    slope=0;
+                }else if(arrX-itX==0){
+                    slope=1;
+                }else{
+				    slope = (arrY-itY) / (arrX-itX);
+                };
+                if (slope==0) {
+                    yintercept = arrY;
+                }else{
+				    yintercept = arrY/(slope*arrX)
+                };
+				if (xDist>=yDist){
 					for(var k=0;k<xDist;k++){
 						liney = (slope*k)+yintercept;
-						fingDist = pythagDist(fingerX,k,fingerY,liney);
+                        fingDist = pythagDist(fingerX,linex,fingerY,k);
 						if (fingDist<shrtDist){
 							shrtDist=fingDist;
 							pointIntersect = [linex,liney];
@@ -193,63 +216,38 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 						};
 					};
 				}
-			}
+			};
 			if (shrtDist<shortestDist){
+                console.log(shortestDist);
 				shortestDist = shrtDist;
+                console.log('new'+shortestDist);
+                console.log(iterator);
 				ind4new = iterator;
 				finalPts = pointIntersect;
-			}
+			};
+            
+        };
+        console.log(ind4new + 'chosen index')
+        console.log(pointIntersect)
         return [ind4new, pointIntersect];
     };
-    this.closestLineOLD = function(arrIn,fingerX,fingerY){
-        var arr = _.clone(arrIn);
-        var ind4new = [];
-		var testInd = 0;
-        var newRatio = 0;
-        var hypotRatio = 0;
-        var touchLegOne = 0;
-        var touchLegTwo = 0;
-        var lineLength = 0;
-		var pointIntersect = [100,100]; //if we return this, then places it on the line
-		var shortestLine = 0;
-		var secondShortestLine = 0;
-		var lineInd = 0;
-		//var pointInd = 0;
-        //arr.push([arr[0][0],arr[0][1]])
-        arr.push([arr[0]])
-        for (var i = 0;i<arr.length-1;i++){
-//find sides from finger to endpoints of line and then look for closest to same length and ratio for choosing point instead of line
-			//seems to not work close to corners; can't figure out why
-			//perhaps redo whole logic??
-			touchLegOne = pythagDist(fingerX,arr[i][0],fingerY,arr[i][1]);
-			touchLegTwo = pythagDist(fingerX,arr[i+1][0],fingerY,arr[i+1][1]);
-			if (i==0){
-				shortestLine = secondShortestLine = touchLegOne;
-			};
-			if (touchLegTwo<shortestLine){
-				lineInd = i+1;
-				secondShortestLine = shortestLine;
-				shortestLine = touchLegTwo;
-			};
-            lineLength = pythagDist(arr[i][0],arr[i+1][0],arr[i][1],arr[i+1][1]);
-            newRatio = lineLength/(touchLegOne + touchLegTwo)
-            if (newRatio > hypotRatio){
-                hypotRatio = newRatio;
-                newRatio = 0;
-                testInd = i;
-            };
-		};
-		if (secondShortestLine/shortestLine > 3 || secondShortestLine/shortestLine == 1){
-			//pointOnly = true;
-			testInd = lineInd;
-			if (testInd>arr.length-2){testInd=0;};
-		};
-		ind4new.push(testInd); 
-        return [ind4new, pointIntersect];
-    }
     var pythagDist = this.pythagDist = function(x1,x2,y1,y2){
         return Math.sqrt(((x1-x2)*(x1-x2))+((y1-y2)*(y1-y2)))
     };
+    var sqr = function(x){return x*x};
+    var dist2 = function(v,w) {
+        return sqr(v[0] - w[0]) + sqr(v[1] - w[1])
+    };
+//    var l2;
+//    var t;
+//    var dist2segSqrd = function(p,v,w){
+//        l2 = dist2(v,w);
+//        if (l2==0){ return dist2(p,v)};
+//        t = ((p[0] - v[0])*(w[0]-v[0])+(p[1]-v[1])*(w[1]-v[1]))/l2;
+//        if (t < 0){return dist2(p,v)};
+//        if (t > 1){return dist2(p,w)};
+//        return dist2(p, [[v[0]+t*(w[0]-v[0])],[[v[0]+t*(w[0]-v[0])]]]);
+//    };
 //    this.pointPath = function(arr){
 //        var rtnStr = '';
 //        for (var i in arr){
@@ -310,27 +308,15 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
             var dist = 0;
             var XYDist = [];
 			var iterator = 0;
-			//var begSeg = false;
             arr.push(arr[0]);
-			//arr.push(arr[0])
             for (var i = 0; i < arr.length; i++){ 
 				iterator = i+1;
 				if(arr.length==i+1){iterator=0};
-				//if(arr[i].pathType=='newSeg'){
-				//	begSeg = true;
-				//}else{
-				//	begSeg = false;
-				//};
-				//if(arr[iterator].pathType=='Line'){ //always start with an M
 	            centX = Math.round((arr[i].points[0][0]+arr[iterator].points[0][0])/2);  //all should be positive
 	            centY = Math.round((arr[i].points[0][1]+arr[iterator].points[0][1])/2);  //all should be positive
 	            dist = Math.round(pythagDist(arr[i].points[0][0],arr[iterator].points[0][0],arr[i].points[0][1],arr[iterator].points[0][1]));
 	            XYDist = [arr[i],arr[iterator],centX, centY, dist];
-	            arrOut.push(XYDist); //push it to include the other points, so it can draw more smoothly with the lines for dragging??
-					//};
-				//if(arr[iterator].pathType=='bez3'){
-//					//draw the same line for dragging, and then have a line for the measure - which means it can be pinched? or has a very thin line for each??
-					//};
+	            arrOut.push(XYDist); 
             }
         };
         return arrOut;

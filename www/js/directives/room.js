@@ -177,7 +177,9 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 			return //idea is to have it calculated so it moves with rest of line - maybe a new segment, with points calculated in between?
 		}
 		closestLinePoints = findGeom.closestLine(svgArr,fingerX,fingerY)
-	    ind4new = closestLinePoints[0][0];
+	    ind4new = closestLinePoints[0];
+        console.log(closestLinePoints)
+        console.log(ind4new+' ind4new')
 		if (ind4new+1<points.length){
 			ind4new += 1;
 		}else{
@@ -248,12 +250,17 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
     	};
 	};
     var dragLines = function(e){ //need to work in zoom stuff
+        e.preventDefault();
         e.stopPropagation();
-        if(dragWhole){
+        console.log('indrag');
+        if(!dragWhole){
+            return
+        }else{
+            console.log('assignpts');
             assignPoints(e);
+		    scope.room.measurePoints = findGeom.showMeasures(svgArr);
+            scope.$apply();
         };
-		scope.room.measurePoints = findGeom.showMeasures(svgArr);
-        scope.$apply();
     };
     //var highZ = 100; //need to figure out for dragging objects
     var endDrag = function(e){
