@@ -131,7 +131,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 		var yintercept;
 		var fingDist;
 		var shrtDist = 500; //what happens if none is found shorter than this arbitrary number?
-		var shortestDist = 500;
+		var shortestDist = 501;
         var pointIntersect = [0,0];
 		var finalPts = [0,0];
 		var num2iterate; 
@@ -147,9 +147,11 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
         var arrY;
 		arr.push(arr[0]);
 		for (var i = 0;i<arr.length-1;i++){
+			ind4new = [];
 			iterator = i+1;
 			if(arr.length==i+1){iterator=0};
             shrtDist = 500;
+			shortestDist = 501;
             itX = arr[iterator].points[0][0];
             itY = arr[iterator].points[0][1];
             arrX = arr[i].points[0][0];
@@ -204,19 +206,20 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 					for(var k=0;k<xDist;k++){
                         var xWd = k+Math.min(arrX,itX);
 						liney = (slope*xWd)+yintercept;//+Math.min(arrY,itY);
-                        console.log('xDist'+fingerX,xWd,fingerY,liney);
+                        //console.log('xDist'+xWd,liney);
                         fingDist = pythagDist(fingerX,xWd,fingerY,liney);
-                        console.log(fingDist)
+                        //console.log(fingDist)
 						if (fingDist<shrtDist){
                             //console.log('Xnewshrt'+fingDist)
 							shrtDist=fingDist;
-							pointIntersect = [xWd,liney];
+							pointIntersect = [liney,xWd];// [xWd,liney];
 						};
 					};
 				}else{
 					for(var k=0;k<yDist;k++){
                         var yHt = k+Math.min(arrY,itY);
 						linex = (yHt-yintercept)/slope;
+						//console.log('y'+linex,yHt)
 //                        console.log('yDist '+fingerX,linex,fingerY,yHt);
 						fingDist = pythagDist(fingerX,linex,fingerY,yHt);
 //                        console.log(fingDist)
@@ -226,9 +229,12 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 							pointIntersect = [linex,yHt];
 						};
 					};
-				}
+				};
+				console.log(iterator)
+				console.log(pointIntersect)
 			};
 			if (shrtDist<shortestDist){
+				console.log('should always happen on 0' + i)
                 console.log(shortestDist);
 				shortestDist = shrtDist;
                 console.log('new'+shortestDist);
@@ -240,15 +246,15 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
         };
         console.log(ind4new + 'chosen index')
         console.log(pointIntersect)
-        return [ind4new, pointIntersect];
+        return [ind4new, finalPts];
     };
     var pythagDist = this.pythagDist = function(x1,x2,y1,y2){
         return Math.sqrt(((x1-x2)*(x1-x2))+((y1-y2)*(y1-y2)))
     };
-    var sqr = function(x){return x*x};
-    var dist2 = function(v,w) {
-        return sqr(v[0] - w[0]) + sqr(v[1] - w[1])
-    };
+//    var sqr = function(x){return x*x};
+ //    var dist2 = function(v,w) {
+ //        return sqr(v[0] - w[0]) + sqr(v[1] - w[1])
+ //    };
 //    var l2;
 //    var t;
 //    var dist2segSqrd = function(p,v,w){
