@@ -253,11 +253,9 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
     var dragLines = function(e){ //need to work in zoom stuff
         e.preventDefault();
         e.stopPropagation();
-        console.log('indrag');
         if(!dragWhole){
             return
         }else{
-            console.log('assignpts');
             assignPoints(e);
 		    scope.room.measurePoints = findGeom.showMeasures(svgArr);
             scope.$apply();

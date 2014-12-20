@@ -147,6 +147,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
         var arrY;
 		arr.push(arr[0]);
 		for (var i = 0;i<arr.length-1;i++){
+		//for (var i = 3;i<4;i++){
 			ind4new = [];
 			iterator = i+1;
 			if(arr.length==i+1){iterator=0};
@@ -158,7 +159,8 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
             arrY = arr[i].points[0][1];
 			xDist = Math.abs(itX-arrX);
 			yDist = Math.abs(itY-arrY);
-			num2iterate = 5/Math.max(xDist,yDist);
+			num2iterate = 50/Math.max(xDist,yDist);
+			//console.log('num2iterate'+num2iterate)
 			if(arr[iterator].pathType =='bez4'){
                 cfX = arr[i].points[1][0];
                 cfY = arr[i].points[1][1];
@@ -190,16 +192,17 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
                 
                 if(arrY-itY==0){
                     slope=0;
+					yintercept = arrY;
                 }else if(arrX-itX==0){
                     slope=1;
+					yintercept = arrX;
                 }else{
 				    slope = (arrY-itY) / (arrX-itX);
+					yintercept = arrY/(slope*arrX);
                 };
-                if (slope==0) {
-                    yintercept = arrY;
-                }else{
-				    yintercept = arrY/(slope*arrX)
-                };
+				//console.log('points, finger, first '+fingerX,fingerY,itX,itY,arrX,arrY)
+                //console.log('yintercept'+yintercept)
+				//console.log('slope'+slope)
 				if (xDist>=yDist){
                     
                     //console.log('xDist'+slope,fingerX,xWd,fingerY,liney);
@@ -208,44 +211,60 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 						liney = (slope*xWd)+yintercept;//+Math.min(arrY,itY);
                         //console.log('xDist'+xWd,liney);
                         fingDist = pythagDist(fingerX,xWd,fingerY,liney);
-                        //console.log(fingDist)
+						//console.log(xWd+', '+liney)
+                        //console.log(fingDist+', '+shrtDist)
 						if (fingDist<shrtDist){
                             //console.log('Xnewshrt'+fingDist)
 							shrtDist=fingDist;
-							pointIntersect = [liney,xWd];// [xWd,liney];
+							pointIntersect = [xWd,liney];
 						};
+						//console.log('pointIntersect'+pointIntersect)
 					};
 				}else{
-					for(var k=0;k<yDist;k++){
-                        var yHt = k+Math.min(arrY,itY);
-						linex = (yHt-yintercept)/slope;
-						//console.log('y'+linex,yHt)
-//                        console.log('yDist '+fingerX,linex,fingerY,yHt);
+					for(var k=1;k<yDist;k++){
+						var starty = Math.min(arrY,itY);
+						if (starty==arrY){
+							var startx = arrX;
+						}else{
+							var startx = itX;
+						}
+                        var yHt = k+starty;
+						if (slope==1){
+							linex = startx;
+						}else if (slope==0){
+							linex = startx+k;
+						}else{
+							linex = (slope/k)+startx;
+						}
+						//console.log('xy'+linex,yHt)
+                        //console.log('yDist '+fingerX,linex,fingerY,yHt);
 						fingDist = pythagDist(fingerX,linex,fingerY,yHt);
-//                        console.log(fingDist)
+                        //console.log(fingDist)
+						console.log(fingDist+', '+shrtDist)
 						if (fingDist<shrtDist){
 //                            console.log('newshrt'+fingDist)
+							
 							shrtDist=fingDist;
 							pointIntersect = [linex,yHt];
 						};
 					};
 				};
 				console.log(iterator)
-				console.log(pointIntersect)
+				console.log('pointIntersect'+pointIntersect)
 			};
 			if (shrtDist<shortestDist){
-				console.log('should always happen on 0' + i)
-                console.log(shortestDist);
+				//console.log('should always happen on 0' + i)
+                //console.log(shortestDist);
 				shortestDist = shrtDist;
-                console.log('new'+shortestDist);
-                console.log(iterator);
-				ind4new = iterator;
+                //console.log('new'+shortestDist);
+                //console.log(iterator);
+				ind4new = i;
 				finalPts = pointIntersect;
 			};
             
         };
         console.log(ind4new + 'chosen index')
-        console.log(pointIntersect)
+        console.log(finalPts)
         return [ind4new, finalPts];
     };
     var pythagDist = this.pythagDist = function(x1,x2,y1,y2){
