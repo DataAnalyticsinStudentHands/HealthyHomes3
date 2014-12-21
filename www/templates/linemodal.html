@@ -3,6 +3,7 @@
     <div class="bar bar-header bar-positive">
         <ion-button class="button icon-left ion-chevron-left button-clear" ng-click="closeLineModal()">Cancel</ion-button>
   		<h1 class="title">Add to path in room at {{fingerX}},{{fingerY}}</h1>
+		<p>After {{ind4new}} at x:{{newX}} and y:{{newY}}</>
 	</div>
     <ion-content has-header="true" padding="true">
             <br><br><br><!--why is this disappearing under title??-->
@@ -17,7 +18,7 @@
 		              <option value="">{{pthTyp}}</option>
 		              </select>
                     </li>
-                <ion-button class="button button-balanced" ng-click="addSegment(fingerX,fingerY,pthTyp)">
+                <ion-button class="button button-balanced" ng-click="addSegment(fingerX,fingerY,pthTyp,ind4new,newX,newY)">
 		  				Add {{value}} to room
 				</ion-button>
 			</ion-list>

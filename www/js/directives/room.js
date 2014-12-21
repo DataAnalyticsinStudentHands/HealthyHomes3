@@ -1,9 +1,9 @@
-angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGesture,$ionicSideMenuDelegate,findGeom){
+angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGesture,$ionicSideMenuDelegate,$stateParams,findGeom){
     return {
         restrict: 'AE',
         scope: {
-            room: '='//,
-            //setFloorContents: '&' //doesn't seem to work
+            room: '=',
+			gridmag: '='
         },
 //        templateNamespace: 'svg',
 //        template: '<circle fill="red" stroke="blue" stroke-width="3" cx="250" cy="200" r="100" />',
@@ -119,8 +119,14 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
     	 "points" : [[130,230]]
                    
         }
-    ];
-    var nextPoints;
+    ]; 
+	var gridMag = scope.gridmag;
+	scope.$watch(function(scope) { return scope.gridmag },
+              function() {
+				  gridMag = scope.gridmag;
+              }
+    );
+    //var nextPoints;
     if(!scope.room.svgPoints){
         scope.room.svgPoints = svgArr;//findGeom.svgPath(svgArr);
     }else{
@@ -138,12 +144,15 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
                     points.push(nextPoints[item])
                 }
             }
-        } 
+        }
     };
-    setPoints();
+   	setPoints();
     scope.room.measurePoints = findGeom.showMeasures(svgArr);
 	var fingerX;
 	var fingerY;
+	var gridElem = findGeom.gridElem;
+    var gridoffTop = gridElem[0].offsetTop;
+    var gridoffLeft = gridElem[0].offsetLeft;
 	var closestLinePoints;
 	var ind4new;
 	var newX;
@@ -154,11 +163,19 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 	var addPoint = function(e){ 
 		e.stopPropagation();
         e.preventDefault();
-        gridMag = parseFloat(findGeom.gridMag);
-        offLeft = parseInt(findGeom.offSetLeft(gridElem));
-        offTop = parseInt(findGeom.offSetTop(gridElem));
-        scope.fingerX = parseInt((e.gesture.center.pageX/gridMag)-offLeft);
-        scope.fingerY = parseInt((e.gesture.center.pageY/gridMag)-offTop);
+        //gridMag = parseFloat(findGeom.gridMag);
+        offLeft = parseInt(gridElem[0].offsetLeft);
+        offTop = parseInt(gridElem[0].offsetTop);
+		fingerX = parseInt((e.gesture.center.pageX-offLeft)/gridMag);
+		fingerY = parseInt((e.gesture.center.pageY-offTop)/gridMag);
+		closestLinePoints = findGeom.closestLine(svgArr,fingerX,fingerY);
+		scope.fingerX = fingerX;
+		scope.fingerY = fingerY;
+	    scope.ind4new = closestLinePoints[0];
+	    scope.newX = closestLinePoints[1][0];
+	    scope.newY = closestLinePoints[1][1];
+        //scope.fingerX = parseInt((e.gesture.center.pageX/gridMag)-offLeft);//+' '+gridMag;
+        //scope.fingerY = parseInt((e.gesture.center.pageY/gridMag)-offTop);
 		if (dragWhole){
 	        scope.showAdd2Room();
 		}else{
@@ -170,24 +187,13 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		//note,image,flag
 				//alert(fingerX);
 	};
-    scope.addSegment = function(fingerX,fingerY,pthTyp){
+    scope.addSegment = function(fingerX,fingerY,pthTyp,ind4new,newX,newY){
 		scope.closeLineModal();
 		if(pthTyp == 'Window' || pthTyp == 'Door'){
 			alert('not yet implemented')
 			return //idea is to have it calculated so it moves with rest of line - maybe a new segment, with points calculated in between?
 		}
-		closestLinePoints = findGeom.closestLine(svgArr,fingerX,fingerY)
-	    ind4new = closestLinePoints[0];
-        console.log(closestLinePoints)
-        console.log(ind4new+' ind4new')
-//		if (ind4new+1<points.length){
-//			ind4new += 1;
-//		}else{
-//			ind4new = 0;
-//		};		
-        console.log(ind4new+' ind4new')
-	    newX = closestLinePoints[1][0]//fingerX; //closestLinePoints[0][1][0]
-	    newY = closestLinePoints[1][1]//fingerY; //closestLinePoints[0][1][1]
+
 		var ctrlX;
 		var ctrlY;
 		if (pthTyp == 'bez3'){
@@ -202,15 +208,17 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
         	newXY = [[parseInt(newX),parseInt(newY)]];
 		};
 		if(ind4new+1>points.length){
-	        points.push([[newX,newY]]); //to end??
+	        //points.push([[newX,newY]]); //to end??
             svgArr.push({"pathType" : pthTyp,"points":newXY})
 	    }else{
-	        points.splice(ind4new,0,[newX,newY]);
-            svgArr.splice(ind4new,0,{"pathType" : pthTyp,"points":newXY})
+	        //points.splice(ind4new+1,0,[newX,newY]);
+            svgArr.splice(ind4new+1,0,{"pathType" : pthTyp,"points":newXY})
 	    };
+		scope.room.svgPoints = svgArr;
 		scope.room.measurePoints = findGeom.showMeasures(svgArr);
         setPoints();
-        scope.svgArr = svgArr;
+		
+        //scope.svgArr = svgArr;
     }
     for (var n = 0;n<points.length;n++){
         points[n][0] = parseInt(points[n][0]);
@@ -219,7 +227,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
     var gridElem = angular.element(document.getElementById('floor-container'));
     var offLeft = findGeom.offSetLeft(gridElem);
     var offTop = findGeom.offSetTop(gridElem);
-    var gridMag = findGeom.gridMag; 
+    //var gridMag = findGeom.gridMag; 
     var xtraOffX = 0;
     var xtraOffY = 0;
 	var newIndex4line;
@@ -233,9 +241,8 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
         e.stopPropagation();
 		inPts = _.map(points,function(num){return true});
         $ionicSideMenuDelegate.canDragContent(false);
-        gridMag = parseInt(findGeom.gridMag);
-		xtraOffX = parseInt(points[0][0]/gridMag);
-		xtraOffY = parseInt(points[0][1]/gridMag);
+		xtraOffX = parseInt(points[0][0]); 
+		xtraOffY = parseInt(points[0][1]); 
     };
 	var points2 = [];
 	var new4line;

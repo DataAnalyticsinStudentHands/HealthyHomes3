@@ -4,14 +4,20 @@ angular.module('Directives').directive('circleManip',function($ionicSideMenuDele
         template: '',
         scope: {
             circpoints: '=',
-            circcnt: '='
+            circcnt: '=',
+			gridmag: '='
         },
         controller: ['$scope', function($scope){
         }],
         link: function(scope,elem,attr) {
     var circpoints = scope.circpoints;
     var circcnt = scope.circcnt;
-    var gridMag = findGeom.gridMag;
+	var gridMag = parseFloat(scope.gridmag);
+	scope.$watch(function(scope) { return scope.gridmag },
+              function() {
+				  gridMag = parseFloat(scope.gridmag);
+              }
+    );
     var gridElem = angular.element(document.getElementById('floor-container'));
     var offLeft = findGeom.offSetLeft(gridElem);
     var offTop = findGeom.offSetTop(gridElem);
@@ -23,7 +29,6 @@ angular.module('Directives').directive('circleManip',function($ionicSideMenuDele
         e.preventDefault();
         e.stopPropagation();
         $ionicSideMenuDelegate.canDragContent(false);
-        gridMag = findGeom.gridMag;
         begDragX = parseInt(circpoints[0]);
         begDragY = parseInt(circpoints[1]);
     };

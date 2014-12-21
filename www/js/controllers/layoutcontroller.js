@@ -46,18 +46,26 @@ angular.module('Controllers').controller('layoutCtrl',
         var toggleLeft = $scope.toggleLeftSideMenu = function() {
             $ionicSideMenuDelegate.toggleLeft();
         };
+		$scope.gridShow5 = true;
+        $scope.gridShow1 = true; 
+		$scope.gridLineNumber = function(gridSize,gridInterval){
+		     return _.range(0,gridSize,gridInterval) //everyfive feet
+		};
+		var canvasSize = $scope.canvasSize = findGeom.canvasSize;
         $scope.gridWd = $window.innerWidth*.95;
         $window.setTimeout(toggleLeft,500);
         $scope.complexPath = findGeom.complexPath;
         $scope.svgPath = findGeom.svgPath;
         $scope.pointPath = findGeom.pointPath;
-        var gridElem = findGeom.gridElem;
-        var magnifyGrid = findGeom.magnifyGrid;
-		var newMag;
-        $scope.magnifyGrid = function(num){
-            newMag = magnifyGrid(num);
-            gridElem.css({'width':newMag+'px','height':newMag+'px'});
-        }
+		var gridmag = $scope.gridmag = $stateParams.gridmag || 1;
+		//if($stateParams.gridmag){var gridmag = }
+        // var gridElem = findGeom.gridElem;
+//         var magnifyGrid = findGeom.magnifyGrid;
+// 		var newMag;
+//         $scope.magnifyGrid = function(num){
+//             newMag = magnifyGrid(num);
+//             gridElem.css({'width':newMag+'px','height':newMag+'px'});
+//         }
 		/*$scope.showBar = function(){
 			$ionicNavBarDelegate.showBar(true);
 		};*/

@@ -108,16 +108,29 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 .factory('arcs',function() {
     console.log('wtf on inspections');
 })
+// .service('magnifyGridDoesntWork',function(){
+// 	return{
+//
+// 		gridMag: function(num){
+// 			var num = 1;
+// 			var newnum = 1;
+// 			var gridMagnify = function(num){
+// 				return num * newnum;
+// 			}
+//
+//     		var gridElem = angular.element(document.getElementById('floor-container'));
+//
+//     		var elemWidth = gridElem[0].offsetWidth;
+//     		if (elemWidth == 2016){elemWidth = 2000}; //have to figure out
+//     		var newMag = num * (elemWidth);
+// 			newnum = gridMagnify(num);
+//     		return newMag
+// 		}
+// 	}
+// })
 .service('findGeom', function() {
-    var gridMag = this.gridMag = 1;
-    var gridElem = this.gridElem = angular.element(document.getElementById('floor-container'));
-    var canvasSize = this.canvasSize = 2000;
-    this.magnifyGrid = function(num){
-        var elemWidth = gridElem[0].offsetWidth;
-        if (elemWidth == 2016){elemWidth = 2000}; //have to figure out
-        var newMag = num * (elemWidth); 
-        return newMag
-    };
+	this.canvasSize = 2000;
+	this.gridElem = angular.element(document.getElementById('floor-container'));
     this.closestLine = function(arrIn,fingerX,fingerY){
         //because of SVG path ordering, want to insert so that the finger is pointing to the beginning of the segment
         var arr = angular.copy(arrIn); //_.clone(arrIn);
@@ -131,7 +144,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 		var yintercept;
 		var fingDist;
 		var shrtDist = 500; //what happens if none is found shorter than this arbitrary number?
-		var shortestDist = 501;
+		var shortestDist = 500;
         var pointIntersect = [0,0];
 		var finalPts = [0,0];
 		var num2iterate; 
@@ -147,12 +160,9 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
         var arrY;
 		arr.push(arr[0]);
 		for (var i = 0;i<arr.length-1;i++){
-		//for (var i = 3;i<4;i++){
-			ind4new = [];
 			iterator = i+1;
 			if(arr.length==i+1){iterator=0};
             shrtDist = 500;
-			shortestDist = 501;
             itX = arr[iterator].points[0][0];
             itY = arr[iterator].points[0][1];
             arrX = arr[i].points[0][0];
@@ -161,7 +171,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 			yDist = Math.abs(itY-arrY);
 			num2iterate = 50/Math.max(xDist,yDist);
 			//console.log('num2iterate'+num2iterate)
-			if(arr[iterator].pathType =='bez4'){
+			if(arr[i].pathType =='bez4'){
                 cfX = arr[i].points[1][0];
                 cfY = arr[i].points[1][1];
 				for(t=num2iterate;t<1;t+=num2iterate){
@@ -208,11 +218,8 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
                     //console.log('xDist'+slope,fingerX,xWd,fingerY,liney);
 					for(var k=0;k<xDist;k++){
                         var xWd = k+Math.min(arrX,itX);
-						liney = (slope*xWd)+yintercept;//+Math.min(arrY,itY);
-                        //console.log('xDist'+xWd,liney);
+						liney = (slope*xWd)+yintercept;
                         fingDist = pythagDist(fingerX,xWd,fingerY,liney);
-						//console.log(xWd+', '+liney)
-                        //console.log(fingDist+', '+shrtDist)
 						if (fingDist<shrtDist){
                             //console.log('Xnewshrt'+fingDist)
 							shrtDist=fingDist;
@@ -220,7 +227,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 						};
 						//console.log('pointIntersect'+pointIntersect)
 					};
-				}else{
+				}else{  
 					for(var k=1;k<yDist;k++){
 						var starty = Math.min(arrY,itY);
 						if (starty==arrY){
@@ -239,20 +246,20 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 						//console.log('xy'+linex,yHt)
                         //console.log('yDist '+fingerX,linex,fingerY,yHt);
 						fingDist = pythagDist(fingerX,linex,fingerY,yHt);
-                        //console.log(fingDist)
-						console.log(fingDist+', '+shrtDist)
 						if (fingDist<shrtDist){
-//                            console.log('newshrt'+fingDist)
+                            console.log('newshrt'+fingDist+yHt)
 							
 							shrtDist=fingDist;
 							pointIntersect = [linex,yHt];
 						};
 					};
 				};
-				console.log(iterator)
+				console.log('iterator '+iterator)
 				console.log('pointIntersect'+pointIntersect)
 			};
+			
 			if (shrtDist<shortestDist){
+				console.log(shrtDist,shortestDist)
 				//console.log('should always happen on 0' + i)
                 //console.log(shortestDist);
 				shortestDist = shrtDist;
@@ -270,27 +277,6 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
     var pythagDist = this.pythagDist = function(x1,x2,y1,y2){
         return Math.sqrt(((x1-x2)*(x1-x2))+((y1-y2)*(y1-y2)))
     };
-//    var sqr = function(x){return x*x};
- //    var dist2 = function(v,w) {
- //        return sqr(v[0] - w[0]) + sqr(v[1] - w[1])
- //    };
-//    var l2;
-//    var t;
-//    var dist2segSqrd = function(p,v,w){
-//        l2 = dist2(v,w);
-//        if (l2==0){ return dist2(p,v)};
-//        t = ((p[0] - v[0])*(w[0]-v[0])+(p[1]-v[1])*(w[1]-v[1]))/l2;
-//        if (t < 0){return dist2(p,v)};
-//        if (t > 1){return dist2(p,w)};
-//        return dist2(p, [[v[0]+t*(w[0]-v[0])],[[v[0]+t*(w[0]-v[0])]]]);
-//    };
-//    this.pointPath = function(arr){
-//        var rtnStr = '';
-//        for (var i in arr){
-//            rtnStr+=(' ' + arr[i][0]+','+arr[i][1]);
-//        }
-//        return rtnStr;
-//    };
     var segment;
     this.svgPath = function(arr){
         var rtnPathString = 'M';//+arr[0][0]+' '+arr[0][1];

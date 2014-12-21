@@ -3,13 +3,19 @@ angular.module('Directives').directive('lineManip',function($ionicSideMenuDelega
         restrict: 'AE',
         template: '',
         scope: {
-            linepoints: '='
+            linepoints: '=',
+			gridmag: '='
         },
         controller: ['$scope', function($scope){
         }],
         link: function(scope,elem,attr) {
     var linepoints = scope.linepoints;
-    var gridMag = findGeom.gridMag;
+	var gridMag = scope.gridmag;
+	scope.$watch(function(scope) { return scope.gridmag },
+              function() {
+				  gridMag = scope.gridmag;
+              }
+    );
     var dragXline;
     var dragYline;
     var begDragX1;
@@ -19,7 +25,7 @@ angular.module('Directives').directive('lineManip',function($ionicSideMenuDelega
     var startDrag = function(e){
         e.preventDefault();
         e.stopPropagation();
-        gridMag = findGeom.gridMag;
+		console.log(gridMag)
         begDragX1 = parseInt(linepoints[0].points[0][0]);
         begDragX2 = parseInt(linepoints[1].points[0][0]);
         begDragY1 = parseInt(linepoints[0].points[0][1]);
@@ -28,6 +34,7 @@ angular.module('Directives').directive('lineManip',function($ionicSideMenuDelega
     var drag2Points = function(e){ 
         e.preventDefault();
         e.stopPropagation();
+		console.log(gridMag)
         dragXline = parseInt(e.gesture.deltaX/gridMag);
         dragYline = parseInt(e.gesture.deltaY/gridMag);
         if(begDragX1){

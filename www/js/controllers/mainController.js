@@ -8,9 +8,6 @@ angular.module('Controllers').controller('mainController', function($scope, insp
     $scope.alert = function (text) {
         alert(text+'in Main');
     };
-    $scope.test = function() {
-        alert('test in ctrl scope');
-    };
     $scope.goLayout = function() {
         $state.go('layout.floor');
     };
