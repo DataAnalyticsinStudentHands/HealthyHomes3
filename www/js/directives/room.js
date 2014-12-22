@@ -133,28 +133,42 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
         svgArr = scope.room.svgPoints;
     };
 	scope.modalSvgPath = findGeom.svgPath;
-	scope.rmMinX = 10000;
-	scope.rmMinY = 10000;
-	scope.rmMaxX = 60;
-	scope.rmMaxY = 60;
     var points = [];
     var setPoints = function(){
         nextPoints = [];
         points = [];
+        var rmMinX = null;
+        var rmMinY = null;
+        var rmMaxX = null;
+        var rmMaxY = null;
         for (item in svgArr){
             nextPoints = svgArr[item].points
             if (nextPoints){
                 for (item in nextPoints){
                     points.push(nextPoints[item])
-					if (nextPoints[item][0]<(scope.rmMinX-50)){
-						console.log('min'+nextPoints[item][0])
-						scope.rmMinX=nextPoints[item][0]-50};
-					if (nextPoints[item][1]<(scope.rmMinY-50)){scope.rmMinY=nextPoints[item][1]-50};
-					if (nextPoints[item][0]<(scope.rmMaxX+50)){scope.rmMaxX=nextPoints[item][0]+50};
-					if (nextPoints[item][1]<(scope.rmMaxY+50)){scope.rmMaxY=nextPoints[item][1]+50};
+                    if(rmMinX==null){
+                        rmMinX = rmMaxX = nextPoints[item][0];
+                        rmMinY = rmMaxY = nextPoints[item][1];
+                    };
+					if (nextPoints[item][0]<(rmMinX)){
+						rmMinX=nextPoints[item][0]
+                    };
+					if (nextPoints[item][1]<(rmMinY)){
+                        rmMinY=nextPoints[item][1]
+                    };
+					if (nextPoints[item][0]>(rmMaxX)){
+                        rmMaxX=nextPoints[item][0]
+                    };
+					if (nextPoints[item][1]>(rmMaxY)){
+                        rmMaxY=nextPoints[item][1]};
                 }
             }
         }
+        scope.rmMinX = rmMinX-50;
+	    scope.rmMinY = rmMinY-50;
+	    scope.rmMaxX = rmMaxX-rmMinX+150;
+	    scope.rmMaxY = rmMaxY-rmMinY+150;
+        console.log(scope.rmMinX+' '+scope.rmMinY+' '+scope.rmMaxX+' '+scope.rmMaxY)
     };
    	setPoints();
     scope.room.measurePoints = findGeom.showMeasures(svgArr);
@@ -184,6 +198,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 	    scope.ind4new = closestLinePoints[0];
 	    scope.newX = closestLinePoints[1][0];
 	    scope.newY = closestLinePoints[1][1];
+        setPoints();
         //scope.fingerX = parseInt((e.gesture.center.pageX/gridMag)-offLeft);//+' '+gridMag;
         //scope.fingerY = parseInt((e.gesture.center.pageY/gridMag)-offTop);
 		if (dragWhole){
@@ -197,13 +212,26 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		//note,image,flag
 				//alert(fingerX);
 	};
+    scope.removeSegment = function(ind4new){
+        scope.closeLineModal();
+        var newArr = [];
+        for (item in svgArr){
+            if (item!=ind4new){
+                newArr.push(svgArr[item])
+            };
+        };
+        svgArr = newArr;
+        //delete svgArr[ind4new];
+        setPoints();
+		scope.room.svgPoints = svgArr;
+		scope.room.measurePoints = findGeom.showMeasures(svgArr);
+    };
     scope.addSegment = function(fingerX,fingerY,pthTyp,ind4new,newX,newY){
 		scope.closeLineModal();
 		if(pthTyp == 'Window' || pthTyp == 'Door'){
 			alert('not yet implemented')
 			return //idea is to have it calculated so it moves with rest of line - maybe a new segment, with points calculated in between?
 		}
-
 		var ctrlX;
 		var ctrlY;
 		if (pthTyp == 'bez3'){
@@ -224,12 +252,10 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 	        //points.splice(ind4new+1,0,[newX,newY]);
             svgArr.splice(ind4new+1,0,{"pathType" : pthTyp,"points":newXY})
 	    };
+        setPoints();
 		scope.room.svgPoints = svgArr;
 		scope.room.measurePoints = findGeom.showMeasures(svgArr);
-        setPoints();
-		
-        //scope.svgArr = svgArr;
-    }
+    };
     for (var n = 0;n<points.length;n++){
         points[n][0] = parseInt(points[n][0]);
         points[n][1] = parseInt(points[n][1]);

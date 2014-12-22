@@ -18,10 +18,13 @@
 		              </select>
                     </li>
                 <ion-button class="button button-balanced" ng-click="addSegment(fingerX,fingerY,pthTyp,ind4new,newX,newY)">
-		  				Add {{value}} to room
+		  				Add {{pthTyp}} to room
+				</ion-button>
+                <ion-button class="button button-assertive" ng-click="removeSegment(ind4new)">
+		  				Remove {{pthTyp}} from room
 				</ion-button>
 			</ion-list>
-			<div style="width:100%;height:150px;" ng-include="'templates/outline.html'">
+			<div style="width:90%;position:absolute;top:200px;left:100px" ng-include="'templates/outline.html'">
 			<!-- <ion-view style="width:100%;height:150px;" name="outline@secure"></ion-view> -->
     </ion-content>
 	
