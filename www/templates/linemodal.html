@@ -11,17 +11,17 @@
                       <div class="input-label">
                           Select a new segment type
                       </div>
-                      <select ng-model="pthTyp" 
+                      <select ng-model="rmModal.pthTyp" 
 		                required
-		                ng-options="pthTyp as value for (pthTyp, value) in pathTypes">
-		              <option value="">{{pthTyp}}</option>
+		                ng-options="pth as pthTyp for (pthTyp, pth) in rmModal.pathTypes">
+		              <option value="">{{pth}}</option>
 		              </select>
                     </li>
-                <ion-button class="button button-balanced" ng-click="addSegment(fingerX,fingerY,pthTyp,ind4new,newX,newY)">
-		  				Add {{pthTyp}} to room
+                <ion-button class="button button-balanced" ng-click="addSegment(fingerX,fingerY,rmModal.pthTyp,ind4new,newX,newY)">
+		  				Add {{rmModal.pathTypes[rmModal.pthTyp]}} to room
 				</ion-button>
                 <ion-button class="button button-assertive" ng-click="removeSegment(ind4new)">
-		  				Remove {{pthTyp}} from room
+		  				Remove {{pathType}} from room
 				</ion-button>
 			</ion-list>
 			<div style="width:90%;position:absolute;top:200px;left:100px" ng-include="'templates/outline.html'">

@@ -8,6 +8,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 //        templateNamespace: 'svg',
 //        template: '<circle fill="red" stroke="blue" stroke-width="3" cx="250" cy="200" r="100" />',
         controller: ['$scope', function($scope){
+            $scope.rmModal = [];
 		    $ionicModal.fromTemplateUrl('templates/roommodal.html', {
 		            id: "rmModal",
 		            scope: $scope,
@@ -21,14 +22,14 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		    $scope.closeAddRoomModal = function() {
 		        $scope.roomModal.hide();
 		    };
-			$scope.rmObj = 'Flag';
-			$scope.rmobjTypes = {
+			$scope.rmModal.rmObj = 'Flag';
+			$scope.rmModal.rmobjTypes = {
 				"Flag": "Flag",
 				"Note" : "Note",
 				"Image" : "Image"
 			};
-			$scope.typ = 'green';
-			$scope.typs = {
+			$scope.rmModal.typ = 'green';
+			$scope.rmModal.typs = {
 				"Green": "Green",
 				"Yellow" : "Yellow",
 				"Red" : "Red"
@@ -49,13 +50,13 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		    $scope.closeLineModal = function() {
 		        $scope.lineModal.hide();
 		    };
-			$scope.pthTyp = 'Line';
-			$scope.pathTypes = {
+			$scope.rmModal.pthTyp = 'Line';
+			$scope.rmModal.pathTypes = {
 				"Line": "Line",
 				"Window" : "Window",
 				"Door" : "Door",
-				"bez4" : "Quadratic Bezier",
-				"bez3": "Cubic Bezier"
+				"Quadratic Bezier" : "bez4",
+				"Cubic Bezier" : "bez3"
 			};
         }],
         link: function(scope,elem,attr) {
@@ -168,7 +169,6 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 	    scope.rmMinY = rmMinY-50;
 	    scope.rmMaxX = rmMaxX-rmMinX+150;
 	    scope.rmMaxY = rmMaxY-rmMinY+150;
-        console.log(scope.rmMinX+' '+scope.rmMinY+' '+scope.rmMaxX+' '+scope.rmMaxY)
     };
    	setPoints();
     scope.room.measurePoints = findGeom.showMeasures(svgArr);
@@ -195,7 +195,8 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		closestLinePoints = findGeom.closestLine(svgArr,fingerX,fingerY);
 		scope.fingerX = fingerX;
 		scope.fingerY = fingerY;
-	    scope.ind4new = closestLinePoints[0];
+	    scope.ind4new = ind4new = closestLinePoints[0];
+        scope.pathType = svgArr[ind4new].pathType;
 	    scope.newX = closestLinePoints[1][0];
 	    scope.newY = closestLinePoints[1][1];
         setPoints();

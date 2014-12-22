@@ -11,22 +11,22 @@
                       <div class="input-label">
                           Select a new room object
                       </div>
-                      <select ng-model="rmObj" 
+                      <select ng-model="rmModal.rmObj" 
 		                required
-		                ng-options="rmObj as value for (rmObj, value) in rmobjTypes">
+		                ng-options="rmObj as objType for (rmObj, objType) in rmModal.rmobjTypes">
 		              <option value="">{{rmObj}}</option>
 		              </select>
-					  <select ng-model="typ"
-					  	required
-						ng-options="typ as value for (typ, value) in typs">
+					  <select ng-model="rmModal.typ"
+					  	required 
+						ng-options="typVal as typ for (typVal, typ) in rmModal.typs">
 		              <option value="">{{typ}}</option>
 		              </select>
                     </li>
-                <ion-button class="button button-balanced" ng-click="addroomObj(fingerX,fingerY,rmObj)" ng-show="!deleteObj">
-		  				Add {{value}} to room
+                <ion-button class="button button-balanced" ng-click="addroomObj(fingerX,fingerY,rmModal.rmObj)" ng-show="!deleteObj">
+		  				Add {{typ}} to room
 				</ion-button>
-                <ion-button class="button button-balanced" ng-click="addroomObj(fingerX,fingerY,rmObj)" ng-show="deleteObj">
-		  				Remove {{value}} from room
+                <ion-button class="button button-balanced" ng-click="addroomObj(fingerX,fingerY,rmModal.rmObj)" ng-show="deleteObj">
+		  				Remove {{typ}} from room
 				</ion-button>
 			</ion-list>
     </ion-content>
