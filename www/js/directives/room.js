@@ -132,9 +132,13 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
     }else{
         svgArr = scope.room.svgPoints;
     };
+	scope.modalSvgPath = findGeom.svgPath;
+	scope.rmMinX = 10000;
+	scope.rmMinY = 10000;
+	scope.rmMaxX = 60;
+	scope.rmMaxY = 60;
     var points = [];
     var setPoints = function(){
-        //console.log(svgArr)
         nextPoints = [];
         points = [];
         for (item in svgArr){
@@ -142,6 +146,12 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
             if (nextPoints){
                 for (item in nextPoints){
                     points.push(nextPoints[item])
+					if (nextPoints[item][0]<(scope.rmMinX-50)){
+						console.log('min'+nextPoints[item][0])
+						scope.rmMinX=nextPoints[item][0]-50};
+					if (nextPoints[item][1]<(scope.rmMinY-50)){scope.rmMinY=nextPoints[item][1]-50};
+					if (nextPoints[item][0]<(scope.rmMaxX+50)){scope.rmMaxX=nextPoints[item][0]+50};
+					if (nextPoints[item][1]<(scope.rmMaxY+50)){scope.rmMaxY=nextPoints[item][1]+50};
                 }
             }
         }

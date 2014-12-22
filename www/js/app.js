@@ -147,11 +147,14 @@ angular.module('HHApp', [
             }
       })
       .state('secure.inspections.layout', {	
-          url: "/layout/:inspectionIndex/:floorInd/:roomInd/:gridMagnification",
+          url: "/layout/:inspectionIndex/:floorInd/:roomInd",
           views: {
                 "inspections@secure": { 
 					templateUrl: 'templates/layout.html',
 					controller: 'layoutCtrl' 				
+					},
+				"outline@secure": {
+					templateUrl: 'templates/outline.html'
 					}
                 },
 		resolve: {

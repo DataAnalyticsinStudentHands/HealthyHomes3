@@ -8,12 +8,12 @@
       <button class="button" ng-click="chooseFloor()">
         {{currentInspection.address + ": "+currentInspection.currentFloor.name.toUpperCase()}}
       </button>
-      <button class="button" ng-click="magnifyGrid(.9)">
+      <!-- <button class="button" ng-click="gridmag=gridmag-0.1">
         <img id="magnifySmaller" ng-src="img/zoomout.svg" />
       </button>
-      <button class="button" ng-click="magnifyGrid(1.1)">
+      <button class="button" ng-click="gridmag=gridmag+0.1">
         <img id="magnifyLarger" ng-src="img/zoomin.svg" />
-      </button>
+      </button> -->
 	  <button class="button" ng-click="showAddRoomModal()">
 		  Add room to {{currentInspection.currentFloor.name.toUpperCase()}}
 	  </button>
@@ -26,9 +26,8 @@
 <!--        <ion-nav-view id="floor-wrap" name="floor"></ion-nav-view>-->
             <svg id="floor-container" style='stroke-width: 0px; '
              viewBox = "0 0 2000 2000"
-             grid-manip gridmag='gridmag'
-			 gridlinenumber='gridlinenumber'>
-			 <text x='133' y='333' ng-show="gridShow5">gridshow{{gridshow5}}</text>
+             grid-manip gridmag='gridmag'>
+			 <!-- <text x='133' y='333' ng-show="gridShow5">gridshow{{gridshow5}}</text> -->
                 
             <g ng-show="gridShow5" 
                stroke="#6bea3b" 
@@ -37,8 +36,8 @@
                fill-opacity="0.2" 
                stroke-width="1">
 
-                <line ng-repeat="gridpt in gridLineNumber(canvasSize,50)" ng-attr-x1="{{gridpt}}" y1="0" ng-attr-x2="{{gridpt}}" ng-attr-y2="{{2000}}" />
-                <line ng-repeat="gridpt in gridLineNumber(canvasSize,50)" x1="0" ng-attr-y1="{{gridpt}}" ng-attr-x2="{{canvasSize}}" ng-attr-y2="{{gridpt}}" />  
+                <line ng-repeat="gridpt in gridLineNumber(windowWd,50)" ng-attr-x1="{{gridpt}}" y1="0" ng-attr-x2="{{gridpt}}" ng-attr-y2="{{2000}}" />
+                <line ng-repeat="gridpt in gridLineNumber(windowHt,50)" x1="0" ng-attr-y1="{{gridpt}}" ng-attr-x2="{{canvasSize}}" ng-attr-y2="{{gridpt}}" />  
 
     
             </g>  
@@ -99,9 +98,9 @@
                         ng-attr-cy={{vals.points[0][1]}}
                         r = 16
                     />
-					<text ng-attr-x={{vals.points[0][0]}}
+					<!-- <text ng-attr-x={{vals.points[0][0]}}
                         ng-attr-y={{vals.points[0][1]}}>{{i}}</text>
-					>
+					> -->
                     <circle ng-if=(vals.points[1])
                         fill="#ba202c" stroke="#fcf8f8" stroke-width="16" 
                         opacity=".2"

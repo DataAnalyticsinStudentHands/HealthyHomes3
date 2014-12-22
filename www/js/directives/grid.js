@@ -4,8 +4,16 @@ angular.module('Directives').directive('gridManip',function($ionicGesture,$ionic
 		scope: {
 			gridmag: '='
 		},
- 		//controller: ['$scope', function($scope){
- 		//}],
+ 		controller: ['$scope', function($scope){
+			/*$scope.$watch(function(scope) { return $scope.gridmag }, //only if we do buttons
+		              function() {
+						  //gridMag = scope.gridmag;
+						  var gridElem = findGeom.gridElem;
+						  var newMag = $scope.gridmag * findGeom.canvasSize;
+						  gridElem.css({'width':newMag+'px','height':newMag+'px'});
+		              }
+		    );*/
+ 		}],
         //templateUrl: 'partials/gridlines.html',
         link: function(scope,elem,attr) {
 			console.log(scope)
@@ -14,14 +22,11 @@ angular.module('Directives').directive('gridManip',function($ionicGesture,$ionic
 			//scope.gridmag()(num)
 			//scope.gridLineNumber()
             var gridElem = findGeom.gridElem;
-            //only started failing when started using nightly build ionic
-            //var gridElem = angular.element(document.getElementById('floor-container'));
-            //var offsetLeft = findGeom.offSetLeft(gridElem);
-            //var offsetTop = findGeom.offSetTop(gridElem);
+			var gridMag = scope.gridmag;
             scope.gridShow1 = true; 
             scope.gridShow5 = true;
-            var windowHt = scope.windowHt = 1.2*$window.outerHeight; //plus the offset!!
-            var windowWd = scope.windowWd = 1.2*$window.outerWidth;
+            // var windowHt = scope.windowHt = 1.2*$window.outerHeight; //plus the offset!!
+//var windowWd = scope.windowWd = 1.2*$window.outerWidth;
             //var gridLineNumber = function(gridSize,gridInterval){
 		 // var gridLineNumber = function(gridSize,gridInterval){
 //                 return _.range(0,gridSize,gridInterval) //everyfive feet
@@ -48,7 +53,7 @@ angular.module('Directives').directive('gridManip',function($ionicGesture,$ionic
 				//alert(gridMagnification)
 				gridmag += parseFloat(num);
 				scope.gridmag = gridmag;
-	    		var newMag = gridmag * canvasSize; 
+	    		newMag = gridmag * canvasSize; 
 	    		return newMag
 			}
             var dragGrid = function($event){
@@ -64,9 +69,10 @@ angular.module('Directives').directive('gridManip',function($ionicGesture,$ionic
             };
             var dubTap = function(e){
                 e.preventDefault();
-				//console.log(magnifyGrid.gridMag(.9))
+				// gridoffLeft = gridoffLeft+(e.gesture.center.pageX)/4;
+// 				gridoffTop = gridoffTop+(e.gesture.center.pageY)/4;
                 newMag = changeGridMag(-.1);
-                gridElem.css({'width':newMag+'px','height':newMag+'px'});
+                gridElem.css({'width':newMag+'px','height':newMag+'px'});// ,'left':gridoffLeft+'px','top':gridoffTop+'px'});
             };
             var startDrag = function(e){
                 e.preventDefault();
@@ -80,7 +86,11 @@ angular.module('Directives').directive('gridManip',function($ionicGesture,$ionic
             var holdGest = function(e){
                 e.preventDefault();
                 newMag = changeGridMag(.1);
-                gridElem.css({'width':newMag+'px','height':newMag+'px'});
+                // gridoffTop = gridElem[0].offsetTop;
+//                 gridoffLeft = gridElem[0].offsetLeft;
+				// gridoffLeft = gridoffLeft-(e.gesture.center.pageX)/2;
+//gridoffTop = gridoffTop-(e.gesture.center.pageY)/2;
+                gridElem.css({'width':newMag+'px','height':newMag+'px'});// ,'left':gridoffLeft+'px','top':gridoffTop+'px'});
                 //recenter on finger
             };
             var pinchGest = function(e){

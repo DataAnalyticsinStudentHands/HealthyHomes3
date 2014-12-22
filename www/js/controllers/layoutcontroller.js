@@ -31,6 +31,11 @@ angular.module('Controllers').controller('layoutCtrl',
         var inspectionIndex = $stateParams.inspectionIndex;
         //var currentInspection = $scope.currentInspection;// = inspections[inspectionIndex];
 		//console.log(currentInspection)
+		var gridElem = findGeom.gridElem;
+        var gridoffTop = gridElem[0].offsetTop;
+        var gridoffLeft = gridElem[0].offsetLeft;
+        var windowHt = $scope.windowHt = (2.2*$window.outerHeight)-gridoffTop; //plus the offset!!
+        var windowWd = $scope.windowWd = (2.2*$window.outerWidth)-gridoffLeft; //won't work without watcher in grid.js
         var arcs = currentInspection.arcs;
 		//currentInspection['currentFloor'] = currentFloor;
 		$scope.currentInspection = currentInspection;

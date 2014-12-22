@@ -1,0 +1,48 @@
+<svg id="floor-container-outline" style='stroke-width: 0px; '
+             viewBox = "{{rmMinX}} {{rmMinY}} {{rmMaxX}} {{rmMaxY}}">
+
+
+            <!-- <g room = 'room' gridmag = 'gridmag'
+               room-manip > -->
+
+
+                <path id="{{'roomPath'+room.properties.name}}"
+					ng-attr-d="{{modalSvgPath(room.svgPoints)}}"
+					stroke="#2050ba" fill="#fcfbfa"
+					fill-opacity=".01" stroke-width="2"/>
+
+                <text
+					font-size="8pt"
+					fill="black">
+                    <textPath xlink:href="{{'#roomPath'+room.properties.name}}"
+							dominant-baseline="hanging"
+                              startOffset="2%">{{room.properties.name}}</textPath>
+				</text>
+
+                <g ng-repeat="lines in room.measurePoints">
+                    <path 
+                          line-manip linepoints='lines' gridmag = 'gridmag'
+                          stroke="white" stroke-opacity=".01" stroke-width="14"
+                        ng-attr-d="M{{lines[0].points[0][0]}} {{lines[0].points[0][1]}}
+                            L{{lines[1].points[0][0]}} {{lines[1].points[0][1]}}"
+                    />
+                    <path ng-if=(ind4new==$index)
+                          line-manip linepoints='lines' gridmag = 'gridmag'
+                          stroke="red" stroke-opacity="1" stroke-width="5"
+                        ng-attr-d="M{{lines[0].points[0][0]}} {{lines[0].points[0][1]}}
+                            L{{lines[1].points[0][0]}} {{lines[1].points[0][1]}}"
+                    />
+                    <circle 
+                        fill="#ba202c" stroke="#fcf8f8" stroke-width="16" 
+                        opacity=".2"
+                        circle-manip circpoints="vals.points[2]"
+						gridmag = 'gridmag'
+                        ng-attr-cx={{newX}}
+                        ng-attr-cy={{newY}}
+                        r = 16
+                    />
+                </g>
+				
+
+
+        </svg> 
