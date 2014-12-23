@@ -32,14 +32,21 @@
                         ng-attr-d="M{{lines[0].points[0][0]}} {{lines[0].points[0][1]}}
                             L{{lines[1].points[0][0]}} {{lines[1].points[0][1]}}"
                     />
+                    <circle ng-if=(ind4new==$index)
+                        fill="none" stroke="#eb321a" stroke-width="4"
+                        circle-manip circpoints="vals.points[2]"
+						gridmag = 'gridmag'
+                        ng-attr-cx={{lines[0].points[0][0]}}
+                        ng-attr-cy={{lines[0].points[0][1]}}
+                        r = 8
+                    />
                     <circle 
-                        fill="#ba202c" stroke="#fcf8f8" stroke-width="16" 
-                        opacity=".2"
+                        fill="none" stroke="#86eb51" stroke-width="2" 
                         circle-manip circpoints="vals.points[2]"
 						gridmag = 'gridmag'
                         ng-attr-cx={{newX}}
                         ng-attr-cy={{newY}}
-                        r = 16
+                        r = 10
                     />
                 </g>
 				

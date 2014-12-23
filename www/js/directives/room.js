@@ -1,4 +1,4 @@
-angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGesture,$ionicSideMenuDelegate,$stateParams,findGeom){
+angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGesture,$ionicSideMenuDelegate,$stateParams,$ionicPopup,findGeom){
     return {
         restrict: 'AE',
         scope: {
@@ -40,7 +40,8 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		    $ionicModal.fromTemplateUrl('templates/linemodal.html', {
 		            id: "lnModal",
 		            scope: $scope,
-		            animation: 'slide-in-up'
+		            animation: 'slide-in-up',
+                    height:'100%'
 		        }).then(function(modalLine) {
 		          $scope.lineModal = modalLine;
 		    });
@@ -51,18 +52,50 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		        $scope.lineModal.hide();
 		    };
 			$scope.rmModal.pthTyp = 'Line';
-			$scope.rmModal.pathTypes = {
-				"Line": "Line",
-				"Window" : "Window",
-				"Door" : "Door",
-				"Quadratic Bezier" : "bez4",
-				"Cubic Bezier" : "bez3"
-			};
+            $scope.rmModal.pathTypes = [
+				"Line",
+				"Window",
+				"Door",
+				"QuadBezier",
+				"CubicBezier"
+                ];
+            
+//			$scope.rmModal.pathTypes = {
+//				"Line": "Line",
+//				"Window" : "Window",
+//				"Door" : "Door",
+//				"QuadBezier" : "QuadBezier",
+//				"CubicBezier" : "CubicBezier"
+//			};
+//            $scope.$watch(
+//                'rmModal.pthTyp',
+//                function( newValue, oldValue ) {
+//                    console.log(oldValue,newValue)
+//                    if ( newValue === oldValue ) {
+//                        return;
+//                    };
+//                    if ( $scope.rmModal.pthTyp === newValue ) {
+//                            return;
+//                    };
+//                    $scope.rmModal.pthTyp = newValue;
+//                }
+//            );
         }],
         link: function(scope,elem,attr) {
     //scope.room.roomPoints = [[20.0,120.0],[220.0,120.0],[220.0,220.0],[320.0,320.0],[220.0,420.0],[420.0,220.0],[620.0,620.0],[720.0,720.0]];  //get from service as map from arcs
     scope.alert = function (text) {
         alert(text+'inroom');
+    };
+    scope.showRemConfirm = function(ind4new) {
+        var confirmPopup = $ionicPopup.confirm({
+            title: 'Remove Point From Path',
+            template: 'Are you sure?'
+        });
+        confirmPopup.then(function(res) { 
+        if(res) {
+            removeSegment(ind4new);
+        }
+        });
     };
     var svgArr = [];
     var svgArrOLD = 
@@ -72,7 +105,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
          "points" : [[130,177]]
                    
         },
-        { "pathType" : "bez3",
+        { "pathType" : "CubicBezier",
                    
         "points" : [[120.0,640.0],[420,540],[310,440]], //final, firstcontrol, second
                    
@@ -165,10 +198,10 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
                 }
             }
         }
-        scope.rmMinX = rmMinX-50;
-	    scope.rmMinY = rmMinY-50;
-	    scope.rmMaxX = rmMaxX-rmMinX+150;
-	    scope.rmMaxY = rmMaxY-rmMinY+150;
+        scope.rmMinX = rmMinX-15;//-50;
+	    scope.rmMinY = rmMinY-15;//-50;
+	    scope.rmMaxX = (rmMaxX-rmMinX)+35;//+150;
+	    scope.rmMaxY = (rmMaxY-rmMinY)+35;//+150;
     };
    	setPoints();
     scope.room.measurePoints = findGeom.showMeasures(svgArr);
@@ -196,7 +229,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		scope.fingerX = fingerX;
 		scope.fingerY = fingerY;
 	    scope.ind4new = ind4new = closestLinePoints[0];
-        scope.pathType = svgArr[ind4new].pathType;
+        //scope.pathType = svgArr[ind4new].pathType;
 	    scope.newX = closestLinePoints[1][0];
 	    scope.newY = closestLinePoints[1][1];
         setPoints();
@@ -213,7 +246,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		//note,image,flag
 				//alert(fingerX);
 	};
-    scope.removeSegment = function(ind4new){
+    var removeSegment = function(ind4new){
         scope.closeLineModal();
         var newArr = [];
         for (item in svgArr){
@@ -235,11 +268,11 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		}
 		var ctrlX;
 		var ctrlY;
-		if (pthTyp == 'bez3'){
+		if (pthTyp == 'CubicBezier'){
 			ctrlX = (points[ind4new-1][0]+fingerX)/2;
 			ctrlY = (points[ind4new-1][1]+fingerY)/2;
 			newXY = [[parseInt(newX),parseInt(newY)],[parseInt(ctrlX+4),parseInt(ctrlY+4)],[parseInt(ctrlX-4),parseInt(ctrlY-4)]];
-		}else if (pthTyp == 'bez4'){
+		}else if (pthTyp == 'QuadBezier'){
 			ctrlX = (points[ind4new-1][0]+fingerX)/2;
 			ctrlY = (points[ind4new-1][1]+fingerY)/2;
 			newXY = [[parseInt(newX),parseInt(newY)],[parseInt(ctrlX+4),parseInt(ctrlY+4)]];

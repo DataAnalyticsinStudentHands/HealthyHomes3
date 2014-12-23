@@ -171,7 +171,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 			yDist = Math.abs(itY-arrY);
 			num2iterate = 50/Math.max(xDist,yDist);
 			//console.log('num2iterate'+num2iterate)
-			if(arr[i].pathType =='bez4'){
+			if(arr[i].pathType =='QuadBezier'){
                 cfX = arr[i].points[1][0];
                 cfY = arr[i].points[1][1];
 				for(t=num2iterate;t<1;t+=num2iterate){
@@ -183,7 +183,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 						pointIntersect = [linex,liney];
 					};
 				};
-			}else if(arr[i].pathType =='bez3'){
+			}else if(arr[i].pathType =='CubicBezier'){
                 cf0 = (1-num2iterate)*(1-num2iterate)*(1-num2iterate);
 				cf1 = 3 * num2iterate * (1-num2iterate) * (1-num2iterate);
 				cf2 = 3 * num2iterate * num2iterate * (1-num2iterate);
@@ -300,7 +300,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
                 }
                 rtnPathString += add2rtnPathStr+segment.points[0][0]+' '+segment.points[0][1];
             };
-            if(segment.pathType == "bez3"){
+            if(segment.pathType == "CubicBezier"){
                 if(rtnPathString=='M'){
                     add2rtnPathStr='';
                 }else{
@@ -308,7 +308,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
                 }
                 rtnPathString += add2rtnPathStr+segment.points[2][0]+' '+segment.points[2][1]+' '+segment.points[1][0]+' '+segment.points[1][1]+' '+segment.points[0][0]+' '+segment.points[0][1];
             };
-            if(segment.pathType == "bez4"){
+            if(segment.pathType == "QuadBezier"){
                 if(rtnPathString=='M'){
                     add2rtnPathStr='';
                 }else{
@@ -324,7 +324,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
         if (arrIn == undefined) {
             arr = [];
         }else{
-            var arr = _.clone(arrIn); //try with and without - do a path for the text on arc/bez3?
+            var arr = _.clone(arrIn); //try with and without - do a path for the text on arc/CubicBezier?
             var centX = 0;
             var centY = 0;
             var dist = 0;

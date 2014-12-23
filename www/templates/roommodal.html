@@ -7,13 +7,13 @@
     <ion-content has-header="true" padding="true">
             <br><br><br><!--why is this disappearing under title??-->
 			<ion-list>
-				<li class="item item-input item-select">
+<!--				<li class="item item-input item-select">-->
                       <div class="input-label">
                           Select a new room object
                       </div>
                       <select ng-model="rmModal.rmObj" 
 		                required
-		                ng-options="rmObj as objType for (rmObj, objType) in rmModal.rmobjTypes">
+		                ng-options="objType as rmObj for (rmObj, objType) in rmModal.rmobjTypes">
 		              <option value="">{{rmObj}}</option>
 		              </select>
 					  <select ng-model="rmModal.typ"
@@ -21,7 +21,7 @@
 						ng-options="typVal as typ for (typVal, typ) in rmModal.typs">
 		              <option value="">{{typ}}</option>
 		              </select>
-                    </li>
+<!--                    </li>-->
                 <ion-button class="button button-balanced" ng-click="addroomObj(fingerX,fingerY,rmModal.rmObj)" ng-show="!deleteObj">
 		  				Add {{typ}} to room
 				</ion-button>

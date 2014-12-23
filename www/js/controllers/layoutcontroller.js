@@ -50,7 +50,15 @@ angular.module('Controllers').controller('layoutCtrl',
 //        console.log(arcs[0][0].slice(0,arcs[0][0].length)) //(position to start- 0 ind, count to end - 1 ind)
         var toggleLeft = $scope.toggleLeftSideMenu = function() {
             $ionicSideMenuDelegate.toggleLeft();
+            //$scope.qsOpen = !$scope.qsOpen;
         };
+        $scope.$watch(function() { 
+            return $ionicSideMenuDelegate.isOpenLeft() },
+              function(ratio) {
+				  $scope.qsOpen = $ionicSideMenuDelegate.isOpenLeft();
+              }
+        );
+        //$scope.qsOpen = !$ionicSideMenuDelegate.isOpenRight();
 		$scope.gridShow5 = true;
         $scope.gridShow1 = true; 
 		$scope.gridLineNumber = function(gridSize,gridInterval){

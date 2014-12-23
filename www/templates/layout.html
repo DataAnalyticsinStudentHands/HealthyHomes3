@@ -1,21 +1,24 @@
-<!--
-<ion-view ng-click="chooseFloor()"
-          title="{{currentInspection.address + ': <b>' + currentFloor.name.toUpperCase() + '</b> floor'}}"
-          >
--->
-<ion-view>
-    <ion-nav-buttons>
+<ion-view title="{{currentInspection.address + ': '+currentInspection.currentFloor.name.toUpperCase()}}">
+    <ion-nav-buttons side="primary">
       <button class="button" ng-click="chooseFloor()">
-        {{currentInspection.address + ": "+currentInspection.currentFloor.name.toUpperCase()}}
+        Floors
       </button>
+      <button class="button" ng-click="showAddRoomModal()">
+		  Rooms
+	  </button>
+<!--    </ion-nav-buttons>-->
       <!-- <button class="button" ng-click="gridmag=gridmag-0.1">
         <img id="magnifySmaller" ng-src="img/zoomout.svg" />
       </button>
       <button class="button" ng-click="gridmag=gridmag+0.1">
         <img id="magnifyLarger" ng-src="img/zoomin.svg" />
       </button> -->
-	  <button class="button" ng-click="showAddRoomModal()">
-		  Add room to {{currentInspection.currentFloor.name.toUpperCase()}}
+<!--    <ion-nav-buttons side="secondary">-->
+	  <button ng-show="qsOpen" class="button" ng-click="toggleLeftSideMenu()">
+		  Questions
+	  </button>
+      <button ng-show="!qsOpen" class="button" ng-click="toggleLeftSideMenu()">
+		  Plan
 	  </button>
     </ion-nav-buttons>
     
