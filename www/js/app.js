@@ -153,7 +153,7 @@ angular.module('HHApp', [
 					templateUrl: 'templates/layout.html',
 					controller: 'layoutCtrl' 				
 					},
-				"outline@secure": {
+				"outline@secure": { //right now doing as ng-include
 					templateUrl: 'templates/outline.html'
 					}
                 },
