@@ -243,6 +243,30 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		//note,image,flag
 				//alert(fingerX);
 	};
+	scope.slopeAnchorPts = function(arr,atype){ //have this read as a separate SVG, white bckgrnd; has a directive for dragging and reshaping -- would be in rooms.js
+		var arrX0 = arr[0][0]
+		var arrX1 = arr[1][0]
+		var arrY0 = arr[0][1]
+		var arrY1 = arr[1][1]
+		var linex = 0;
+		var liney = 0;
+        if(arrY1-arrY0==0){
+            slope=0;
+			yintercept = arrY0;
+		}else if(arrX1-arrX0==0){
+            slope=100000;
+			yintercept = 0; //????
+        }else{
+		    slope = (arrY1-arrY0) / (arrX1-arrX0);
+			yintercept = arrY0-(slope*arrX0);
+        };
+		if (slope<0){ //k is?
+			linex = (slope/k)-arrX0;
+		}else{
+			linex = (slope/k)+arrX0;
+		};
+		liney = (slope*xWd)+yintercept;
+	};
     var removeSegment = function(ind4new){
         scope.closeLineModal();
 		//if (svgArr[ind4new-1].pathType!='Line')

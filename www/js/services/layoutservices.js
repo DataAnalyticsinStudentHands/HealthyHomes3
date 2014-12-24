@@ -203,7 +203,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 					yintercept = arrY;
 				}else if(arrX-itX==0){
                     slope=100000;
-					//yintercept = arrX;
+					yintercept = 0;//????
                 }else{
 				    slope = (arrY-itY) / (arrX-itX);
 					yintercept = arrY-(slope*arrX);

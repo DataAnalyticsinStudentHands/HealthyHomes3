@@ -1,11 +1,6 @@
 <svg id="floor-container-outline" style='stroke-width: 0px; '
              viewBox = "{{rmMinX}} {{rmMinY}} {{rmMaxX}} {{rmMaxY}}">
 <!--ng-attr gets rid of warning but skews result-->
-
-            <!-- <g room = 'room' gridmag = 'gridmag'
-               room-manip-->
-
-
                 <path id="{{'roomPath'+room.properties.name}}"
 					ng-attr-d="{{modalSvgPath(room.svgPoints)}}"
 					stroke="#2050ba" fill="#fcfbfa"
@@ -25,10 +20,8 @@
                         ng-attr-d="M{{lines[0].points[0][0]}} {{lines[0].points[0][1]}}
                             L{{lines[1].points[0][0]}} {{lines[1].points[0][1]}}"
                     />
-					<!-- could put an iterator on the scope to take care of when ind4new-2 < 0
-						<g ng-if="room.svgPoints[ind4new-1].pathType=='CubicBezier' || room.svgPoints[ind4new-1].pathType=='QuadBezier'">
-						 ng-if="room.svgPoints[ind4new-1].pathType=='CubicBezier'"
-						<text x='122' y='122'>UGH</text></g> -->
+					<!-- could put an iterator on the scope to take care of when ind4newis a problem, but
+					it keeps tracking the new value in other places on the template?? -->
 				<g ng-if=(ind4new==$index)>
                     <path ng-if=(lines[1].pathType=='Line')
                           stroke="red" stroke-opacity="1" stroke-width="3"
