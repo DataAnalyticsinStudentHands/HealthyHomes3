@@ -274,8 +274,6 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		var ctlInd4new = points.length-1;
 		if (ind4new!=0){ctlInd4new=ind4new-1;}
 		if (pthTyp == 'CubicBezier'){
-			console.log(ind4new)
-			console.log(ctlInd4new)
 			ctrlX = (points[ctlInd4new][0]+newX)/4;
 			ctrlY = (points[ctlInd4new][1]+newY)/4;
 			newXY = [[parseInt(newX),parseInt(newY)],[parseInt(ctrlX*1.9),parseInt(ctrlY*1.9)],[parseInt(ctrlX*2.7),parseInt(ctrlY*2.7)]];

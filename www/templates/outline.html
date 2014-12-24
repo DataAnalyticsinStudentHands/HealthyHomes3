@@ -11,7 +11,7 @@
 					stroke="#2050ba" fill="#fcfbfa"
 					fill-opacity=".01" stroke-width="2"/>
 
-                <text
+                <text 
 					font-size="8pt"
 					fill="black">
                     <textPath xlink:href="{{'#roomPath'+room.properties.name}}"
@@ -25,18 +25,23 @@
                         ng-attr-d="M{{lines[0].points[0][0]}} {{lines[0].points[0][1]}}
                             L{{lines[1].points[0][0]}} {{lines[1].points[0][1]}}"
                     />
-					<!-- <g ng-if="room.svgPoints[ind4new-1].pathType=='CubicBezier' || room.svgPoints[ind4new-1].pathType=='QuadBezier'">
+					<!-- could put an iterator on the scope to take care of when ind4new-2 < 0
+						<g ng-if="room.svgPoints[ind4new-1].pathType=='CubicBezier' || room.svgPoints[ind4new-1].pathType=='QuadBezier'">
+						 ng-if="room.svgPoints[ind4new-1].pathType=='CubicBezier'"
 						<text x='122' y='122'>UGH</text></g> -->
 				<g ng-if=(ind4new==$index)>
-                    <path
+                    <path ng-click="alert('M{{room.svgPoints[ind4new].points[0][0]}} {{room.svgPoints[ind4new].points[0][1]}} C{{lines[1].points[2][0]}} {{lines[1].points[2][1]}} {{lines[1].points[1][0]}} {{lines[1].points[1][1]}} {{room.svgPoints[ind4new+1].points[0][0]}} {{room.svgPoints[ind4new+1].points[0][1]}}')"
                           stroke="red" stroke-opacity="1" stroke-width="3"
                         ng-attr-d="M{{lines[0].points[0][0]}} {{lines[0].points[0][1]}}
                             L{{lines[1].points[0][0]}} {{lines[1].points[0][1]}}"
                     />
-                    <path ng-if="room.svgPoints[ind4new-1].pathType=='CubicBezier' || room.svgPoints[ind4new-1].pathType=='QuadBezier'"
-                          stroke="red" stroke-opacity="1" stroke-width="3"
-                        ng-attr-d="M{{lines[0].points[0][0]}} {{lines[0].points[0][1]}}
-                            L{{lines[1].points[0][0]}} {{lines[1].points[0][1]}}"
+                    <path fill="#fcfbfa" fill-opacity=".01" 
+                          stroke="yellow" stroke-opacity="1" stroke-width="3"
+                        ng-attr-d="M{{room.svgPoints[ind4new].points[0][0]}} {{room.svgPoints[ind4new].points[0][1]}} C{{lines[1].points[2][0]}} {{lines[1].points[2][1]}} {{lines[1].points[1][0]}} {{lines[1].points[1][1]}} {{room.svgPoints[ind4new+1].points[0][0]}} {{room.svgPoints[ind4new+1].points[0][1]}}"
+                    />
+                    <path ng-if="room.svgPoints[ind4new-1].pathType=='QuadBezier'"
+                          stroke="purple" stroke-opacity="1" stroke-width="3"
+                        ng-attr-d="M{{room.svgPoints[ind4new].points[0][0]}} {{room.svgPoints[ind4new].points[0][1]}} Q{{lines[1].points[1][0]}} {{lines[1].points[1][1]}} {{room.svgPoints[ind4new+1].points[0][0]}} {{room.svgPoints[ind4new+1].points[0][1]}}"
                     />
                     <circle
                         fill="none" stroke="#eb321a" stroke-width="3"
