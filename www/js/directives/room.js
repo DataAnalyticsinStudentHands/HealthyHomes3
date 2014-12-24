@@ -245,10 +245,17 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 	};
     var removeSegment = function(ind4new){
         scope.closeLineModal();
+		//if (svgArr[ind4new-1].pathType!='Line')
+		var iter = ind4new;
+		if (iter==0){iter=svgArr.length};
         var newArr = [];
         for (item in svgArr){
             if (item!=ind4new){
-                newArr.push(svgArr[item])
+				if (svgArr[iter-1].pathType!='Line'){
+					newArr.push(svgArr[ind4new]);
+				}else{
+                	newArr.push(svgArr[item]);
+				};
             };
         };
         svgArr = newArr;

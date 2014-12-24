@@ -21,33 +21,33 @@
 
                 <g ng-repeat="lines in room.measurePoints">
 					<!-- <text x='122' y='122' ng-click="alert(room.svgPoints[ind4new])">{{$index}}</text> -->
-                    <path 
-                          line-manip linepoints='lines' gridmag = 'gridmag'
-                          stroke="white" stroke-opacity=".01" stroke-width="14"
+                    <path stroke="white" stroke-opacity=".01" stroke-width="14"
                         ng-attr-d="M{{lines[0].points[0][0]}} {{lines[0].points[0][1]}}
                             L{{lines[1].points[0][0]}} {{lines[1].points[0][1]}}"
                     />
 					<!-- <g ng-if="room.svgPoints[ind4new-1].pathType=='CubicBezier' || room.svgPoints[ind4new-1].pathType=='QuadBezier'">
 						<text x='122' y='122'>UGH</text></g> -->
-                    <path ng-if=((ind4new-1)==$index)
-                          line-manip linepoints='lines' gridmag = 'gridmag'
-                          stroke="red" stroke-opacity="1" stroke-width="5"
+				<g ng-if=(ind4new==$index)>
+                    <path
+                          stroke="red" stroke-opacity="1" stroke-width="3"
                         ng-attr-d="M{{lines[0].points[0][0]}} {{lines[0].points[0][1]}}
                             L{{lines[1].points[0][0]}} {{lines[1].points[0][1]}}"
                     />
-                    <circle ng-if=((ind4new)==$index)
-                        fill="none" stroke="#eb321a" stroke-width="4"
-                        circle-manip circpoints="vals.points[2]"
+                    <path ng-if="room.svgPoints[ind4new-1].pathType=='CubicBezier' || room.svgPoints[ind4new-1].pathType=='QuadBezier'"
+                          stroke="red" stroke-opacity="1" stroke-width="3"
+                        ng-attr-d="M{{lines[0].points[0][0]}} {{lines[0].points[0][1]}}
+                            L{{lines[1].points[0][0]}} {{lines[1].points[0][1]}}"
+                    />
+                    <circle
+                        fill="none" stroke="#eb321a" stroke-width="3"
 						gridmag = 'gridmag'
                         ng-attr-cx={{lines[0].points[0][0]}}
                         ng-attr-cy={{lines[0].points[0][1]}}
                         r = 8
                     />
-					<!-- </g> -->
+				</g>
                     <circle 
                         fill="none" stroke="#86eb51" stroke-width="2" 
-                        circle-manip circpoints="vals.points[2]"
-						gridmag = 'gridmag'
                         ng-attr-cx={{newX}}
                         ng-attr-cy={{newY}}
                         r = 10

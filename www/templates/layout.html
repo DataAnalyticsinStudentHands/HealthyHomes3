@@ -122,12 +122,32 @@
                         ng-attr-cy={{vals.points[2][1]}}
                         r = 16
                     />
-                    <line ng-if=(vals.points[2])
+                    <line ng-if="vals.pathType=='CubicBezier'"
                           stroke="#ba202c" stroke-width=".5"
                           ng-attr-x1={{vals.points[1][0]}}
                           ng-attr-y1={{vals.points[1][1]}}
                           ng-attr-x2={{vals.points[2][0]}}
                           ng-attr-y2={{vals.points[2][1]}} />
+                    <line ng-if="vals.pathType=='QuadBezier'"
+						
+                          stroke="#ba202c" stroke-width=".5"
+                          ng-attr-x1={{vals.points[1][0]}}
+                          ng-attr-y1={{vals.points[1][1]}}
+                          ng-attr-x2={{vals.points[0][0]}}
+                          ng-attr-y2={{vals.points[0][1]}} />
+                    <line ng-if="vals.pathType=='QuadBezier' && i>1"
+                          stroke="#ba202c" stroke-width=".5"
+                          ng-attr-x1={{room.svgPoints[i-1].points[0][0]}}
+                          ng-attr-y1={{room.svgPoints[i-1].points[0][1]}}
+                          ng-attr-x2={{room.svgPoints[i].points[1][0]}}
+                          ng-attr-y2={{room.svgPoints[i].points[1][1]}} />
+                    <line ng-if="vals.pathType=='QuadBezier' && i==1"
+                          stroke="#ba202c" stroke-width=".5"
+                          ng-attr-x1={{room.svgPoints[0].points[0][0]}}
+                          ng-attr-y1={{room.svgPoints[0].points[0][1]}}
+                          ng-attr-x2={{room.svgPoints[i].points[1][0]}}
+                          ng-attr-y2={{room.svgPoints[i].points[1][1]}} />
+					
                 </g>
 
                 
