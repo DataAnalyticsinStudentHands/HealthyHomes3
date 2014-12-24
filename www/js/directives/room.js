@@ -54,10 +54,11 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 			$scope.rmModal.pthTyp = 'Line';
             $scope.rmModal.pathTypes = [
 				"Line",
-				"Window",
-				"Door",
+				"Flag", //then flag types include appliances, etc.
 				"QuadBezier",
-				"CubicBezier"
+				"CubicBezier",
+				"Window",
+				"Door"
                 ];
             
 //			$scope.rmModal.pathTypes = {
@@ -133,7 +134,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
     ];
     svgArr = 
     [ 
-    	{ "pathType" : "newSeg",
+    	{ "pathType" : "Line",
     	           
     	 "points" : [[130,130]]
     	           
@@ -220,7 +221,6 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 	var addPoint = function(e){ 
 		e.stopPropagation();
         e.preventDefault();
-        //gridMag = parseFloat(findGeom.gridMag);
         offLeft = parseInt(gridElem[0].offsetLeft);
         offTop = parseInt(gridElem[0].offsetTop);
 		fingerX = parseInt((e.gesture.center.pageX-offLeft)/gridMag);
@@ -229,12 +229,9 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		scope.fingerX = fingerX;
 		scope.fingerY = fingerY;
 	    scope.ind4new = ind4new = closestLinePoints[0];
-        //scope.pathType = svgArr[ind4new].pathType;
 	    scope.newX = closestLinePoints[1][0];
 	    scope.newY = closestLinePoints[1][1];
         setPoints();
-        //scope.fingerX = parseInt((e.gesture.center.pageX/gridMag)-offLeft);//+' '+gridMag;
-        //scope.fingerY = parseInt((e.gesture.center.pageY/gridMag)-offTop);
 		if (dragWhole){
 	        scope.showAdd2Room();
 		}else{
@@ -255,7 +252,6 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
             };
         };
         svgArr = newArr;
-        //delete svgArr[ind4new];
         setPoints();
 		scope.room.svgPoints = svgArr;
 		scope.room.measurePoints = findGeom.showMeasures(svgArr);
@@ -264,29 +260,32 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		scope.closeLineModal();
 		if(pthTyp == 'Window' || pthTyp == 'Door'){
 			alert('not yet implemented')
-			return //idea is to have it calculated so it moves with rest of line - maybe a new segment, with points calculated in between?
+			return 
 		}
 		var ctrlX;
 		var ctrlY;
+		var ctlInd4new = points.length-1;
+		if (ind4new!=0){ctlInd4new=ind4new-1;}
 		if (pthTyp == 'CubicBezier'){
-			ctrlX = (points[ind4new-1][0]+fingerX)/2;
-			ctrlY = (points[ind4new-1][1]+fingerY)/2;
-			newXY = [[parseInt(newX),parseInt(newY)],[parseInt(ctrlX+4),parseInt(ctrlY+4)],[parseInt(ctrlX-4),parseInt(ctrlY-4)]];
+			console.log(ind4new)
+			console.log(ctlInd4new)
+			ctrlX = (points[ctlInd4new][0]+newX)/4;
+			ctrlY = (points[ctlInd4new][1]+newY)/4;
+			newXY = [[parseInt(newX),parseInt(newY)],[parseInt(ctrlX*1.9),parseInt(ctrlY*1.9)],[parseInt(ctrlX*2.7),parseInt(ctrlY*2.7)]];
 		}else if (pthTyp == 'QuadBezier'){
-			ctrlX = (points[ind4new-1][0]+fingerX)/2;
-			ctrlY = (points[ind4new-1][1]+fingerY)/2;
-			newXY = [[parseInt(newX),parseInt(newY)],[parseInt(ctrlX+4),parseInt(ctrlY+4)]];
+			ctrlX = (points[ctlInd4new][0]+newX)/4;
+			ctrlY = (points[ctlInd4new][1]+newY)/4;
+			newXY = [[parseInt(newX),parseInt(newY)],[parseInt(ctrlX),parseInt(ctrlY)]];
 		}else{
         	newXY = [[parseInt(newX),parseInt(newY)]];
 		};
 		if(ind4new+1>points.length){
-	        //points.push([[newX,newY]]); //to end??
             svgArr.push({"pathType" : pthTyp,"points":newXY})
 	    }else{
-	        //points.splice(ind4new+1,0,[newX,newY]);
             svgArr.splice(ind4new+1,0,{"pathType" : pthTyp,"points":newXY})
 	    };
         setPoints();
+		scope.pthTyp = pthTyp = 'Line';
 		scope.room.svgPoints = svgArr;
 		scope.room.measurePoints = findGeom.showMeasures(svgArr);
     };

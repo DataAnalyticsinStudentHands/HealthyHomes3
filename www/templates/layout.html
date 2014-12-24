@@ -1,11 +1,11 @@
-<ion-view title="{{currentInspection.address + ': '+currentInspection.currentFloor.name.toUpperCase()}}">
-    <ion-nav-buttons side="primary">
+<ion-view title="{{currentInspection.address}}">
+    <ion-nav-buttons side="right">
       <button class="button" ng-click="chooseFloor()">
-        Floors
+        {{currentInspection.currentFloor.name.toUpperCase()}}
       </button>
-      <button class="button" ng-click="showAddRoomModal()">
+      <!-- <button class="button" ng-click="showAddRoomModal()">
 		  Rooms
-	  </button>
+	  </button> -->
 <!--    </ion-nav-buttons>-->
       <!-- <button class="button" ng-click="gridmag=gridmag-0.1">
         <img id="magnifySmaller" ng-src="img/zoomout.svg" />

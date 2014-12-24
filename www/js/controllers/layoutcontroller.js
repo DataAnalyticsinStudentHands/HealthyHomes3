@@ -122,7 +122,7 @@ angular.module('Controllers').controller('layoutCtrl',
         $scope.$on('$destroy', function() {
             $scope.floorModal.remove();
         });
-        $ionicModal.fromTemplateUrl('templates/addroomModal.html', {
+        /*$ionicModal.fromTemplateUrl('templates/addroomModal.html', {
                 id: "addrmModal",
                 scope: $scope,
                 animation: 'slide-in-up'
@@ -137,7 +137,7 @@ angular.module('Controllers').controller('layoutCtrl',
         };
         $scope.$on('$destroy', function() {
             $scope.addRoomModal.remove();
-        });
+        });*/
 		var addNewFloorCheck = function(floor){ //this means that the floor indices change for others, too!
 			for (var k=0;k<currentInspection.floors.length;k++){
 				if (currentInspection.floors[k].name == floor){

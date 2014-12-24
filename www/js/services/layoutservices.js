@@ -189,7 +189,6 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 				cf2 = 3 * num2iterate * num2iterate * (1-num2iterate);
 				cf3 = num2iterate * num2iterate * num2iterate;
 				for(var t=num2iterate;t<1;t+=num2iterate){
-					
 					linex = (cf0*itX) + (cf1*arr[i].points[1][0])+(cf2*arr[i].points[2][0]) + (cf3*arrX);
 					liney = (cf0*itY) + (cf1*arr[i].points[1][1])+(cf2*arr[i].points[2][1]) + (cf3*arrY);
 					fingDist = pythagDist(fingerX,linex,fingerY,liney);
@@ -198,34 +197,26 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 						pointIntersect = [linex,liney];
 					};
 				};
-			}else{ //lines and new segments treated as lines
-                
+			}else{ 
                 if(arrY-itY==0){
                     slope=0;
 					yintercept = arrY;
-                }else if(arrX-itX==0){
-                    slope=1;
-					yintercept = arrX;
+				}else if(arrX-itX==0){
+                    slope=100000;
+					//yintercept = arrX;
                 }else{
 				    slope = (arrY-itY) / (arrX-itX);
-					yintercept = arrY/(slope*arrX);
+					yintercept = arrY-(slope*arrX);
                 };
-				//console.log('points, finger, first '+fingerX,fingerY,itX,itY,arrX,arrY)
-                //console.log('yintercept'+yintercept)
-				//console.log('slope'+slope)
 				if (xDist>=yDist){
-                    
-                    //console.log('xDist'+slope,fingerX,xWd,fingerY,liney);
 					for(var k=0;k<xDist;k++){
                         var xWd = k+Math.min(arrX,itX);
 						liney = (slope*xWd)+yintercept;
                         fingDist = pythagDist(fingerX,xWd,fingerY,liney);
 						if (fingDist<shrtDist){
-                            //console.log('Xnewshrt'+fingDist)
 							shrtDist=fingDist;
 							pointIntersect = [xWd,liney];
 						};
-						//console.log('pointIntersect'+pointIntersect)
 					};
 				}else{  
 					for(var k=1;k<yDist;k++){
@@ -236,42 +227,29 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 							var startx = itX;
 						}
                         var yHt = k+starty;
-						if (slope==1){
+						if (slope>=10000){
 							linex = startx;
 						}else if (slope==0){
 							linex = startx+k;
+						}else if (slope<0){
+							linex = (slope/k)-startx;
 						}else{
 							linex = (slope/k)+startx;
 						}
-						//console.log('xy'+linex,yHt)
-                        //console.log('yDist '+fingerX,linex,fingerY,yHt);
 						fingDist = pythagDist(fingerX,linex,fingerY,yHt);
 						if (fingDist<shrtDist){
-                            console.log('newshrt'+fingDist+yHt)
-							
 							shrtDist=fingDist;
 							pointIntersect = [linex,yHt];
 						};
 					};
 				};
-				console.log('iterator '+iterator)
-				console.log('pointIntersect'+pointIntersect)
 			};
-			
 			if (shrtDist<shortestDist){
-				console.log(shrtDist,shortestDist)
-				//console.log('should always happen on 0' + i)
-                //console.log(shortestDist);
 				shortestDist = shrtDist;
-                //console.log('new'+shortestDist);
-                //console.log(iterator);
 				ind4new = i;
 				finalPts = pointIntersect;
 			};
-            
         };
-        console.log(ind4new + 'chosen index')
-        console.log(finalPts)
         return [ind4new, finalPts];
     };
     var pythagDist = this.pythagDist = function(x1,x2,y1,y2){
@@ -284,14 +262,14 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
         //for (var key=0; k<arr.length; key++){
         for (var key in arr){
             segment = arr[key];
-            if(segment.pathType == "newSeg"){
+            /*if(segment.pathType == "newSeg"){//do I need any to be called newSeg??
                 if(rtnPathString=='M'){
                     add2rtnPathStr='';
                 }else{
                     add2rtnPathStr=' L';
                 }
                 rtnPathString += add2rtnPathStr+segment.points[0][0]+' '+segment.points[0][1];
-            };
+			};*/
             if(segment.pathType == "Line"){
                 if(rtnPathString=='M'){
                     add2rtnPathStr='';
