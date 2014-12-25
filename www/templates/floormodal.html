@@ -1,20 +1,32 @@
 <div class="modal">
-    <div class="bar bar-header bar-positive">
+    <div class="bar bar-header bar-positive" >
         <ion-button class="button icon-left ion-close button-clear" ng-click="closeModal()">Cancel</ion-button>
-        <ion-button class="button button-clear" ng-click="newFloor(currFloor)">
-  				Go to {{currFloor || currentInspection.currentFloor.name.toUpperCase()}}
+    	<ion-button class="button button-clear" 
+			ng-click="newFloor(flrModal.newFlr)">
+			Go to {{flrModal.newFlr || currentInspection.currentFloor.name}}
+		</ion-button>
+		
+        <!-- <ion-button class="button button-right button-clear" style="float:right;" ng-click="alert('see whole floor')">
+			<img id="magnifyLarger" ng-src="img/zoomin.svg" />
+  				{{currFloor || currentInspection.currentFloor.name}}
 		</ion-button>
         <ion-button class="button button-right button-clear"
 			ng-click="newRoom(currRoom)">
-  				Go to {{currRoom || currentRoom.properties.name}}
-		</ion-button>
+			<img id="magnifySmaller" ng-src="img/zoomout.svg" />
+  				{{currRoom || currentRoom.properties.name}}
+		</ion-button> -->
 	</div>
     <ion-content has-header="true" padding="true">
-		<br><br>
+		<br><div id="needs4load" style="color:#4a87ee">{{flrPts}}</div><br>
 		<ion-list>
+        	<ion-button class="button button-clear" 
+				ng-show="showFloorAccord"
+				ng-click="newFloor(flrModal.newFlr)">
+  				Go to {{flrModal.newFlr || currentInspection.currentFloor.name}}
+			</ion-button>
 			<ion-button class="button icon-left ion-arrow-right-b button-clear"
 				style="position:relative;float:left;padding-right:5px;"
-				ng-show="!showFloorAccord"
+				ng-show="!showFloorAccord && !showRoomAccord"
 				ng-click="showFloorAccord = ! showFloorAccord">
 			   Floors
 			</ion-button>
@@ -24,25 +36,25 @@
 				ng-click="showFloorAccord = ! showFloorAccord">
 			   Hide
 		   </ion-button>
-		   <ion-radio ng-model="currFloor" 
+		   <ion-radio ng-model="flrModal.newFlr" 
 		   		class="item-accordion"
 				ng-show="showFloorAccord"
 				ng-value="currFloor"
-				ng-repeat="currFloor in floorLists">
+				ng-repeat="currFloor in flrModal.floorLists">
 	           {{currFloor}}
 		   </ion-radio>
 		   <li class="item item-input item-stacked-label"
 		   		ng-show="showFloorAccord">
 			   <span class="input-label">New Floor Name</span>
-			   <input type="text" placeholder="" name="FloorName" ng-model="currFloor"/>
+			   <input type="text" placeholder="" name="FloorName" ng-model="flrModal.newFlr"/>
 		   	<ion-button ng-if="(currFloor == currentInspection.currentFloor.name)" 
-		   		class="button button-balanced" ng-click="changeFloorName(currFloor)">
+		   		class="button button-balanced" ng-click="changeFloorName(flrModal.newFlr)">
 		  	  Change Floor Name
 			</ion-button>
 			</li>
-		<!-- </ion-list> -->
+		</ion-list>
 <!--rooms-->
-		<!-- <ion-list> -->
+		<ion-list>
  			<ion-button class="button icon-left ion-arrow-right-b button-clear"
  				style="position:relative;float:right;padding-right:5px;"
  				ng-show="!showRoomAccord"
@@ -55,22 +67,31 @@
  				ng-click="showRoomAccord = ! showRoomAccord">
  			   Hide
  		   </ion-button>
- 		   <ion-radio ng-model="currRoom" 
+           <ion-button class="button button-clear"
+		   		ng-show="showRoomAccord"
+   				ng-click="newRoom(flrModal.currRm)">
+     				Go to {{flrModal.currRm || currentRoom.properties.name}}
+   			</ion-button>
+ 		   <ion-radio ng-model="flrModal.currRm" 
  		   		class="item-accordion"
  				ng-show="showRoomAccord"
  				ng-value="currRoom"
- 				ng-repeat="currRoom in roomLists">
+ 				ng-repeat="currRoom in flrModal.roomLists">
  	           {{currRoom}}
  		   </ion-radio>
  		   <li class="item item-input item-stacked-label"
 			   ng-show="showRoomAccord">
  			   <span class="input-label">New Room Name</span>
- 			   <input type="text" placeholder="" name="RoomName" ng-model="currRoom"/>	
+ 			   <input type="text" placeholder="" name="RoomName" ng-model="flrModal.currRm"/>	
  		    <ion-button ng-if="(currRoom == currentRoom.properties.name)" 
- 		   		class="button button-balanced" ng-click="changeRoomName(currRoom)">
+ 		   		class="button button-balanced" ng-click="changeRoomName(flrModal.currRm)">
  		  	  Change Room Name
  			</ion-button>
 			</li>
+            <div id="aspRatio" ng-show="!showAccord"
+                 style="position:relative;display:inline-block;width:50%;left:20%;">
+              <div style="width:90%;position:absolute;top:0px;" ng-include="'templates/outlineFlr.html'"></div>
+			</div>
  		</ion-list>
                 
                 <!-- <ion-button class="button button-balanced" ng-click="zoom2Room(currRoom)">

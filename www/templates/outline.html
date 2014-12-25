@@ -22,13 +22,13 @@
                     />
 					<!-- could put an iterator on the scope to take care of when ind4newis a problem, but
 					it keeps tracking the new value in other places on the template?? -->
-				<g ng-if=(ind4new==$index)>
+				<g ng-if=(ind4new==$index) ng-dblclick="showRemConfirm(ind4new)">
                     <path ng-if=(lines[1].pathType=='Line')
                           stroke="red" stroke-opacity="1" stroke-width="3"
                         ng-attr-d="M{{lines[0].points[0][0]}} {{lines[0].points[0][1]}}
                             L{{lines[1].points[0][0]}} {{lines[1].points[0][1]}}"
                     />
-				<g ng-if=(room.svgPoints[ind4new+1])>
+				<g ng-if=(room.svgPoints[ind4new+1]) ng-dblclick="showRemConfirm(ind4new)">
                     <path fill="#fcfbfa" fill-opacity=".01" 
                           stroke="red" stroke-opacity="1" stroke-width="3"
                         ng-attr-d="M{{room.svgPoints[ind4new].points[0][0]}} {{room.svgPoints[ind4new].points[0][1]}} C{{lines[1].points[2][0]}} {{lines[1].points[2][1]}} {{lines[1].points[1][0]}} {{lines[1].points[1][1]}} {{room.svgPoints[ind4new+1].points[0][0]}} {{room.svgPoints[ind4new+1].points[0][1]}}"
@@ -38,7 +38,7 @@
                         ng-attr-d="M{{room.svgPoints[ind4new].points[0][0]}} {{room.svgPoints[ind4new].points[0][1]}} Q{{lines[1].points[1][0]}} {{lines[1].points[1][1]}} {{room.svgPoints[ind4new+1].points[0][0]}} {{room.svgPoints[ind4new+1].points[0][1]}}"
                     />
 				</g>
-				<g ng-if=(!room.svgPoints[ind4new+1])>
+				<g ng-if=(!room.svgPoints[ind4new+1]) ng-dblclick="showRemConfirm(ind4new)">
                     <path fill="#fcfbfa" fill-opacity=".01" 
                           stroke="red" stroke-opacity="1" stroke-width="3"
                         ng-attr-d="M{{room.svgPoints[ind4new].points[0][0]}} {{room.svgPoints[ind4new].points[0][1]}} C{{room.svgPoints[0].points[2][0]}} {{room.svgPoints[0].points[2][1]}} {{room.svgPoints[0].points.points[1][0]}} {{room.svgPoints[0].points[1][1]}} {{room.svgPoints[0].points[0][0]}} {{room.svgPoints[0].points[0][1]}}"

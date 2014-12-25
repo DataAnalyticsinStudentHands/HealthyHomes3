@@ -1,0 +1,25 @@
+<svg id="floor-container-outline" style='stroke-width: 0px; '
+             viewBox = "{{flrPts.flrMinX}} {{flrPts.flrMinY}} {{flrPts.flrMaxX}} {{flrPts.flrMaxY}}">
+<!--ng-attr gets rid of warning but skews result 
+             <g class="floorLines"
+                ng-repeat="(id, room) in currentInspection.currentFloor.paths track by id"
+                room = 'room' gridmag = 'gridmag'
+                room-manip >
+			 IF YOU DO IT WITH DIRECTIVES, YOU CAN MANIPULATE ON THE MODAL WINDOW;
+			 could not do the whole drag thing, and still have double-click to delete a room, etc.
+			 Below only works if it assigns an id to each path, even if it's not showing now
+-->
+        <g class="floorLines" ng-dblclick="remRoomConfirm(id)"
+           ng-repeat="(id, room) in currentInspection.currentFloor.paths track by id">
+                 <path id="{{'roomPath'+room.properties.name}}"
+ 					ng-attr-d="{{svgPath(room.svgPoints)}}" 
+ 					stroke="#2050ba" fill="#fcfbfa" 
+ 					fill-opacity="0.01" stroke-width="2"/>
+                 <text
+ 					font-size="8pt" 
+ 					fill="black">
+                     <textPath xlink:href="{{'#roomPath'+room.properties.name}}"
+ 							dominant-baseline="hanging"
+                               startOffset="2%">{{room.properties.name}}</textPath>
+ 				</text>
+        </svg> 

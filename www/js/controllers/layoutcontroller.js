@@ -3,7 +3,7 @@
 //var layoutController = angular.module('HHControllers', []);
 
 angular.module('Controllers').controller('layoutCtrl', 
-	function ($scope, $window, $timeout,$localStorage, $state, $stateParams, Restangular, layoutObjectModel, inspections,currentInspection,currentFloor,$ionicSideMenuDelegate, $ionicNavBarDelegate, $ionicModal, findGeom) {
+	function ($scope, $window, $timeout,$localStorage, $state, $stateParams, Restangular, layoutObjectModel, inspections,currentInspection,currentFloor,$ionicSideMenuDelegate, $ionicNavBarDelegate, $ionicModal,$ionicPopup, findGeom) {
         function touchHandler(event){ //necessary for andriod, but kills ionic's side
             var touches = event.changedTouches,
             first = touches[0],
@@ -54,7 +54,7 @@ angular.module('Controllers').controller('layoutCtrl',
         };
         $scope.$watch(function() { 
             return $ionicSideMenuDelegate.isOpenLeft() },
-              function(ratio) {
+              function() {
 				  $scope.qsOpen = $ionicSideMenuDelegate.isOpenLeft();
               }
         );
@@ -86,9 +86,9 @@ angular.module('Controllers').controller('layoutCtrl',
 //			$ionicNavBarDelegate.showBar(false);
 //		};
 //		$timeout(hideBar,1000);
-
-        $scope.floorLists = ['neighborhood', 'exterior', 'first', 'second', 'third', 'basement', 'attic', 'garage', 'section'];
-        $scope.roomLists = ['exterior','living room','bath','closet','kitchen','dining room'];
+		$scope.flrModal = [];
+        $scope.flrModal.floorLists = ['neighborhood', 'exterior', 'first', 'second', 'third', 'basement', 'attic', 'garage', 'section'];
+        $scope.flrModal.roomLists = ['exterior','living room','bath','closet','kitchen','dining room'];
         $scope.actionLists = ['add flag','add note','add image from camera','add image from file'];
 		$scope.editRooms = ['change name','add point to shape','add door','add window','add stairs','add outlet']; // when edit mode
 		$scope.insideRooms = ['add toilet','add sink','add refrigerator','add flame','add tub','add shower','add vent'];
@@ -96,7 +96,6 @@ angular.module('Controllers').controller('layoutCtrl',
         var floors = []; 
 		var floorInd = 0;
         if ($stateParams.floorInd) {floorInd = $stateParams.floorInd};
-
         
         // if (currentInspection.floors){
 //             floors = currentInspection.floors;
@@ -114,6 +113,7 @@ angular.module('Controllers').controller('layoutCtrl',
               $scope.floorModal = modal;
         });
         $scope.chooseFloor = function() {
+			setFlrPoints();
             $scope.floorModal.show();
         };
         $scope.closeModal = function() {
@@ -122,6 +122,32 @@ angular.module('Controllers').controller('layoutCtrl',
         $scope.$on('$destroy', function() {
             $scope.floorModal.remove();
         });
+	    $scope.remRoomConfirm = function(id) {
+	        var confirmRmPopup = $ionicPopup.confirm({
+	            title: 'Remove Room and Contents',
+	            template: 'Are you sure?'
+	        });
+	        confirmRmPopup.then(function(res) { 
+	        if(res) {
+	            removeRoom(id);
+	        }
+	        });
+	    };
+		var removeRoom = function(id){
+			$scope.closeModal();
+			console.log(currentFloor.rooms);
+			var newRooms = [];
+			for (var rm in currentFloor.rooms){
+				id = 3;
+				if (rm == id){
+					newRooms.push(currentFloor.rooms[id])
+				};
+			};
+			currentFloor.rooms = newRooms;
+			setFloorContents;
+			console.log(currentFloor);
+			//need it to update without reload!!
+		};
         /*$ionicModal.fromTemplateUrl('templates/addroomModal.html', {
                 id: "addrmModal",
                 scope: $scope,
@@ -152,6 +178,7 @@ angular.module('Controllers').controller('layoutCtrl',
 		var rooms;
         $scope.newFloor = function(floor){
 			if(currentFloor!=floor){
+				alert(floor)
 				var addNewFloor = addNewFloorCheck(floor);
 				if(addNewFloor){
         	        floors.push({"name" : floor, "color" : "#ed0e0e", "rooms" : []});
@@ -273,6 +300,7 @@ angular.module('Controllers').controller('layoutCtrl',
     	        };
     	    };
 			currentInspection.currentFloor = currentFloor;
+			setFlrPoints;
 			$scope.currentInspection = currentInspection;
 //            $scope.currentRoom.paths = paths;
 //	        $scope.currentRoom.features = features;
@@ -281,6 +309,47 @@ angular.module('Controllers').controller('layoutCtrl',
 //	        $scope.currentRoom.images = images;
 		};
         setFloorContents();
+	    var setFlrPoints = function(){ //for feeding to the modal window for fewer directives, etc.
+	        var nextPoints = [];
+			var rmArrs = [];
+	        //var points = [];
+	        var flrMinX = null;
+	        var flrMinY = null;
+	        var flrMaxX = null;
+	        var flrMaxY = null;
+	        for (var rmItem in currentFloor.rooms){
+				rmArrs = currentFloor.rooms[rmItem].svgPoints;
+				for (var item in currentFloor.rooms[rmItem].svgPoints){
+	            	nextPoints = rmArrs[item].points;
+	            	if (nextPoints){
+	            		for (item in nextPoints){
+	            			if(flrMinX==null){
+	            			    flrMinX = flrMaxX = nextPoints[item][0];
+	            			    flrMinY = flrMaxY = nextPoints[item][1];
+	            			};
+							if (nextPoints[item][0]<(flrMinX)){
+								flrMinX=nextPoints[item][0]
+	            		    };
+							if (nextPoints[item][1]<(flrMinY)){
+	            				flrMinY=nextPoints[item][1]
+	            			};
+							if (nextPoints[item][0]>(flrMaxX)){
+	            				flrMaxX=nextPoints[item][0]
+	            			};
+							if (nextPoints[item][1]>(flrMaxY)){
+	            				flrMaxY=nextPoints[item][1]};
+	            			};
+						};
+					};
+	        }
+			$scope.flrPts = [];
+	        $scope.flrPts.flrMinX = flrMinX-15;//-50;
+		    $scope.flrPts.flrMinY = flrMinY-15;//-50;
+		    $scope.flrPts.flrMaxX = (flrMaxX-flrMinX)+35;//+150;
+		    $scope.flrPts.flrMaxY = (flrMaxY-flrMinY)+35;//+150;
+	    };
+	   	setFlrPoints(); //-- before opening Modal
+		
 		var addNewRoomCheck = function(room){ //this means that the floor indices change for others, too!
 			if(rooms.length==0){
 				return true;
@@ -311,8 +380,7 @@ angular.module('Controllers').controller('layoutCtrl',
 			} else {
 				rooms = $scope.currentInspection.currentFloor.rooms = currentFloor.rooms;
 			};
-            
-            $scope.closeAddRoomModal();
+            $scope.closeModal();
 		};
         $scope.newObjOLD = function(obj,$event){
             var layoutObjs = [];
