@@ -26,9 +26,9 @@
     <ion-side-menu width="{{gridWd}}" id="grid" side="left" drag-content="false">
 <div id="floor-wrap">
     <div id="grid-container">
-<!--        <ion-nav-view id="floor-wrap" name="floor"></ion-nav-view>-->
+<!--        If we have it zoom through the Viewbox? Need to test on devices? gridMag? I think it now depends on original size - could just have it come in multiples? -->
             <svg id="floor-container" style='stroke-width: 0px; '
-             viewBox = "0 0 2000 2000"
+             viewBox = "0 0 {{canvasSize}} {{canvasSize}}"
              grid-manip gridmag='gridmag'>
 			 <!-- <text x='133' y='333' ng-show="gridShow5">gridshow{{gridshow5}}</text> -->
                 
@@ -58,8 +58,8 @@
 
 			<g id="wholeFloor">
 
-            <g class="floorLines"
-               ng-repeat="(id, room) in currentInspection.currentFloor.paths track by id"
+            <g class="floorLines" id="{{room.timeId}}"
+               ng-repeat="(idIter, room) in currentInspection.currentFloor.paths track by idIter"
                room = 'room' gridmag = 'gridmag'
                room-manip >
                 

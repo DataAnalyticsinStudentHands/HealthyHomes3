@@ -2,8 +2,9 @@
     <div class="bar bar-header bar-positive" >
         <ion-button class="button icon-left ion-close button-clear" ng-click="closeModal()">Cancel</ion-button>
     	<ion-button class="button button-clear" 
-			ng-click="newFloor(flrModal.newFlr)">
-			Go to {{flrModal.newFlr || currentInspection.currentFloor.name}}
+			ng-click="alert('perhaps zoom to whole?')">
+			  Zoom?
+			<!-- Go to {{flrModal.newFlr || currentInspection.currentFloor.name}} -->
 		</ion-button>
 		
         <!-- <ion-button class="button button-right button-clear" style="float:right;" ng-click="alert('see whole floor')">
@@ -39,7 +40,7 @@
 		   <ion-radio ng-model="flrModal.newFlr" 
 		   		class="item-accordion"
 				ng-show="showFloorAccord"
-				ng-value="currFloor"
+				ng-value="flrModal.newFlr"
 				ng-repeat="currFloor in flrModal.floorLists">
 	           {{currFloor}}
 		   </ion-radio>

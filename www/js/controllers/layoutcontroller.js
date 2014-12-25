@@ -88,7 +88,7 @@ angular.module('Controllers').controller('layoutCtrl',
 //		$timeout(hideBar,1000);
 		$scope.flrModal = [];
         $scope.flrModal.floorLists = ['neighborhood', 'exterior', 'first', 'second', 'third', 'basement', 'attic', 'garage', 'section'];
-        $scope.flrModal.roomLists = ['exterior','living room','bath','closet','kitchen','dining room'];
+		$scope.flrModal.roomLists = ['exterior','living room','bath','closet','kitchen','dining room'];
         $scope.actionLists = ['add flag','add note','add image from camera','add image from file'];
 		$scope.editRooms = ['change name','add point to shape','add door','add window','add stairs','add outlet']; // when edit mode
 		$scope.insideRooms = ['add toilet','add sink','add refrigerator','add flame','add tub','add shower','add vent'];
@@ -119,34 +119,37 @@ angular.module('Controllers').controller('layoutCtrl',
         $scope.closeModal = function() {
             $scope.floorModal.hide();
         };
+		// $scope.$on('modal.hidden', function() {
+// 			//$scope.showFloorAccord = false;
+// 			$scope.showRoomAccord = true;
+// 		});
         $scope.$on('$destroy', function() {
             $scope.floorModal.remove();
         });
-	    $scope.remRoomConfirm = function(id) {
+	    $scope.remRoomConfirm = function(timeId) {
+			var toRemove = angular.element(document.getElementById(timeId));
 	        var confirmRmPopup = $ionicPopup.confirm({
-	            title: 'Remove '+currentFloor.rooms[id].properties.name+' and Contents',
-	            template: 'Are you sure?'
+	            title: 'Remove Room and Contents',
+	            template: 'Are you sure (cannot undo)?'
 	        });
 	        confirmRmPopup.then(function(res) { 
 	        if(res) {
-	            removeRoom(id);
+	            removeRoom(timeId);
+				toRemove.remove();
 	        }
 	        });
 	    };
-		var removeRoom = function(id){
+		var removeRoom = function(timeId){
 			$scope.closeModal();
-			console.log(currentFloor.rooms);
 			var newRooms = [];
 			for (var rm in currentFloor.rooms){
-				id = 3;
-				if (rm == id){
-					newRooms.push(currentFloor.rooms[id])
+				if (currentFloor.rooms[rm].timeId != timeId){
+					newRooms.push(currentFloor.rooms[rm])
 				};
 			};
+			currentFloor['rooms'] = [];
 			currentFloor.rooms = newRooms;
 			setFloorContents;
-			console.log(currentFloor);
-			//need it to update without reload!!
 		};
         /*$ionicModal.fromTemplateUrl('templates/addroomModal.html', {
                 id: "addrmModal",
@@ -177,8 +180,8 @@ angular.module('Controllers').controller('layoutCtrl',
 		}
 		var rooms;
         $scope.newFloor = function(floor){
+			console.log(floor)
 			if(currentFloor!=floor){
-				alert(floor)
 				var addNewFloor = addNewFloorCheck(floor);
 				if(addNewFloor){
         	        floors.push({"name" : floor, "color" : "#ed0e0e", "rooms" : []});
@@ -206,7 +209,7 @@ angular.module('Controllers').controller('layoutCtrl',
         };
         
 		var testRoom = {"type" : "Path", 
-                "id" : 45,
+                "timeId" : 45,
 				"properties" : {"name" : "TestExample", "color" : "#ed0e0e"},
 				"active" : true,
             	"contains" : [ 0, 4, 6 ],
@@ -369,13 +372,14 @@ angular.module('Controllers').controller('layoutCtrl',
         $scope.newRoom = function(room){
 			var addNewRoom = addNewRoomCheck(room)
             if (addNewRoom) {
-				//timeId = d.getTime();
+				var d = new Date();
+				var timeId = d.getTime();
                 newRoom = angular.copy(testRoom);
 				newRoom.properties.name = room;
-				//newRoom.id = timeId;
+				newRoom.timeId = timeId;
 				rooms.push(newRoom);
 				currentFloor.rooms = $scope.currentInspection.currentFloor.rooms = rooms;
-                clearFloorContents();
+                //clearFloorContents();
                 setFloorContents();
 			} else {
 				rooms = $scope.currentInspection.currentFloor.rooms = currentFloor.rooms;

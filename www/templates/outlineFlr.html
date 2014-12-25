@@ -9,8 +9,8 @@
 			 could not do the whole drag thing, and still have double-click to delete a room, etc.
 			 Below only works if it assigns an id to each path, even if it's not showing now
 -->
-        <g class="floorLines" ng-dblclick="remRoomConfirm(id)"
-           ng-repeat="(id, room) in currentInspection.currentFloor.paths track by id">
+        <g class="floorLines" on-hold="remRoomConfirm(room.timeId)"
+           ng-repeat="(idIter, room) in currentInspection.currentFloor.paths track by idIter">
                  <path id="{{'roomPath'+room.properties.name}}"
  					ng-attr-d="{{svgPath(room.svgPoints)}}" 
  					stroke="#2050ba" fill="#fcfbfa" 
