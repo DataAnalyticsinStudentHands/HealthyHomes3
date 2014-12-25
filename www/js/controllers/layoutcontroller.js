@@ -124,7 +124,7 @@ angular.module('Controllers').controller('layoutCtrl',
         });
 	    $scope.remRoomConfirm = function(id) {
 	        var confirmRmPopup = $ionicPopup.confirm({
-	            title: 'Remove Room and Contents',
+	            title: 'Remove '+currentFloor.rooms[id].properties.name+' and Contents',
 	            template: 'Are you sure?'
 	        });
 	        confirmRmPopup.then(function(res) { 
