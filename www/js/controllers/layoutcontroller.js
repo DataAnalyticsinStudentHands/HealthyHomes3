@@ -295,7 +295,7 @@ angular.module('Controllers').controller('layoutCtrl',
     	        if (roomItem.type == "openArc"){
     	            currentFloor.roomArcs.push(roomItem)
     	        };
-    	        if (roomItem.type == "Note"){
+    	        if (roomItem.type == "Note"){         //notes and images at room level are in room.js - or should there by a "room" that encompasses the floor and has the "exterior notes in it?" Maybe make it the default room, and have a class on it that makes it a diff. color? not sure...
     	            currentFloor.notes.push(roomItem)
     	        };
     	        if (roomItem.type == "Image"){
@@ -386,82 +386,12 @@ angular.module('Controllers').controller('layoutCtrl',
 			};
             $scope.closeModal();
 		};
-        $scope.newObjOLD = function(obj,$event){
-            var layoutObjs = [];
-            if (currentRoom.layoutObjs != null) { // && currentRoom.layoutObjs.length>0){
-                layoutObjs = currentRoom.layoutObjs;};
-            //need to catch if it exists? this always adds more by same name???
-            $scope.iconWidth = 15;
-            $scope.iconHeight = 15;
-            var iconX = 10;
-            var iconY = 10;
-            XYObj = [iconX,iconY,obj];
-            layoutObjs.push(XYObj);
-            currentRoom.layoutObjs = $scope.layoutObjs = layoutObjs;
-        }
-        var notes = [];
-        var note = $scope.note = '';
-        $scope.showNote = false;
-        $scope.openNote = function(){
-            //console.log('openNote')
-            $scope.showNote = !$scope.showNote;
-            if (currentRoom.layoutObjs[this.indic].notes){
-                notes = currentRoom.layoutObjs[this.indic].notes; //notes should have in it the text and the photos
-            }else{
-                note = $scope.note = ''; //do you have to explicitly clear? 
-                notes = [];
-                currentRoom.layoutObjs[this.indic].notes = notes;
-            }
-        }
-        //http://docs.phonegap.com/en/1.2.0/phonegap_camera_camera.md.html
-/*        var pictureSource;   // picture source
-        var destinationType; // sets the format of returned value 
-        function onDeviceReady() {
-            pictureSource=navigator.camera.PictureSourceType;
-            destinationType=navigator.camera.DestinationType;
-        }
-        function onPhotoDataSuccess(imageData) {
-            var smallImage = document.getElementById('smallImage');
-            smallImage.style.display = 'block';
-            smallImage.src = imageData;
-//            smallImage.src = "data:image/jpeg;base64," + imageData;
-//            alert(imageData)
-//           console.log(smallImage)
-        }
-        function onPhotoURISuccess(imageURI) {
-            var largeImage = document.getElementById('largeImage');
-            largeImage.style.display = 'block';
-            largeImage.src = imageURI;
-        }
-        $scope.takePicture = function() {
-	       navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20 });
-	  
-        }
-        function capturePhotoEdit() {
-            //allowEdit not on Android?
-            navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20, allowEdit: true }); 
-        };
-        function getPhoto(source) {
-      // Retrieve image file location from specified source
-          navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 20, 
-            destinationType: destinationType.FILE_URI,
-            sourceType: source });
-        }
-
-        // Called if something bad happens.
-        // 
-        function onFail(message) {
-          alert('Failed because: ' + message);
-        };
-        */
-
-        
-        $scope.selectLayoutObject = function (layoutObject) {
-            layoutObjectModel.setSelectedObject(layoutObject);
-        };
-        $scope.isSelected = function(layoutObject) {
-            return layoutObject === layoutObjectModel.selectedLayoutObject;
-        };
+        // $scope.selectLayoutObject = function (layoutObject) {
+        //     layoutObjectModel.setSelectedObject(layoutObject);
+        // };
+        // $scope.isSelected = function(layoutObject) {
+        //     return layoutObject === layoutObjectModel.selectedLayoutObject;
+        // };
 
 
  });

@@ -2,11 +2,47 @@
 <div class="modal">
     <div class="bar bar-header bar-positive">
         <ion-button class="button icon-left ion-chevron-left button-clear" ng-click="closeAddRoomModal()">Cancel</ion-button>
+		<ion-button class="button button-clear ion-ios-flag-outline" ng-click="togImport()">
+	</ion-button>
   		
 	<!--I think this can add objects through a $scope, so could be accessible and work without rooms
 	it should have a way that it can be attached to a point so it will drag - perhaps a schematic? 
 		these objects, once added, should allow to click to edit, resize, minimize, or add photos to the notes, etc.
 		as with rooms, when do they share points/walls?-->
   </div>
+  <ion-list>
+  	<item>
+		<img ng-src="{{room.images[noteID]}}"/> 
+	</item>
+  	<item>
+  		<ion-button class="button button-block button-positive icon-left ion-ios7-camera" ng-click="snapPicture(noteId)">Camera</ion-button>
+	</item>
+	<item>
+		<textarea ng-model="room.note">{{room.notes[noteId]}}</textarea>
+	</item>
+  <item>
   <div>This should populate with the questions for this room
   </div>
+</item>
+  
+  
+</div>
+  <!-- <ion-view title="Maps">
+    <ion-content class="has-header padding scroll">
+  	<div class="list">
+  		<form name="myForm">
+  			<item class="item item-icon-left"><i class="icon ion-chatbubble-working"></i>
+  			<label class="item item-input">
+  				<textarea ng-model="obj.text" name="posttext" rows="4"></textarea>
+  			</label>
+  			</item>
+  			<div class="item">
+  				<button class="button button-block button-positive icon-left ion-ios7-camera" ng-click="takePicture()">Camera</button>
+  			</div>
+  			<div class="padding">
+  				<button class="button button-block button-positive icon-right ion-chevron-right" ng-disabled="!imp.text" ng-click="update(obj)">Upload</button>
+  			</div>
+  		</form>
+  	</div>
+    </ion-content>
+  </ion-view> -->

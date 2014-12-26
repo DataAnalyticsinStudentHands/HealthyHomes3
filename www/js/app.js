@@ -6,22 +6,24 @@ angular.module('HHApp', [
     'restangular',
     'ngNotify',
     'ngStorage',
+	//'ngCordova',
+	'ngCordova.plugins.camera',
     'databaseControllerModule',
     'databaseServicesModule'
 ]).run(function ($ionicPlatform, Restangular, $rootScope, Auth, $q, $state) {
     'use strict';
 
-    $ionicPlatform.ready(function () {
-        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-        // for form inputs)
-        if (window.cordova && window.cordova.plugins.Keyboard) {
-            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-        }
-        if (window.StatusBar) {
-            // org.apache.cordova.statusbar required
-            StatusBar.styleDefault();
-        }
-    }); 
+    // $ionicPlatform.ready(function () {
+//         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+//         // for form inputs)
+//         if (window.cordova && window.cordova.plugins.Keyboard) {
+//             cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+//         }
+//         if (window.StatusBar) {
+//             // org.apache.cordova.statusbar required
+//             StatusBar.styleDefault();
+//         }
+//     }); 
     //Restangular.setBaseUrl("http://www.housuggest.org:8080/HealthyHomes/");
     //Restangular.setBaseUrl("http://www.housuggest.org:8080/HHtest/");
  

@@ -1,5 +1,6 @@
 angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGesture,$ionicSideMenuDelegate,$stateParams,$ionicPopup,findGeom){
-    return {
+//what about $cordovaCamera?
+	return {
         restrict: 'AE',
         scope: {
             room: '=',
@@ -83,6 +84,8 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 //            );
         }],
         link: function(scope,elem,attr) {
+			console.log('$cordovaCamera')
+			console.log($cordovaCamera)
     //scope.room.roomPoints = [[20.0,120.0],[220.0,120.0],[220.0,220.0],[320.0,320.0],[220.0,420.0],[420.0,220.0],[620.0,620.0],[720.0,720.0]];  //get from service as map from arcs
     scope.alert = function (text) {
         alert(text+'inroom');
@@ -233,7 +236,9 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 	    scope.newY = closestLinePoints[1][1];
         setPoints();
 		if (dragWhole){
-	        scope.showAdd2Room();
+			timeId = setTimeId();
+			scope.noteId = timeId;
+	        scope.showAdd2Room(timeId);
 		}else{
 			scope.showAdd2Line();
 		};
@@ -242,7 +247,82 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		//do closest line, then decide what side it's on and attach
 		//note,image,flag
 				//alert(fingerX);
+		//gets everything from addPoint already - so this is like addSegment
 	};
+	//notes stuff
+    var notes = [];
+	var d = new Date();
+	var timeId = d.getTime();
+	var setTimeId = function(){
+		return d.getTime();
+	}
+	 //if click on the object, passes it's old id from html as showAdd2Room(timeId)
+    //var note = scope.room.note = '';
+    scope.showNote = false;
+    scope.openNote = function(){
+        //console.log('openNote')
+        //scope.showNote = !scope.showNote;
+        if (currentRoom.layoutObjs[this.indic].notes){
+            notes = currentRoom.layoutObjs[this.indic].notes; //notes should have in it the text and the photos
+        }else{
+            note = scope.note = ''; //do you have to explicitly clear? 
+            notes = [];
+            currentRoom.layoutObjs[this.indic].notes = notes;
+        }
+    }
+	//camera stuff
+	var pictureSource;   // picture source
+	var pictureSourceFile;
+	var destinationType; // sets the format of returned value
+	var url;
+	
+	ionic.Platform.ready(function() {
+		//console.log("ready get camera types");
+		if (!navigator.camera)
+			{
+			console.log('no navigator.camera -- think about browsers')
+			// error handling -- 
+			return;
+			}
+		pictureSourceFile=navigator.camera.PictureSourceType.PHOTOLIBRARY;
+		pictureSource=navigator.camera.PictureSourceType.CAMERA;
+		destinationType=navigator.camera.DestinationType.FILE_URI;
+	});
+	//var picture;
+  	scope.snapPicture = function(flagID) { 
+		//https://github.com/yafraorg/ionictests/blob/master/camera/www/js/controllers.js also uses fileupload
+		//https://github.com/apache/cordova-plugin-camera/blob/master/doc/index.md for options
+		var options = {
+			quality: 50,
+			destinationType: destinationType,
+			sourceType: pictureSource,
+			encodingType: 0
+		};
+		console.log(JSON.stringify(window.navigator))
+		//console.log(JSON.stringify($cordovaCamera))
+		if (!navigator.camera)
+			{
+				alert('no navigator.camera')
+			// error handling
+			return;
+			}
+		//navigator.camera.getPicture(
+		$cordovaCamera.getPicture(
+			function (imageURI) {
+				alert('in')
+				newImage(imageURI);
+				//console.log("got camera success ", imageURI);
+				//should we use GPS data from header?
+				//picture = imageURI;
+				//console.log(picture);
+				},
+			function (err) {
+				console.log("got camera error ", err);
+				// error handling camera plugin
+				},
+			options);
+	};
+	
 	scope.slopeAnchorPts = function(arr,atype){ //have this read as a separate SVG, white bckgrnd; has a directive for dragging and reshaping -- would be in rooms.js
 		var arrX0 = arr[0][0]
 		var arrX1 = arr[1][0]
@@ -287,7 +367,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 		scope.room.svgPoints = svgArr;
 		scope.room.measurePoints = findGeom.showMeasures(svgArr);
     };
-    scope.addSegment = function(fingerX,fingerY,pthTyp,ind4new,newX,newY){
+    scope.addSegment = function(fingerX,fingerY,pthTyp,ind4new,newX,newY){ //can run all room-objects through here
 		scope.closeLineModal();
 		if(pthTyp == 'Window' || pthTyp == 'Door'){
 			alert('not yet implemented')
