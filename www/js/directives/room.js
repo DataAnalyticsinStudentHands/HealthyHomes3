@@ -84,8 +84,6 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 //            );
         }],
         link: function(scope,elem,attr) {
-			console.log('$cordovaCamera')
-			console.log($cordovaCamera)
     //scope.room.roomPoints = [[20.0,120.0],[220.0,120.0],[220.0,220.0],[320.0,320.0],[220.0,420.0],[420.0,220.0],[620.0,620.0],[720.0,720.0]];  //get from service as map from arcs
     scope.alert = function (text) {
         alert(text+'inroom');
@@ -306,8 +304,8 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 			// error handling
 			return;
 			}
-		//navigator.camera.getPicture(
-		$cordovaCamera.getPicture(
+		navigator.camera.getPicture(
+		//$cordovaCamera.getPicture(
 			function (imageURI) {
 				alert('in')
 				newImage(imageURI);

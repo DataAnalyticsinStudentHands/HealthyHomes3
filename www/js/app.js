@@ -7,7 +7,7 @@ angular.module('HHApp', [
     'ngNotify',
     'ngStorage',
 	//'ngCordova',
-	'ngCordova.plugins.camera',
+	//'ngCordova.plugins.camera',
     'databaseControllerModule',
     'databaseServicesModule'
 ]).run(function ($ionicPlatform, Restangular, $rootScope, Auth, $q, $state) {
