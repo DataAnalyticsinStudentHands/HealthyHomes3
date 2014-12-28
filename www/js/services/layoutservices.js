@@ -303,6 +303,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
             arr = [];
         }else{
             var arr = _.clone(arrIn); //try with and without - do a path for the text on arc/CubicBezier?
+			//console.log(arr); //this avoids a sometimes trap on finding no value in arr?????
             var centX = 0;
             var centY = 0;
             var dist = 0;
@@ -312,6 +313,8 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
             for (var i = 0; i < arr.length; i++){ 
 				iterator = i+1;
 				if(arr.length==i+1){iterator=0};
+				if(!arr[i].points){return};
+				if(!arr[iterator].points){iterator=i};
 	            centX = Math.round((arr[i].points[0][0]+arr[iterator].points[0][0])/2);  //all should be positive
 	            centY = Math.round((arr[i].points[0][1]+arr[iterator].points[0][1])/2);  //all should be positive
 	            dist = Math.round(pythagDist(arr[i].points[0][0],arr[iterator].points[0][0],arr[i].points[0][1],arr[iterator].points[0][1]));

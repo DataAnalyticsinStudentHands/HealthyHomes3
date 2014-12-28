@@ -386,6 +386,40 @@ angular.module('Controllers').controller('layoutCtrl',
 			};
             $scope.closeModal();
 		};
+		var currPosition = {lat:'',lon:''};
+		console.log(navigator)
+		//if(navigator.geolocation){
+			//console.log(navigator.geolocation.getCurrentPosition())
+			// var getPositions = function(pos){
+// 				currPosition = [];
+// 				currPosition['lat']=pos.coords.latitude;
+// 				currPosition['lon']=pos.coords.longitude;
+// 				console.log(currPosition)
+// 			}
+			var onSuccess = function(position) {
+				currPosition.lat = position.coords.latitude;
+				currPosition.lon = position.coords.longitude;
+			    alert('Latitude: '          + position.coords.latitude          + '\n' +
+			          'Longitude: '         + position.coords.longitude         + '\n' +
+			          'Altitude: '          + position.coords.altitude          + '\n' +
+			          'Accuracy: '          + position.coords.accuracy          + '\n' +
+			          'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+			          'Heading: '           + position.coords.heading           + '\n' +
+			          'Speed: '             + position.coords.speed             + '\n' +
+			          'Timestamp: '         + position.timestamp                + '\n');
+			};
+
+			// onError Callback receives a PositionError object
+			//
+			function onError(error) {
+			    alert('code: '    + error.code    + '\n' +
+			          'message: ' + error.message + '\n');
+			}
+			
+			navigator.geolocation.getCurrentPosition(onSuccess, onError);
+			//currPosition = navigator.geolocation.getCurrentPosition();
+			//};
+		$scope.currPosition = currPosition;
         // $scope.selectLayoutObject = function (layoutObject) {
         //     layoutObjectModel.setSelectedObject(layoutObject);
         // };

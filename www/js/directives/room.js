@@ -100,57 +100,29 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
         });
     };
     var svgArr = [];
-    var svgArrOLD = 
-    [ 
-        { "pathType" : "newSeg",
-                   
-         "points" : [[130,177]]
-                   
-        },
-        { "pathType" : "CubicBezier",
-                   
-        "points" : [[120.0,640.0],[420,540],[310,440]], //final, firstcontrol, second
-                   
-        },
-        { "pathType" : "newSeg",
-                   
-         "points" : [[530,577]]
-                   
-        },
-        { "pathType" : "Line",
-                   
-         "points" : [[130,777]]
-                   
-        },
-        { "pathType" : "Line",
-                   
-         "points" : [[130,877]]
-                   
-        },        
-        { "pathType" : "Line",
-                   
-         "points" : [[230,777]]
-                   
-        }
-    ];
+    
     svgArr = 
     [ 
     	{ "pathType" : "Line",
+			"timeId" : "1419626025399",
     	           
     	 "points" : [[130,130]]
     	           
     	},
         { "pathType" : "Line",
+		"timeId" : "1419626025500",
                    
          "points" : [[230,130]]
                    
         },
         { "pathType" : "Line",
+		"timeId" : "1419626025501",
                    
          "points" : [[230,230]]
                    
         }, 
     	{ "pathType" : "Line",
+		"timeId" : "1419626025502",
     	           
     	 "points" : [[130,230]]
                    
@@ -238,9 +210,29 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 			scope.noteId = timeId;
 	        scope.showAdd2Room(timeId);
 		}else{
-			scope.showAdd2Line();
+			scope.showAdd2Line(); //think through timeId
 		};
 	}; 
+	var testText = 'not yet';
+	var newImage = function(imageURI){
+		var timeId = setTimeId();
+		var imgRm = [{"pathType" : "Image", "imgData":imageURI,"timeId" : timeId,"points" : [[scope.newX,scope.newY]]}]
+		svgArr.push(imgRm)
+		scope.room.svgPoints = svgArr;
+		//scope.newImgURI = imageData;
+		scope.testText = imageURI;
+		
+		//console.log(svgArr)
+		var largeImage = document.getElementById('wtf');
+		//console.log(largeImage)
+		largeImage.src = "data:image/jpeg;base64," + imageURI;//imageURI
+		//console.log(largeImage)
+		//largeImage['xlink:href'] = 'http://i.huffpost.com/gen/2432404/thumbs/r-BRENNAN-huge.jpg'
+		//var smallImage = document.getElementById('wtf');
+		//console.log(smallImage)
+		//smallImage.src = "data:image/jpeg;base64," + imageData;
+		scope.$apply();
+	}
 	scope.addroomObj = function(fingerX,fingerY,rmObj,typ){
 		//do closest line, then decide what side it's on and attach
 		//note,image,flag
@@ -269,10 +261,12 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
         }
     }
 	//camera stuff
-	var pictureSource;   // picture source
+	var pictureSourceCamera;   // picture source
 	var pictureSourceFile;
 	var destinationType; // sets the format of returned value
+	var destinationTypeData; //keep getting process fails
 	var url;
+	var options;
 	
 	ionic.Platform.ready(function() {
 		//console.log("ready get camera types");
@@ -283,33 +277,68 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 			return;
 			}
 		pictureSourceFile=navigator.camera.PictureSourceType.PHOTOLIBRARY;
-		pictureSource=navigator.camera.PictureSourceType.CAMERA;
+		pictureSourceCamera=navigator.camera.PictureSourceType.CAMERA;
 		destinationType=navigator.camera.DestinationType.FILE_URI;
+		destinationTypeData=navigator.camera.DestinationType.DATA_URL;
 	});
 	//var picture;
+	scope.picFromLocalFile = function(flagID){
+		options = {
+			quality: 30,
+			allowEdit: true,
+			destinationType: destinationTypeData,
+			sourceType: pictureSourceFile,
+			encodingType: 0, //have to test on different types
+			correctOrientation: true
+		};
+		if (!navigator.camera)
+			{
+				alert('no navigator.camera')
+			// error handling - go to filesystem?
+			return;
+			}
+		navigator.camera.getPicture(
+			function (imageURI) {
+				//console.log(imageURI)
+				var thisImg = imageURI
+				newImage(imageURI);
+				console.log("got camera success "+imageURI.length);
+				},
+			function (err) {
+				console.log("got camera error ", err);
+				// error handling camera plugin
+				},
+			options);
+	}
   	scope.snapPicture = function(flagID) { 
 		//https://github.com/yafraorg/ionictests/blob/master/camera/www/js/controllers.js also uses fileupload
 		//https://github.com/apache/cordova-plugin-camera/blob/master/doc/index.md for options
-		var options = {
-			quality: 50,
-			destinationType: destinationType,
-			sourceType: pictureSource,
-			encodingType: 0
+		options = {
+			quality: 30,
+			allowEdit: true,
+			destinationType: destinationTypeData,
+			sourceType: pictureSourceCamera,
+			encodingType: 0,
+			correctOrientation: true,
+			saveToPhotoAlbum: true,
+			cameraDirection: 0
 		};
-		console.log(JSON.stringify(window.navigator))
+		//console.log(JSON.stringify(window.navigator))
 		//console.log(JSON.stringify($cordovaCamera))
 		if (!navigator.camera)
 			{
 				alert('no navigator.camera')
-			// error handling
+			// error handling - go to filesystem?
 			return;
 			}
 		navigator.camera.getPicture(
 		//$cordovaCamera.getPicture(
 			function (imageURI) {
-				alert('in')
+				//console.log(imageURI)
+				var thisImg = imageURI
 				newImage(imageURI);
-				//console.log("got camera success ", imageURI);
+				console.log("got camera success "+imageURI.length);
+				//console.log(imageURI)
 				//should we use GPS data from header?
 				//picture = imageURI;
 				//console.log(picture);

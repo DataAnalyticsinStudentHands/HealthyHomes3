@@ -1,7 +1,7 @@
 <!-- COULD BE USED FOR HREF-Links, etc, but might turn it off for performance sake-->
 <div class="modal">
     <div class="bar bar-header bar-positive">
-        <ion-button class="button icon-left ion-chevron-left button-clear" ng-click="closeAddRoomModal()">Cancel</ion-button>
+        <ion-button class="button icon-left ion-close button-clear" ng-click="closeAddRoomModal()">Cancel</ion-button>
 		<ion-button class="button button-clear ion-ios-flag-outline" ng-click="togImport()">
 	</ion-button>
   		
@@ -12,16 +12,28 @@
   </div>
   <ion-list>
   	<item>
-		<img ng-src="{{room.images[noteID]}}"/> 
+		<!-- <img id="wtf" style="width:100%;" src="http://i.huffpost.com/gen/2432404/thumbs/r-BRENNAN-huge.jpg"/> --> 
+		
+	</item>
+	<br><br>
+
+  	<item>
+		<!-- <img style="width:100%;" src="{{testText}}"/> --> 
 	</item>
   	<item>
-  		<ion-button class="button button-block button-positive icon-left ion-ios7-camera" ng-click="snapPicture(noteId)">Camera</ion-button>
+  		<ion-button class="button button-block button-positive icon-left ion-ios7-camera-outline" ng-click="snapPicture(noteId)">Take Photo With Camera</ion-button>
 	</item>
+  	<item>
+  		<ion-button class="button button-block button-positive icon-left ion-ios7-folder-outline" ng-click="picFromLocalFile(noteId)">Add Photo From File</ion-button>
+	</item>	
 	<item>
-		<textarea ng-model="room.note">{{room.notes[noteId]}}</textarea>
+		<!-- <textarea ng-model="room.note">{{room.notes[noteId]}}</textarea> -->
 	</item>
   <item>
   <div>This should populate with the questions for this room
+	  <img ng-src="{{testText}}">
+	  <img id="wtf" src="data:image/jpeg;base64,{{testText}}"/> 
+	  <!-- <p>{{testText}}</p> -->
   </div>
 </item>
   
