@@ -216,16 +216,16 @@ angular.module('Directives').directive('roomManip',function(Camera,$ionicModal,$
 	scope.testText = 'http://i.huffpost.com/gen/2432404/thumbs/r-BRENNAN-huge.jpg';
 	var newImage = function(imageURI,timeId){
 		//
-		var imgRm = [{"pathType" : "Image", "timeId" : timeId,"points" : [[scope.newX,scope.newY]]}]
+		var imgRm = [{"pathType" : "Image", "timeId" : timeId, "points" : [[scope.newX,scope.newY]]}]
 		svgArr.push(imgRm)
 		scope.room.svgPoints = svgArr;
 		//scope.newImgURI = imageData;
-		scope.testText = imageURI;
+		scope.testText = 'data' //imageURI;
 		
 		//console.log(svgArr)
-		//var largeImage = document.getElementById('wtf');
+		var largeImage = document.getElementById('wtf');
 		//console.log(largeImage)
-		//largeImage.src = "data:image/jpeg;base64," + imageURI;//imageURI
+		largeImage.src = "data:image/jpeg;base64," + imageURI;//imageURI
 		
 		//largeImage.src = imageURI;
 		//console.log(largeImage)
@@ -289,7 +289,7 @@ angular.module('Directives').directive('roomManip',function(Camera,$ionicModal,$
 		options = {
 			quality: 30,
 			allowEdit: true,
-			destinationType: destinationTypeFile,
+			destinationType: destinationTypeData,
 			sourceType: pictureSourceFile,
 			encodingType: 0, //have to test on different types
 			correctOrientation: true
@@ -325,7 +325,7 @@ angular.module('Directives').directive('roomManip',function(Camera,$ionicModal,$
 		options = {
 			quality: 30,
 			allowEdit: true,
-			destinationType: destinationTypeFile,
+			destinationType: destinationTypeData,
 			sourceType: pictureSourceCamera,
 			encodingType: 0,
 			correctOrientation: true,
@@ -346,7 +346,7 @@ angular.module('Directives').directive('roomManip',function(Camera,$ionicModal,$
 				//var thisImg = imageURI
 				//window.resolveLocalFileSystemURI(imageURI, newImage(imageURI), fsFail);
 				newImage(imageURI);
-				console.log("got camera success "+imageURI.length);
+				//console.log("got camera success "+imageURI.length);
 				//console.log(imageURI)
 				//should we use GPS data from header?
 				//picture = imageURI;
