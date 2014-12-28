@@ -31,9 +31,9 @@
 	</item>
   <item>
   <div>This should populate with the questions for this room
-	  <img ng-src="{{testText}}">
-	  <img id="wtf" src="data:image/jpeg;base64,{{testText}}"/> 
-	  <!-- <p>{{testText}}</p> -->
+	  <img id="wtf" ng-src="{{testText | trusted}}">
+	  <!-- <img id="wtf" src="data:image/jpeg;base64,{{testText}}"/>  -->
+	  <p>{{testText}}</p>
   </div>
 </item>
   

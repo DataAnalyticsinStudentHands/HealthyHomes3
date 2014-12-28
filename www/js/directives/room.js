@@ -1,4 +1,4 @@
-angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGesture,$ionicSideMenuDelegate,$stateParams,$ionicPopup,findGeom){
+angular.module('Directives').directive('roomManip',function(Camera,$ionicModal,$ionicGesture,$ionicSideMenuDelegate,$stateParams,$ionicPopup,findGeom){
 //what about $cordovaCamera?
 	return {
         restrict: 'AE',
@@ -213,25 +213,27 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 			scope.showAdd2Line(); //think through timeId
 		};
 	}; 
-	var testText = 'not yet';
-	var newImage = function(imageURI){
-		var timeId = setTimeId();
-		var imgRm = [{"pathType" : "Image", "imgData":imageURI,"timeId" : timeId,"points" : [[scope.newX,scope.newY]]}]
+	scope.testText = 'http://i.huffpost.com/gen/2432404/thumbs/r-BRENNAN-huge.jpg';
+	var newImage = function(imageURI,timeId){
+		//
+		var imgRm = [{"pathType" : "Image", "timeId" : timeId,"points" : [[scope.newX,scope.newY]]}]
 		svgArr.push(imgRm)
 		scope.room.svgPoints = svgArr;
 		//scope.newImgURI = imageData;
 		scope.testText = imageURI;
 		
 		//console.log(svgArr)
-		var largeImage = document.getElementById('wtf');
+		//var largeImage = document.getElementById('wtf');
 		//console.log(largeImage)
-		largeImage.src = "data:image/jpeg;base64," + imageURI;//imageURI
+		//largeImage.src = "data:image/jpeg;base64," + imageURI;//imageURI
+		
+		//largeImage.src = imageURI;
 		//console.log(largeImage)
 		//largeImage['xlink:href'] = 'http://i.huffpost.com/gen/2432404/thumbs/r-BRENNAN-huge.jpg'
 		//var smallImage = document.getElementById('wtf');
 		//console.log(smallImage)
 		//smallImage.src = "data:image/jpeg;base64," + imageData;
-		scope.$apply();
+		//scope.$apply();
 	}
 	scope.addroomObj = function(fingerX,fingerY,rmObj,typ){
 		//do closest line, then decide what side it's on and attach
@@ -263,7 +265,7 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 	//camera stuff
 	var pictureSourceCamera;   // picture source
 	var pictureSourceFile;
-	var destinationType; // sets the format of returned value
+	var destinationTypeFile; // sets the format of returned value
 	var destinationTypeData; //keep getting process fails
 	var url;
 	var options;
@@ -278,15 +280,16 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 			}
 		pictureSourceFile=navigator.camera.PictureSourceType.PHOTOLIBRARY;
 		pictureSourceCamera=navigator.camera.PictureSourceType.CAMERA;
-		destinationType=navigator.camera.DestinationType.FILE_URI;
+		destinationTypeFile=navigator.camera.DestinationType.FILE_URI;
 		destinationTypeData=navigator.camera.DestinationType.DATA_URL;
 	});
 	//var picture;
 	scope.picFromLocalFile = function(flagID){
+		
 		options = {
 			quality: 30,
 			allowEdit: true,
-			destinationType: destinationTypeData,
+			destinationType: destinationTypeFile,
 			sourceType: pictureSourceFile,
 			encodingType: 0, //have to test on different types
 			correctOrientation: true
@@ -297,26 +300,32 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 			// error handling - go to filesystem?
 			return;
 			}
-		navigator.camera.getPicture(
+		Camera.getPicture(options).then(
 			function (imageURI) {
 				//console.log(imageURI)
-				var thisImg = imageURI
+				//var thisImg = imageURI
 				newImage(imageURI);
 				console.log("got camera success "+imageURI.length);
 				},
 			function (err) {
 				console.log("got camera error ", err);
 				// error handling camera plugin
-				},
-			options);
-	}
+				});
+			//options);
+	};
   	scope.snapPicture = function(flagID) { 
 		//https://github.com/yafraorg/ionictests/blob/master/camera/www/js/controllers.js also uses fileupload
 		//https://github.com/apache/cordova-plugin-camera/blob/master/doc/index.md for options
+
+		if (flagID != null){
+			timeId = flagID
+		}else{
+			timeId = setTimeId();
+		}
 		options = {
 			quality: 30,
 			allowEdit: true,
-			destinationType: destinationTypeData,
+			destinationType: destinationTypeFile,
 			sourceType: pictureSourceCamera,
 			encodingType: 0,
 			correctOrientation: true,
@@ -331,11 +340,11 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 			// error handling - go to filesystem?
 			return;
 			}
-		navigator.camera.getPicture(
-		//$cordovaCamera.getPicture(
+		Camera.getPicture(options).then(
 			function (imageURI) {
 				//console.log(imageURI)
-				var thisImg = imageURI
+				//var thisImg = imageURI
+				//window.resolveLocalFileSystemURI(imageURI, newImage(imageURI), fsFail);
 				newImage(imageURI);
 				console.log("got camera success "+imageURI.length);
 				//console.log(imageURI)
@@ -346,8 +355,8 @@ angular.module('Directives').directive('roomManip',function($ionicModal,$ionicGe
 			function (err) {
 				console.log("got camera error ", err);
 				// error handling camera plugin
-				},
-			options);
+				});
+			//options);
 	};
 	
 	scope.slopeAnchorPts = function(arr,atype){ //have this read as a separate SVG, white bckgrnd; has a directive for dragging and reshaping -- would be in rooms.js

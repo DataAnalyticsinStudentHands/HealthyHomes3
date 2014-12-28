@@ -77,8 +77,9 @@ angular.module('HHApp', [
         console.log(unfoundState, fromState, fromParams);
     });
 })
-.config(function ($stateProvider, $urlRouterProvider) {
+.config(function ($stateProvider, $urlRouterProvider,$compileProvider) {
         'use strict';
+		$compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/); //for CORS, at least in debug - should see if it matters for end project
 //    $urlRouterProvider.when("","/inspection");
 //    $urlRouterProvider.when("/","/inspection");
     $urlRouterProvider.otherwise("/login");

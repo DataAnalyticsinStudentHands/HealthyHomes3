@@ -6,7 +6,7 @@ Now moving to controllers with Restangular
 //var layoutServices = angular.module('layoutModuleServices', []);
 //var layoutServices = angular.module('HHServices', []);
 //layoutServices.service('layoutObjectModel', ['Restangular','$state','$stateParams', 'uuid', function(Restangular,$state,$stateParams,uuid) {
-angular.module('Services', []).factory('layoutObjectModel', function(Restangular,uuid,$q,$http) {
+angular.module('Services', []).factory('layoutObjectModel', function(Restangular,$q,$http) {
     localStorage.clear();
     //console.log($state)
     //http://sauceio.com/index.php/2014/07/angularjs-data-models-http-vs-resource-vs-restangular/
@@ -108,6 +108,29 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 .factory('arcs',function() {
     console.log('wtf on inspections');
 })
+.filter('trusted', ['$sce', function ($sce) {
+    return function(url) {
+		console.log(url)
+        return $sce.trustAsResourceUrl(url);
+    };
+}])
+.factory('Camera', ['$q', function($q) {
+
+  return {
+    getPicture: function(options) {
+      var q = $q.defer();
+
+      navigator.camera.getPicture(function(result) {
+        // Do any magic you need
+        q.resolve(result);
+      }, function(err) {
+        q.reject(err);
+      }, options);
+
+      return q.promise;
+    }
+  }
+}])
 // .service('magnifyGridDoesntWork',function(){
 // 	return{
 //
