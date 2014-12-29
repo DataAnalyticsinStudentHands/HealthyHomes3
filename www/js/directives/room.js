@@ -1,4 +1,4 @@
-angular.module('Directives').directive('roomManip',function(Camera,$ionicModal,$ionicGesture,$ionicSideMenuDelegate,$stateParams,$ionicPopup,findGeom){
+angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$ionicGesture,$ionicSideMenuDelegate,$stateParams,$ionicPopup,findGeom){
 //what about $cordovaCamera?
 	return {
         restrict: 'AE',
@@ -217,15 +217,16 @@ angular.module('Directives').directive('roomManip',function(Camera,$ionicModal,$
 	var newImage = function(imageURI,timeId){
 		//
 		var imgRm = [{"pathType" : "Image", "timeId" : timeId, "points" : [[scope.newX,scope.newY]]}]
+        
 		svgArr.push(imgRm)
 		scope.room.svgPoints = svgArr;
-		//scope.newImgURI = imageData;
-		scope.testText = 'data' //imageURI;
+		scope.newImgURI = imageURI;
+		scope.testText = imageURI;
 		
 		//console.log(svgArr)
 		var largeImage = document.getElementById('wtf');
 		//console.log(largeImage)
-		largeImage.src = "data:image/jpeg;base64," + imageURI;//imageURI
+		largeImage.src = imageURI;// "data:image/jpeg;base64," + imageURI;//imageURI
 		
 		//largeImage.src = imageURI;
 		//console.log(largeImage)
@@ -233,7 +234,6 @@ angular.module('Directives').directive('roomManip',function(Camera,$ionicModal,$
 		//var smallImage = document.getElementById('wtf');
 		//console.log(smallImage)
 		//smallImage.src = "data:image/jpeg;base64," + imageData;
-		//scope.$apply();
 	}
 	scope.addroomObj = function(fingerX,fingerY,rmObj,typ){
 		//do closest line, then decide what side it's on and attach
@@ -271,6 +271,7 @@ angular.module('Directives').directive('roomManip',function(Camera,$ionicModal,$
 	var options;
 	
 	ionic.Platform.ready(function() {
+        console.log(navigator)
 		//console.log("ready get camera types");
 		if (!navigator.camera)
 			{
@@ -289,7 +290,7 @@ angular.module('Directives').directive('roomManip',function(Camera,$ionicModal,$
 		options = {
 			quality: 30,
 			allowEdit: true,
-			destinationType: destinationTypeData,
+			destinationType: destinationTypeFile,
 			sourceType: pictureSourceFile,
 			encodingType: 0, //have to test on different types
 			correctOrientation: true
@@ -300,7 +301,7 @@ angular.module('Directives').directive('roomManip',function(Camera,$ionicModal,$
 			// error handling - go to filesystem?
 			return;
 			}
-		Camera.getPicture(options).then(
+		camera.getPicture(options).then(
 			function (imageURI) {
 				//console.log(imageURI)
 				//var thisImg = imageURI
@@ -325,7 +326,7 @@ angular.module('Directives').directive('roomManip',function(Camera,$ionicModal,$
 		options = {
 			quality: 30,
 			allowEdit: true,
-			destinationType: destinationTypeData,
+			destinationType: destinationTypeFile,
 			sourceType: pictureSourceCamera,
 			encodingType: 0,
 			correctOrientation: true,
@@ -340,13 +341,12 @@ angular.module('Directives').directive('roomManip',function(Camera,$ionicModal,$
 			// error handling - go to filesystem?
 			return;
 			}
-		Camera.getPicture(options).then(
+		camera.getPicture(options).then(
 			function (imageURI) {
-				//console.log(imageURI)
+                newImage(imageURI)
 				//var thisImg = imageURI
-				//window.resolveLocalFileSystemURI(imageURI, newImage(imageURI), fsFail);
-				newImage(imageURI);
-				//console.log("got camera success "+imageURI.length);
+				//setTimeout(newImage(imageURI),5000);
+				console.log("got camera success "+imageURI);
 				//console.log(imageURI)
 				//should we use GPS data from header?
 				//picture = imageURI;

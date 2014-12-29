@@ -1,9 +1,11 @@
 <!-- COULD BE USED FOR HREF-Links, etc, but might turn it off for performance sake-->
-<div class="modal">
+
+<div class="modal" style="overflow:scroll">
+    
     <div class="bar bar-header bar-positive">
         <ion-button class="button icon-left ion-close button-clear" ng-click="closeAddRoomModal()">Cancel</ion-button>
-		<ion-button class="button button-clear ion-ios-flag-outline" ng-click="togImport()">
-	</ion-button>
+		<ion-button class="button button-right button-clear ion-flag" ng-click="place()">
+	Place</ion-button>
   		
 	<!--I think this can add objects through a $scope, so could be accessible and work without rooms
 	it should have a way that it can be attached to a point so it will drag - perhaps a schematic? 
@@ -12,7 +14,8 @@
   </div>
   <ion-list>
   	<item>
-		<!-- <img id="wtf" style="width:100%;" src="http://i.huffpost.com/gen/2432404/thumbs/r-BRENNAN-huge.jpg"/> --> 
+		<ion-button class="button button-right button-clear ion-flag" ng-click="togImport()">
+	Flag Color</ion-button>
 		
 	</item>
 	<br><br>
@@ -27,19 +30,21 @@
   		<ion-button class="button button-block button-positive icon-left ion-ios7-folder-outline" ng-click="picFromLocalFile(noteId)">Add Photo From File</ion-button>
 	</item>	
 	<item>
-		<!-- <textarea ng-model="room.note">{{room.notes[noteId]}}</textarea> -->
+		 <textarea ng-model="room.note">I am not thinking about this right - maybe put it in for each object, only? 
+             {{room.note}}</textarea> 
 	</item>
   <item>
-  <div style="position:absolute;top:200px;width:100%;">This should populate with the questions for this room
-	  <!-- <img id="wtf" ng-src="{{testText | trusted}}"> -->
-	  <img style="position:relative;width:100%;" id="wtf" src=""/> 
+  <div style="position:absolute;top:200px;width:90%;">This should populate with the questions for this room
+	   <img ng-src="{{newImgURI | trusted}}"> 
+	  <img style="position:relative;width:100%;" id="wtf" src="{{testText | trusted}}"/> 
 	  <!-- <img id="wtf" src="data:image/jpeg;base64,{{testText}}"/> -->
-	  <!-- <p>{{testText}}</p> -->
+	   <p>{{testText}}</p> 
+<!--      <img style="position:relative;width:100%;" ng-src={{testText | trusted}}/>-->
   </div>
 </item>
   
-  
 </div>
+    
   <!-- <ion-view title="Maps">
     <ion-content class="has-header padding scroll">
   	<div class="list">

@@ -114,7 +114,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
         return $sce.trustAsResourceUrl(url);
     };
 }])
-.factory('Camera', ['$q', function($q) {
+.factory('camera', ['$q', function($q) {
 
   return {
     getPicture: function(options) {
