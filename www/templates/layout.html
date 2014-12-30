@@ -77,17 +77,35 @@
 							dominant-baseline="hanging"
                               startOffset="2%">{{room.properties.name}}</textPath>
 				</text>
+<!--
+                <g>
+	<path fill="#16A770" ng-attr-stroke="black" stroke-width=3 stroke-miterlimit="10" d="M344.5,336.5c0,4.418-3.582,8-8,8h-28c-4.418,0-8-3.582-8-8v-28
+		c0-4.418,3.582-8,8-8h28c4.418,0,8,3.582,8,8V36.5z"/>
+-->	<g>
 
+		<line fill="none" stroke="#000000" stroke-width="3" stroke-miterlimit="10" x1="212.5" y1="205" x2="212.5" y2="240"/>
+		<polygon fill="black" stroke="#000000" stroke-miterlimit="10" points="212.5,226.7 212.5,206.767 237.545,216.733 		"/>
+	</g>
+<!--</g>-->
 				<g ng-repeat="rmobj in room.roomObjs"
 					rmobjmanip
-					rmobj = 'rmobj' class="{{rmobj.impColor}}"
+					rmobj = 'rmobj' class="{{rmobj[0].points}}"
 					>
-					<image xlink:href="img/flag.svg"
-						ng-attr-x={{vals.points[0][0]+rmObj.points[0]}}
-						ng-attr-y={{vals.points[0][1]+rmObj.points[1]}}>
-					</image>
+                    <path ng-attr-d="{{rmObjPath(rmobj[0].points)}}"
+                          class="{{rmobj[0].points}}"
+                          stroke="#2050ba" fill="#fcfbfa" 
+                          x="200" y="200"
+					fill-opacity="0.01" stroke-width="2"/>
+                    <path d="M250,250 l0,8 l0,-3 l3,-2 l-3,-3"
+                          stroke="#2050ba" fill="#fcfbfa" 
+                          x="200" y="200"
+                          ng-click="alert(rmobj[0].points)"
+					fill-opacity="0.01" stroke-width="2"/>
 				</g>
-					<!--so that they move together; have to calculate for weird cases? maybe just on real fingers, instead of closestPts? Will vals count through correctly??-->
+					<!--
+                        ng-attr-x={{vals.points[0][0]+rmObj.points[0]}}
+						ng-attr-y={{vals.points[0][1]+rmObj.points[1]}}>
+so that they move together; have to calculate for weird cases? maybe just on real fingers, instead of closestPts? Will vals count through correctly??-->
 					
                 <g ng-repeat="lines in room.measurePoints" ng-show="(!room.editLines)">
                     <text font-size="6pt" fill="blue" >

@@ -406,7 +406,8 @@ angular.module('Controllers').controller('layoutCtrl',
 		// onError Callback receives a PositionError object
 		//
 		var onError = function(error) {
-		    alert('code: '    + error.code    + '\n' +
+            var geoSupported = false;
+		    console.log('code: '    + error.code    + '\n' +
 		          'message: ' + error.message + '\n');
 		}
 		

@@ -99,6 +99,17 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
         }
         });
     };
+    var importColor = scope.importColor = "yellow";
+    scope.toggleImport = function(){
+        if ( importColor == 'yellow' ) {
+            importColor = 'red';
+        } else if ( importColor == 'red' ) {
+            importColor = 'green';
+        } else {
+            importColor = 'yellow';
+        };
+        scope.importColor = importColor;
+    };
     var svgArr = [];
     
     svgArr = 
@@ -210,6 +221,7 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 			scope.noteId = timeId;
 	        scope.showAdd2Room(timeId);
 		}else{
+            if (currNote == null){scope.currNote = currNote = setTimeId()};
 			scope.showAdd2Line(); //think through timeId
 		};
 	}; 
@@ -218,17 +230,28 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 		roomObjs = room.roomObjs;
 	};
 	scope.room.roomObjs = roomObjs;
-	scope.testText = 'http://i.huffpost.com/gen/2432404/thumbs/r-BRENNAN-huge.jpg';
-	var currNote;
-	var newImgURI
-	var newRoomObj = function(imageURI,currNote,impColor,timeId){ //have to figure out what needs to be passed
-		//it needs to set, even before the note becomes final?
-		var imgRm = [{"pathType" : "Flag", "impColor" : impColor, "note" : currNote, "imageURI":newImgURI, "timeId" : timeId, "points" : [[scope.newX,scope.newY]]}]
+	//scope.testText = 'http://i.huffpost.com/gen/2432404/thumbs/r-BRENNAN-huge.jpg';
+	var currNote = scope.currNote = null;
+	var newImgURI;
+	scope.newRoomObj = function(currNote,importColor){ //have to figure out what needs to be passed; currNote as timeId??
+        //alert(importColor)
+		var imgRm = [{"pathType" : "Flag", "impColor" : importColor, "note" : currNote, "imageURI":newImgURI, "timeId" : timeId, "points" : [[scope.fingerX,scope.fingerY]]}]
         
 		roomObjs.push(imgRm); //follow logic in layoutCtrl for floor clear and set, too; or is this just part of a note? 
 		scope.room.roomObjs = roomObjs;
+        console.log(scope.room.roomObjs)
+        scope.currNote = currNote = null;
+        scope.closeAddRoomModal();
 	};
-	var newImage = function(imageURI,timeId){
+    scope.rmObjPath = function(points){
+        console.log('i called');
+        var xPt = parseInt(points[0][0]);
+        var xPt = parseInt(points[0][1]); 
+        //var rtnString = 'M'+(xPt)+','+(yPt-5)+' l0,8 l0,-5 l3,-1.5 l-3,-1.5'
+        var rtnString = 'M250,250 l0,8 l0,-5 l3,-1.5 l-3,-1.5'
+        return rtnString;
+    }
+	var newImage = function(imageURI,currNote){ //currNote is a string, not an object?
 		scope.newImgURI = imageURI;
 		scope.testText = imageURI;
 		console.log(scope.room);
@@ -243,28 +266,12 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 		//var smallImage = document.getElementById('wtf');
 		//console.log(smallImage)
 		//smallImage.src = "data:image/jpeg;base64," + imageData;
-	}
-	//notes stuff
-    var notes = [];
+	};
 	var d = new Date();
 	var timeId = d.getTime();
 	var setTimeId = function(){
 		return d.getTime();
 	}
-	 //if click on the object, passes it's old id from html as showAdd2Room(timeId)
-    //var note = scope.room.note = '';
-    scope.showNote = false;
-    scope.openNote = function(){
-        //console.log('openNote')
-        //scope.showNote = !scope.showNote;
-        if (currentRoom.layoutObjs[this.indic].notes){
-            notes = currentRoom.layoutObjs[this.indic].notes; //notes should have in it the text and the photos
-        }else{
-            note = scope.note = ''; //do you have to explicitly clear? 
-            notes = [];
-            currentRoom.layoutObjs[this.indic].notes = notes;
-        }
-    }
 	//camera stuff
 	var pictureSourceCamera;   // picture source
 	var pictureSourceFile;
@@ -272,15 +279,14 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 	var destinationTypeData; //keep getting process fails
 	var url;
 	var options;
-	
+	var hasCamera = true;
 	ionic.Platform.ready(function() {
-        console.log(navigator)
 		//console.log("ready get camera types");
 		if (!navigator.camera)
 			{
-			console.log('no navigator.camera -- think about browsers')
-			// error handling -- 
-			return;
+                hasCamera = false;
+			     console.log('no navigator.camera -- think about browsers')
+			     return;
 			}
 		pictureSourceFile=navigator.camera.PictureSourceType.PHOTOLIBRARY;
 		pictureSourceCamera=navigator.camera.PictureSourceType.CAMERA;

@@ -110,7 +110,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
 })
 .filter('trusted', ['$sce', function ($sce) {
     return function(url) {
-		console.log(url)
+		//console.log(url)
         return $sce.trustAsResourceUrl(url);
     };
 }])
