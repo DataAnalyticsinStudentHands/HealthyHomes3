@@ -213,16 +213,25 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 			scope.showAdd2Line(); //think through timeId
 		};
 	}; 
+	var roomObjs = [];
+	if (scope.room.roomObjs){
+		roomObjs = room.roomObjs;
+	};
+	scope.room.roomObjs = roomObjs;
 	scope.testText = 'http://i.huffpost.com/gen/2432404/thumbs/r-BRENNAN-huge.jpg';
-	var newImage = function(imageURI,timeId){
-		//
-		var imgRm = [{"pathType" : "Image", "timeId" : timeId, "points" : [[scope.newX,scope.newY]]}]
+	var currNote;
+	var newImgURI
+	var newRoomObj = function(imageURI,currNote,impColor,timeId){ //have to figure out what needs to be passed
+		//it needs to set, even before the note becomes final?
+		var imgRm = [{"pathType" : "Flag", "impColor" : impColor, "note" : currNote, "imageURI":newImgURI, "timeId" : timeId, "points" : [[scope.newX,scope.newY]]}]
         
-		svgArr.push(imgRm)
-		scope.room.svgPoints = svgArr;
+		roomObjs.push(imgRm); //follow logic in layoutCtrl for floor clear and set, too; or is this just part of a note? 
+		scope.room.roomObjs = roomObjs;
+	};
+	var newImage = function(imageURI,timeId){
 		scope.newImgURI = imageURI;
 		scope.testText = imageURI;
-		
+		console.log(scope.room);
 		//console.log(svgArr)
 		var largeImage = document.getElementById('wtf');
 		//console.log(largeImage)
@@ -235,12 +244,6 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 		//console.log(smallImage)
 		//smallImage.src = "data:image/jpeg;base64," + imageData;
 	}
-	scope.addroomObj = function(fingerX,fingerY,rmObj,typ){
-		//do closest line, then decide what side it's on and attach
-		//note,image,flag
-				//alert(fingerX);
-		//gets everything from addPoint already - so this is like addSegment
-	};
 	//notes stuff
     var notes = [];
 	var d = new Date();

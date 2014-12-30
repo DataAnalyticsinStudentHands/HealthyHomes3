@@ -3,9 +3,15 @@
 <div class="modal" style="overflow:scroll">
     
     <div class="bar bar-header bar-positive">
+		<ion-button class="button button-clear" ng-click="closeAddRoomModal()" style="position:absolute;top:30%;left:35%;">Place</ion-button>
+		<a href="#"><span style="position:absolute;width:7%;height:100%;top:0px;left:45%;" 
+				ng-click="closeAddRoomModal()"
+				ng-include="'templates/outline.html'"></span></a>
         <ion-button class="button icon-left ion-close button-clear" ng-click="closeAddRoomModal()">Cancel</ion-button>
-		<ion-button class="button button-right button-clear ion-flag" ng-click="place()">
-	Place</ion-button>
+		
+		<ion-button class="button button-right button-clear ion-flag" style="color:yellow;" ng-click="togImport()">
+	Importance</ion-button>
+	
   		
 	<!--I think this can add objects through a $scope, so could be accessible and work without rooms
 	it should have a way that it can be attached to a point so it will drag - perhaps a schematic? 
@@ -13,24 +19,22 @@
 		as with rooms, when do they share points/walls?-->
   </div>
   <ion-list>
+	<br><br>
   	<item>
-		<ion-button class="button button-right button-clear ion-flag" ng-click="togImport()">
-	Flag Color</ion-button>
 		
 	</item>
-	<br><br>
-
   	<item>
 		<!-- <img style="width:100%;" src="{{testText}}"/> --> 
 	</item>
   	<item>
   		<ion-button class="button button-block button-positive icon-left ion-ios7-camera-outline" ng-click="snapPicture(noteId)">Take Photo With Camera</ion-button>
+  		<ion-button class="button button-block 
+			button-positive icon-left ion-ios7-folder-outline" 
+			ng-click="picFromLocalFile(noteId)">Add Photo From File
+		</ion-button>
 	</item>
-  	<item>
-  		<ion-button class="button button-block button-positive icon-left ion-ios7-folder-outline" ng-click="picFromLocalFile(noteId)">Add Photo From File</ion-button>
-	</item>	
 	<item>
-		 <textarea ng-model="room.note">I am not thinking about this right - maybe put it in for each object, only? 
+		 <textarea ng-model="room.note" placeholder="Add a comment...">I am not thinking about this right - maybe put it in for each object, only? 
              {{room.note}}</textarea> 
 	</item>
   <item>
