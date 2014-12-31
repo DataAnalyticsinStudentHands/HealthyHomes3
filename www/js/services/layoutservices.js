@@ -318,6 +318,7 @@ angular.module('Services', []).factory('layoutObjectModel', function(Restangular
                 rtnPathString += add2rtnPathStr+segment.points[1][0]+' '+segment.points[1][1]+' '+segment.points[0][0]+' '+segment.points[0][1];
             };
         }
+		//console.log(rtnPathString)
         return rtnPathString + ' z';
     }
     this.showMeasures = function(arrIn){ //should walk based on only first value in points, and give measures and a line?

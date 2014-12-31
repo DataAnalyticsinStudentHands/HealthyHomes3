@@ -61,7 +61,7 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 				"Window",
 				"Door"
                 ];
-            
+    		
 //			$scope.rmModal.pathTypes = {
 //				"Line": "Line",
 //				"Window" : "Window",
@@ -99,7 +99,7 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
         }
         });
     };
-    var importColor = scope.importColor = "yellow";
+    var importColor = scope.room.importColor = "yellow";
     scope.toggleImport = function(){
         if ( importColor == 'yellow' ) {
             importColor = 'red';
@@ -108,7 +108,7 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
         } else {
             importColor = 'yellow';
         };
-        scope.importColor = importColor;
+        scope.room.importColor = importColor;
     };
     var svgArr = [];
     
@@ -233,24 +233,18 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 	//scope.testText = 'http://i.huffpost.com/gen/2432404/thumbs/r-BRENNAN-huge.jpg';
 	var currNote = scope.currNote = null;
 	var newImgURI;
-	scope.newRoomObj = function(currNote,importColor){ //have to figure out what needs to be passed; currNote as timeId??
+	scope.newRoomObj = function(pthType,currNote,importColor){ //have to figure out what needs to be passed; currNote as timeId??
         //alert(importColor)
-		var imgRm = [{"pathType" : "Flag", "impColor" : importColor, "note" : currNote, "imageURI":newImgURI, "timeId" : timeId, "points" : [[scope.fingerX,scope.fingerY]]}]
+		var imgRm = [{"pathType" : pthType, "impColor" : importColor, 
+						"note" : currNote, "imageURI":newImgURI, 
+						"timeId" : timeId, 
+						"points" : [[scope.fingerX-svgArr[0].points[0][0],scope.fingerY-svgArr[0].points[0][1]]]}]
         
 		roomObjs.push(imgRm); //follow logic in layoutCtrl for floor clear and set, too; or is this just part of a note? 
 		scope.room.roomObjs = roomObjs;
-        console.log(scope.room.roomObjs)
         scope.currNote = currNote = null;
         scope.closeAddRoomModal();
 	};
-    scope.rmObjPath = function(points){
-        console.log('i called');
-        var xPt = parseInt(points[0][0]);
-        var xPt = parseInt(points[0][1]); 
-        //var rtnString = 'M'+(xPt)+','+(yPt-5)+' l0,8 l0,-5 l3,-1.5 l-3,-1.5'
-        var rtnString = 'M250,250 l0,8 l0,-5 l3,-1.5 l-3,-1.5'
-        return rtnString;
-    }
 	var newImage = function(imageURI,currNote){ //currNote is a string, not an object?
 		scope.newImgURI = imageURI;
 		scope.testText = imageURI;
@@ -326,7 +320,7 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
   	scope.snapPicture = function(flagID) { 
 		//https://github.com/yafraorg/ionictests/blob/master/camera/www/js/controllers.js also uses fileupload
 		//https://github.com/apache/cordova-plugin-camera/blob/master/doc/index.md for options
-
+//might need the timeId for indexing - need to check how the file upload deals with it
 		if (flagID != null){
 			timeId = flagID
 		}else{

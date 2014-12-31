@@ -1,6 +1,6 @@
 <svg id="floor-container-outline" style='stroke-width: 0px; '
              viewBox = "{{rmMinX}} {{rmMinY}} {{rmMaxX}} {{rmMaxY}}">
-<!--ng-attr gets rid of warning but skews result-->
+<!--ng-attr gets rid of warning but skews result -->
                 <path id="{{'roomPath'+room.properties.name}}"
 					ng-attr-d="{{modalSvgPath(room.svgPoints)}}"
 					stroke="#2050ba" fill="#fcfbfa"
@@ -29,7 +29,7 @@
                             L{{lines[1].points[0][0]}} {{lines[1].points[0][1]}}"
                     />
 				<g ng-if=(room.svgPoints[ind4new+1]) ng-dblclick="showRemConfirm(ind4new)">
-                    <path fill="#fcfbfa" fill-opacity=".01" 
+                    <path fill="#fcfbfa" fill-opacity=".01" ng-if=(lines[1].points[2])
                           stroke="red" stroke-opacity="1" stroke-width="3"
                         ng-attr-d="M{{room.svgPoints[ind4new].points[0][0]}} {{room.svgPoints[ind4new].points[0][1]}} C{{lines[1].points[2][0]}} {{lines[1].points[2][1]}} {{lines[1].points[1][0]}} {{lines[1].points[1][1]}} {{room.svgPoints[ind4new+1].points[0][0]}} {{room.svgPoints[ind4new+1].points[0][1]}}"
                     />

@@ -62,50 +62,37 @@
                ng-repeat="(idIter, room) in currentInspection.currentFloor.paths track by idIter"
                room = 'room' gridmag = 'gridmag'
                room-manip>
-                
                       
-                <path id="{{'roomPath'+room.properties.name}}"
-					ng-attr-d="{{svgPath(room.svgPoints)}}" 
+                 <path id="{{'roomPath'+room.properties.name}}"
+					ng-attr-d="{{svgPath(room.svgPoints)}}"
 					stroke-dasharray="{{room.dashStroke}}"
-					stroke="#2050ba" fill="#fcfbfa" 
+					stroke="#2050ba" fill="#fcfbfa"
 					fill-opacity="0.01" stroke-width="2"/>
-                
+
                 <text
-					font-size="8pt" 
+					font-size="8pt"
 					fill="black">
                     <textPath xlink:href="{{'#roomPath'+room.properties.name}}"
 							dominant-baseline="hanging"
                               startOffset="2%">{{room.properties.name}}</textPath>
-				</text>
-<!--
-                <g>
-	<path fill="#16A770" ng-attr-stroke="black" stroke-width=3 stroke-miterlimit="10" d="M344.5,336.5c0,4.418-3.582,8-8,8h-28c-4.418,0-8-3.582-8-8v-28
-		c0-4.418,3.582-8,8-8h28c4.418,0,8,3.582,8,8V36.5z"/>
--->	<g>
-
-		<line fill="none" stroke="#000000" stroke-width="3" stroke-miterlimit="10" x1="212.5" y1="205" x2="212.5" y2="240"/>
-		<polygon fill="black" stroke="#000000" stroke-miterlimit="10" points="212.5,226.7 212.5,206.767 237.545,216.733 		"/>
-	</g>
-<!--</g>-->
+				</text> 
 				<g ng-repeat="rmobj in room.roomObjs"
-					rmobjmanip
-					rmobj = 'rmobj' class="{{rmobj[0].points}}"
+					rmobj-manip gridmag = 'gridmag'
+					rmobj = 'rmobj' 
 					>
-                    <path ng-attr-d="{{rmObjPath(rmobj[0].points)}}"
-                          class="{{rmobj[0].points}}"
-                          stroke="#2050ba" fill="#fcfbfa" 
-                          x="200" y="200"
-					fill-opacity="0.01" stroke-width="2"/>
-                    <path d="M250,250 l0,8 l0,-3 l3,-2 l-3,-3"
-                          stroke="#2050ba" fill="#fcfbfa" 
-                          x="200" y="200"
-                          ng-click="alert(rmobj[0].points)"
-					fill-opacity="0.01" stroke-width="2"/>
+					<image ng-if=rmobj[0].pathType=='Image')
+						ng-attr-x="(room.svgPoints[0].points[0][0] + rmobj[0].points[0][0])"
+						ng-attr-y="(room.svgPoints[0].points[0][1] + rmobj[0].points[0][1])"
+						width="20" height='20'
+						preserveAspectRatio = "xMinYMin slice"
+						ng-attr-xlink:href={{rmobj[0].imageURI}}
+						>
+                    <path ng-if=(rmobj[0].pathType=='Flag')
+						ng-attr-d="{{'M'+(room.svgPoints[0].points[0][0] + rmobj[0].points[0][0])+','+ (room.svgPoints[0].points[0][1] + rmobj[0].points[0][1])+' l0,10 l0,-5 c2,-3 5,2 6,-3 c-2,2 -5,-3 -6,-2'}}"
+                          stroke="black" ng-attr-fill="{{rmobj[0].impColor}}" 
+					fill-opacity="1" stroke-width=".8"/>
+					
 				</g>
-					<!--
-                        ng-attr-x={{vals.points[0][0]+rmObj.points[0]}}
-						ng-attr-y={{vals.points[0][1]+rmObj.points[1]}}>
-so that they move together; have to calculate for weird cases? maybe just on real fingers, instead of closestPts? Will vals count through correctly??-->
 					
                 <g ng-repeat="lines in room.measurePoints" ng-show="(!room.editLines)">
                     <text font-size="6pt" fill="blue" >

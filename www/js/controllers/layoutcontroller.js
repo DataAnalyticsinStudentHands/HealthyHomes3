@@ -86,6 +86,7 @@ angular.module('Controllers').controller('layoutCtrl',
 //			$ionicNavBarDelegate.showBar(false);
 //		};
 //		$timeout(hideBar,1000);
+		
 		$scope.flrModal = [];
         $scope.flrModal.floorLists = ['neighborhood', 'exterior', 'first', 'second', 'third', 'basement', 'attic', 'garage', 'section'];
 		$scope.flrModal.roomLists = ['exterior','living room','bath','closet','kitchen','dining room'];

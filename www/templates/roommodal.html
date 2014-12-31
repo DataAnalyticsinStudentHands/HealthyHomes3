@@ -3,13 +3,13 @@
 <div class="modal" style="overflow:scroll">
     
     <div class="bar bar-header bar-positive">
-		<ion-button class="button button-clear" ng-click="newRoomObj(currNote,importColor)" style="position:absolute;top:10%;left:35%;">Place</ion-button>
+		<ion-button class="button button-clear" ng-click="newRoomObj('Flag',room.currNote,room.importColor)" style="position:absolute;top:10%;left:35%;">Place</ion-button>
 		<span style="position:absolute;width:7%;height:100%;top:0px;left:45%;background-color:white;cursor:pointer" 
-				ng-click="newRoomObj(currNote,importColor)"
+				ng-click="newRoomObj('Flag',room.currNote,room.importColor)"
 				ng-include="'templates/outline.html'"></span>
         <ion-button class="button icon-left ion-close button-clear" ng-click="closeAddRoomModal()">Cancel</ion-button>
 		
-		<ion-button class="button button-right button-clear ion-flag" style="color:{{importColor}}" ng-click="toggleImport()">
+		<ion-button class="button button-right button-clear ion-flag" style="color:{{room.importColor}}" ng-click="toggleImport()">
 	</ion-button>
 	
   		
@@ -21,8 +21,8 @@
   <ion-list>
 	<br><br>
   	<item>
-		 <textarea ng-model="room.note" placeholder="Add a comment..."> 
-             {{room.note}}</textarea> 
+		 <textarea ng-model="room.currNote" placeholder="Add a comment..."> 
+             {{room.currNote}}</textarea> 
 	</item>
       <ion-button class="button button-clear" ng-click="alert(importColor)" style="position:absolute;top:40%;left:35%;">Place</ion-button>
     <item ng-repeat="question in room.questions">
@@ -35,14 +35,17 @@
 			button-positive icon-left ion-ios7-folder-outline" 
 			ng-click="picFromLocalFile(noteId)">Add Photo From File
 		</ion-button>
+		<ion-button class="button button-positive button-block" ng-click="newRoomObj('Image',room.currNote,room.importColor)" style="position:absolute;top:10%;left:35%;">Place Image</ion-button>
 	</item>
 	
   <item>
   <div style="position:absolute;top:200px;width:90%;">
-	   <img ng-src="{{newImgURI | trusted}}"> 
+	   <img ng-src="{{room.currImgURI | trusted}}"> 
+	   <!--test without testText-->
 	  <img style="position:relative;width:100%;" id="wtf" src="{{testText | trusted}}"/> 
   </div>
 </item>
+
   
 </div>
     
