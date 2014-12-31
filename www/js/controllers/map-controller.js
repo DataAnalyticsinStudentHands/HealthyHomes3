@@ -3,7 +3,7 @@
 //var layoutController = angular.module('HHControllers', []);
 
 angular.module('Controllers').controller('mapCtrl', 
-	function ($scope, $window, $state,layoutObjectModel,findGeom,mapData) { 
+	function ($scope, $window, $state,currentInspection,findGeom,mapData) { 
         
         //var geojson_data = data;
         //console.log(geojson_data['type']);
@@ -75,10 +75,9 @@ angular.module('Controllers').controller('mapCtrl',
         var rooms = [];
         var room = $scope.room;
         var roomPoints = $scope.roomPoints = [[10,10],[150,100],[150,150],[100,150]]; //[]; //have to decide which one is active on first load; how do we get from $scope?
-        $scope.layoutObjectModel = layoutObjectModel; 
         //console.log(layoutObjectModel.inspections);
         var inspectInd = 0; //will get from service or $state.params
-        var currentInspection = layoutObjectModel.inspections[inspectInd];
+//        var currentInspection = layoutObjectModel.inspections[inspectInd];
         //console.log(currentInspection)
 //        $state.param.inspectInd = 0;
 //        var currentInspection = layoutObjectModel.currentInspection();

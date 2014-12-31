@@ -1,10 +1,86 @@
-<style>
-#inputboxSample{
-	color: black; 
-}
-</style>
+<!DOCTYPE html>
+<!-- <ion-view title="Questions for {{currentInspection.address}}"> 
+have ng-if on questionType inside the items, and have them filter on a model that ties to a select and a search
+-->
 
-
+    <ion-content style="width:90%;">
+	
+        <p class="item item-icon-left item-text-wrap"> <i class="icon ion-information"></i>
+            We would want some sort of instructions, but maybe a modal "about" button? instead of always here?
+			Should set up the | filter on themes and rooms - not sure why the questions aren't complete.
+			Could go back to the ones the grad students did last year.
+        </p>
+<ion-list show-reorder="shouldShowReorder">
+			<!-- <ion-item class="item item-questions item-text-wrap"
+			      collection-repeat="qitem in qitems"
+			      collection-item-width="'100%'"
+			      collection-item-height="120"> -->
+			<ion-item class="item item-questions item-text-wrap"
+			      ng-repeat="qitem in qitems"
+			      width="80%"
+			      height="120">
+				<!-- <input ng-if=(qitem.HTMLInputType=='Checkbox')
+					type="checkbox"
+					id="{{'q'+qitem.ID}}"
+					ng-model="{{qitem.ID}}"
+					name="{{qitem.ID}}"
+					ng-true-value="Yes"
+					ng-false-value="No"
+					ng-change="">
+				<label ng-if=(qitem.HTMLInputType=='Checkbox')
+						for="{{'q'+qitem.ID}}">Checkbox:{{qitem.QuestionText}}</label> -->
+				<ion-checkbox ng-if=(qitem.HTMLInputType=='Checkbox')
+					id="{{'q'+qitem.ID}}"
+					ng-model="qitem.checked"
+					name="{{qitem.ID}}"
+					ng-checked="qitem.checked"
+					ng-true-value="'Yes'"
+					ng-false-value="'No'"
+					ng-change="">{{'#'+qitem.ID+': '+qitem.QuestionText}}</ion-checkbox>
+				<select ng-if=(qitem.HTMLInputType=='MultiSelect')
+					id="{{'q'+qitem.ID}}"
+						ng-options="qitem.HTMLInputType as qitem.label for qitem in values track by qitem.ID"
+						ng-model="selected">
+				<label ng-if=(qitem.HTMLInputType=='MultiSelect')
+						for="{{'q'+qitem.ID}}">{{'#'+qitem.ID+': '+qitem.QuestionText}}</label>
+				<input ng-if=(qitem.HTMLInputType=='RadioButton') //have not tested
+					type="radio"
+					id="{{'q'+qitem.ID}}"
+					ng-model="{{qitem.ID}}"
+					name="{{qitem.ID}}"
+					ng-change=""
+					ng-value="">
+				<label ng-if=(qitem.HTMLInputType=='RadioButton')
+						for="{{'q'+qitem.ID}}">{{'#'+qitem.ID+': '+qitem.QuestionText}}</label>
+				<div ng-if=(qitem.HTMLInputType=='TextArea')
+					class="text-area-question">{{'#'+qitem.ID+': '+qitem.QuestionText}}</div>
+				<input ng-if=(qitem.HTMLInputType=='TextArea') 
+					type="text"
+					id="{{'q'+qitem.ID}}"
+					ng-model="{{qitem.ID.text}}"
+					name="{{qitem.ID}}"
+					ng-required=""
+					ng-minlength=""
+					ng-maxlength=""
+					ng-trim="false">
+				<div ng-if="((qitem.AllowComments) && (qitem.HTMLInputType!='TextArea'))" style="border-style:solid;border-width:.5px;">
+				<input
+					type="text"
+					id="{{'qComment'+qitem.ID}}"
+					ng-model="qitem.ID.comments"
+					name="{{qitem.ID+'comments'}}"
+					ng-required=""
+					ng-minlength=""
+					ng-maxlength=""
+					placeholder="Add a comment ..."
+					ng-trim="false">
+				</div>
+				<ion-button class="ion-flag icon-left button-clear button-left">Related flags (click to show): </ion-button>
+			</ion-item>
+		</ion-list>	
+    </ion-content>
+<!-- </ion-view> -->
+<!--
 <div id="questions_first">
 	
 		<div id="questions">This is questions.html			
@@ -21,7 +97,6 @@
 					<p> Reply from server not shown, but in console due to buggy nature of echoJSON php script. </p>					
 				</form>
 
-				<div ng-controller="inputBoxCtrl"><!--Why here as well as app.js??!!-->
 					<form name="commentForm" ng-submit="sync()">
 						Optional Comment: <input type="text" id="inputboxSample" ng-model="list[0].stuff">
 						<input id="inputboxSample" type="submit" value="Save" id="sync">
@@ -30,7 +105,6 @@
 						<p> <h5><u>Completed List</u></h5>{{listCompleted}} </p>
 						<p> <h5><u>Sync List for Server</u></h5>{{listSync}} </p>
 						<p> Reply from server not shown, but in console due to buggy nature of echoJSON php script. </p>
-				</div>
 
 			</div><br>
 		</div>
@@ -66,7 +140,7 @@
 
 </div>
 
-
+-->
 
 
 

@@ -1,9 +1,10 @@
 <ion-view title="{{currentInspection.address}}">
     <ion-nav-buttons side="left">
       <button class="button" ng-click="chooseFloor()">
-        {{currentInspection.currentFloor.name}} at {{currPosition}}
+        {{currentInspection.currentFloor.name}}
       </button>
       <!-- <button class="button" ng-click="showAddRoomModal()">
+		   at {{currPosition | number:2}}
 		  Rooms
 	  </button> -->
    </ion-nav-buttons>
@@ -175,8 +176,8 @@
     </ion-side-menu>
         
 
-    <ion-side-menu-content ng-click="toggleLeftSideMenu()">
-        <ion-view name="questions"></ion-view>
+    <ion-side-menu-content>
+        <ion-nav-view name="questions@secure"></ion-nav-view>
     </ion-side-menu-content>
 		 
 

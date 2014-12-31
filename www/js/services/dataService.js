@@ -11,7 +11,7 @@ angular.module('Services').factory('DataService', function ($http, $q, $sessionS
     'use strict';
     //for BCM, would use sessionStorage - version control for questions
 
-    //Load data 
+    //Load data -- can put them in the function of the controller or call the method
     var inspections;
     var questions;
 
@@ -58,16 +58,17 @@ angular.module('Services').factory('DataService', function ($http, $q, $sessionS
 //		setCurrentFloor: function () {
 //			
 //		}
-        getQuestions: function () { //need logic for versioning etc. should return a list of questionsets, at top level, then the questions - think of arc index
+        getQuestions: function (q_type) { //need logic for versioning etc. should return a list of questionsets, at top level, then the questions - think of arc index
             if ($localStorage['questions'] != null){
                 questions = $localStorage['questions']; 
                 return questions;
             }
             else {
                 var defer = $q.defer();
-                $http.get('json/asthma.json').success(function (data) {
-                    questions = data;
-                    defer.resolve(inspections);
+                $http.get('json/'+q_type+'.json').success(function (qdata) {
+				//$http.get('json/asthma.json').success(function (qdata) {
+                    questions = qdata;
+                    defer.resolve(questions);
                     $localStorage['questions'] = questions;
                     });
                 return defer.promise;

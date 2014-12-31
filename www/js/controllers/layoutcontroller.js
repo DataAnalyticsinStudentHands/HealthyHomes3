@@ -3,8 +3,9 @@
 //var layoutController = angular.module('HHControllers', []);
 
 angular.module('Controllers').controller('layoutCtrl', 
-	function ($scope, $window, $timeout,$localStorage, $state, $stateParams, Restangular, layoutObjectModel, inspections,currentInspection,currentFloor,$ionicSideMenuDelegate, $ionicNavBarDelegate, $ionicModal,$ionicPopup, findGeom) {
-        function touchHandler(event){ //necessary for andriod, but kills ionic's side
+	function ($scope, $window, $timeout,$localStorage, $state, $stateParams, Restangular, inspections, questions, currentInspection, currentFloor,$ionicSideMenuDelegate, $ionicNavBarDelegate, $ionicModal,$ionicPopup, findGeom) {
+        $scope.questions = questions;
+		function touchHandler(event){ //necessary for andriod, but kills ionic's side
             var touches = event.changedTouches,
             first = touches[0],
             type = "";
@@ -387,7 +388,14 @@ angular.module('Controllers').controller('layoutCtrl',
 			};
             $scope.closeModal();
 		};
-		
+		// testing for questions controller
+		//$scope.asthma_questions = getQuestions(asthma);
+		//console.log(questions)
+		$scope.qitems = [];
+		for (var i = 0; i < questions.length; i++) {
+		  $scope.qitems.push(questions[i]);
+		}
+		// should be on a map controller
         var currPosition = {lat:'',lon:''};
 		
 		var onSuccess = function(position) {
@@ -415,16 +423,7 @@ angular.module('Controllers').controller('layoutCtrl',
 		//if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition(onSuccess, onError);
         $scope.currPosition = currPosition;
-        //};
-		      //currPosition = navigator.geolocation.getCurrentPosition();
-		//};
-		
-        // $scope.selectLayoutObject = function (layoutObject) {
-        //     layoutObjectModel.setSelectedObject(layoutObject);
-        // };
-        // $scope.isSelected = function(layoutObject) {
-        //     return layoutObject === layoutObjectModel.selectedLayoutObject;
-        // };
+
 
 
  });

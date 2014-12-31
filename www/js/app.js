@@ -99,7 +99,10 @@ angular.module('HHApp', [
             resolve: {
                 inspections: function (DataService, $ionicLoading) {
                     return DataService.getInspections();
-                }
+                },
+				questions: function (DataService, $ionicLoading) {
+                    return DataService.getQuestions('asthma');
+				}
             } 
       })
       .state('secure.inspections', {
@@ -156,8 +159,11 @@ angular.module('HHApp', [
 					templateUrl: 'templates/layout.html',
 					controller: 'layoutCtrl' 				
 					},
-				"outline@secure": { //right now doing as ng-include
+				"outline@secure": { //right now doing as ng-include; should fix
 					templateUrl: 'templates/outline.html'
+					},
+				"questions@secure": { 
+					templateUrl: 'templates/questions.html'
 					}
                 },
 		resolve: {
@@ -174,14 +180,14 @@ angular.module('HHApp', [
 	        }
 		}
       })
-      .state('secure.inspections.questions', {	
-          url: "/questions/:inspectionIndex/:floorInd",
-          views: {
-                "inspections@secure": { 
-					templateUrl: 'templates/questions.html'
-					}
-                }
-      })
+					//       .state('secure.inspections.questions', {
+					//           url: "/questions/:inspectionIndex/:floorInd",
+					//           views: {
+					//                 "questionsOld@secure": {
+					// templateUrl: 'templates/questions.html'
+					// }
+					//                 }
+					//       })
 //      .state('secure.inspections.floor', {
 //        url: "/floor/:inspectionIndex",
 //        views: {
