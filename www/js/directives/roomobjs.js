@@ -1,4 +1,4 @@
-angular.module('Directives').directive('rmobjManip',function($ionicSideMenuDelegate,$ionicGesture,findGeom){
+angular.module('Directives').directive('rmobjManip',function($ionicSideMenuDelegate,$ionicModal,$ionicGesture,findGeom){
     return {
         restrict: 'AE',
         template: '',
@@ -7,6 +7,20 @@ angular.module('Directives').directive('rmobjManip',function($ionicSideMenuDeleg
 			gridmag: '='
         },
         controller: ['$scope', function($scope){
+            $scope.rmobjModal = [];
+		    $ionicModal.fromTemplateUrl('templates/rmobjmodal.html', {
+		            id: "rmobjModal",
+		            scope: $scope,
+		            animation: 'slide-in-up'
+		        }).then(function(modalRoomObj) {
+		          $scope.roomobjModal = modalRoomObj;
+		    });
+		    $scope.showRmObjModal = function() {
+		        $scope.roomobjModal.show();
+		    };
+		    $scope.closeRmObjModal = function() {
+		        $scope.roomobjModal.hide();
+		    };
         }],
         link: function(scope,elem,attr) {
 	console.log(scope.rmobj) //is there a way to add/link a flag to a question??
@@ -51,11 +65,18 @@ angular.module('Directives').directive('rmobjManip',function($ionicSideMenuDeleg
 //         rmobjpts[1] = 10*Math.round(rmobjpts[1]/10);
 //         scope.$apply();
     };
+    var openModalWindow = function(e){
+		e.stopPropagation();
+        e.preventDefault();
+        scope.showRmObjModal();
+    }
+    var doubletapGesture = $ionicGesture.on('doubletap', openModalWindow, elem);
     var dragPointStartGesture = $ionicGesture.on('dragstart', startDrag, elem);
     var dragPointGesture = $ionicGesture.on('drag', dragPoints, elem);
     var dragPointEndGesture = $ionicGesture.on('dragend', endDrag, elem);
             
     scope.$on('$destroy', function() {
+        $ionicGesture.off(doubletapGesture, 'dragstart', openModalWindow);
         $ionicGesture.off(dragPointStartGesture, 'dragstart', startDrag);
         $ionicGesture.off(dragPointGesture, 'drag', dragPoints);
         $ionicGesture.off(dragPointEndGesture, 'dragend', endDrag);

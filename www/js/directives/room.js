@@ -227,13 +227,13 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 	}; 
 	var roomObjs = [];
 	if (scope.room.roomObjs){
-		roomObjs = room.roomObjs;
+		roomObjs = scope.room.roomObjs;
 	};
 	scope.room.roomObjs = roomObjs;
 	//scope.testText = 'http://i.huffpost.com/gen/2432404/thumbs/r-BRENNAN-huge.jpg';
 	var currNote = scope.currNote = null;
 	var newImgURI;
-	scope.newRoomObj = function(pthType,currNote,importColor){ //have to figure out what needs to be passed; currNote as timeId??
+	scope.newRoomObj = function(pthType,currNote,importColor,newImgURI){ //have to figure out what needs to be passed; currNote as timeId??
         //alert(importColor)
 		var imgRm = [{"pathType" : pthType, "impColor" : importColor, 
 						"note" : currNote, "imageURI":newImgURI, 

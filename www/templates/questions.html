@@ -57,7 +57,7 @@ have ng-if on questionType inside the items, and have them filter on a model tha
 				<input ng-if=(qitem.HTMLInputType=='TextArea') 
 					type="text"
 					id="{{'q'+qitem.ID}}"
-					ng-model="{{qitem.ID.text}}"
+					ng-model="qitem.ID.text"
 					name="{{qitem.ID}}"
 					ng-required=""
 					ng-minlength=""
