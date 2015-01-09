@@ -30,12 +30,16 @@
              {{room.question}}</textarea> 
 	</item>
   	<item>
-  		<ion-button class="button button-block button-positive icon-left ion-ios7-camera-outline" ng-click="snapPicture(noteId)">Take Photo With Camera</ion-button>
-  		<ion-button class="button button-block 
+        <!-- first should have a ng-if on finding navigator.camera 
+        and picFromLocalFile should be reinstituted
+-->
+  		<ion-button class="button button-positive icon-left ion-ios7-camera-outline" ng-click="snapPicture(noteId)">Take Photo With Camera</ion-button>
+  		<ion-button class="button 
 			button-positive icon-left ion-ios7-folder-outline" 
 			ng-click="picFromLocalFile(noteId)">Add Photo From File
 		</ion-button>
-		<ion-button class="button button-positive button-block" ng-click="newRoomObj('Image',room.currNote,room.importColor,room.currImgURI)">Place Image As Thumbnail</ion-button>
+        <input type="file">
+		
 	</item>
 	
   <item>
@@ -45,7 +49,9 @@
 	  <img style="position:relative;width:100%;" id="wtf" src="{{testText | trusted}}"/> 
   </div>
 </item>
-
+<item>
+    <ion-button class="button button-positive button-block" ng-click="newRoomObj('Image',room.currNote,room.importColor,room.currImgURI)">Place Image As Thumbnail</ion-button>
+</item>
   
 </div>
     

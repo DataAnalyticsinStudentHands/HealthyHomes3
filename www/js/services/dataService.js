@@ -43,7 +43,7 @@ angular.module('Services').factory('DataService', function ($http, $q, $sessionS
             //need to return as a promise for resolve in app.js
             if ($localStorage['inspections'] != null){
                 inspections = $localStorage['inspections'];
-                console.log(JSON.stringify(inspections));
+                //console.log(JSON.stringify(inspections));
                 return inspections;
             }
             else {
