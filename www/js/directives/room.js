@@ -408,24 +408,55 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
     };
     scope.addSegment = function(fingerX,fingerY,pthTyp,ind4new,newX,newY){ //can run all room-objects through here
 		scope.closeLineModal();
-		if(pthTyp == 'Window' || pthTyp == 'Door'){
-			alert('not yet implemented')
-			return 
-		}
-		var ctrlX;
-		var ctrlY;
-		var ctlInd4new = points.length-1;
-		if (ind4new!=0){ctlInd4new=ind4new-1;}
-		if (pthTyp == 'CubicBezier'){
-			ctrlX = (points[ctlInd4new][0]+newX)/4;
-			ctrlY = (points[ctlInd4new][1]+newY)/4;
-			newXY = [[parseInt(newX),parseInt(newY)],[parseInt(ctrlX*1.9),parseInt(ctrlY*1.9)],[parseInt(ctrlX*2.7),parseInt(ctrlY*2.7)]];
-		}else if (pthTyp == 'QuadBezier'){
-			ctrlX = (points[ctlInd4new][0]+newX)/4;
-			ctrlY = (points[ctlInd4new][1]+newY)/4;
-			newXY = [[parseInt(newX),parseInt(newY)],[parseInt(ctrlX),parseInt(ctrlY)]];
-		}else{
-        	newXY = [[parseInt(newX),parseInt(newY)]];
+		// if(pthTyp == 'Window' || pthTyp == 'Door'){
+// 			alert('not yet implemented')
+// 			return
+// 		};
+		if (pthTyp == 'Line'){
+			newXY = [[parseInt(newX),parseInt(newY)]];
+		} else {
+			var ctrlX;
+			var ctrlY;
+			var ctrl2X;
+			var ctrl2Y;
+			var ptsb4 = ind4new;
+			var mx = newX-points[ptsb4][0];
+			var distX = 30;//Math.abs(mx);
+			var my = newY-points[ptsb4][1];
+			var distY = 30;//Math.abs(my)
+			var mRadians = Math.atan2(my,mx);
+			// console.log('rads '+mRadians)
+			// console.log(Math.cos(mRadians))
+			if (pthTyp == 'CubicBezier'){
+				ctrlX = Math.cos(mRadians)*(mx/2)+newX;
+				ctrlY = Math.sin(mRadians)*(my/2)+newY;
+				ctrl2X = Math.sin(mRadians)*(mx/2)+newX;
+				ctrl2Y = Math.cos(mRadians)*(my/2)+newY;
+				newXY = [[parseInt(newX),parseInt(newY)],[parseInt(ctrlX),parseInt(ctrlY)],[parseInt(ctrl2X),parseInt(ctrl2Y)]];
+			}else if (pthTyp == 'QuadBezier'){
+				ctrlX = (Math.cos(mRadians-.224)*distX) + newX; //mx+points[ptsb4][0];
+				ctrlY = (Math.sin(mRadians-.224)*distY) + newY; //*my+points[ptsb4][1];
+				newXY = [[parseInt(newX),parseInt(newY)],[parseInt(ctrlX),parseInt(ctrlY)]];
+			}else if (pthTyp == 'Door'){
+				ctrlX = Math.cos(mRadians)*30+newX;
+				ctrlY = Math.sin(mRadians)*30+newY;
+				ctrl2X = Math.sin(mRadians+.5)*30+newX;
+				ctrl2Y = Math.cos(mRadians+.5)*30+newY;
+				newXY = [[parseInt(newX),parseInt(newY)],[parseInt(ctrlX),parseInt(ctrlY)],[parseInt(ctrl2X),parseInt(ctrl2Y)]];
+				console.log(newXY)
+			}else if (pthTyp == 'Window'){ 
+				ctrlX = Math.cos(mRadians)*30+newX;
+				ctrlY = Math.sin(mRadians)*30+newY;
+				//adding a line
+				var windowXY = [[parseInt(ctrlX),parseInt(ctrlY)]];
+				if(ind4new+1>points.length){
+		            svgArr.push({"pathType" : pthTyp,"points":windowXY})
+			    }else{
+		            svgArr.splice(ind4new+1,0,{"pathType" : pthTyp,"points":windowXY})
+			    };
+				pthTyp = "Line";
+				newXY = [[parseInt(newX),parseInt(newY)]];
+			}
 		};
 		if(ind4new+1>points.length){
             svgArr.push({"pathType" : pthTyp,"points":newXY})
@@ -437,6 +468,22 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 		scope.room.svgPoints = svgArr;
 		scope.room.measurePoints = findGeom.showMeasures(svgArr);
     };
+	//move into service and use for main path
+	// scope.room.doorPath = function(doorPoints){
+// 		var doorStr = 'M'+doorPoints[0][0]+','+doorPoints[0][1]+' ';
+// 		//extend on line
+// 		doorStr+='L'+doorPoints[1][0]+','+doorPoints[1][1]+' ';
+// 		//back up 30%
+// 		doorStr+='l'+.3*-(doorPoints[1][0]-doorPoints[0][0])+','+.3*-(doorPoints[1][1]-doorPoints[0][1])+' ';
+// 		//Q over to 30% of door with control btwn door and opening
+// 		doorStr+='Q'+(doorPoints[2][0]+doorPoints[1][0])/2+','+(doorPoints[2][1]+doorPoints[1][1])/2+' '//
+// 		doorStr+=''+(doorPoints[2][0]-.3*(doorPoints[2][0]-doorPoints[0][0]))+','+(doorPoints[2][1]-.3*(doorPoints[2][1]-doorPoints[0][1]))+' ';
+// 		doorStr+='L'+doorPoints[2][0]+','+doorPoints[2][1]+' ';
+// 		//return explicitly to origin
+// 		doorStr+='L'+doorPoints[0][0]+','+doorPoints[0][1]+' ';
+// 		//console.log(doorStr)
+// 		return doorStr
+// 	}
     for (var n = 0;n<points.length;n++){
         points[n][0] = parseInt(points[n][0]);
         points[n][1] = parseInt(points[n][1]);

@@ -113,13 +113,12 @@
                             L{{lines[1].points[0][0]}} {{lines[1].points[0][1]}}"
                     />
                 </g>
-                <g ng-show="(!room.editLines)"
-                   ng-repeat="(i, vals) in room.svgPoints">
-					
+                <g ng-repeat="(i, vals) in room.svgPoints">
+					<g ng-show="(!room.editLines)">
                     <circle stroke="#fcf8f8" stroke-width="16" 
                         opacity=".2"
                         circle-manip circpoints="vals.points[0]"
-                        circcnt = "i" gridmag = 'gridmag'
+                        circType = "vals.pathType" gridmag = 'gridmag'
                         ng-attr-cx={{vals.points[0][0]}}
                         ng-attr-cy={{vals.points[0][1]}}
                         r = 16
@@ -130,6 +129,7 @@
                     <circle ng-if=(vals.points[1])
                         fill="#ba202c" stroke="#fcf8f8" stroke-width="16" 
                         opacity=".2"
+						circType = "vals.pathType"
                         circle-manip circpoints="vals.points[1]"
 						gridmag = 'gridmag'
                         ng-attr-cx={{vals.points[1][0]}}
@@ -139,6 +139,7 @@
                     <circle ng-if=(vals.points[2])
                         fill="#ba202c" stroke="#fcf8f8" stroke-width="16" 
                         opacity=".2"
+						circType = "vals.pathType"
                         circle-manip circpoints="vals.points[2]"
 						gridmag = 'gridmag'
                         ng-attr-cx={{vals.points[2][0]}}
@@ -170,7 +171,38 @@
                           ng-attr-y1={{room.svgPoints[0].points[0][1]}}
                           ng-attr-x2={{room.svgPoints[i].points[1][0]}}
                           ng-attr-y2={{room.svgPoints[i].points[1][1]}} />
-					
+					</path>
+					</g> 
+					<line ng-if="vals.pathType=='Door'"
+                        stroke="#ffffff" stroke-width="2.5"
+                        ng-attr-x1={{vals.points[1][0]}}
+                        ng-attr-y1={{vals.points[1][1]}}
+                        ng-attr-x2={{vals.points[0][0]}}
+                        ng-attr-y2={{vals.points[0][1]}} />
+					<line ng-if="vals.pathType=='Window' && i>1"
+                        stroke="#2050ba" stroke-width="4.5"
+                        ng-attr-x1={{room.svgPoints[i-1].points[0][0]}}
+                        ng-attr-y1={{room.svgPoints[i-1].points[0][1]}}
+                        ng-attr-x2={{room.svgPoints[i].points[0][0]}}
+                        ng-attr-y2={{room.svgPoints[i].points[0][1]}} />
+					<line ng-if="vals.pathType=='Window'  && i>1"
+                        stroke="#ffffff" stroke-width="2.5"
+                        ng-attr-x1={{room.svgPoints[i-1].points[0][0]}}
+                        ng-attr-y1={{room.svgPoints[i-1].points[0][1]}}
+                        ng-attr-x2={{room.svgPoints[i].points[0][0]}}
+                        ng-attr-y2={{room.svgPoints[i].points[0][1]}} />
+					<line ng-if="vals.pathType=='Window' && i==1"
+                        stroke="#2050ba" stroke-width="4.5"
+                        ng-attr-x1={{room.svgPoints[0].points[0][0]}}
+                        ng-attr-y1={{room.svgPoints[0].points[0][1]}}
+                        ng-attr-x2={{room.svgPoints[i].points[0][0]}}
+                        ng-attr-y2={{room.svgPoints[i].points[0][1]}} />
+					<line ng-if="vals.pathType=='Window'  && i==1"
+                        stroke="#ffffff" stroke-width="2.5"
+                        ng-attr-x1={{room.svgPoints[0].points[0][0]}}
+                        ng-attr-y1={{room.svgPoints[0].points[0][1]}}
+                        ng-attr-x2={{room.svgPoints[i].points[0][0]}}
+                        ng-attr-y2={{room.svgPoints[i].points[0][1]}} />
                 </g>
             </g>
 

@@ -196,7 +196,7 @@ angular.module('Services', [])
                 }
                 rtnPathString += add2rtnPathStr+segment.points[0][0]+' '+segment.points[0][1];
 			};*/
-            if(segment.pathType == "Line"){
+            if(segment.pathType == "Line" || segment.pathType == "Window"){
                 if(rtnPathString=='M'){
                     add2rtnPathStr='';
                 }else{
@@ -220,6 +220,25 @@ angular.module('Services', [])
                 }
                 rtnPathString += add2rtnPathStr+segment.points[1][0]+' '+segment.points[1][1]+' '+segment.points[0][0]+' '+segment.points[0][1];
             };
+            if(segment.pathType == "Door"){
+                if(rtnPathString=='M'){
+                    add2rtnPathStr='';
+                }else{
+                    add2rtnPathStr=' L';
+                };
+				add2rtnPathStr += segment.points[0][0]+','+segment.points[0][1]+' '; //hinge
+				//extend on same line
+				add2rtnPathStr += 'L'+segment.points[1][0]+','+segment.points[1][1]+' ';
+				//back up 30%
+				add2rtnPathStr += 'l'+.3*-(segment.points[1][0]-segment.points[0][0])+','+.3*-(segment.points[1][1]-segment.points[0][1])+' ';
+				//Q over to 30% of door with control btwn door and opening
+				add2rtnPathStr += 'Q'+(segment.points[2][0]+segment.points[1][0])/2+','+(segment.points[2][1]+segment.points[1][1])/2+' ';
+				add2rtnPathStr += ''+(segment.points[2][0]-.3*(segment.points[2][0]-segment.points[0][0]))+','+(segment.points[2][1]-.3*(segment.points[2][1]-segment.points[0][1]))+' ';
+				add2rtnPathStr += 'L'+segment.points[2][0]+','+segment.points[2][1]+' ';
+				//return explicitly to origin
+				add2rtnPathStr += 'L'+segment.points[0][0]+','+segment.points[0][1]+' ';
+                rtnPathString += add2rtnPathStr
+			};
         }
 		//console.log(rtnPathString)
         return rtnPathString + ' z';

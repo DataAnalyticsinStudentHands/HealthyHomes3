@@ -4,14 +4,14 @@ angular.module('Directives').directive('circleManip',function($ionicSideMenuDele
         template: '',
         scope: {
             circpoints: '=',
-            circcnt: '=',
+            circType: '=',
 			gridmag: '='
         },
         controller: ['$scope', function($scope){
         }],
         link: function(scope,elem,attr) {
     var circpoints = scope.circpoints;
-    var circcnt = scope.circcnt;
+    var circType = scope.circType;
 	var gridMag = parseFloat(scope.gridmag);
 	scope.$watch(function(scope) { return scope.gridmag },
               function() {
