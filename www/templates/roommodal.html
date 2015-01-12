@@ -33,12 +33,19 @@
         <!-- first should have a ng-if on finding navigator.camera 
         and picFromLocalFile should be reinstituted
 -->
+        <div ng-if="!noCamera">
   		<ion-button class="button button-positive icon-left ion-ios7-camera-outline" ng-click="snapPicture(noteId)">Take Photo With Camera</ion-button>
   		<ion-button class="button 
 			button-positive icon-left ion-ios7-folder-outline" 
 			ng-click="picFromLocalFile(noteId)">Add Photo From File
 		</ion-button>
-        <input type="file">
+            </div>
+     <div ng-if="noCamera">
+         <input type="file" id="fileBtn" accept="image/*"/>
+    <button class="button button-positive ion-paperclip uploadButton" ng-click="browseFile()">
+        Select File
+    </button>
+         </div>
 		
 	</item>
 	

@@ -275,10 +275,20 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 	var options;
 	var hasCamera = true;
 	ionic.Platform.ready(function() {
+        var cordova = false;
+        if (!cordova){ 
+            console.log('no cordova');
+        }else{
+        if (!cordova.file){
+            console.log('no cordova file');
+        }else{
+            console.log('cordova file found');
+        };
+        };
 		//console.log("ready get camera types");
 		if (!navigator.camera)
 			{
-                hasCamera = false;
+                 scope.noCamera = true;
 			     console.log('no navigator.camera -- think about browsers')
 			     return;
 			}
@@ -300,7 +310,7 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 		};
 		if (!navigator.camera)
 			{
-				alert('no navigator.camera')
+				console.log('no navigator.camera')
 			// error handling - go to filesystem?
 			return;
 			}

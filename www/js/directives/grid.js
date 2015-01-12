@@ -22,7 +22,7 @@ angular.module('Directives').directive('gridManip',function($ionicGesture,$ionic
 			//scope.gridmag()(num)
 			//scope.gridLineNumber()
             var gridElem = findGeom.gridElem;
-			var gridMag = scope.gridmag;
+			//var gridMag = scope.gridmag;
             scope.gridShow1 = true; 
             scope.gridShow5 = true;
             // var windowHt = scope.windowHt = 1.2*$window.outerHeight; //plus the offset!!
@@ -43,6 +43,7 @@ angular.module('Directives').directive('gridManip',function($ionicGesture,$ionic
             var gridoffLeft = gridElem[0].offsetLeft;
             var newMag;
 			var gridmag = scope.gridmag;// || parseFloat($stateParams.gridMagnification);
+            
 			//var gridMagnify = function(num){
 			//	return num * gridMagnification;
 			//}

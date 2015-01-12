@@ -10,7 +10,7 @@ angular.module('HHApp', [
 	//'ngCordova.plugins.camera',
     'databaseControllerModule',
     'databaseServicesModule'
-]).run(function ($ionicPlatform, Restangular, $rootScope, Auth, $q, $state) {
+]).run(function ($ionicPlatform, Restangular, $rootScope, Auth, UserService, $q, $state) {
     'use strict';
 
     // $ionicPlatform.ready(function () {
@@ -25,24 +25,46 @@ angular.module('HHApp', [
 //         }
 //     }); 
     //Restangular.setBaseUrl("http://www.housuggest.org:8080/HealthyHomes/");
-    //Restangular.setBaseUrl("http://www.housuggest.org:8080/HHtest/");
+    Restangular.setBaseUrl("https://www.housuggest.org:8443/formbuilder/");
  
     $rootScope.Restangular = function () {
         return Restangular;
     };
-    $rootScope.isAuthenticated = function () {
-        return true; //until through with testing
-        //return Auth.hasCredentials(); 
+    $rootScope.isAuthenticated = function (authenticate) {
+        if(!$rootScope.uid) {
+            UserService.getMyUser().then(function (result) {
+                //console.log("authed");
+                result = Restangular.stripRestangular(result)[0];
+                //USERNAME & ID TO BE USED IN CONTROLLERS
+                $rootScope.uid = result.id.toString();
+                $rootScope.uin = result.username.toString();
+            });
+        }
+        UserService.getMyRole().then(function(success){
+                $rootScope.role = success;
+                $rootScope.isMod = (success == "ROLE_MODERATOR");
+                $rootScope.isAdm = (success == "ROLE_ADMIN");
+        }, function (error) {
+            if (error.status === 0) { // NO NETWORK CONNECTION OR SERVER DOWN, WE WILL NOT LOG THEM OUT
+                ngNotify.set("Internet or Server Unavailable", {type: "error", sticky: true});
+            } else { //Most Likely a 403 - LOG THEM OUT
+                Auth.clearCredentials();
+                //console.log("not-authed");
+                if (authenticate) {
+                    $state.go("login");
+                    location.reload();
+                }
+            }
+        });
+        return Auth.hasCredentials();
     };
 
     $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
-        console.log("$stateChangeStart");
-        console.log($rootScope.isAuthenticated());
-        if (toState.authenticate && !$rootScope.isAuthenticated()) {
+        if (toState.authenticate && !$rootScope.isAuthenticated(toState.authenticate)){
             console.log("non-authed");
             // User isn’t authenticated
             $state.go("login");
-            //What?
+            //Prevents the switching of the state
             event.preventDefault();
         } else {
             console.log("authed");
@@ -86,16 +108,25 @@ angular.module('HHApp', [
     $stateProvider 
       .state('login',{ //should all come from login?
           url: "/login",
-          templateUrl: 'templates/login.html',
-          controller: 'loginCtrl',
-          authenticate: true
+          views: {
+            "app_home": {templateUrl: "templates/login.html", controller: 'loginCtrl'}
+          },
+          authenticate: false
+      })
+      .state('register', {
+          url: "/register",
+          views: {
+            "app_home": { templateUrl: "templates/register.html", controller: 'registerCtrl'}
+          },
+          authenticate: false
       })
       .state('secure', {
             abstract: true,
             url: "/tab",
             authenticate: true,
-            templateUrl: "templates/tabs.html",
-            controller: "mainController",
+            views: {
+            "app_home": { templateUrl: "templates/tabs.html",controller: "mainController"}
+            },
             resolve: {
                 inspections: function (DataService, $ionicLoading) {
                     return DataService.getInspections();
@@ -105,23 +136,31 @@ angular.module('HHApp', [
 				}
             } 
       })
+      .state('secure.settings', {
+          url: "/settings",
+          views: {
+            "app_home": { templateUrl: "templates/settings.html", controller: "settings"}
+          },
+          authenticate: true
+      })
       .state('secure.inspections', {
           url: "/inspections",
           views: { //as separate views so we can access them directly
             "inspections": { templateUrl: "templates/inspections.html"
-                         },
-            "schedule": { templateUrl: "templates/inspectionSchedule.html",
-                          controller: "scheduleController"
-                         },
-            "general": { templateUrl: "templates/inspectionGeneral.html",
-                        controller: "generalController"
-                       },
-            "summary": { templateUrl: "templates/summary.html",
-                        controller: "summaryController"
-                       },
-            "overview": { templateUrl: "templates/overview.html",
-                           controller: "overviewController"
-                          }
+                         }
+//              ,
+//            "schedule": { templateUrl: "templates/inspectionSchedule.html",
+//                          controller: "scheduleController"
+//                         },
+//            "general": { templateUrl: "templates/inspectionGeneral.html",
+//                        controller: "generalController"
+//                       },
+//            "summary": { templateUrl: "templates/summary.html",
+//                        controller: "summaryController"
+//                       },
+//            "overview": { templateUrl: "templates/overview.html",
+//                           controller: "overviewController"
+//                          }
 //            "layout": { 
 //					templateUrl: 'templates/layoutPage.html',
 //					controller: 'layoutCtrl' 				
@@ -136,6 +175,7 @@ angular.module('HHApp', [
     //should all work like layout
       .state('secure.inspections.map', {
           url:"/map",
+          authenticate: true,
           views: {
                 "map@secure": {
                     templateUrl: 'templates/map.html',
@@ -154,6 +194,7 @@ angular.module('HHApp', [
       })
       .state('secure.inspections.layout', {	
           url: "/layout/:inspectionIndex/:floorInd/:roomInd",
+          authenticate: true,
           views: {
                 "inspections@secure": { 
 					templateUrl: 'templates/layout.html',
