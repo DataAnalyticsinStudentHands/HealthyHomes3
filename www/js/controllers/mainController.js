@@ -18,7 +18,8 @@ angular.module('Controllers').controller('mainController', function($scope, insp
 .controller('loginCtrl', ['$scope', 'Auth', '$state', 'ngNotify', '$timeout', '$ionicLoading', function($scope, Auth, $state, ngNotify, $timeout, $ionicLoading) {
      if($scope.isAuthenticated() === true) {
          //IF SUCCESSFULLY AUTH-ED USER IS TRYING TO GO TO LOGIN PAGE => SEND TO HOME PAGE OF APP
-         $state.go('secure.cfeed');
+         //just to change line
+         $state.go('secure.inspections');
      }
      $scope.salt = "nfp89gpe"; //PENDING - NEED TO GET ACTUAL SALT
      $scope.$parent.submit = function() {
@@ -29,13 +30,13 @@ angular.module('Controllers').controller('mainController', function($scope, insp
              Auth.setCredentials($scope.userName, $scope.passWordHashed);
              $scope.userName = '';
              $scope.passWord = '';
-             $scope.loginResultPromise = $scope.Restangular().all("users").all("myUser").getList();
+             $scope.loginResultPromise = $scope.Restangular().all("users").one("myUser").get();
              $scope.success = false;
              $scope.loginResultPromise.then(function(result) {
                  $scope.loginResult = result;
                  $scope.loginMsg = "You have logged in successfully!";
                  Auth.confirmCredentials();
-                 $state.go("secure.cfeed", {}, {reload: true});
+                 $state.go("secure.inspections", {}, {reload: true});
                  ngNotify.set($scope.loginMsg, 'success');
                  $scope.success = true;
                  $ionicLoading.hide();
@@ -74,10 +75,10 @@ angular.module('Controllers').controller('mainController', function($scope, insp
                 function (success) {
                     $ionicLoading.hide();
                     Auth.clearCredentials();
-                    Auth.setCredentials($scope.register.username, $scope.register.password);
-                    Auth.confirmCredentials();
+                    //Auth.setCredentials($scope.register.username, $scope.register.password);
+                    //Auth.confirmCredentials();
                     ngNotify.set("User account created!", {position: 'top', type: 'success'});
-                    $state.go("secure.cfeed", {}, {reload: true});
+                    $state.go("login", {}, {reload: true});
                 }, function (fail) {
                     $ionicLoading.hide();
                     Auth.clearCredentials();

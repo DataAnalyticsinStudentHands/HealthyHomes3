@@ -8,7 +8,7 @@ angular.module('HHApp', [
     'ngStorage',
 	//'ngCordova',
 	//'ngCordova.plugins.camera',
-    'databaseControllerModule',
+//    'databaseControllerModule', need to clean up whole folder
     'databaseServicesModule'
 ]).run(function ($ionicPlatform, Restangular, $rootScope, Auth, UserService, $q, $state) {
     'use strict';
@@ -25,7 +25,7 @@ angular.module('HHApp', [
 //         }
 //     }); 
     //Restangular.setBaseUrl("http://www.housuggest.org:8080/HealthyHomes/");
-    Restangular.setBaseUrl("https://www.housuggest.org:8443/formbuilder/");
+    Restangular.setBaseUrl("https://www.housuggest.org:8443/FormBuilder/");
  
     $rootScope.Restangular = function () {
         return Restangular;
@@ -36,8 +36,8 @@ angular.module('HHApp', [
                 //console.log("authed");
                 result = Restangular.stripRestangular(result)[0];
                 //USERNAME & ID TO BE USED IN CONTROLLERS
-                $rootScope.uid = result.id.toString();
-                $rootScope.uin = result.username.toString();
+                //$rootScope.uid = result.id.toString();
+                //$rootScope.uin = result.username.toString();
             });
         }
         UserService.getMyRole().then(function(success){

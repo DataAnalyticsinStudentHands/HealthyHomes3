@@ -45,7 +45,7 @@ angular.module('Services').factory('UserService', function (Restangular, $q, $fi
             },
         getMyUser:
             function () {
-                return Restangular.all("users").all("myUser").getList();
+                return Restangular.all("users").one("myUser").get();
             },
         getUser:
             function (user_id) {
