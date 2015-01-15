@@ -3,12 +3,11 @@
 have ng-if on questionType inside the items, and have them filter on a model that ties to a select and a search
 -->
 
-    <ion-content style="width:90%;">
+    <ion-content>
 	
         <p class="item item-icon-left item-text-wrap"> <i class="icon ion-information"></i>
             We would want some sort of instructions, but maybe a modal "about" button? instead of always here?
-			Should set up the | filter on themes and rooms - not sure why the questions aren't complete.
-			Could go back to the ones the grad students did last year.
+			Should set up the | filter on themes and rooms.
         </p>
 <ion-list show-reorder="shouldShowReorder">
 			<!-- <ion-item class="item item-questions item-text-wrap"
@@ -16,9 +15,7 @@ have ng-if on questionType inside the items, and have them filter on a model tha
 			      collection-item-width="'100%'"
 			      collection-item-height="120"> -->
 			<ion-item class="item item-questions item-text-wrap"
-			      ng-repeat="qitem in qitems"
-			      width="80%"
-			      height="120">
+			      ng-repeat="qitem in qitems">
 				<!-- <input ng-if=(qitem.HTMLInputType=='Checkbox')
 					type="checkbox"
 					id="{{'q'+qitem.ID}}"
@@ -29,19 +26,56 @@ have ng-if on questionType inside the items, and have them filter on a model tha
 					ng-change="">
 				<label ng-if=(qitem.HTMLInputType=='Checkbox')
 						for="{{'q'+qitem.ID}}">Checkbox:{{qitem.QuestionText}}</label> -->
-				<ion-checkbox ng-if=(qitem.HTMLInputType=='Checkbox')
+				<!-- <ion-checkbox ng-if=(qitem.HTMLInputType=='Checkbox')
 					id="{{'q'+qitem.ID}}"
 					ng-model="qitem.checked"
 					name="{{qitem.ID}}"
 					ng-checked="qitem.checked"
 					ng-true-value="'Yes'"
 					ng-false-value="'No'"
-					ng-change="">{{'#'+qitem.ID+': '+qitem.QuestionText}}</ion-checkbox>
-				<select ng-if=(qitem.HTMLInputType=='MultiSelect')
+					ng-change="">{{'#'+qitem.ID+': '+qitem.QuestionText}}</ion-checkbox> -->
+				<label class="item ion-input">
+				    <div class="input-label">
+				      {{'#'+qitem.ID+': '+qitem.QuestionText}}
+				    </div>
+					<select ng-if=(qitem.HTMLInputType=='Select')
+							id="{{'q'+qitem.ID}}"
+							ng-options="option.option_id as option.option_title for option in qitem.options"
+							ng-model="selected">
+				    </select>
+					<input ng-if=(qitem.HTMLInputType=='RadioButton') //have not tested
+						type="radio"
+						id="{{'q'+qitem.ID}}"
+						ng-model="{{qitem.ID}}"
+						name="{{qitem.ID}}"
+						ng-change=""
+						ng-value="">
+					<input ng-if=(qitem.HTMLInputType=='TextArea') 
+						type="text"
+						id="{{'q'+qitem.ID}}"
+						ng-model="qitem.ID.text"
+						name="{{qitem.ID}}"
+						ng-required=""
+						ng-minlength=""
+						ng-maxlength=""
+						ng-trim="false">
+					<ion-checkbox ng-if=(qitem.HTMLInputType=='Checkbox')
+										id="{{'q'+qitem.ID}}"
+										ng-model="qitem.checked"
+										name="{{qitem.ID}}"
+										ng-checked="qitem.checked"
+										ng-true-value="'Yes'"
+										ng-false-value="'No'"
+										ng-change=""></ion-checkbox>
+				 </label>
+				<!-- <div ng-if=(qitem.HTMLInputType=='Select')>{{'#'+qitem.ID+': '+qitem.QuestionText}}</div>
+				<select ng-if=(qitem.HTMLInputType=='Select')
+					ng-change="alert('#'+qitem.ID+': '+qitem.QuestionText)"
 					id="{{'q'+qitem.ID}}"
-						ng-options="qitem.HTMLInputType as qitem.label for qitem in values track by qitem.ID"
-						ng-model="selected">
-				<label ng-if=(qitem.HTMLInputType=='MultiSelect')
+						ng-options="option.option_id as option.option_title for option in qitem.options"
+						ng-model="selected">{{'#'+qitem.ID+': '+qitem.QuestionText}}
+						</select>
+				<label ng-if=(qitem.HTMLInputType=='Select')
 						for="{{'q'+qitem.ID}}">{{'#'+qitem.ID+': '+qitem.QuestionText}}</label>
 				<input ng-if=(qitem.HTMLInputType=='RadioButton') //have not tested
 					type="radio"
@@ -54,7 +88,7 @@ have ng-if on questionType inside the items, and have them filter on a model tha
 						for="{{'q'+qitem.ID}}">{{'#'+qitem.ID+': '+qitem.QuestionText}}</label>
 				<div ng-if=(qitem.HTMLInputType=='TextArea')
 					class="text-area-question">{{'#'+qitem.ID+': '+qitem.QuestionText}}</div>
-				<input ng-if=(qitem.HTMLInputType=='TextArea') 
+				<input ng-if=(qitem.HTMLInputType=='TextArea')
 					type="text"
 					id="{{'q'+qitem.ID}}"
 					ng-model="qitem.ID.text"
@@ -62,7 +96,7 @@ have ng-if on questionType inside the items, and have them filter on a model tha
 					ng-required=""
 					ng-minlength=""
 					ng-maxlength=""
-					ng-trim="false">
+					ng-trim="false"> -->
 				<div ng-if="((qitem.AllowComments) && (qitem.HTMLInputType!='TextArea'))" style="border-style:solid;border-width:.5px;">
 				<input
 					type="text"

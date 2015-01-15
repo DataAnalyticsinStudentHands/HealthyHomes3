@@ -395,6 +395,7 @@ angular.module('Controllers').controller('layoutCtrl',
 		for (var i = 0; i < questions.length; i++) {
 		  $scope.qitems.push(questions[i]);
 		}
+		console.log($scope.qitems[0].options)
 		// should be on a map controller
         var currPosition = {lat:'',lon:''};
 		

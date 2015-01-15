@@ -7,7 +7,32 @@
         "Question Sub Sub theme": "Building Information",
         "Order Asked": 1,
         "Dependancy": null,
-        "HTMLInputType": "Checkbox",
+        "HTMLInputType": "Select",
+		"options": [{
+		          "option_id": 1,
+		          "option_title": "House",
+		          "option_value": 1
+		        },
+		        {
+		          "option_id": 2,
+		          "option_title": "Duplex",
+		          "option_value": 2
+		        },
+		        {
+		          "option_id": 3,
+		          "option_title": "Apartment",
+		          "option_value": 3
+		        },
+		        {
+		          "option_id": 3,
+		          "option_title": "Mobile Home",
+		          "option_value": 2
+		        },
+		        {
+		          "option_id": 5,
+		          "option_title": "Other",
+		          "option_value": 5
+		        }],
         "AllowComments": true,
         "Location": null,
         "Question Type": "MC",
@@ -23,7 +48,17 @@
         "Question Sub Sub theme": "Building Information",
         "Order Asked": 2,
         "Dependancy": null,
-        "HTMLInputType": "Checkbox",
+        "HTMLInputType": "Select",
+		"options": [{
+		          "option_id": 1,
+		          "option_title": "Own",
+		          "option_value": 1
+		        },
+		        {
+		          "option_id": 2,
+		          "option_title": "Rent",
+		          "option_value": 2
+		        }],
         "AllowComments": true,
         "Location": null,
         "Question Type": "Yes/No",
@@ -39,7 +74,22 @@
         "Question Sub Sub theme": "Home Interior",
         "Order Asked": 3,
         "Dependancy": null,
-        "HTMLInputType": "Checkbox",
+        "HTMLInputType": "Select",
+		"options": [{
+		          "option_id": 1,
+		          "option_title": "Mother",
+		          "option_value": 1
+		        },
+		        {
+		          "option_id": 2,
+		          "option_title": "Father",
+		          "option_value": 2
+		        },
+		        {
+		          "option_id": 3,
+		          "option_title": "Other Relative",
+		          "option_value": 3
+		        }],
         "AllowComments": true,
         "Location": null,
         "Question Type": "Yes/No",
@@ -119,7 +169,7 @@
         "Question Sub Sub theme": "Home Interior",
         "Order Asked": 8,
         "Dependancy": null,
-        "HTMLInputType": "MultiSelect",
+        "HTMLInputType": "Select",
         "AllowComments": true,
         "Location": null,
         "Question Type": "MC",
@@ -151,7 +201,7 @@
         "Question Sub Sub theme": "Room Interior",
         "Order Asked": 10,
         "Dependancy": null,
-        "HTMLInputType": "MultiSelect",
+        "HTMLInputType": "Select",
         "AllowComments": true,
         "Location": null,
         "Question Type": "MC",
@@ -167,7 +217,7 @@
         "Question Sub Sub theme": "Room Interior",
         "Order Asked": 11,
         "Dependancy": null,
-        "HTMLInputType": "MultiSelect",
+        "HTMLInputType": "Select",
         "AllowComments": true,
         "Location": null,
         "Question Type": "MC",
@@ -183,7 +233,7 @@
         "Question Sub Sub theme": "Room Interior",
         "Order Asked": 12,
         "Dependancy": null,
-        "HTMLInputType": "MultiSelect",
+        "HTMLInputType": "Select",
         "AllowComments": true,
         "Location": null,
         "Question Type": "MC",
@@ -231,7 +281,7 @@
         "Question Sub Sub theme": "Room Interior",
         "Order Asked": 15,
         "Dependancy": null,
-        "HTMLInputType": "MultiSelect",
+        "HTMLInputType": "Select",
         "AllowComments": true,
         "Location": null,
         "Question Type": "MC",
