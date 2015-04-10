@@ -3,15 +3,12 @@ angular.module('Directives').directive('mapManip',function(layoutObjectModel,$io
         restrict: 'AE',
         link: function(scope,elem,attr) {
             console.log(elem[0])
-    var newVB = "240000 3250000 100000 100000"; //"240000 3250000 100000 100000"
+    var newVB = "240000 3250000 100000 100000";
     var viewBox = scope.viewbox = "244601.1111 3263412.1111 2000 2000"
-    //elem[0].viewBox = firstVB;
     elem[0].setAttribute('viewBox', viewBox);
     scope.changeVB = function(){
-        //alert('nagsd');
         elem[0].setAttribute('viewBox', newVB);
     };
-            
     scope.viewbox = viewBox;
             console.log(scope);
     elem.alert = function (text) {

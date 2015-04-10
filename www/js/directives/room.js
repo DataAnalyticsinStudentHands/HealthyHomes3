@@ -1,13 +1,10 @@
 angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$ionicGesture,$ionicSideMenuDelegate,$stateParams,$ionicPopup,findGeom){
-//what about $cordovaCamera?
 	return {
         restrict: 'AE',
         scope: {
             room: '=',
 			gridmag: '='
         },
-//        templateNamespace: 'svg',
-//        template: '<circle fill="red" stroke="blue" stroke-width="3" cx="250" cy="200" r="100" />',
         controller: ['$scope', function($scope){
             $scope.rmModal = [];
 		    $ionicModal.fromTemplateUrl('templates/roommodal.html', {
@@ -35,9 +32,6 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 				"Yellow" : "Yellow",
 				"Red" : "Red"
 			};
-			// $scope.addroomObj = function(fingerX,fingerY,rmObj){
-// 						alert(fingerX);
-// 					}
 		    $ionicModal.fromTemplateUrl('templates/linemodal.html', {
 		            id: "lnModal",
 		            scope: $scope,
@@ -61,30 +55,9 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 				"Window",
 				"Door"
                 ];
-    		
-//			$scope.rmModal.pathTypes = {
-//				"Line": "Line",
-//				"Window" : "Window",
-//				"Door" : "Door",
-//				"QuadBezier" : "QuadBezier",
-//				"CubicBezier" : "CubicBezier"
-//			};
-//            $scope.$watch(
-//                'rmModal.pthTyp',
-//                function( newValue, oldValue ) {
-//                    console.log(oldValue,newValue)
-//                    if ( newValue === oldValue ) {
-//                        return;
-//                    };
-//                    if ( $scope.rmModal.pthTyp === newValue ) {
-//                            return;
-//                    };
-//                    $scope.rmModal.pthTyp = newValue;
-//                }
-//            );
+
         }],
         link: function(scope,elem,attr) {
-    //scope.room.roomPoints = [[20.0,120.0],[220.0,120.0],[220.0,220.0],[320.0,320.0],[220.0,420.0],[420.0,220.0],[620.0,620.0],[720.0,720.0]];  //get from service as map from arcs
     scope.alert = function (text) {
         alert(text+'inroom');
     };
@@ -145,7 +118,6 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 				  gridMag = scope.gridmag;
               }
     );
-    //var nextPoints;
     if(!scope.room.svgPoints){
         scope.room.svgPoints = svgArr;//findGeom.svgPath(svgArr);
     }else{
@@ -230,44 +202,32 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 		roomObjs = scope.room.roomObjs;
 	};
 	scope.room.roomObjs = roomObjs;
-	//scope.testText = 'http://i.huffpost.com/gen/2432404/thumbs/r-BRENNAN-huge.jpg';
 	var currNote = scope.currNote = null;
 	var newImgURI;
-	scope.newRoomObj = function(pthType,currNote,importColor,newImgURI){ //have to figure out what needs to be passed; currNote as timeId??
-        //alert(importColor)
+	scope.newRoomObj = function(pthType,currNote,importColor,newImgURI){ 
 		var imgRm = [{"pathType" : pthType, "impColor" : importColor, 
 						"note" : currNote, "imageURI":newImgURI, 
 						"timeId" : timeId, 
 						"points" : [[scope.fingerX-svgArr[0].points[0][0],scope.fingerY-svgArr[0].points[0][1]]]}]
         
-		roomObjs.push(imgRm); //follow logic in layoutCtrl for floor clear and set, too; or is this just part of a note? 
+		roomObjs.push(imgRm); 
 		scope.room.roomObjs = roomObjs;
         scope.currNote = currNote = null;
         scope.closeAddRoomModal();
 	};
-	var newImage = function(imageURI,currNote){ //currNote is a string, not an object?
+	var newImage = function(imageURI,currNote){ 
 		scope.newImgURI = imageURI;
 		scope.testText = imageURI;
 		console.log(scope.room);
-		//console.log(svgArr)
 		var largeImage = document.getElementById('wtf');
-		//console.log(largeImage)
 		largeImage.src = imageURI;// "data:image/jpeg;base64," + imageURI;//imageURI
-		
-		//largeImage.src = imageURI;
-		//console.log(largeImage)
-		//largeImage['xlink:href'] = 'http://i.huffpost.com/gen/2432404/thumbs/r-BRENNAN-huge.jpg'
-		//var smallImage = document.getElementById('wtf');
-		//console.log(smallImage)
-		//smallImage.src = "data:image/jpeg;base64," + imageData;
 	};
 	var d = new Date();
 	var timeId = d.getTime();
 	var setTimeId = function(){
 		return d.getTime();
 	}
-	//camera stuff
-	var pictureSourceCamera;   // picture source
+	var pictureSourceCamera; 
 	var pictureSourceFile;
 	var destinationTypeFile; // sets the format of returned value
 	var destinationTypeData; //keep getting process fails
@@ -285,7 +245,6 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
             console.log('cordova file found');
         };
         };
-		//console.log("ready get camera types");
 		if (!navigator.camera)
 			{
                  scope.noCamera = true;
@@ -297,7 +256,6 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 		destinationTypeFile=navigator.camera.DestinationType.FILE_URI;
 		destinationTypeData=navigator.camera.DestinationType.DATA_URL;
 	});
-	//var picture;
 	scope.picFromLocalFile = function(flagID){
 		
 		options = {
@@ -346,8 +304,6 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 			saveToPhotoAlbum: true,
 			cameraDirection: 0
 		};
-		//console.log(JSON.stringify(window.navigator))
-		//console.log(JSON.stringify($cordovaCamera))
 		if (!navigator.camera)
 			{
 				alert('no navigator.camera')
@@ -357,22 +313,14 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 		camera.getPicture(options).then(
 			function (imageURI) {
                 newImage(imageURI)
-				//var thisImg = imageURI
-				//setTimeout(newImage(imageURI),5000);
 				console.log("got camera success "+imageURI);
-				//console.log(imageURI)
-				//should we use GPS data from header?
-				//picture = imageURI;
-				//console.log(picture);
 				},
 			function (err) {
 				console.log("got camera error ", err);
-				// error handling camera plugin
 				});
-			//options);
 	};
 	
-	scope.slopeAnchorPts = function(arr,atype){ //have this read as a separate SVG, white bckgrnd; has a directive for dragging and reshaping -- would be in rooms.js
+	scope.slopeAnchorPts = function(arr,atype){ 
 		var arrX0 = arr[0][0]
 		var arrX1 = arr[1][0]
 		var arrY0 = arr[0][1]
@@ -398,7 +346,6 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 	};
     var removeSegment = function(ind4new){
         scope.closeLineModal();
-		//if (svgArr[ind4new-1].pathType!='Line')
 		var iter = ind4new;
 		if (iter==0){iter=svgArr.length};
         var newArr = [];
@@ -418,10 +365,6 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
     };
     scope.addSegment = function(fingerX,fingerY,pthTyp,ind4new,newX,newY){ //can run all room-objects through here
 		scope.closeLineModal();
-		// if(pthTyp == 'Window' || pthTyp == 'Door'){
-// 			alert('not yet implemented')
-// 			return
-// 		};
 		if (pthTyp == 'Line'){
 			newXY = [[parseInt(newX),parseInt(newY)]];
 		} else {
@@ -435,8 +378,6 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 			var my = newY-points[ptsb4][1];
 			var distY = 30;//Math.abs(my)
 			var mRadians = Math.atan2(my,mx);
-			// console.log('rads '+mRadians)
-			// console.log(Math.cos(mRadians))
 			if (pthTyp == 'CubicBezier'){
 				ctrlX = Math.cos(mRadians)*(mx/2)+newX;
 				ctrlY = Math.sin(mRadians)*(my/2)+newY;
@@ -478,22 +419,6 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 		scope.room.svgPoints = svgArr;
 		scope.room.measurePoints = findGeom.showMeasures(svgArr);
     };
-	//move into service and use for main path
-	// scope.room.doorPath = function(doorPoints){
-// 		var doorStr = 'M'+doorPoints[0][0]+','+doorPoints[0][1]+' ';
-// 		//extend on line
-// 		doorStr+='L'+doorPoints[1][0]+','+doorPoints[1][1]+' ';
-// 		//back up 30%
-// 		doorStr+='l'+.3*-(doorPoints[1][0]-doorPoints[0][0])+','+.3*-(doorPoints[1][1]-doorPoints[0][1])+' ';
-// 		//Q over to 30% of door with control btwn door and opening
-// 		doorStr+='Q'+(doorPoints[2][0]+doorPoints[1][0])/2+','+(doorPoints[2][1]+doorPoints[1][1])/2+' '//
-// 		doorStr+=''+(doorPoints[2][0]-.3*(doorPoints[2][0]-doorPoints[0][0]))+','+(doorPoints[2][1]-.3*(doorPoints[2][1]-doorPoints[0][1]))+' ';
-// 		doorStr+='L'+doorPoints[2][0]+','+doorPoints[2][1]+' ';
-// 		//return explicitly to origin
-// 		doorStr+='L'+doorPoints[0][0]+','+doorPoints[0][1]+' ';
-// 		//console.log(doorStr)
-// 		return doorStr
-// 	}
     for (var n = 0;n<points.length;n++){
         points[n][0] = parseInt(points[n][0]);
         points[n][1] = parseInt(points[n][1]);
@@ -501,7 +426,6 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
     var gridElem = angular.element(document.getElementById('floor-container'));
     var offLeft = findGeom.offSetLeft(gridElem);
     var offTop = findGeom.offSetTop(gridElem);
-    //var gridMag = findGeom.gridMag; 
     var xtraOffX = 0;
     var xtraOffY = 0;
 	var newIndex4line;
@@ -542,7 +466,6 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
             scope.$apply();
         };
     };
-    //var highZ = 100; //need to figure out for dragging objects
     var endDrag = function(e){
         $ionicSideMenuDelegate.canDragContent(true);
         for (var n=0;n<points.length;n++){
@@ -566,17 +489,12 @@ angular.module('Directives').directive('roomManip',function(camera,$ionicModal,$
 		}
 		dragWhole =! dragWhole;
         scope.$apply()
-        //setTimeout(scope.$apply,100);
     };
     var doubletapGesture = $ionicGesture.on('doubletap', addPoint, elem);
     var dragStartGesture = $ionicGesture.on('dragstart', startDrag, elem);
     var dragGesture = $ionicGesture.on('drag', dragLines, elem);
     var dragEndGesture = $ionicGesture.on('dragend', endDrag, elem);
     var holdGesture = $ionicGesture.on('hold', measures, elem);
-	// elem.on('$destroy', function(){
-// 		scope.roomModal.remove();
-// 	    console.log('elem destroyed');
-// 	})
     scope.$on('$destroy', function() {
         $ionicGesture.off(doubletapGesture, 'doubletap', addPoint);
         $ionicGesture.off(dragStartGesture, 'dragstart', startDrag);
