@@ -16,11 +16,12 @@ angular.module('Controllers').controller('mainController', function($scope, insp
     };
 })
 .controller('loginCtrl', ['$scope', 'Auth', '$state', 'ngNotify', '$timeout', '$ionicLoading', function($scope, Auth, $state, ngNotify, $timeout, $ionicLoading) {
-     if($scope.isAuthenticated() === true) {
+     
+	 if($scope.isAuthenticated() === true) {
          //IF SUCCESSFULLY AUTH-ED USER IS TRYING TO GO TO LOGIN PAGE => SEND TO HOME PAGE OF APP
          //just to change line
          $state.go('secure.inspections');
-     }
+     };
      $scope.salt = "nfp89gpe"; //PENDING - NEED TO GET ACTUAL SALT
      $scope.$parent.submit = function() {
          if ($scope.userName && $scope.passWord) {
