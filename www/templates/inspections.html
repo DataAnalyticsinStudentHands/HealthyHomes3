@@ -21,7 +21,9 @@
         
     </ion-side-menu-content>
     <ion-side-menu id="leftSideMenu" side="left" expose-aside-when="large">
+        <a ui-sref="secure.inspections.map({inspectionIndex : inspect.inspectionIndex || 0})">
        <img src="img/Galvestonmap.svg"/>
+            </a>
     </ion-side-menu>
    </ion-side-menus>
 </ion-view>

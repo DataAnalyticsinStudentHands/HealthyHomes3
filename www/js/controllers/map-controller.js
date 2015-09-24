@@ -4,7 +4,8 @@
 
 angular.module('Controllers').controller('mapCtrl', 
 	function ($scope, $window, $state,currentInspection,findGeom,mapData) { 
-        
+        alert('map-loaded');
+        console.log(inspectionIndex);
         //var geojson_data = data;
         //console.log(geojson_data['type']);
         $scope.features = null;

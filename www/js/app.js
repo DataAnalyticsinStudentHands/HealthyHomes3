@@ -48,7 +48,8 @@ angular.module('HHApp', [
                 $rootScope.isAdm = (success == "ROLE_ADMIN");
         	}, function (error) {
             	if (error.status === 0) { // NO NETWORK CONNECTION OR SERVER DOWN, WE WILL NOT LOG THEM OUT
-                	ngNotify.set("Internet or Server Unavailable", {type: "error", sticky: true});
+                    ngNotify.set("Internet or Server Unavailable", {type: "error", sticky: true});
+                    
             	} else { //Most Likely a 403 - LOG THEM OUT
                 	Auth.clearCredentials();
                 	//console.log("not-authed");
@@ -153,10 +154,12 @@ angular.module('HHApp', [
 //      })
     //should all work like layout
       .state('secure.inspections.map', {
-          url:"/map",
+          url:"/map/:inspectionIndex",
           authenticate: true,
+//          templateUrl: 'templates/map.html',
+//          controller: 'mapCtrl',
           views: {
-                "map@secure": {
+                "inspections.maps@secure": {
                     templateUrl: 'templates/map.html',
                     controller: 'mapCtrl'
                 },
